@@ -1,6 +1,6 @@
 # P303 · Mobile experience: the 60-second check-in
 
-> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a separate phone site). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Everything here is made up and is not financial advice.
+> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a separate phone site). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Rosa and her account are invented; the stock and crypto names are real (ruling B, Phase 2.5; see BRIEF.md §4).
 >
 > **Live:** the whole app under 600px wide, starting at `/`. Open it on a phone, narrow your browser to 390px, or on a laptop use **Phone view**: https://first-leaf.vercel.app/?view=phone · **Code:** `src/layouts/` (the phone shell and navigation) and the phone-specific parts of each feature · **Commits:** prefixed `[P303]`
 
@@ -12,7 +12,7 @@ P303 is **First Leaf on Rosa's phone**: the same app, with the same account and 
 2. **Why did my balance move this week?**
 3. **One new word**, if she has another 10 seconds.
 
-Under 600px wide, Home becomes a **check-in**: her balance, up or down this week, a small balance-over-time chart, a "needs you" card, why it moved, her last 3 transactions and the word of the day. Everything else (alerts, activity, funds, the story, Practice, Words) is one tap away, through the bottom tab bar or a card on Home.
+Under 600px wide, Home becomes a **check-in**: her balance, up or down this week, a small balance-over-time chart, a "needs you" card, why it moved, her last 3 transactions and the word of the day. Everything else (alerts, activity, investments, the story, Practice, Words) is one tap away, through the bottom tab bar or a card on Home.
 
 **Why it's designed for the phone, not squeezed onto it.** The learner instructions say mobile design is *"not just about making things smaller."* The laptop Home (P301) asks Rosa to scan a dashboard for ten calm minutes; the phone Home answers three questions in sixty seconds. So the phone gets different decisions, not smaller boxes:
 - **Answers, not widgets.** Three answers at the top. The laptop's mix ring and goal card move one tap away.
@@ -57,7 +57,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 
 **Last 3 transactions:** the newest three items in the account's activity (for Rosa: the Sept. 15 dividend, the returned Sept. 1 deposit, the Aug. 17 dividend). A returned deposit shows its status in words, not only in color.
 
-**Word of the day:** set in the data (`meta.wordOfTheDay`, "Yearly fee" on Sept. 20). **Next word** follows the glossary order, so it's predictable and testable.
+**Word of the day:** set in the data (`meta.wordOfTheDay`, "Ups and downs" on Sept. 20, from Phase 2.5). **Next word** follows the glossary order, so it's predictable and testable.
 
 **An alert's detail stays a phone page.** It shows what it needs inline and ends with **"Words on this screen"** chips:
 
@@ -65,9 +65,10 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 |---|---|
 | Deposit sent back | The deposit's dates and status, and **Try again** (review → confirm → "Your deposit is on its way.") |
 | Goal behind plan | Planned vs. put in, and **Add a one-time deposit** (the same flow, amount filled in) |
-| Waiting in cash | Auto-invest status (paused since July 14) with an On/Off switch and a confirmation |
-| Fee going up | The fund's name, old and new fee (0.30 percentage points), and the dollar difference |
-| Dividend paid | Amount, fund and date |
+| Waiting in cash | Auto-invest status (paused since the day after the dip's low) with an On/Off switch and a confirmation |
+| A big move (only if the data has one) | The investment, last Friday's and this Friday's price, the percent move, and what it did to Rosa's holding in dollars |
+| Crypto and SIPC protection | What SIPC protection covers, and that it doesn't cover crypto (wording checked against sipc.org) |
+| Dividend paid | Amount, company and date |
 
 ## Layout (designed at 390 × 844, works from 320px)
 
@@ -90,21 +91,20 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 │ │ dividend $0.50         › │ │  waterfall, per fund, word chips
 │ └───────────────────────────┘ │
 │ ┌ Latest ──────────────────┐ │
-│ │ Sept. 15  FL-BOND paid you│ │
-│ │ Sept. 1   Deposit returned│ │
-│ │ Aug. 17   FL-BOND paid you│ │
+│ │ the 3 newest activity rows│ │
+│ │ (date, what, status)      │ │
+│ │                           │ │
 │ └───────────────────────────┘ │
 │ ┌ Word of the day ─────────┐ │
-│ │ Yearly fee             › │ │
+│ │ Ups and downs          › │ │
 │ └───────────────────────────┘ │
-│ Risk disclosure (footer)      │
 ├──────────────────────────────┤
 │ Home Activity Story Practice Words │  opaque tab bar, 48px targets
 └──────────────────────────────┘
 ```
 
 - **Most important thing highest, most-used controls lowest.** Answers sit at the top; navigation sits at the bottom, within reach of the thumb.
-- **Bottom tab bar:** Home, Activity, Story, Practice, Words, each with an icon and a word. **Funds and Alerts are reached from Home** (the "needs you" card, and each holding in the check-in).
+- **Bottom tab bar:** Home, Activity, Story, Practice, Words, each with an icon and a word. **Investments and Alerts are reached from Home** (the "needs you" card, and each holding in the check-in).
 - **Touch targets (amended Sept. 24, 2026).** Every standalone control (buttons, tabs, list rows, chips, the keypad, close buttons) is at least **48 × 48px**, with 8px between targets. A term explanation inside a sentence uses WCAG 2.5.8's inline exception ("the target is in a sentence or its size is otherwise constrained by the line-height of non-target text"). So that no one has to hit a small inline word, every P303 detail screen also lists its terms as 48px chips under **"Words on this screen"**. P303 body text has a line-height of at least 1.6.
 - **The top and bottom bars are opaque**, so text scrolling behind them can never ruin contrast.
 - **Why it moved** opens in place on Home (a disclosure), not on a separate page: the waterfall, the per-fund breakdown and its "Words on this screen" chips. This keeps the 60-second job on one screen.
@@ -135,8 +135,8 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 | F6 | **Check every scenario** | Open `/?scenario=all-clear&view=phone`, then `/?scenario=brand-new&view=phone` (by URL only) | Home shows that scenario's account, and every sentence stays true |
 | F7 | **Review on a laptop** | Click the phone icon in the top bar, or open `/?view=phone` | The real phone Home and bottom tab bar show inside the frame, on the same route and scenario |
 | F8 | **Check activity one-handed** | Activity tab → a compact list (date, what, amount, status) → **Filters** opens a bottom sheet (type and status, 48px) → tap a row | The row opens as a full page with its words as chips; filters combine; an empty combination says so |
-| F9 | **Look at a fund** | Home or Activity → Funds → a card (ticker, name, value, up or down) → the fund page | The page leads with value and up or down, then a small price chart (Since you bought / 1 year / 5 years), then the yearly fee and "4 of 5" |
-| F10 | **Practice with a keypad** | Practice tab → pick a fund → amount on a large number keypad → review in a bottom sheet → confirm | Errors show above the keypad and Confirm stays disabled; the "Practice money. It isn't real money." banner is always visible |
+| F9 | **Look at an investment** | Home or Activity → Investments → a card (ticker badge, name, value, up or down) → the investment page | The page leads with value and up or down, then a small price chart (Since you bought / 6 months / 1 year) with its data note, then "Ups and downs: X of 5", dividends if any, and the SIPC notice on crypto pages |
+| F10 | **Practice with a keypad** | Practice tab → pick an investment → amount on a large number keypad → review in a bottom sheet → confirm | Errors show above the keypad and Confirm stays disabled; the "Practice money. Nothing here touches your account." banner is always visible |
 | F11 | **Read the story and Words on a phone** | Story tab → **Chapters** opens a bottom sheet → a chapter; sliders are at least 48px tall · Words tab → search at the top → 48px result rows | Charts sit inline; every control is at least 48 × 48px |
 
 **Term explanations on a phone** open as a bottom sheet (easier to reach and read than a floating bubble), with the same content and accessibility as everywhere else. **Related-word links in the sheet are standalone controls, so under 600px each is at least 48 × 48px** (ruling, Sept. 24).
@@ -145,9 +145,9 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 
 | Case | What Rosa sees |
 |---|---|
-| **Nothing needs you** (calm account) | "Nothing needs you today." A small mid-century sun. The FYI dividend shows under "Just so you know." The card keeps its size. |
+| **Nothing needs you** (calm account) | "Nothing needs you right now." A small mid-century sun. Any FYI (the SIPC notice, a dividend) shows under "Just so you know." The card keeps its size. |
 | **Brand-new account** | "Welcome, Rosa." What happens after the first deposit, in three short steps. No $0.00 charts, and no empty "Latest" list. |
-| **Funds that went down** | In "Why it moved," FL-WORLD and FL-BOND show "−$5.88" and "−$0.85" in terracotta, with "down" in the accessible label, next to an explanation that ups and downs are normal. In sentences: "down $5.88". Never red alone. |
+| **Investments that went down** | In "Why it moved," any holding that fell this week shows "−$X" in terracotta, with "down" in the accessible label, next to an explanation that ups and downs are normal. In sentences: "down $X". Never red alone. |
 | **Interrupted mid-flow** | Practice keeps the half-entered order in memory for the session |
 | **Large text (200%) / small phone (320px) / landscape** | Cards grow taller, never wider; nothing gets cut off; the tab bar stays usable |
 

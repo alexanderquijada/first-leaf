@@ -1,26 +1,26 @@
 # P302 · Interactive data story: Your money story
 
-> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a stand-alone Nia and Theo story). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Every number here is made up to teach one idea. It is not a prediction and not financial advice.
+> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a stand-alone Nia and Theo story). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Rosa, Nia and Theo are invented; the stock and crypto names and crypto prices are real, and stock prices are modeled between real closes (ruling B, Phase 2.5). Nothing here is a prediction.
 >
 > **Live:** `/story` (any screen size; the chart pins beside the text from 1024px), plus `/practice` and `/learn` · **Code:** `src/features/story/`, `src/features/practice/`, `src/features/learn/` · **Commits:** prefixed `[P302]`
 
 ## Summary
 
-**Your money story** tells Rosa the story of her own first seven months in First Leaf, using her real (fictional) account, and argues one point of view. The story states it on screen, in these words:
+**Your money story** tells Rosa the story of her own first six months in First Leaf, using her (invented) account, and argues one point of view. The story states it on screen, in these words:
 
 > *"Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."*
 
 (Second person, like the chapters that follow: the story speaks to Rosa. Ruling, Sept. 24.)
 
-It earns that point of view in six chapters. The first four read her own data: her balance since March, how much of it is her own deposits, the dip in July (when she paused auto-invest) and what happened after, and where her money sits now. The fifth shows why years matter, with two friends, Nia and Theo (invented for the lesson): Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. Then Rosa's own 26-to-65 slider shows it for her. The sixth invites her to try it with pretend money in Practice.
+It earns that point of view in six chapters. The first four read her own data: her balance since March, how much of it is her own deposits, the dip this summer (when she paused auto-invest) and what happened after, and where her money sits now. The fifth shows why years matter, with two friends, Nia and Theo (invented for the lesson): Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. Then Rosa's own 26-to-65 slider shows it for her. The sixth invites her to try it with practice money in Practice.
 
-**Why this story.** Rosa's July reaction is the most common beginner mistake in miniature: a dip felt like the moment to stop. Her own chart shows that seven months is far too short for growth to show up (about 95% of her balance is still her own deposits), and the Nia and Theo lesson shows what the years do. A story about *her* money is more persuasive to her than a story about strangers, and it keeps First Leaf one product instead of an app with an essay attached.
+**Why this story.** Rosa's reaction to the dip is the most common beginner mistake in miniature: a dip felt like the moment to stop. Her own chart shows that six months is far too short for growth to show up (most of her balance is still her own deposits; rule R1 checks the exact share), and the Nia and Theo lesson shows what the years do. A story about *her* money is more persuasive to her than a story about strangers, and it keeps First Leaf one product instead of an app with an essay attached.
 
-**Practice and the learning moments count toward P302.** Practice (investing with pretend money) and the term explanations and Words pages are how the story turns into something Rosa can try and understand, so they are part of this lens.
+**Practice and the learning moments count toward P302.** Practice (investing with practice money) and the term explanations and Words pages are how the story turns into something Rosa can try and understand, so they are part of this lens.
 
 *Rejected:* the stand-alone "Start early beats start big" story about two strangers. It was sound, but it sat outside the app and never touched Rosa's own money. It lives on as chapter 5.
-*Rejected:* "Fees quietly eat your growth." Strong, but it leans on percentages beginners struggle to feel.
-*Rejected:* "Staying invested beats jumping out" told with market forecasts. It can't be shown honestly with invented data. We show what happened to Rosa's own account and stop there.
+*Rejected:* "Fees quietly eat your growth." Strong, but it leans on percentages beginners struggle to feel, and stocks and crypto carry no yearly fund fee.
+*Rejected:* "Staying invested beats jumping out" told with market forecasts. Nobody can forecast prices honestly. We show what happened to Rosa's own account and stop there.
 
 ## The audience
 
@@ -30,7 +30,7 @@ Rosa, 26, and people like her: in their 20s, a few months into investing or abou
 
 All numbers come from `src/shared/data/` and are re-computed by the validator. **Every claim the story makes is a checked rule**: rules T1–T4 for Nia and Theo, and rules R1–R4 for Rosa's own data (R1–R4 are defined in BRIEF.md §4 now and built in Phase 1).
 
-**Rosa's own data** (the main demo account):
+**Rosa's own data** (the main demo account; the values are refreshed from the regenerated data in Phase 2.5 step 2):
 
 ```json brief-example
 {
@@ -59,11 +59,11 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 
 | Claim on screen | Checked as |
 |---|---|
-| Almost all of Rosa's balance is money she put in | $1,250 of $1,313.72 (95.1%) is deposits; $63.72 (4.9%) is what it earned (R1) |
-| In July, prices dipped | FL-BROAD fell from $90.46 on June 26 to $84.45 on July 13, a 6.6% drop (R2). **The dip rule (ruling, Sept. 24):** the dip is the largest high-to-low drop in FL-BROAD's closes in the 30 calendar days before Rosa paused auto-invest (June 14 to July 14). It is tied to her action, not a hand-picked window. The market is the same for every account, so the calm account (which never paused) uses the same window. R2 recomputes the window from the pause date and the dip from the prices. |
-| At the low, her balance was below what she had put in | On July 13 her balance was $1,065.00, $35.00 below the $1,100 she had put in (R2) |
-| She paused auto-invest the next day | Paused July 14 (A14, R3) |
-| After the pause | By July 20 her balance ($1,100.61) was back above what she'd put in. Her Aug. 3 deposit stayed as cash. By Sept. 18 she was up $63.72 (R3) |
+| Most of Rosa's balance is money she put in | Deposits vs. what it earned, from the account (R1; "almost all" only at 90% or more) |
+| This summer, her investments dipped | **The dip rule (ruling B, Phase 2.5):** the dip is the **largest 10-trading-day fall in Rosa's portfolio value between April 15 and Aug. 15, 2026**, measured as the market change in her balance with deposits taken out. The chapter title names the month of the low ("The dip in July"). R2 recomputes the window, the fall and the month from the balance history. Each account gets its own dip from its own history. |
+| At the low, her balance was below what she had put in | Said only when it's true (R2) |
+| She paused auto-invest the next trading day | The pause is the next trading day after the low (A14, R3). The calm account never pauses; its chapter says auto-invest stayed on. |
+| After the pause | When her balance was back above what she'd put in, which deposits stayed as cash, and where she is on Sept. 18 (R3) |
 
 The story says what happened and stops there. It never says pausing was right or wrong, and never tells Rosa to turn auto-invest back on; that stays her choice (BRIEF.md §8).
 
@@ -109,28 +109,28 @@ The story says what happened and stops there. It never says pausing was right or
 
 | # | Chapter | The one thing it says | Chart state | Interaction |
 |---|---|---|---|---|
-| 1 | Seven months in | Here is your balance since March. | Balance over time since March 2, drawn in | **Toggle: "What you put in vs. what it earned"** splits the area into a flat "put in" layer and a grainy "earned" layer. **Time range: 1M / 3M / Since March.** |
-| 2 | Most of it is still your money | About 95% of your balance is money you put in. Growth hasn't had time yet. | One bar: deposits vs. earned | Tap either part to read it in words |
-| 3 | The dip in July | Prices fell for two weeks. You paused auto-invest on July 14. Here is what happened after. | The balance line with the dip marked | **Toggle: show or hide the events** (the dip's low, the pause, the Aug. 3 deposit staying as cash) |
-| 4 | Where it is now | Here is how your money is split today. | Her mix: FL-BROAD, FL-WORLD, FL-BOND, FL-GREEN and cash | **Filter: stocks / bonds / reserve / cash** (reserve shows an empty state when she owns none) |
+| 1 | Six months in | Here is your balance since March. | Balance over time since March 2, drawn in | **Toggle: "What you put in vs. what it earned"** splits the area into a flat "put in" layer and a grainy "earned" layer. **Time range: 1 month / 3 months / Since March.** |
+| 2 | Most of it is still your money | Most of your balance is money you put in. Growth hasn't had time yet. | One bar: deposits vs. earned | Tap either part to read it in words |
+| 3 | The dip in *month* (from the data) | Your investments fell over two weeks. You paused auto-invest the next trading day. Here is what happened after. | The balance line with the dip marked | **Toggle: show or hide the events** (the start of the fall, the low, the pause, deposits staying as cash) |
+| 4 | Where it is now | Here is how your money is split today. | Her mix: her 5 stocks, 2 cryptocurrencies and cash | **Filter: stocks / crypto / cash** (cash shows an empty state when she has none) |
 | 5 | What happens if you keep going | Years do the work. Nia starts at 22 with $100 a month; Theo waits until 32 and puts in $150. | Nia and Theo from 22 to 65 | See the steps below |
-| 6 | Try it with pretend money | Practice lets you try a mix with money that isn't real. | — | A link into **Practice** |
+| 6 | Try it with practice money | Practice lets you try a mix with practice money. Nothing you do there touches your account. | — | A link into **Practice** |
 
 **Chapter 5, step by step** (every Nia and Theo rule is kept):
 
 | Step | What it says | Chart state | Interaction |
 |---|---|---|---|
 | 5a Make a guess | Who has more at 65? | Hidden | **Tap Nia or Theo.** The guess is optional. |
-| 5b The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's glows | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the safe guess." |
+| 5b The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's glows | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the better guess." |
 | 5c Why | Nia put in *less*. Most of her money is growth on growth. | Nia's area splits into "put in" and grainy "growth" | Hover or tap any age to read both layers |
 | 5d Every year counts | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
 | 5e Can Theo catch up? | Yes, with about $196 a month, nearly twice Nia's. | Theo's line rises with the amount | **Theo's monthly slider, $150–$300, step $1**, with a marker where he passes Nia |
 | 5f Real life is bumpy | Real years go up and down. Same overall growth, and Nia still ends ahead. | Smooth vs. bumpy | **Smooth / Bumpy toggle** |
 | 5g Your turn | Rosa, 26, $150 a month. "This is an example, not a plan or advice." | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
 
-Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, and the sources. The footer carries the disclaimer.
+Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, and the sources.
 
-**Practice** (`/practice`): pick a fund → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over 5 made-up years → **Start over**. A persistent "Practice money, not real" banner; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**.
+**Practice** (`/practice`): pick one of the 10 investments → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over the last 12 months → **Start over**. A persistent banner, "Practice money. Nothing here touches your account."; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**.
 
 **Words** (`/learn`, `/learn/:termId`): search every explanation, open one as its own page, follow related words.
 
@@ -147,14 +147,14 @@ Closing: a three-line takeaway, then **Words from this story** (growth on growth
 | # | Flow | Done when |
 |---|---|---|
 | F1 | Read chapters 1–4 and use the put-in vs. earned toggle and the time range | The chart and its sentence change together; the numbers match the account |
-| F2 | Show and hide the July events | The dip, the pause and the Aug. 3 cash appear and disappear; the table matches |
-| F3 | Filter the mix by stocks / bonds / reserve / cash | The mix and its sentence change; an empty filter says so |
+| F2 | Show and hide the dip's events | The fall, the low, the pause and the deposits that stayed as cash appear and disappear; the table matches |
+| F3 | Filter the mix by stocks / crypto / cash | The mix and its sentence change; an empty filter says so |
 | F4 | Make a guess, then read the answer | The reply matches the guess; skipping it gives neutral copy |
 | F5 | Move the start-age slider and Theo's slider by keyboard | Values are announced in words; Theo's marker appears at $196 |
 | F6 | Switch Smooth / Bumpy | The caption explains why the ending differs |
 | F7 | Jump to any chapter from the menu or a link (`#chapter-5`) | Each chapter stands alone |
 | F8 | Practice: buy, sell, time machine, start over | The banner is always visible; errors are inline; the real account never changes |
-| F9 | Words: search "fee", open "Yearly fee", follow a related word | A search with no results shows a helpful empty state |
+| F9 | Words: search "crypto", open "Crypto", follow a related word | A search with no results shows a helpful empty state |
 
 ## Edge cases (go-further)
 
@@ -164,8 +164,8 @@ Closing: a three-line takeaway, then **Words from this story** (growth on growth
 | Slider at extremes (start at 45; Theo at $300) | Copy stays true: "Starting at 45 still helps. It just has fewer years to grow." |
 | Reader jumps straight to a chapter | Each chapter's text stands alone; no chapter depends on an earlier interaction |
 | No guess made | Step 5b uses neutral copy |
-| Time range shorter than a chapter's events (1M with the July events on) | The sentence says the events are outside this range, and offers "Since March" |
-| Practice errors: not enough pretend money, selling more than you own, $0 or blank, letters, more than 2 decimals | An inline message in plain words; Confirm stays disabled until the order is valid |
+| Time range shorter than a chapter's events (1 month with the dip's events on) | The sentence says the events are outside this range, and offers "Since March" |
+| Practice errors: not enough practice money, selling more than you own, nothing to sell, $0 or blank, letters, more than 2 decimals | An inline message in plain words; Confirm stays disabled until the order is valid |
 | Phone in landscape; 200% zoom; reduced motion | Charts reflow; text never sits on top of a chart; nothing required moves |
 
 ## Nice to haves

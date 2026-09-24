@@ -422,6 +422,12 @@ Then the CLAUDE.md §11 report.
 
 ---
 
+## Phase 2.5 · Real names, real crypto prices, and the Phase 2 rewrites
+
+Issued Sept. 24, 2026. The full rulings (A: the Phase 2 report and ten approved rewrites; B: real names, real crypto prices, anchored stocks, no disclaimer) are recorded in STATUS.md's decision log. Steps: (0) brief first: BRIEF.md, the lens briefs, CLAUDE.md §5, README, STATUS; (1) save the CoinGecko Demo key as `COINGECKO_DEMO_KEY=<COINGECKO_DEMO_KEY>` in `.env.local` only, fetch a year of BTC/ETH/SOL daily prices with `scripts/fetch-crypto.mjs`, and record verified stock anchors and dividends in `docs/research/PRICE-ANCHORS.md` (stop if any anchor can't be verified); (2) regenerate the data from the lineup and update the checker (G1/G2 allow only the lineup, P1 anchors, P2 CoinGecko, F1 crypto weekends, fee rules and S3 removed, G6 bans "simulated", "concept", "not real"), each rule shown failing first; (3) screens and copy: no footer disclaimer, the two data notes, the new Practice banner, Investments, the big-move alert, story chapters 1, 3 and 4, all 10 names in Practice, and the approved rewrites; (4) verify, check the key is nowhere in git history or `dist/`, test the chart palette for color blindness, regenerate the copy review with its committed script, and stop for copy approval.
+
+**Secret handling:** the key goes only into `.env.local`. Before every commit, `git grep` for its prefix must return nothing.
+
 ## Phase 3 · Visual design
 
 > **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.

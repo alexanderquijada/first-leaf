@@ -46,19 +46,18 @@ Never say "this should work." Before claiming a phase is done, run all of these 
 
 ## 4. Data
 
-- All data is fictional and lives in `src/shared/data/`. **Never hand-edit generated JSON.** Change `scripts/generate-data.mjs`, run `npm run data:generate`, then `npm run validate`. Only `glossary.json` is hand-written.
+- All data lives in `src/shared/data/`. Rosa, her accounts and every person are invented; the lineup's names are real (§5.1). **Never hand-edit generated JSON.** Change `scripts/generate-data.mjs`, run `npm run data:generate`, then `npm run validate`. Only `glossary.json` is hand-written. The generator reads saved price files (`src/shared/data/raw/`) and never uses the network; only `scripts/fetch-crypto.mjs` does, run by hand, with the key read from `.env.local` (never committed, never in the browser bundle).
 - There are **three accounts**, one per demo scenario (`account.json`, `account-all-clear.json`, `account-new.json`). `activity.json` and `attention.json` are keyed by account id. Screens always read the account for the **current scenario** through `useScenario`, never `account.json` directly.
 - Run `npm run validate` at the end of every phase that touches data, and before every commit that touches data.
 - The same person, balance and dates must mean the same thing in P301, P302 and P303 (rules X1, X2).
 
 ## 5. Finance guardrails (standing rules)
 
-1. **Everything is invented:** funds, tickers (always `FL-XXXX`), prices, returns, people, accounts. **No real company names or real tickers**, not even with made-up numbers.
-2. **Teach, never advise.** No call to action about a specific investment: no "you should buy/sell", "best fund", "switch to", "guaranteed", no "safe" without saying safe from what, no "most people…". Actions are only about money movement or settings (retry a deposit, add a one-time deposit, auto-invest on/off), always offered as a choice, or about learning. **Exception:** inside Practice, the buttons may say **Buy** and **Sell**, because the money is pretend and the banner says so.
-3. **Real account vs. Practice are always visually separate.** Buying and selling happen only in Practice, under a persistent "Practice money, not real" banner.
-4. **The risk disclosure is in the footer of every page:** *"Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."* Use `meta.disclaimer`; never retype it. The README carries the full statement (fictional data, learning only, not financial advice).
-5. **No real client data, no Slalom data, no real personal or financial data**, ever. No account or routing numbers.
-6. **Inside the site, First Leaf reads like a real investing app.** No "made up", "demo", "case study", "for this project", "fictional" or "for reviewers" on screen (rule G6, plus a search of the built app's text). Reviewer and project explanations live only in README.md. Money actions end in realistic confirmations, never "nothing real happens" dialogs. The data rules behind the scenes never loosen.
+1. **Only the approved lineup is real** (ruling B, Phase 2.5): AAPL Apple, MSFT Microsoft, NVDA NVIDIA, COST Costco, NKE Nike, AMZN Amazon, TSLA Tesla, BTC Bitcoin, ETH Ethereum, SOL Solana. **Every other real company name, brand or ticker is still blocked** (G1, G2). People and accounts are invented. Crypto prices are real CoinGecko closes; stock prices are modeled between real anchor closes (`docs/research/PRICE-ANCHORS.md`). No company logos.
+2. **Teach, never advise.** No call to action about a specific investment: no "you should buy/sell", "best fund", "switch to", "guaranteed", no "safe" without saying safe from what, no "most people…". Actions are only about money movement or settings (retry a deposit, add a one-time deposit, auto-invest on/off), always offered as a choice, or about learning. **Exception:** inside Practice, the buttons may say **Buy** and **Sell**, because it's practice money and the banner says so.
+3. **Real account vs. Practice are always visually separate.** Buying and selling happen only in Practice, under a persistent "Practice money. Nothing here touches your account." banner.
+4. **No real client data, no Slalom data, no real personal or financial data**, ever. No account or routing numbers.
+5. **Inside the site, First Leaf reads like a real investing app, with no disclaimer of any kind** (ruling B, Phase 2.5). No "made up", "demo", "case study", "for this project", "fictional", "for reviewers", "simulated", "concept" or "not real" on screen (rule G6, plus a search of the built app's text). The only data notes are the CoinGecko credit next to crypto prices and the stock data note on stock charts and stock pages. Reviewer and project explanations live only in README.md. Money actions end in realistic confirmations, never "nothing real happens" dialogs. The data rules behind the scenes never loosen.
 
 ## 6. Folder boundaries
 

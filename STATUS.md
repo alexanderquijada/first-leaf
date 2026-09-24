@@ -62,7 +62,8 @@ Then Claude applies only the approved wording: brief first if agreed behavior ch
 | 1A · Core screens, real app (Sept. 24) | ✅ Disclosure, G6/R1–R4/S3/T4, About and Demo menu removed, scenarios by URL, handled and session state, chart helpers, pre-commit hook, project-language crawl | ✅ Laptop Home, Alerts with realistic flows, basic Activity | ✅ Story chapters 1–4 | ✅ Phone check-in Home, phone alert pages, 48px controls |
 | 1B · Rest of core flows (Sept. 24) | ✅ Dip rule and point of view, practice state (data frozen), line chart, formula, sheets, toggles, checks widened | ✅ Activity with filters and item pages, Funds and fund pages | ✅ Story chapters 5–6, Practice with time machine, Words | ✅ Phone Activity/Funds, keypad Practice, chapter sheet, 48px everywhere |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
-| 2 · Plain language (in progress: waiting on Alex's copy approval) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ⬜ Approved rewrites applied | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
+| 2 · Plain language (Sept. 24; rewrites approved, applied in 2.5) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ⬜ Approved rewrites applied | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
+| 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24) | ⬜ Lineup, real crypto prices, anchored stocks, validator (P1, P2), approved rewrites | ⬜ Investments, big-move and SIPC alerts | ⬜ Story chapters 1, 3, 4 and Practice for the lineup | ⬜ Phone screens for the lineup |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
 | 4 · Edge cases + sizes | ⬜ | ⬜ Scenarios, errors, 390/768/1280 | ⬜ Extremes, deep links, 390/768/1280 | ⬜ Scenarios, errors, 320–1280 |
 | 5 · Verification | ⬜ README final | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD |
@@ -80,6 +81,20 @@ Then Claude applies only the approved wording: brief first if agreed behavior ch
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 2 rulings and Phase 2.5 ruling B (real names)
+
+**Ruling A: the Phase 2 report**
+- **Ratified:** the placeholder renames; L5's scoring (a quoted name counts as one word, a leading label of 3 words or fewer is set aside, hyphenated words split); values labeled by their column header; chapter 4's single key line; the sheet tests waiting for animations.
+- **Approved rewrites, applied in Phase 2.5:** (1) "the safe guess" → "the better guess"; (2) the Words "Deposit" example drops Rosa's name; (3) "The whole market change was…" → "Price changes across everything you own added up to…"; (4) "Seven months in" → "Six months in", everywhere, including the README scenario name ("Rosa, six months in"); (5) one deposit-timing sentence everywhere, "It should arrive in 1 to 3 business days."; (6) "practice money" everywhere on screen ("pretend money" may stay in the Practice word's other names, for search); (7) moot, because the fee alert is removed; (8) the "nothing to sell" error says what to do; (9) "1M" / "3M" → "1 month" / "3 months", measured to still fit at 390px; (10) the laptop and phone word "Nothing needs you" and the alert count the same way.
+- The script that builds `docs/copy/COPY-REVIEW.md` is committed, so the table can be rebuilt after each approval. No web-page version of the review is needed.
+
+**Ruling B: real names, real crypto prices**
+- **What changed:** the five invented `FL-` index funds are replaced by real names and tickers. Rosa's target mix is AAPL 25%, MSFT 20%, NVDA 10%, COST 15%, NKE 10%, BTC 12%, ETH 8%; Practice also offers AMZN, TSLA and SOL. Crypto prices are real CoinGecko daily closes for the 12 months ending Sept. 18, 2026. Stock prices are a random path forced through each stock's real close on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026. Dividends are the companies' real per-share amounts and dates. History is 12 months for everything. No logos: ticker badges.
+- **Why:** relatability for visitors (Apple and Bitcoin mean something; "FL-BROAD" didn't). Stocks are anchored rather than real because the free stock-data licenses (Tiingo, Alpha Vantage, Yahoo) forbid public display; single closing prices are public facts, recorded with their sources.
+- **No disclaimer of any kind on the site, footer included.** The only data notes are the CoinGecko credit next to crypto prices and the stock data note, "Daily stock prices are modeled between real closes on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026." G6 now also bans "simulated", "concept" and "not real".
+- **The briefs change first:** the fee alert is removed; a big-move alert (7% or more in a week, only if the data shows one) and an FYI account notice about SIPC protection and crypto are added; chapter 3's dip is data-driven (the largest 10-trading-day fall in Rosa's portfolio value between April 15 and Aug. 15, 2026, with the pause on the next trading day); chapter 4 filters stocks / crypto / cash; Funds becomes Investments (the `/funds` route stays); the glossary drops fund-only words and adds stock, crypto, Bitcoin and SIPC protection.
+- **Sequencing (declared):** the brief-example blocks, and removing the disclaimer from `meta.json`, change with the regenerated data in step 2, because the pre-commit hook checks the briefs (B1) and the disclosure (S3) against the current data.
 
 ### Sept. 24, 2026: Phase 2 · Plain language (in progress: waiting on Alex's copy approval)
 
@@ -554,7 +569,8 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 ## Compliance notes
 
-- All data is fictional and generated by `scripts/generate-data.mjs`. Validator rules G1–G5 block real tickers and brands, advice language, absolute safety claims, account numbers, and non-fictional people or accounts.
-- The disclaimer is in `meta.json`, on every case study, and in the README.
+- All data is generated by `scripts/generate-data.mjs`. Rosa, her accounts and every person are invented. Only the approved lineup's real names and tickers may appear (G1, G2); every other real brand or ticker is blocked. G3–G5 block advice language, absolute safety claims, account numbers and non-fictional people or accounts.
+- Crypto prices are real CoinGecko daily closes (Demo API), credited next to every crypto price as their attribution guide requires. Stock prices are modeled between real closes recorded with sources in `docs/research/PRICE-ANCHORS.md`. No company logos.
+- There is no on-screen disclaimer (ruling B, Phase 2.5). The README explains the project for reviewers.
 - No client or Slalom information anywhere.
 - Fonts: SIL Open Font License. Illustrations: CC0. Icons: Apache 2.0. See `docs/CREDITS.md`.
