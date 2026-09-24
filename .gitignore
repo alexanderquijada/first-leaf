@@ -23,3 +23,9 @@ screenshots/tmp/
 .vercel/
 
 # NOTE: .claude/settings.local.json is committed on purpose (see STATUS.md known issues).
+
+# from the Vue scaffold
+coverage
+*.tsbuildinfo
+.eslintcache
+*.timestamp-*-*.mjs
