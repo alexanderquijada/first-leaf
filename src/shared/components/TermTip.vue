@@ -32,6 +32,13 @@ if (import.meta.env.DEV && !entry.value) console.warn(`TermTip: no glossary entr
 // Which entry the panel shows. A related word swaps the panel's content.
 const shownId = ref(props.id)
 const shown = computed(() => getTerm(shownId.value))
+// Each related word you follow is remembered, so "Back to …" can return to it.
+const history = ref<{ from: string; via: string }[]>([])
+const previous = computed(() => {
+  const last = history.value[history.value.length - 1]
+  return last ? getTerm(last.from) : undefined
+})
+const headingEl = ref<HTMLHeadingElement | null>(null)
 const relatedEntries = computed(() =>
   (shown.value?.related ?? []).map((r) => getTerm(r)).filter((e) => e !== undefined),
 )
@@ -71,6 +78,7 @@ function place() {
 
 async function open() {
   shownId.value = props.id
+  history.value = []
   currentOpen.value = uid
   place()
   await nextTick()
@@ -89,11 +97,24 @@ function toggle() {
   else open()
 }
 
+// Forward: focus the new word's heading. Back: focus the related-word link
+// that was followed, so keyboard users land where they left off.
 async function showRelated(id: string) {
+  history.value.push({ from: shownId.value, via: id })
   shownId.value = id
   await nextTick()
   place()
-  panelEl.value?.focus()
+  headingEl.value?.focus()
+}
+
+async function goBack() {
+  const step = history.value.pop()
+  if (!step) return
+  shownId.value = step.from
+  await nextTick()
+  place()
+  const link = panelEl.value?.querySelector<HTMLElement>(`[data-term-id="${step.via}"]`)
+  ;(link ?? headingEl.value)?.focus()
 }
 
 // Keep Tab inside the open panel; Esc closes it.
@@ -111,7 +132,7 @@ function onPanelKeydown(e: KeyboardEvent) {
   const first = focusables[0]!
   const last = focusables[focusables.length - 1]!
   const active = document.activeElement
-  if (e.shiftKey && (active === first || active === panelEl.value)) {
+  if (e.shiftKey && (active === first || !focusables.includes(active as HTMLElement))) {
     e.preventDefault()
     last.focus()
   } else if (!e.shiftKey && active === last) {
@@ -175,8 +196,18 @@ onBeforeUnmount(() => close(false))
         tabindex="-1"
         @keydown="onPanelKeydown"
       >
+        <button
+          v-if="previous"
+          type="button"
+          class="fl-termtip__back"
+          @click="goBack"
+        >
+          <span class="mdi mdi-arrow-left" aria-hidden="true" /> Back to {{ previous.term }}
+        </button>
         <div class="fl-termtip__head">
-          <h2 :id="`${panelId}-term`" class="fl-termtip__term">{{ shown.term }}</h2>
+          <h2 :id="`${panelId}-term`" ref="headingEl" class="fl-termtip__term" tabindex="-1">
+            {{ shown.term }}
+          </h2>
           <button
             type="button"
             class="fl-termtip__close"
@@ -196,7 +227,12 @@ onBeforeUnmount(() => close(false))
           <span class="fl-termtip__label">Related words:</span>
           <ul>
             <li v-for="r in relatedEntries" :key="r.id">
-              <button type="button" class="fl-termtip__link" @click="showRelated(r.id)">
+              <button
+                type="button"
+                class="fl-termtip__link"
+                :data-term-id="r.id"
+                @click="showRelated(r.id)"
+              >
                 {{ r.term }}
               </button>
             </li>
@@ -269,6 +305,36 @@ onBeforeUnmount(() => close(false))
   font-family: var(--font-display);
   font-size: 1.375rem;
   padding-top: 10px;
+}
+
+.fl-termtip__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  margin: -8px 0 0 -8px;
+  padding: 0 12px 0 8px;
+  border: 0;
+  border-radius: 24px;
+  background: none;
+  color: var(--color-forest);
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fl-termtip__back:hover {
+  background: var(--color-mint);
+}
+
+.fl-termtip__term:focus {
+  outline: none;
+}
+
+.fl-termtip__term:focus-visible {
+  outline: 3px solid var(--color-forest);
+  outline-offset: 2px;
 }
 
 .fl-termtip__close {
