@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Read(~/Projects/pelipper-post/**)",
+      "Bash(rm *)",
+      "Bash(mv *)",
+      "Bash(cp *)",
+      "Bash(mkdir *)",
+      "Bash(lsof *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push *--force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push *+*)",
+      "Bash(git reset --hard*)",
+      "Bash(git -C *pelipper*)",
+      "Bash(cd *pelipper*)",
+      "Edit(~/Projects/pelipper-post/**)",
+      "Bash(*pelipper*)",
+      "Bash(rm -rf ~*)",
+      "Bash(rm -rf /*)",
+      "Bash(git branch -D*)",
+      "Bash(git branch * -D*)",
+      "Bash(git push *--delete*)",
+      "Bash(git rebase*)",
+      "Bash(git clean*)",
+      "Bash(git commit --amend*)",
+      "Bash(git filter-branch*)"
+    ],
+    "additionalDirectories": [
+      "/Users/alex.quijada/Projects/pelipper-post"
+    ]
+  }
+}
