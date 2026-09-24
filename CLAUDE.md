@@ -1,6 +1,6 @@
 # CLAUDE.md: build rules for First Leaf
 
-You are building **First Leaf**, one product that serves three separately reviewed Protogen case studies: **P301** (operational dashboard), **P302** (interactive data story) and **P303** (mobile experience). Alex is a senior product designer, not a developer. He reviews and redirects; you build. These rules are non-negotiable.
+You are building **First Leaf**, **one app** reviewed as three Protogen case studies, each a lens on it: **P301** (operational dashboard: Home on a laptop, Alerts, Activity, Funds), **P302** (interactive data story: Your money story, Practice, Words) and **P303** (mobile experience: the whole app under 600px). See BRIEF.md §1–3. Alex is a senior product designer, not a developer. He reviews and redirects; you build. These rules are non-negotiable.
 
 ## 0. Start of every session
 
@@ -17,8 +17,8 @@ You are building **First Leaf**, one product that serves three separately review
 
 ## 2. Commits, pushes and deploys (do these without asking)
 
-- **Commit and push at the end of every phase without asking.** Within a phase, commit each case study's work **separately**, with a prefix:
-  `[shared]` foundation, data, tokens, shared components · `[P301]` · `[P302]` · `[P303]` · `[docs]` briefs, STATUS, README only.
+- **Commit and push at the end of every phase without asking.** Within a phase, commit each lens's work **separately**, with a prefix:
+  `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Your money story, Practice, Words · `[P303]` the phone layout, phone navigation, Phone preview and phone-specific screens · `[shared]` shared code, data, tokens, and layouts used at every size · `[docs]` briefs, STATUS, README only.
 - Messages say what changed and why, in the present tense: `[P303] Add "Why it moved" waterfall with per-fund breakdown`. Never just "update", "fix", "wip" or "changes".
 - After pushing, run `npm run check:deploy`. It waits until Vercel's **Production deployment of this exact commit** has succeeded. Report the short commit hash and the result. **A green badge is not proof.** Only a matching commit hash is.
 - If check:deploy times out with the build stuck in "Initializing": Vercel's free plan builds one project at a time *across the whole account*. Another project may be holding the queue. Report it; don't try to fix it from the repo.
@@ -61,15 +61,14 @@ Never say "this should work." Before claiming a phase is done, run all of these 
 ## 6. Folder boundaries
 
 ```
-src/landing/          → may import from src/shared/ only
-src/p301-dashboard/   → may import from src/shared/ only
-src/p302-story/       → may import from src/shared/ only
-src/p303-mobile/      → may import from src/shared/ only
-src/shared/           → never imports from a case-study folder
-src/router/, App.vue, main.ts → may import anything
+src/shared/             → never imports from layouts/ or features/
+src/layouts/            → may import from src/shared/ only (desktop, tablet and phone shells, navigation, Phone preview)
+src/features/<feature>/ → may import from its own folder and src/shared/ only; never from another feature or from layouts/
+                          (features: home, alerts, activity, funds, story, practice, learn, about)
+src/router/, App.vue, main.ts → may import anything; the router wires layouts and features together
 ```
 
-If two case studies need the same thing, move it to `src/shared/`. `npm run check:boundaries` enforces this.
+If two features need the same thing, move it to `src/shared/`. `npm run check:boundaries` enforces this.
 
 ## 7. Build hygiene (learned the hard way on Pelipper Post)
 
@@ -82,7 +81,7 @@ If two case studies need the same thing, move it to `src/shared/`. `npm run chec
 - **Never silence Vite's chunk-size warning**, and **don't lazy-load what the first screen needs.**
 - After any scaffold or generator runs, **diff and merge every file it overwrote** (package.json, .gitignore, index.html, README…), not just package.json.
 - **Verify every `mdi-` icon name against the installed font** (`npm run check:icons`). A misspelled icon renders blank without an error.
-- **Lazy-load every route.** State that must survive navigation (demo scenario, practice portfolio, seen flags) lives at **module scope** in its composable, not inside the function.
+- **Lazy-load every route except the first screen:** the app layout and Home load up front, everything else is lazy. State that must survive navigation (demo scenario, practice portfolio, seen flags) lives at **module scope** in its composable, not inside the function.
 - `image-rendering: pixelated` is never a blanket rule.
 - Fonts come from `@fontsource-variable/newsreader` and `@fontsource-variable/hanken-grotesk` behind CSS variables `--font-display`, `--font-text` and `--font-ui`, so swapping in licensed Klim fonts later is one change.
 

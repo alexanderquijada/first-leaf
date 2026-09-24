@@ -1,28 +1,71 @@
-# P302 · Interactive data story: Start early beats start big
+# P302 · Interactive data story: Your money story
 
-> **Plan, written before building (Sept. 23, 2026).** Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the pieces relate) and §6 (style). Every number here is made up to teach one idea. It is not a prediction and not financial advice.
+> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a stand-alone Nia and Theo story). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Every number here is made up to teach one idea. It is not a prediction and not financial advice.
 >
-> **Live:** `/p302` · **Code:** `src/p302-story/` · **Commits:** prefixed `[P302]`
+> **Live:** `/story` (any screen size; the chart pins beside the text from 1024px), plus `/practice` and `/learn` · **Code:** `src/features/story/`, `src/features/practice/`, `src/features/learn/` · **Commits:** prefixed `[P302]`
 
 ## Summary
 
-**The point of view:** *Starting early does more for you than putting in more money later. Early money has more years to grow on top of its own growth.*
+**Your money story** tells Rosa the story of her own first seven months in First Leaf, using her real (fictional) account, and argues one point of view. The story states it on screen, in these words:
 
-The story follows two made-up friends. **Nia** starts at 22 and puts in **$100 a month**. **Theo** waits until 32 and puts in **$150 a month**, which is 50% more. At 65, Nia has more **even though she put in less**. The story then earns its point of view honestly: it lets the reader try to make Theo catch up, and it shows what happens when the years go up and down instead of growing smoothly.
+> *"Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."*
 
-**Why this story.** The most common thing beginners say is *"I'll start when I earn more."* That belief costs them the one thing money can't buy back: time. The insight is surprising, it can be shown truthfully with simple invented numbers, and it gives Rosa (the learner in P301/P303) a reason to keep her $150 a month going.
+It earns that point of view in six chapters. The first four read her own data: her balance since March, how much of it is her own deposits, the dip in July (when she paused auto-invest) and what happened after, and where her money sits now. The fifth shows why years matter, with the made-up friends Nia and Theo: Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. Then Rosa's own 26-to-65 slider shows it for her. The sixth invites her to try it with pretend money in Practice.
 
-*Rejected:* "Fees quietly eat your growth." Strong, but it leans on percentages beginners struggle to feel. "Staying invested beats jumping out" is hard to show honestly with invented data without implying a market forecast.
+**Why this story.** Rosa's July reaction is the most common beginner mistake in miniature: a dip felt like the moment to stop. Her own chart shows that seven months is far too short for growth to show up (about 95% of her balance is still her own deposits), and the Nia and Theo lesson shows what the years do. A story about *her* money is more persuasive to her than a story about strangers, and it keeps First Leaf one product instead of an app with an essay attached.
+
+**Practice and the learning moments count toward P302.** Practice (investing with pretend money) and the term explanations and Words pages are how the story turns into something Rosa can try and understand, so they are part of this lens.
+
+*Rejected:* the stand-alone "Start early beats start big" story about two strangers. It was sound, but it sat outside the app and never touched Rosa's own money. It lives on as chapter 5.
+*Rejected:* "Fees quietly eat your growth." Strong, but it leans on percentages beginners struggle to feel.
+*Rejected:* "Staying invested beats jumping out" told with market forecasts. It can't be shown honestly with invented data. We show what happened to Rosa's own account and stop there.
 
 ## The audience
 
-People in their 20s and early 30s who haven't started investing, typified by Rosa (26). They read on the couch in the evening, on a phone or a laptop, with 5–10 minutes. They don't know the phrase *compound growth*. The story teaches the idea and only names it at the end.
+Rosa, 26, and people like her: in their 20s, a few months into investing or about to start. They read on the couch in the evening, on a phone or a laptop, with 5–10 minutes. They don't know the phrase *compound growth*. The story teaches the idea and names it near the end.
 
 ## Data
 
-All numbers come from `src/shared/data/story-p302.json`, computed by the generator and re-computed by the validator (rules T1–T4).
+All numbers come from `src/shared/data/` and are re-computed by the validator. **Every claim the story makes is a checked rule**: rules T1–T4 for Nia and Theo, and rules R1–R4 for Rosa's own data (R1–R4 are defined in BRIEF.md §4 now and built in Phase 1).
 
-**Assumption (shown on screen):** a made-up steady **6% a year**, added monthly, with money put in at the end of each month, until age 65. The note always says: *"Real markets go up and down, and nobody can promise a rate."*
+**Rosa's own data** (the main demo account):
+
+```json brief-example
+{
+  "account.openedOn": "2026-03-02",
+  "account.balance": 1313.72,
+  "account.moneyIn": 1250,
+  "account.gainLoss": 63.72,
+  "account.autoInvest.pausedOn": "2026-07-14",
+  "account.cashSince": "2026-08-03",
+  "account.history.91.date": "2026-07-13",
+  "account.history.91.balance": 1065,
+  "account.history.91.moneyIn": 1100,
+  "account.history.96.date": "2026-07-20",
+  "account.history.96.balance": 1100.61,
+  "funds.0.ticker": "FL-BROAD",
+  "funds.0.history.daily.81.date": "2026-06-26",
+  "funds.0.history.daily.81.close": 90.46,
+  "funds.0.history.daily.91.close": 84.45,
+  "funds.0.history.daily.92.date": "2026-07-14",
+  "funds.0.history.daily.92.close": 85.06,
+  "funds.0.history.daily.139.close": 96.35
+}
+```
+
+**Every claim about Rosa is a checked rule:**
+
+| Claim on screen | Checked as |
+|---|---|
+| Almost all of Rosa's balance is money she put in | $1,250 of $1,313.72 (95.1%) is deposits; $63.72 (4.9%) is what it earned (R1) |
+| In July, prices dipped | FL-BROAD fell from $90.46 on June 26 to $84.45 on July 13, a 6.6% drop (R2) |
+| At the low, her balance was below what she had put in | On July 13 her balance was $1,065.00, $35.00 below the $1,100 she had put in (R2) |
+| She paused auto-invest the next day | Paused July 14 (A14, R3) |
+| After the pause | By July 20 her balance ($1,100.61) was back above what she'd put in. Her Aug. 3 deposit stayed as cash. By Sept. 18 she was up $63.72 (R3) |
+
+The story says what happened and stops there. It never says pausing was right or wrong, and never tells Rosa to turn auto-invest back on; that stays her choice (BRIEF.md §8).
+
+**Nia and Theo** (chapter 5). All numbers come from `story-p302.json`, computed by the generator and re-computed by the validator (rules T1–T4). **Assumption (shown on screen):** a made-up steady **6% a year**, added monthly, with money put in at the end of each month, until age 65. The note always says: *"Real markets go up and down, and nobody can promise a rate."*
 
 ```json brief-example
 {
@@ -44,51 +87,84 @@ All numbers come from `src/shared/data/story-p302.json`, computed by the generat
 }
 ```
 
-**Every claim on screen is a checked rule (T2):**
-
 | Claim on screen | Checked as |
 |---|---|
-| Nia ends with more money than Theo | $242,251 > $186,213 |
-| Nia puts in less money than Theo | $51,600 < $59,400 |
-| Most of Nia's money at 65 came from growth | $190,651 of $242,251 (79%) is growth |
-| To catch up, Theo would need about $196 a month | $196 is the smallest whole amount that matches Nia ($195 is not enough), and Theo's slider can land on it |
-| Even when the years go up and down, Nia still ends ahead | In the bumpy version, Nia ends at $216,910 vs. Theo's $181,230 |
+| Nia ends with more money than Theo | $242,251 > $186,213 (T2) |
+| Nia puts in less money than Theo | $51,600 < $59,400 (T2) |
+| Most of Nia's money at 65 came from growth | $190,651 of $242,251 (79%) is growth (T2) |
+| To catch up, Theo would need about $196 a month | $196 is the smallest whole amount that matches Nia ($195 is not enough), and Theo's slider can land on it (T2) |
+| Even when the years go up and down, Nia still ends ahead | In the bumpy version, Nia ends at $216,910 vs. Theo's $181,230 (T2) |
 
 **The bumpy version is honest by rule (T3):** the same *overall* growth as the smooth line (6% a year, compounded; the simple average of the years is higher, so we never say "average"). No year is worse than −20%, no staged late crash (Nia's balance never falls more than 25% from a peak), and both endings land within 15% of the smooth ones, so bumpiness never looks like a bonus or a disaster.
 
+**Every demo scenario gets a true story (R4).** The story reads the current scenario's account through `useScenario`.
+- *Nothing needs you:* auto-invest stayed on, so chapter 3 says so ("auto-invest stayed on and kept buying"), with that account's own numbers ($1,400 of $1,486.94 is deposits, 94.2%).
+- *Brand-new account:* there is no history yet, so chapters 1–4 become one short chapter ("Your story starts with your first deposit") and the point of view is stated without the "right now" half. Chapters 5 and 6 work unchanged.
+
 ## Narrative and layout
 
-**Decision: a scroll story in eight short chapters**, each with one sentence of argument and one chart state. At **1024px and wider** the chart stays pinned beside the text and changes as you scroll. **Below 1024px** each chapter carries its own chart inline, because a pinned chart would take half of a small screen. A chapter menu and a "Skip to the answer" link let people jump around, and the story never depends on scroll animation.
+**Decision: a scroll story in six chapters**, each with one sentence of argument and one chart state. At **1024px and wider** the chart stays pinned beside the text and changes as you scroll. **Below 1024px** each chapter carries its own chart inline, because a pinned chart would take half of a small screen. A chapter menu (`#chapter-1` … `#chapter-6`) lets people jump around, and the story never depends on scroll animation.
 
 | # | Chapter | The one thing it says | Chart state | Interaction |
 |---|---|---|---|---|
-| 1 | Two friends | Same job, same pay. Nia starts at 22 with $100 a month. Theo waits until 32 and puts in $150. | Two empty timelines, 22 → 65 | — |
-| 2 | Make a guess | Who has more at 65? | Hidden | **Tap Nia or Theo.** The story remembers the guess. |
-| 3 | The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's glows | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the safe guess." |
-| 4 | Why | Nia put in *less*. Most of her money is growth on growth. | Nia's area splits into a flat "put in" layer and a grainy "growth" layer | Hover/tap any age to read both layers |
-| 5 | Try it | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
-| 6 | Can Theo catch up? | Yes, with about $196 a month, nearly twice Nia's. | Theo's line rises with the amount | **Theo's monthly slider, $150–$300, step $1**, with a marker where he passes Nia |
-| 7 | Real life is bumpy | Real years go up and down. Same overall growth, and Nia still ends ahead. | Smooth vs. bumpy | **Smooth / Bumpy toggle** |
-| 8 | Your turn | An example: Rosa, 26, $150 a month. "This uses Rosa, a made-up learner, as an example. It is not a plan for you." | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
+| 1 | Seven months in | Here is your balance since March. | Balance over time since March 2, drawn in | **Toggle: "What you put in vs. what it earned"** splits the area into a flat "put in" layer and a grainy "earned" layer. **Time range: 1M / 3M / Since March.** |
+| 2 | Most of it is still your money | About 95% of your balance is money you put in. Growth hasn't had time yet. | One bar: deposits vs. earned | Tap either part to read it in words |
+| 3 | The dip in July | Prices fell for two weeks. You paused auto-invest on July 14. Here is what happened after. | The balance line with the dip marked | **Toggle: show or hide the events** (the dip's low, the pause, the Aug. 3 deposit staying as cash) |
+| 4 | Where it is now | Here is how your money is split today. | Her mix: FL-BROAD, FL-WORLD, FL-BOND, FL-GREEN and cash | **Filter: stocks / bonds / cash** |
+| 5 | What happens if you keep going | Years do the work. Nia starts at 22 with $100 a month; Theo waits until 32 and puts in $150. | Nia and Theo from 22 to 65 | See the steps below |
+| 6 | Try it with pretend money | Practice lets you try a mix with money that isn't real. | — | A link into **Practice** |
 
-Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, the sources and the disclaimer.
+**Chapter 5, step by step** (every Nia and Theo rule is kept):
+
+| Step | What it says | Chart state | Interaction |
+|---|---|---|---|
+| 5a Make a guess | Who has more at 65? | Hidden | **Tap Nia or Theo.** The guess is optional. |
+| 5b The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's glows | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the safe guess." |
+| 5c Why | Nia put in *less*. Most of her money is growth on growth. | Nia's area splits into "put in" and grainy "growth" | Hover or tap any age to read both layers |
+| 5d Every year counts | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
+| 5e Can Theo catch up? | Yes, with about $196 a month, nearly twice Nia's. | Theo's line rises with the amount | **Theo's monthly slider, $150–$300, step $1**, with a marker where he passes Nia |
+| 5f Real life is bumpy | Real years go up and down. Same overall growth, and Nia still ends ahead. | Smooth vs. bumpy | **Smooth / Bumpy toggle** |
+| 5g Your turn | Rosa, 26, $150 a month. "This uses Rosa, a made-up learner, as an example. It is not a plan for you." | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
+
+Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, and the sources. The footer carries the disclaimer.
+
+**Practice** (`/practice`): pick a fund → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over 5 made-up years → **Start over**. A persistent "Practice money, not real" banner; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**.
+
+**Words** (`/learn`, `/learn/:termId`): search every explanation, open one as its own page, follow related words.
 
 ## Interaction rules
 
 - **Sliders** are real range inputs. The arrow keys move them, and values are shown and announced in words ("Start at 30. At 65 you'd have…"). Every result comes from the same formula the validator checks.
+- **Toggles and filters** are real buttons with a pressed state, and each has a sentence that says what the chart now shows.
 - **The guess** is optional. Skipping it still works.
 - **Show as table** sits under every chart.
-- **Reduced motion:** charts appear in their final state; nothing required is animated.
+- **Motion respects reduced motion:** with `prefers-reduced-motion`, charts appear in their final state and nothing required is animated.
+
+## Interactions (the core flows a reviewer can test)
+
+| # | Flow | Done when |
+|---|---|---|
+| F1 | Read chapters 1–4 and use the put-in vs. earned toggle and the time range | The chart and its sentence change together; the numbers match the account |
+| F2 | Show and hide the July events | The dip, the pause and the Aug. 3 cash appear and disappear; the table matches |
+| F3 | Filter the mix by stocks / bonds / cash | The mix and its sentence change; an empty filter says so |
+| F4 | Make a guess, then read the answer | The reply matches the guess; skipping it gives neutral copy |
+| F5 | Move the start-age slider and Theo's slider by keyboard | Values are announced in words; Theo's marker appears at $196 |
+| F6 | Switch Smooth / Bumpy | The caption explains why the ending differs |
+| F7 | Jump to any chapter from the menu or a link (`#chapter-5`) | Each chapter stands alone |
+| F8 | Practice: buy, sell, time machine, start over | The banner is always visible; errors are inline; the real account never changes |
+| F9 | Words: search "fee", open "Yearly fee", follow a related word | A search with no results shows a helpful empty state |
 
 ## Edge cases (go-further)
 
 | Case | Handling |
 |---|---|
+| *Nothing needs you* and *Brand-new account* scenarios | Every chapter's copy is true for that account (R4); brand-new gets the short version of chapters 1–4 |
 | Slider at extremes (start at 45; Theo at $300) | Copy stays true: "Starting at 45 still helps. It just has fewer years to grow." |
-| Reader jumps straight to chapter 6 or 8 from the chapter menu or a link (`#chapter-6`) | Each chapter's text stands alone; no chapter depends on an earlier interaction |
-| No guess made | Chapter 3 uses neutral copy |
-| Phone in landscape; 200% zoom | Charts reflow; text never sits on top of a chart |
-| Bumpy toggle | The caption explains why the ending differs: the order of good and bad years matters |
+| Reader jumps straight to a chapter | Each chapter's text stands alone; no chapter depends on an earlier interaction |
+| No guess made | Step 5b uses neutral copy |
+| Time range shorter than a chapter's events (1M with the July events on) | The sentence says the events are outside this range, and offers "Since March" |
+| Practice errors: not enough pretend money, selling more than you own, $0 or blank, letters, more than 2 decimals | An inline message in plain words; Confirm stays disabled until the order is valid |
+| Phone in landscape; 200% zoom; reduced motion | Charts reflow; text never sits on top of a chart; nothing required moves |
 
 ## Nice to haves
 
@@ -99,14 +175,14 @@ Closing: a three-line takeaway, then **Words from this story** (growth on growth
 
 | # | Done when… | LI |
 |---|---|---|
-| 1 | `/p302` loads on the live site, directly and from the landing page | 1 |
-| 2 | All 8 chapters, the guess, both sliders, the toggle, the chapter menu and "Show as table" work, each with a passing Playwright test | 2 |
-| 3 | The story argues the point of view in this brief, using exactly the numbers in this brief | 3, 6 |
-| 4 | Extremes, skipped guesses, deep links to every chapter and reduced motion are handled | 7 |
+| 1 | `/story` loads on the live site, directly and from the app's navigation; the old `/p302` address redirects there | 1 |
+| 2 | All six chapters, the chapter 5 steps, every toggle, filter and slider, the chapter menu, "Show as table", Practice and Words work, each with a passing Playwright test | 2 |
+| 3 | The story states and argues the point of view in this brief, using exactly the numbers in this brief | 3, 6 |
+| 4 | Every demo scenario, slider extremes, skipped guesses, deep links, Practice errors and reduced motion are handled | 7 |
 | 5 | Reads well at 390px, 768px and 1280px: pinned chart from 1024px, inline below | 8 |
-| 6 | Repo root has README (with a P302 reviewer block) and LICENSE; AI scaffolding in `.claude/`, `CLAUDE.md`, `STATUS.md`, `docs/`; P302 code lives only in `src/p302-story/` | 9, 10, 11 |
+| 6 | Repo root has README (with a P302 reviewer block) and LICENSE; AI scaffolding in `.claude/`, `CLAUDE.md`, `STATUS.md`, `docs/`; P302 code lives in its feature folders | 9, 10, 11 |
 | 7 | `[P302]` commits show the story arriving phase by phase; STATUS.md has dated entries from several sessions | 12, 13, 18 |
-| 8 | Every claim passes validator rule T2, the bumpy version passes T3, and this brief matches what was built | 19, 22 |
+| 8 | Every claim passes T1–T4 and R1–R4, and this brief matches what was built | 19, 22 |
 | 9 | Serif storytelling type, grain-for-growth and mid-century illustration make it read as editorial finance for beginners | 20, 23, 26 |
 | 10 | A reader who has never invested can say the point of view back after reading | 21 |
-| 11 | The calls in this brief are visible: one point of view stated up front, an honest counter-case (chapters 6–7), and no chart without a sentence | 27 |
+| 11 | The calls in this brief are visible: one point of view stated on screen, Rosa's own data first, an honest counter-case (5e–5f), and no chart without a sentence | 27 |

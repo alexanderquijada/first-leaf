@@ -6,12 +6,13 @@
 
 ## NEXT STEP
 
-Alex reviews Phase 0.5:
-- "Back to …" in a term explanation (open "yearly fee" on /p301, then a related word)
-- the Demo menu
-- the approved landing line
+Alex reviews Phase 0.6 (one app):
+- the three rewritten lens briefs (their Summaries are in the Phase 0.6 report)
+- the app shell at https://first-leaf.vercel.app at 1280, 768 and 390
+- Phone preview (https://first-leaf.vercel.app/?view=phone)
+- the About this demo copy (DRAFT)
 
-Then he rules on the deviations in the Phase 0.5 decision-log entry (especially the permissions file that was never committed, and the related-word link height on P303). Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`. From now on, `npm run check` is the one local gate, and `check:deploy` runs `check:live` itself.
+He rules on the open questions in the Phase 0.6 decision-log entry. Then the planning chat reissues the Phase 1 prompt for the one-app shape (the old Phase 1–5 prompts are marked SUPERSEDED).
 
 ## Live links
 
@@ -19,15 +20,16 @@ Then he rules on the deviations in the Phase 0.5 decision-log entry (especially 
 |---|---|
 | GitHub repo | https://github.com/alexanderquijada/first-leaf |
 | Live site | https://first-leaf.vercel.app |
-| P301 | https://first-leaf.vercel.app/p301 |
-| P302 | https://first-leaf.vercel.app/p302 |
-| P303 | https://first-leaf.vercel.app/p303 |
+| P301 (Home on a laptop) | https://first-leaf.vercel.app |
+| P302 (Your money story) | https://first-leaf.vercel.app/story |
+| P303 (Phone preview) | https://first-leaf.vercel.app/?view=phone (or the site on a phone) |
 
 ## Decisions already made (do not relitigate)
 
 | Decision | Choice | Why |
 |---|---|---|
-| Project shape | One product, one repo, one site for P301, P302 and P303 | Stronger portfolio piece; each case study still stands alone |
+| Project shape | **One app, three case-study lenses** (Sept. 24). The site opens straight into Rosa's app; no landing page. P301 = Home on a laptop + Alerts, Activity, Funds; P302 = Your money story + Practice, Words; P303 = the app under 600px | Alex's ruling: three doors read as three projects, not one product |
+| Phone preview | A top-bar toggle at 600px+ shows the real app in a 390 × 844 phone frame (an iframe); `?view=phone` opens it | Alex's ruling (Sept. 24): a P303 reviewer may never open the site on a phone |
 | Product | **First Leaf**, a made-up beginner investing app by made-up *First Leaf Investing* | No clash with any finance brand found in a web check (Sept. 23) |
 | Person | **Rosa**, 26, dental hygienist, Tucson (fictional), 7 months into her first account | One person, three moments; see BRIEF.md §2 |
 | P301 user | **Rosa's own dashboard**: the person who runs the account is its owner | Alex's call. It's operational because it surfaces what's off first and lets her act |
@@ -36,8 +38,8 @@ Then he rules on the deviations in the Phase 0.5 decision-log entry (especially 
 | Demo scenarios | Three accounts: normal, all-clear, brand-new; flags generated from rules per account | Every sentence must stay true in every scenario |
 | Auto-invest | Rosa paused it on July 14 after a price dip; the Aug. 3 deposit waits as cash | Explains the waiting cash honestly; turning it back on is her choice |
 | Goal | "Put in my first $2,000" by Feb. 1, 2027; counts deposits only | One measure; the plan reaches it exactly; the market can't make her "behind" |
-| P302 story | "Start early beats start big" | Alex's pick |
-| P303 task | 60-second check-in; flags never leave P303 | Alex's pick; stand-alone review |
+| P302 story | **Your money story** (Sept. 24): Rosa's own seven months argue "growth needs years, so starting early and staying steady matter more than picking the perfect moment"; Nia and Theo become chapter 5 | Alex's ruling; replaces "Start early beats start big" as the whole story |
+| P303 task | 60-second check-in; under 600px Home becomes the check-in, everything else one tap away | Alex's pick; re-shaped as a lens on Sept. 24 |
 | Palette | Cream + deep green-black data panels + lime highlights, near-black text | Alex's pick; blends mid-century and futuristic |
 | Fonts | Free stand-ins (Newsreader, Hanken Grotesk) now; Klim Financier/National swap later if licensed | Klim's test fonts can't be published; web licenses start at $60/style |
 | Imagery | Open Peeps / Open Doodles (CC0) + original mid-century SVG drawn in code; MDI icons for controls | Clean licenses for a public portfolio |
@@ -53,6 +55,7 @@ Then he rules on the deviations in the Phase 0.5 decision-log entry (especially 
 | Plan (Sept. 23) | ✅ Briefs, data (3 accounts), validator (42 rules, 65 broken cases), AI docs, setup script | ✅ Brief | ✅ Brief | ✅ Brief |
 | 0 · Foundation (Sept. 24) | ✅ Scaffold, tokens, fonts, TermTip, Disclaimer, DemoMenu, Money, SeverityBadge, landing, 404 | ✅ Route shell | ✅ Route shell | ✅ Route shell |
 | 0.5 · Rulings and guardrails (Sept. 24) | ✅ check:live, test guard, check:icons, axe scans, Demo menu semantics, TermTip Back, money format, permissions, `npm run check` | — | — | — |
+| 0.6 · One app (Sept. 24) | ⬜ One-app re-plan, layouts, feature folders, About, redirects, Phone preview | ⬜ Desktop rail, Home placeholder | ⬜ Story and Practice placeholders | ⬜ Phone shell, bottom tabs, Phone preview |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
@@ -72,6 +75,34 @@ Then he rules on the deviations in the Phase 0.5 decision-log entry (especially 
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Ruling: one app, three lenses (Phase 0.6)
+
+- **Alex's ruling:** First Leaf is one app experience, not three sections. The three case studies are three lenses on the same product.
+- **What we got wrong:** the Sept. 23 plan built three doors on a landing page (`/p301`, `/p302`, `/p303`), each with its own shell. We did it to keep each case study separately reviewable, but it read as three projects, not one product. Separate reviewability now comes from the lens briefs, the README blocks, the About page's "For reviewers" map, the commit prefixes and each lens's definition of done, not from separate sites.
+- **The new shape:**
+  - `/` is Rosa's Home, with routes for alerts, activity, funds, story, practice, learn and about, plus a 404.
+  - Old addresses redirect: `/p301` and `/p303` → `/`, `/p302` → `/story`.
+  - Navigation: a left rail at 1024px+, top tabs at 600–1023px, a bottom tab bar under 600px.
+  - A footer with the disclaimer and "About this demo".
+  - Code is organized by feature (`src/features/*`) with shared layouts (`src/layouts/`); features and layouts import only from `src/shared/`.
+  - Commit prefixes follow lens ownership: `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Story, Practice, Learn · `[P303]` the phone layout and navigation · `[shared]` everything used at every size.
+- **P302 is now "Your money story":**
+  - Rosa's own data in chapters 1–4.
+  - Nia and Theo in chapter 5, with every T rule kept.
+  - Practice in chapter 6.
+  - Every claim about Rosa's data becomes a checked rule, R1–R4 (defined in BRIEF.md §4, built in Phase 1).
+- **Caught while re-planning: the July dip numbers were wrong in BRIEF.md.** It said FL-BROAD fell "from $89.80 to $85.06". The data's high was **$90.46 on June 26** and the low **$84.45 on July 13** (−6.6%); $85.06 was the July 14 close, the day she paused. The corrected numbers are now brief-example values that B1 checks.
+- **Phone preview (Alex's ruling, Sept. 24):**
+  - A P303 reviewer may never open the site on a real phone.
+  - At 600px and wider, a top-bar toggle, "Preview on a phone", shows the real app in a generic 390 × 844 phone frame (an iframe of the same app, not a mock-up), and `?view=phone` opens it directly.
+  - **Known limitation:** Practice state isn't shared between the full view and the phone view (separate app instances); the scenario is carried through the URL.
+- **Decisions made in the briefs, for Alex to confirm:**
+  1. The story follows the current demo scenario, with a true version of each chapter for each (R4). Brand-new gets a short version of chapters 1–4.
+  2. On the phone, "Why it moved" opens in place on Home rather than on its own route, because the route list has no `/why`.
+  3. On a laptop, Alerts is a two-pane page (list plus detail), and clicking an alert on Home opens `/alerts/:id`.
+  4. The app layout and Home load up front, and every other route is lazy (this resolves "lazy-load every route" against "don't lazy-load the first screen").
+  5. Practice and Words flows moved from the P301 brief to the P302 brief. P301 keeps six flows.
 
 ### Sept. 24, 2026: Phase 0.5 · Rulings and guardrails
 

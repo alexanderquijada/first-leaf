@@ -133,7 +133,73 @@ STEP 3: Verify, then finish
 
 ---
 
+## Phase 0.6 · One app
+
+**What Alex should look at when it's done:** the site opens straight into Rosa's app (no landing page); the rail at 1280, the top tabs at 768 and the bottom tab bar at 390; `/p301`, `/p302` and `/p303` redirect; About this demo; Phone preview at `/?view=phone`; the three rewritten lens briefs.
+**Likely to go wrong:** tests and check:live still pointing at the old addresses; a feature importing another feature; the bottom tab bar covering the footer; the phone preview nesting itself.
+
+```text
+PHASE 0.6 · ONE APP. This prompt is your go-ahead for Phase 0.6 only.
+
+Read CLAUDE.md, STATUS.md, BRIEF.md and docs/briefs/*.md first. Alex's ruling (Sept. 24): First Leaf is ONE app experience, not three sections. The three case studies are three lenses on the same product. Brief first: STEP 1 is docs only and is committed before any code changes.
+
+THE NEW SHAPE (use this in the docs and the code)
+- The site opens straight into the app (/ is Rosa's Home). No landing page with three doors.
+- Routes: / (Home) · /alerts · /alerts/:id · /activity · /funds · /funds/:ticker · /story ("Your money story") · /practice · /learn · /learn/:termId · /about ("About this demo": who Rosa is, the disclaimer, the demo scenarios, and a short "For reviewers" map of where each case study lives) · 404. Old addresses redirect: /p301 → /, /p302 → /story, /p303 → /.
+- Navigation: 1024px and up, a left rail (Home, Activity, Funds, Your money story, Practice, Words) plus a top bar (greeting, "Prices as of Fri., Sept. 18", Demo menu). 600–1023px, top tabs. Under 600px, an opaque top bar (wordmark, Demo menu) and an opaque bottom tab bar (Home, Activity, Story, Practice, Words) with 48px targets; Funds and Alerts are reached from Home. Footer on every page: disclaimer + "About this demo".
+- Case-study lenses:
+  P301 Operational dashboard = Home on a laptop (alerts first, balance, balance over time, mix, goal, this week) plus Alerts, Activity, Funds. Every alert has its action (demo dialogs for money actions), Mark as handled, New badges.
+  P302 Interactive data story = /story. Point of view (state it on screen): "Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment." Chapters: (1) Seven months in: balance over time since March, drawn in; toggle "What you put in vs. what it earned". (2) Most of it is still your money: the share of the balance that is deposits. (3) The dip in July: what happened, when auto-invest was paused, what happened after; toggle to show or hide those events on the chart. (4) Where it is now: the mix, with a filter by stocks / bonds / cash. (5) What happens if you keep going: the Nia and Theo lesson (existing story-p302.json numbers, sliders, smooth/bumpy toggle) and Rosa's own 26-to-65 slider. (6) Try it with pretend money: a link into Practice. Time-range filter (1M / 3M / Since March) on the balance chart. Animations respect reduced motion. Practice (sandbox investing) and the learning moments (term explanations, Words) count toward P302.
+  P303 Mobile experience = the same app under 600px, designed for a 60-second glance, not a shrunk desktop. Home becomes a check-in: balance, up/down this week, a small balance-over-time chart, a "needs you" card, "why it moved", the last 3 transactions, and word of the day. Everything else is one tap away. Alert details stay full-screen pages with "Words on this screen" chips. Touch-target rules stay as amended in Phase 0.5.
+- Every claim in the story about Rosa's own data must be a checked validator rule, just like the Nia/Theo claims (implemented in Phase 1, defined in the brief now): the deposits share of her balance, the size and dates of the July dip, the auto-invest pause date, and anything the story says happened "after".
+
+STEP 1: Docs only (brief first), one commit
+a. BRIEF.md: rewrite §1–3 around "one app, three lenses" with the table above and the reasoning. Replace "Find your brief" with a table of where each case study lives in the app (the route and the screen size). Keep §4–§11, updating routes, the folder structure (below), the screen-size table and anything that says "three doors", "/p301", "/p302" or "/p303". Record the rejected alternative: "three separate sections behind a landing page. Rejected by Alex: it read as three projects, not one product."
+b. Rewrite docs/briefs/P301-BRIEF.md, P302-BRIEF.md and P303-BRIEF.md as lens briefs. Keep each self-contained (Summary · The user · Data · Layout · Interactions · Edge cases · Nice to haves · Definition of Done mapped to LI numbers), as forward-looking decisions with reasons. P302 keeps every Nia/Theo rule and adds the Rosa chapters. P303 must say plainly why the phone layout is designed for the phone, not squeezed (quote the learner instructions' "not just about making things smaller"). Keep all brief-example blocks valid (npm run validate must pass); fix their paths if needed.
+c. README "For reviewers": one block per case study with the live link to the right route, which screen size to use, the brief, and "Try these" steps that match the new routes. Update the repo map.
+d. CLAUDE.md: new folder boundaries and commit-prefix rule (below). STATUS.md: decision-log entry for this ruling (including what we got wrong: three doors made it read as three projects), the decisions table, the phase table (add 0.6), NEXT STEP.
+e. docs/CLAUDE-CODE-PROMPTS.md: save this prompt as "Phase 0.6 · One app". Mark the old Phase 1–5 prompts "SUPERSEDED: will be reissued for the one-app shape" (don't delete them).
+Commit: [docs] Re-plan First Leaf as one app with three case-study lenses
+
+STEP 2: Restructure the code (no new features)
+- Folders: src/shared/ (unchanged role) · src/layouts/ (the desktop, tablet and phone shells and navigation) · src/features/<feature>/ for home, alerts, activity, funds, story, practice, learn, about. Features import only from src/shared/. Layouts may import from src/shared/ only (the router wires layouts and features together). Update scripts/check-boundaries.mjs for these rules and extend its --selftest with a feature-to-feature import that must fail.
+- Commit prefixes from now on: [P301] Home-on-desktop, Alerts, Activity, Funds · [P302] Story, Practice, Learn · [P303] phone layout, phone navigation and phone-specific screens · [shared] shared code, data, tokens, layouts used at every size · [docs].
+- Move the existing term-explanation demos into the new pages as placeholders ("Coming in Phase 1" plus the disclaimer). Delete the old landing page and the /p301, /p302 and /p303 shells; add the redirects. Build /about now (real copy, grade 8 or below, held for approval).
+- Update every Playwright test, the axe scans, check:live's route list (/, /story, /activity, /funds/FL-GREEN, /learn/expense-ratio, /about, /p301 redirect) and the aria snapshot for the new structure.
+
+STEP 3: Verify, then finish
+- npm run check, check:deploy (with check:live). Screenshots of /, /story, /activity and /about at 390, 768 and 1280: describe them, including the rail, the tabs and the bottom tab bar.
+- Measure: bottom-tab targets (at least 48x48), bar opacity, and contrast of the nav text.
+- In the report, paste the Summary section of each rewritten brief (P301, P302, P303) word for word so Alex can review them.
+Commits: [docs] (STEP 1) · [shared] Restructure into one app with shared layouts and feature folders · [P303] Add the phone shell with the bottom tab bar · [P301] Add the desktop rail and Home placeholder · [P302] Add Your money story and Practice placeholders · [shared] Add About this demo and redirects from the old case-study addresses · [docs] Record Phase 0.6 in STATUS.md
+Push, run check:deploy, and give me the CLAUDE.md §11 report.
+```
+
+**Added during Phase 0.6 (Alex, Sept. 24):**
+
+```text
+ADD TO PHASE 0.6 · PHONE PREVIEW (Alex's ruling, Sept. 24)
+
+Why: a P303 reviewer may never open the site on a real phone. They need a one-click way to see the real phone design on a laptop.
+
+Brief first (include in the STEP 1 docs commit, or a separate [docs] commit before the code):
+- BRIEF.md (navigation and §10 screen sizes) and the P303 brief: add "Phone preview". At 600px and wider, the top bar has a phone-icon toggle button, labeled "Preview on a phone" (aria-pressed on/off). On: the page shows the real app inside a generic rounded phone frame, 390x844 CSS px, centered on cream, with a "Back to full view" button beside it. It is NOT a mock-up: the frame is an iframe of the same app, so real phone breakpoints, bottom tabs and touch targets apply. It opens on the current route and demo scenario. The URL param ?view=phone opens it directly (shareable reviewer link). Hidden under 600px. The frame must not imitate any real device brand. Known limitation: Practice state is not shared between the full view and the phone view (separate app instances); the scenario is carried via the URL.
+- README P303 block: primary link https://first-leaf.vercel.app/?view=phone, plus "or open the site on your phone". "Try these" starts with "Click the phone icon in the top bar, or use the link above."
+- STATUS decision log: record the ruling and the limitation.
+
+Code (commit as [P303] Add a phone preview so reviewers can see the phone design on a laptop):
+- src/layouts/: a PhonePreview component and a top-bar toggle. The iframe src is the current route plus ?embed=phone&scenario=<current>. In embed mode the app hides the toggle and never nests another preview. Route changes in the full view while the preview is open update the iframe; ?view=phone opens it on load.
+- Accessibility: the toggle is a real button with a visible label or tooltip and aria-pressed. The iframe has title="First Leaf on a phone". Focus moves into the frame on open and back to the toggle on close. Esc closes it. Respect reduced motion for any open/close animation.
+- The frame itself: 390x844 screen area, rounded corners, a thin dark bezel, no notch or brand shapes. At 600–1023px scale it down to fit the viewport height, keeping the 390px layout inside (CSS transform on the frame, not a narrower iframe).
+- Tests: toggle on/off; ?view=phone opens it; the preview shows the bottom tab bar and the phone Home; scenario carries over; no nested preview in embed mode; axe scan with the preview open. Add /?view=phone to check:live.
+- Screenshots at 1280 and 768 with the preview open: describe them.
+```
+
+---
+
 ## Phase 1 · Core flows (all three)
+
+> **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.
 
 **Look at:** every flow in each brief's Interactions table works end to end, even if it looks plain.
 **Likely to go wrong:** state resetting when you navigate (it must live at module scope); chart hover values that don't match the table; the practice account accidentally changing the real account.
@@ -175,6 +241,8 @@ Push, run check:deploy, then give the CLAUDE.md §11 report.
 
 ## Phase 2 · Plain language (copy you approve)
 
+> **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.
+
 **Look at:** `docs/copy/COPY-REVIEW.md`. Every sentence a learner reads, with its grade level. Mark anything you want changed.
 **Likely to go wrong:** copy that's true in the normal scenario but false in *Brand-new* or *Nothing needs you*; labels without a unit ("High").
 
@@ -196,6 +264,8 @@ Then the CLAUDE.md §11 report.
 ---
 
 ## Phase 3 · Visual design
+
+> **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.
 
 **Look at:** does it feel like *mid-century modern meets futuristic*, and like *finance for a nervous beginner*? Look at the dark panels, the glow, the grain, the illustrations and the serif numbers.
 **Likely to go wrong:** tinted chips failing contrast; glow used decoratively (it must only mark the line to read first); illustrations that are too busy; Vuetify overriding custom styles.
@@ -220,6 +290,8 @@ Then the CLAUDE.md §11 report.
 
 ## Phase 4 · Edge cases, empty states, screen sizes
 
+> **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.
+
 **Look at:** switch every demo scenario on P301 and P303; try to break Practice; resize to 320px and 1280px; zoom to 200%; use only the keyboard.
 **Likely to go wrong:** layout jumps when the attention list is empty; charts with one data point; P303 stretching on desktop; P301 tables overflowing on phones.
 
@@ -240,6 +312,8 @@ Then the CLAUDE.md §11 report.
 ---
 
 ## Phase 5 · Verification, one case study at a time
+
+> **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.
 
 **Look at:** three separate reviewer reports, one per case study, each written as if the reviewer has never heard of the other two.
 **Likely to go wrong:** the README block pointing at the wrong route; a brief that no longer matches what was built.
