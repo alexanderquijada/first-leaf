@@ -16,6 +16,7 @@ h3 {
   font-weight: 500;
   line-height: 1.15;
   margin: 0;
+  text-wrap: balance; /* no one-word last lines in headlines */
 }
 
 a {

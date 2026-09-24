@@ -17,11 +17,18 @@ import { doors } from './doors'
 <style scoped>
 .fl-doors {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  /* One column, or all three in a row: never 2 + 1 with an empty gap. */
+  grid-template-columns: 1fr;
   gap: 16px;
   padding: 0;
   margin: 0;
   list-style: none;
+}
+
+@media (min-width: 900px) {
+  .fl-doors {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .fl-doors li {
