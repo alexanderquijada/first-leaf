@@ -94,9 +94,9 @@ test('a pending deposit survives navigation and resets on reload', async ({ page
   await page.getByRole('dialog').getByRole('button', { name: 'Confirm deposit' }).click()
   await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click()
   await page.locator('.fl-rail').getByRole('link', { name: 'Activity' }).click()
-  await expect(page.getByText('Pending')).toBeVisible()
+  await expect(page.locator('.activity__table tbody tr').first()).toContainText('Pending')
   await page.reload()
-  await expect(page.getByText('Pending')).toHaveCount(0)
+  await expect(page.locator('.activity__table tbody td', { hasText: 'Pending' })).toHaveCount(0)
 })
 
 test('an alert that does not exist, or not in this account, says so', async ({ page }) => {
