@@ -35,6 +35,8 @@ const app: RouteRecordRaw = {
     { path: 'activity', component: () => import('@/features/activity/ActivityView.vue'), meta: { title: 'Activity' } },
     { path: 'funds', component: () => import('@/features/funds/FundsView.vue'), meta: { title: 'Your funds' } },
     { path: 'funds/:ticker', component: () => import('@/features/funds/FundView.vue'), meta: { title: 'Your funds' } },
+    { path: 'story', component: () => import('@/features/story/StoryView.vue'), meta: { title: 'Your money story' } },
+    { path: 'practice', component: () => import('@/features/practice/PracticeView.vue'), meta: { title: 'Practice' } },
     { path: 'learn', component: () => import('@/features/learn/LearnView.vue'), meta: { title: 'Words to know' } },
     { path: 'learn/:termId', component: () => import('@/features/learn/TermView.vue'), meta: { title: 'Words to know' } },
   ],
