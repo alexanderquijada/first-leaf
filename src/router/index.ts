@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import AppLayout from '@/layouts/AppLayout.vue'
 
 // Every route is lazy-loaded (CLAUDE.md §7). Routes follow BRIEF.md §7.
 // Sub-pages that are built in Phase 1 show a shared "Coming in Phase 1" page.
@@ -20,6 +21,21 @@ const comingSoon = (
 
 const P301 = 'P301 · Operational dashboard'
 const P303 = 'P303 · Mobile experience'
+
+// The one app (BRIEF.md §7). The layout loads with the first screen; pages inside it are lazy.
+const app: RouteRecordRaw = {
+  path: '/',
+  component: AppLayout,
+  children: [
+    { path: 'alerts', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
+    { path: 'alerts/:id', component: () => import('@/features/alerts/AlertDetailView.vue'), meta: { title: 'Alert' } },
+    { path: 'activity', component: () => import('@/features/activity/ActivityView.vue'), meta: { title: 'Activity' } },
+    { path: 'funds', component: () => import('@/features/funds/FundsView.vue'), meta: { title: 'Your funds' } },
+    { path: 'funds/:ticker', component: () => import('@/features/funds/FundView.vue'), meta: { title: 'Your funds' } },
+    { path: 'learn', component: () => import('@/features/learn/LearnView.vue'), meta: { title: 'Words to know' } },
+    { path: 'learn/:termId', component: () => import('@/features/learn/TermView.vue'), meta: { title: 'Words to know' } },
+  ],
+}
 
 const routes: RouteRecordRaw[] = [
   {
@@ -57,6 +73,7 @@ const routes: RouteRecordRaw[] = [
   comingSoon('/p303/learn', 'Words', P303, '/p303'),
   comingSoon('/p303/learn/:termId', 'Words', P303, '/p303'),
   comingSoon('/p303/practice', 'Practice', P303, '/p303'),
+  app,
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
@@ -68,7 +85,7 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior: (_to, _from, saved) => saved ?? { top: 0 },
+  scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash } : { top: 0 }),
 })
 
 // Each page gets its own title, so tabs and screen readers can tell them apart.

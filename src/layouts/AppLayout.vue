@@ -1,0 +1,81 @@
+<script setup lang="ts">
+// The one app shell. Navigation changes with the screen size (BRIEF.md §3):
+// a left rail from 1024px, top tabs at 600–1023px, a bottom tab bar under 600px.
+// The router puts each feature's page inside <router-view>.
+import AppFooter from './AppFooter.vue'
+import TopBar from './TopBar.vue'
+import TopTabs from './TopTabs.vue'
+
+// "Skip to content" moves focus to the page, past the navigation.
+function skipToContent(e: Event) {
+  e.preventDefault()
+  const main = document.getElementById('main')
+  main?.focus()
+  main?.scrollIntoView()
+}
+</script>
+
+<template>
+  <div class="fl-app">
+    <a class="fl-skip" href="#main" @click="skipToContent">Skip to content</a>
+    <div class="fl-app__column">
+      <TopBar />
+      <TopTabs />
+      <main id="main" class="fl-app__main" tabindex="-1">
+        <router-view />
+      </main>
+      <div class="fl-app__footer">
+        <AppFooter />
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.fl-app {
+  min-height: 100vh;
+}
+
+.fl-skip {
+  position: absolute;
+  left: 8px;
+  top: -100px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--color-paper);
+  color: var(--color-forest);
+  font-weight: 700;
+}
+
+.fl-skip:focus {
+  top: 8px;
+}
+
+.fl-app__main {
+  padding: 32px 16px 0;
+}
+
+.fl-app__main:focus {
+  outline: none;
+}
+
+.fl-app__footer {
+  padding: 0 16px;
+}
+
+@media (min-width: 600px) {
+  .fl-app__main,
+  .fl-app__footer {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fl-app__main,
+  .fl-app__footer {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+</style>
