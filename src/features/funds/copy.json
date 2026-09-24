@@ -2,17 +2,33 @@
   "title": "Your funds",
   "tableLabel": "Your funds",
   "caption": "All funds, with what you have in each",
-  "col": { "fund": "Fund", "kind": "Kind", "fee": "Yearly fee", "ups": "Ups and downs", "value": "Your value", "change": "Up or down" },
-  "kind": { "stocks": "Stocks", "bonds": "Bonds", "reserve": "Reserve" },
-  "percent": "{value}%",
-  "upsValue": "{value} of 5",
+  "col": {
+    "fund": "Fund",
+    "kind": "Kind",
+    "fee": "Yearly fee",
+    "ups": "Ups and downs",
+    "value": "Your value",
+    "change": "Up or down"
+  },
+  "kind": {
+    "stocks": "Stocks",
+    "bonds": "Bonds",
+    "reserve": "Reserve"
+  },
+  "percent": "{fee}%",
+  "upsValue": "{rating} of 5",
   "notOwned": "Not owned",
-  "cardValue": "{value} · ",
+  "cardValue": "Your value: {value} · {change}",
   "allFunds": "All funds",
   "nameLine": "{name} · {kind} · {region}",
   "whatYouHave": "What you have",
   "vsPaid": "{change} on the {paid} you paid.",
-  "facts": { "value": "Your value", "paid": "What you paid", "shares": "Shares", "price": "Price" },
+  "facts": {
+    "value": "Your value",
+    "paid": "What you paid",
+    "shares": "Shares",
+    "price": "Price"
+  },
   "notOwnedYet": "You don't own this fund yet.",
   "priceNow": "Price: {price} a share.",
   "chart": {
@@ -28,16 +44,16 @@
     "5y": "5 years"
   },
   "fee": {
-    "heading": "{term}: {value}%",
-    "term": "Yearly fee",
-    "change": "{from}% to {to}% on {date}, up {points} percentage points.",
+    "heading": "{term}: {fee}%",
+    "change": "{oldFee}% to {newFee}% on {date}, up {points} percentage points.",
     "told": " The fund told owners on {date}.",
-    "steady": "It has been {value}% since {date}."
+    "steady": "It has been {fee}% since {date}.",
+    "termWord": "Yearly fee"
   },
   "ups": {
-    "heading": "{term}: {value} of 5",
-    "term": "Ups and downs",
-    "scale": "1 means its price barely moves. 5 means it moves the most."
+    "heading": "{term}: {rating} of 5",
+    "scale": "1 means its price barely moves. 5 means it moves the most.",
+    "termWord": "Ups and downs"
   },
   "inside": {
     "heading": "What is inside",

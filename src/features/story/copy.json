@@ -75,6 +75,7 @@
     "claim": "Here is how your money is split today, as of the last prices.",
     "chartTitle": "Where your money is",
     "filterGroup": "Show",
+    "rowsKey": "Each row shows the amount and its share of your balance.",
     "rowNums": "{amount} · {pct}%",
     "words": "Words: {stocks}, {bonds}, {cash}.",
     "stocksWord": "stocks",
@@ -96,7 +97,7 @@
     "guessHeading": "Make a guess: who has more at {age}?",
     "guessLabel": "Your guess",
     "result": "{reply} At {age}, Nia has {nia}. Theo has {theo}.",
-    "friendsTitle": "Nia and Theo from {from} to {to}",
+    "friendsTitle": "Nia and Theo from {startAge} to {endAge}",
     "whyHeading": "Why Nia ends ahead",
     "why": "Nia put in {nia}. Theo put in {theo}. {claim} That is {growth}: your money earns money, and that money earns more.",
     "growthWord": "growth on growth",
@@ -107,8 +108,8 @@
     "startLate": " Starting at {age} still helps. It just has fewer years to grow.",
     "catchUpHeading": "Can Theo catch up?",
     "theoMonthly": "Theo each month",
-    "perMonth": "${amount} a month",
-    "passesMark": "Passes Nia: ${amount}",
+    "perMonth": "${dollars} a month",
+    "passesMark": "Passes Nia: ${dollars}",
     "catchUp": "At {monthly} a month, Theo ends with {theo}. Nia ends with {nia}.",
     "passes": " At {monthly} a month, Theo passes Nia.",
     "behind": " Theo is still behind.",
@@ -129,6 +130,6 @@
     "go": "Go to Practice"
   },
   "slider": {
-    "label": "{label}: {value}"
+    "label": "{label}: {setting}"
   }
 }

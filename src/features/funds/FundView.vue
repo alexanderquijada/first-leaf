@@ -96,15 +96,15 @@ const KIND = copy.kind
       </div>
 
       <section class="fund__card" aria-labelledby="fund-fee">
-        <h2 id="fund-fee" class="fund__h"><CopyText :text="copy.fee.heading" :values="{ value: feeNow?.value.toFixed(2) ?? '' }"><template #term><TermTip id="expense-ratio">{{ copy.fee.term }}</TermTip></template></CopyText></h2>
+        <h2 id="fund-fee" class="fund__h"><CopyText :text="copy.fee.heading" :values="{ fee: feeNow?.value.toFixed(2) ?? '' }"><template #term><TermTip id="expense-ratio">{{ copy.fee.termWord }}</TermTip></template></CopyText></h2>
         <p v-if="feeNow && feeNext" class="fund__line">
-          {{ fill(copy.fee.change, { from: feeNow.value.toFixed(2), to: feeNext.value.toFixed(2), date: formatDate(feeNext.effective), points: (feeNext.value - feeNow.value).toFixed(2) }) }}<template v-if="feeNext.announcedOn">{{ fill(copy.fee.told, { date: formatDate(feeNext.announcedOn) }) }}</template>
+          {{ fill(copy.fee.change, { oldFee: feeNow.value.toFixed(2), newFee: feeNext.value.toFixed(2), date: formatDate(feeNext.effective), points: (feeNext.value - feeNow.value).toFixed(2) }) }}<template v-if="feeNext.announcedOn">{{ fill(copy.fee.told, { date: formatDate(feeNext.announcedOn) }) }}</template>
         </p>
-        <p v-else-if="feeNow" class="fund__line">{{ fill(copy.fee.steady, { value: feeNow.value.toFixed(2), date: withYear(feeNow.effective) }) }}</p>
+        <p v-else-if="feeNow" class="fund__line">{{ fill(copy.fee.steady, { fee: feeNow.value.toFixed(2), date: withYear(feeNow.effective) }) }}</p>
       </section>
 
       <section class="fund__card" aria-labelledby="fund-ups">
-        <h2 id="fund-ups" class="fund__h"><CopyText :text="copy.ups.heading" :values="{ value: fund.upsAndDowns }"><template #term><TermTip id="ups-and-downs">{{ copy.ups.term }}</TermTip></template></CopyText></h2>
+        <h2 id="fund-ups" class="fund__h"><CopyText :text="copy.ups.heading" :values="{ rating: fund.upsAndDowns }"><template #term><TermTip id="ups-and-downs">{{ copy.ups.termWord }}</TermTip></template></CopyText></h2>
         <p class="fund__line">{{ copy.ups.scale }}</p>
       </section>
 

@@ -1,10 +1,20 @@
 {
   "title": "Practice",
   "banner": "Practice money. It isn't real money.",
-  "sum": { "left": "Practice money left", "inFunds": "In practice funds", "total": "Total in Practice" },
+  "sum": {
+    "left": "Practice money left",
+    "inFunds": "In practice funds",
+    "total": "Total in Practice"
+  },
   "ownHeading": "What you own in Practice",
   "ownEmpty": "Nothing yet. Buy a fund to start.",
-  "col": { "fund": "Fund", "shares": "Shares", "value": "Value", "paid": "Paid", "change": "Up or down" },
+  "col": {
+    "fund": "Fund",
+    "shares": "Shares",
+    "value": "Value",
+    "paid": "Paid",
+    "change": "Up or down"
+  },
   "mixHeading": "Your practice mix",
   "percent": "{pct}%",
   "timeMachine": {
@@ -29,7 +39,7 @@
     "amountLabel": "Amount in dollars",
     "dollar": "$",
     "phoneAmountLabel": "Amount",
-    "phoneAmount": "${amount}",
+    "phoneAmount": "${dollars}",
     "keypad": "Number keypad",
     "delete": "Delete",
     "decimal": "Decimal point",

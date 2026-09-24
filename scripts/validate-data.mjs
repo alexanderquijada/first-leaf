@@ -10,7 +10,7 @@
 //
 // It recalculates everything from scratch and never trusts a stored total.
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -54,7 +54,8 @@ export function fkGrade(text) {
   const sentences = clean.split(/[.!?]+/).map((s) => s.trim()).filter(Boolean);
   const words = clean.split(/\s+/).map((w) => w.replace(/[^A-Za-z'-]/g, '')).filter(Boolean);
   if (!words.length || !sentences.length) return 0;
-  const syl = words.reduce((s, w) => s + (w === 'num' ? 2 : syllables(w)), 0);
+  // A hyphenated word counts the syllables of each part ("one-time" is 2, not 3).
+  const syl = words.reduce((s, w) => s + (w === 'num' ? 2 : w.split('-').filter(Boolean).reduce((n, part) => n + syllables(part), 0) || 1), 0);
   return 0.39 * (words.length / sentences.length) + 11.8 * (syl / words.length) - 15.59;
 }
 export const MAX_GRADE = 8.0;
@@ -85,6 +86,83 @@ export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we
   /can'?t lose/i, /risk[- ]free/i, /\bsure thing\b/i, /\bbuy now\b/i, /\bsell now\b/i, /will (definitely|surely) (grow|go up)/i,
   /\b(is|are|very) safe\b/i, /\bcompare fees\b/i, /\bswitch (to|funds)\b/i, /\bmost people\b/i];
 
+// ---------------- copy files (rule L5) ----------------
+// Every sentence on screen lives in a copy file with named placeholders. Each
+// placeholder name has ONE meaning everywhere, so L5 can fill every sentence with
+// each scenario's real values and read it the way a person will. A name that is
+// not listed here fails L5: give a new placeholder a meaning before you use it.
+export const PLACEHOLDERS = {
+  money: ['amount', 'balance', 'cash', 'moneyIn', 'price', 'start', 'end', 'first', 'last', 'paid', 'target', 'actual', 'planned', 'behind',
+    'market', 'dividends', 'earned', 'value', 'nia', 'theo', 'monthly', 'niaMonthly', 'theoMonthly', 'putIn'],
+  change: ['change'],                 // "up $15.57", "down $5.88", "no change"
+  date: ['date', 'from', 'to'],       // "Sept. 18"
+  count: ['count', 'shown', 'total', 'n', 'decimals'],
+  number: ['age', 'endAge', 'startAge', 'niaAge', 'theoAge', 'rating', 'now', 'set', 'pct', 'points', 'fee', 'oldFee', 'newFee', 'shares', 'dollars'],
+  ticker: ['ticker'],
+  // Words, not values: names, labels, terms and whole sentences from the data.
+  text: ['name', 'title', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'short', 'example', 'link', 'page', 'query', 'region',
+    'claim', 'note', 'reply', 'setting'],
+};
+// Names the app quotes rather than writes: a term, the industry's words for it, a
+// source, a fund or a person. The reading level grades OUR words, so a quoted name
+// counts as one short word. (Whole sentences from the data, such as a term's
+// explanation, a story claim or an alert title, are graded in full.)
+export const QUOTED_NAMES = ['name', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'link', 'page', 'query', 'region', 'ticker'];
+// A placeholder {x} whose object also has a key "xWord" is a word shown as a term
+// button (for example {putIn} with putInWord "put in"): it is filled with that word.
+//
+// A value with no words around it must be labeled by something the person can see.
+// These are the only ones allowed, each with the label that says what it measures.
+export const LABELED_ELSEWHERE = {
+  'src/features/funds/copy.json:percent': 'a table cell under the "Yearly fee" column',
+  'src/features/story/copy.json:share.percent': 'a table cell under the "Share" column',
+  'src/features/story/copy.json:mix.percent': 'a table cell under the "Share of balance" column',
+  'src/features/story/copy.json:mix.rowNums': 'a row under the line "Each row shows the amount and its share of your balance."',
+  'src/features/practice/copy.json:percent': 'a row in the list headed "Your practice mix"',
+  'src/features/practice/copy.json:order.phoneAmount': 'the amount being typed, shown under and labeled by "Amount"',
+};
+export function loadCopy(root = ROOT) {
+  const out = {};
+  const add = (rel) => { const p = join(root, rel); if (existsSync(p)) out[rel] = JSON.parse(readFileSync(p, 'utf8')); };
+  add('src/shared/copy.json'); add('src/layouts/copy.json');
+  const features = join(root, 'src', 'features');
+  if (existsSync(features)) for (const f of readdirSync(features).sort()) add(`src/features/${f}/copy.json`);
+  return out;
+}
+// Every template in a copy file, with the object it sits in (for "xWord" lookups).
+function* templates(obj, path = '') {
+  for (const [k, v] of Object.entries(obj)) {
+    const p = path ? `${path}.${k}` : k;
+    if (typeof v === 'string') yield [p, v, obj];
+    else if (Array.isArray(v)) for (let i = 0; i < v.length; i++) { if (typeof v[i] === 'string') yield [`${p}[${i}]`, v[i], obj]; }
+    else if (v && typeof v === 'object') yield* templates(v, p);
+  }
+}
+const KIND_OF = Object.fromEntries(Object.entries(PLACEHOLDERS).flatMap(([kind, names]) => names.map((n) => [n, kind])));
+// House money format (BRIEF.md §5): "$1,313.72" or whole dollars "$150" in sentences.
+const MONEY_TOKEN = /^\$\d{1,3}(,\d{3})*(\.\d{2})?$/;
+export function moneyProblems(text) {
+  const out = [];
+  if (/\$\$/.test(text)) out.push('has "$$"');
+  if (/-\$/.test(text)) out.push('uses a hyphen before "$" (a loss uses a true minus sign "−")');
+  for (const m of text.matchAll(/\$[^\s]*/g)) {
+    const tok = m[0].replace(/[.,;:!?)"”]+$/, '');
+    if (tok !== '$' && !MONEY_TOKEN.test(tok) && !/^\$\$/.test(tok)) out.push(`writes money as "${tok}"`);
+    if (tok === '$' && text.trim() !== '$') out.push('has a "$" with no amount after it');
+  }
+  if (/[.!?]$/.test(text.trim()) && /[+−]\$/.test(text)) out.push('shows a signed amount in a sentence (write "up $X" or "down $X")');
+  if (/\b(up|down)\s+[+−-]\$/i.test(text)) out.push('says "up/down" and also shows a sign');
+  if (/\d\s*(dollars|USD)\b/i.test(text)) out.push('spells out "dollars" or "USD" after a number');
+  return out;
+}
+// A rate (a fee, a return rate) changes by percentage points, never "+X%".
+export function rateProblems(text) {
+  const out = [];
+  if (/[+−-]\s?\d[\d.]*\s?%/.test(text)) out.push('shows a rate change as "+X%" (write "up X percentage points")');
+  if (/\b(fee|rate)/i.test(text) && /\b(up|down|rose|fell|by|increased?|decreased?)\s+\d[\d.]*\s?%/i.test(text)) out.push('says a rate went up or down by "X%" (write "X percentage points")');
+  return out;
+}
+
 // ---------------- loading ----------------
 export function loadData(dir = DATA_DIR) {
   const data = {}; const missing = [];
@@ -108,7 +186,7 @@ export function loadBriefExamples(root = ROOT) {
 }
 
 // ---------------- rules ----------------
-export function validate(data, { missing = [], briefExamples = [] } = {}) {
+export function validate(data, { missing = [], briefExamples = [], copy = null } = {}) {
   const results = [];
   const rule = (id, name, fn) => {
     const errors = [];
@@ -623,6 +701,78 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
     for (const g of glossary) { const n = g.short.split(/\s+/).length; if (n > 16) fail(`${g.id}.short has ${n} words`); }
   });
 
+  rule('L5', 'Every on-screen sentence follows the copy rules: grade 8, no jargon, no advice or project language, rates in percentage points, house money format, every value labeled', (fail) => {
+    if (!copy || !Object.keys(copy).length) { fail('no copy files were loaded'); return; }
+    const shared = copy['src/shared/copy.json'];
+    const months = shared?.dates?.months;
+    const fmtDate = (iso) => { const [, m, d] = iso.split('-').map(Number); return `${months?.[m - 1] ?? '?'} ${d}`; };
+    const fmtMoney = (n) => { const a = Math.abs(r2(n)); const t = '$' + a.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); return n < 0 && a > 0 ? `−${t}` : t; };
+    const fill = (t, v) => t.replace(/\{(\w+)\}/g, (m, k) => (k in v ? String(v[k]) : m));
+    const fmtChange = (n) => { const r = r2(n); return r > 0 ? fill(shared.change.up, { amount: fmtMoney(r) }) : r < 0 ? fill(shared.change.down, { amount: fmtMoney(-r) }) : shared.change.none; };
+    const flagAny = allAccounts.flatMap(flagsOf)[0];
+    // Words that come from the glossary or a flag are filled with EVERY entry, not one sample.
+    const glossaryVariants = glossary.map((g) => ({ term: g.term, terms: g.alsoCalled.join(', ') || g.term, short: g.short, example: g.example, link: g.source?.label ?? g.term }));
+    // Each scenario's own values: what a person in that scenario would read.
+    const valuesFor = (acc) => {
+      const w = acc.weeklyChange, goal = acc.goal, flag = flagsOf(acc)[0] ?? flagAny;
+      const money = { balance: acc.balance, cash: acc.cash, moneyIn: acc.moneyIn, earned: acc.gainLoss, market: w?.marketChange ?? 0, dividends: w?.dividends ?? 0,
+        target: goal?.target ?? 0, actual: goal?.actualMoneyInToDate ?? 0, planned: goal?.plannedMoneyInToDate ?? 0, behind: goal?.behindBy ?? 0,
+        price: funds[0].latestPrice, amount: acc.recurringDeposit?.amount ?? 0 };
+      const v = {};
+      for (const n of PLACEHOLDERS.money) v[n] = fmtMoney(money[n] ?? acc.balance);
+      v.change = fmtChange(w?.totalChange ?? 0);
+      for (const n of PLACEHOLDERS.date) v[n] = fmtDate(acc.asOf);
+      for (const n of PLACEHOLDERS.count) v[n] = n === 'decimals' ? String(practice.maxDecimals) : '3';
+      Object.assign(v, { age: '22', endAge: '65', startAge: '22', niaAge: '22', theoAge: '32', rating: String(funds[0].upsAndDowns), now: '40', set: '35',
+        pct: '95', points: '0.10', fee: '0.45', oldFee: '0.45', newFee: '0.55', shares: '0.5190', dollars: '196' });
+      v.ticker = acc.holdings[0]?.ticker ?? funds[0].ticker;
+      Object.assign(v, { name: persona.firstName, title: flag.title, label: 'Your balance since March', series: 'Balance', kind: 'Stocks', status: 'Pending',
+        type: 'Deposits', page: 'Activity', query: 'fee', region: funds[0].region,
+        claim: story.claims[0].text, note: story.bumpy.note, reply: 'Here is how it turns out.', setting: 'Start at 30' });
+      const flags = flagsOf(acc).length ? flagsOf(acc) : [flag];
+      return [...glossaryVariants.map((g) => ({ ...v, ...g })), ...flags.map((f) => ({ ...v, ...glossaryVariants[0], title: f.title }))];
+    };
+    const scenarioAccounts = scenarios.map((sc) => [sc.id, allAccounts.find((a) => a.id === sc.accountId)]).filter(([, a]) => a);
+    const words = (t) => t.split(/\s+/).filter((x) => /[A-Za-z]/.test(x)).length;
+    // Labels of 3 words or fewer are exempt from the grade ("Type: Deposits. Status: Pending." is two labels).
+    // A leading label of 3 words or fewer ("Example:", "Source:") is a label too.
+    const lint = (where, filled, bare, graded = filled) => {
+      const lead = graded.match(/^([^.:!?]+):\s+/);
+      if (lead && words(lead[1]) <= 3) graded = graded.slice(lead[0].length);
+      if (graded.split(/[.!?]+/).some((x) => words(x) > 3)) { const g = fkGrade(graded); if (g > MAX_GRADE) fail(`${where} is grade ${g.toFixed(1)}: "${filled.slice(0, 90)}"`); }
+      for (const w of JARGON) if (hasWord(bare, w)) fail(`${where} uses jargon "${w}"`);
+      for (const re of [...ADVICE_PATTERNS, ...PROJECT_LANGUAGE]) if (re.test(bare)) fail(`${where} matches ${re}: "${bare.slice(0, 90)}"`);
+      for (const p of [...rateProblems(filled), ...moneyProblems(filled)]) fail(`${where} ${p}: "${filled.slice(0, 90)}"`);
+    };
+    for (const [file, obj] of Object.entries(copy)) for (const [path, t, parent] of templates(obj)) {
+      const names = [...t.matchAll(/\{(\w+)\}/g)].map((m) => m[1]);
+      const isWord = (n) => typeof parent[`${n}Word`] === 'string';
+      for (const n of names) if (!isWord(n) && !KIND_OF[n]) fail(`${file}:${path} uses {${n}}, which has no meaning in PLACEHOLDERS`);
+      // A value needs words around it that say what it measures (or a listed visible label).
+      const valueNames = names.filter((n) => !isWord(n) && KIND_OF[n] && !['text', 'ticker'].includes(KIND_OF[n]));
+      const hasWords = /[A-Za-z]{2,}/.test(t.replace(/\{\w+\}/g, '')) || names.some((n) => isWord(n) || ['text', 'ticker'].includes(KIND_OF[n]));
+      if (valueNames.length && !hasWords && !LABELED_ELSEWHERE[`${file}:${path}`]) fail(`${file}:${path} shows {${valueNames.join('}, {')}} with no words saying what it measures: "${t}"`);
+      const bare = t.replace(/\{\w+\}/g, ' ');
+      for (const [scId, acc] of scenarioAccounts) {
+        const seen = new Set();
+        for (const v of valuesFor(acc)) {
+          for (const n of names) if (isWord(n)) v[n] = parent[`${n}Word`];
+          const filled = fill(t, v);
+          const graded = fill(t, { ...v, ...Object.fromEntries(QUOTED_NAMES.filter((n) => !isWord(n)).map((n) => [n, 'Name'])) });
+          if (!seen.has(filled)) { seen.add(filled); lint(`${file}:${path} [${scId}]`, filled, bare, graded); }
+        }
+      }
+    }
+    // The generated story sentences, per scenario, as they appear on screen.
+    const storySentences = [
+      ...Object.values(story.rosaStory || {}).filter(Boolean).flatMap((r) => [[`story:rosaStory:${r.accountId}.pointOfView`, r.pointOfView], ...r.claims.map((c) => [`story:rosaStory:${r.accountId}:${c.id}`, c.text])]),
+      ['story:pointOfView', story.pointOfView], ['story:assumptions.note', story.assumptions.note], ['story:bumpy.note', story.bumpy.note],
+      ['story:yourTurn.note', story.yourTurn.note], ['practice:timeMachine.note', practice.timeMachine.note],
+      ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
+    ];
+    for (const [where, text] of storySentences) lint(where, text, text);
+  });
+
   // ----- B: briefs -----
   rule('B1', 'Every example record in the briefs matches the data', (fail) => {
     if (!briefExamples.length) { fail('no ```json brief-example blocks found in the briefs'); return; }
@@ -656,6 +806,6 @@ export function report(results, { quiet = false } = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { data, missing } = loadData();
-  const failed = report(validate(data, { missing, briefExamples: loadBriefExamples() }));
+  const failed = report(validate(data, { missing, briefExamples: loadBriefExamples(), copy: loadCopy() }));
   process.exit(failed ? 1 : 0);
 }

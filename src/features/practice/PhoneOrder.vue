@@ -49,7 +49,7 @@ function onSheet(open: boolean) {
         </label>
       </fieldset>
       <p class="porder__label" id="porder-amount-label">{{ O.phoneAmountLabel }}</p>
-      <p class="porder__amount fl-tabular" aria-labelledby="porder-amount-label" role="status">{{ fill(O.phoneAmount, { amount: amount || '0' }) }}</p>
+      <p class="porder__amount fl-tabular" aria-labelledby="porder-amount-label" role="status">{{ fill(O.phoneAmount, { dollars: amount || '0' }) }}</p>
       <p class="porder__error" role="alert">{{ shownError }}</p>
       <div class="porder__keys" role="group" :aria-label="O.keypad">
         <button

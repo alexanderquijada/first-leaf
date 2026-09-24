@@ -14,9 +14,24 @@
   "rowStatus": " · {status}",
   "tableLabel": "Activity",
   "caption": "Activity, newest first",
-  "col": { "date": "Date", "what": "What", "amount": "Amount", "status": "Status" },
-  "types": { "all": "All", "deposit": "Deposits", "buy": "Buys", "dividend": "Dividends" },
-  "statuses": { "all": "All", "completed": "Completed", "pending": "Pending", "returned": "Returned" },
+  "col": {
+    "date": "Date",
+    "what": "What",
+    "amount": "Amount",
+    "status": "Status"
+  },
+  "types": {
+    "all": "All",
+    "deposit": "Deposits",
+    "buy": "Buys",
+    "dividend": "Dividends"
+  },
+  "statuses": {
+    "all": "All",
+    "completed": "Completed",
+    "pending": "Pending",
+    "returned": "Returned"
+  },
   "allActivity": "All activity",
   "facts": {
     "amount": "Amount",
@@ -34,7 +49,7 @@
     "paidOn": "Paid on"
   },
   "pendingNote": "It should arrive in 1 to 3 business days.",
-  "buyNote": "Auto-invest bought it with your deposit.",
+  "buyNote": "Auto-invest used your deposit to buy it.",
   "whatItMeans": "What it means",
   "termLine": "{term}: {short}",
   "notFound": "We could not find that item.",

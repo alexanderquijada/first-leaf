@@ -21,7 +21,7 @@ const related = computed(() => (term.value?.related ?? []).map((r) => getTerm(r)
       <p v-if="term.alsoCalled.length" class="term__also"><CopyText :text="copy.alsoCalled"><template #terms><em>{{ term.alsoCalled.join(', ') }}</em></template></CopyText></p>
       <p class="term__short">{{ term.short }}</p>
       <p>{{ term.detail }}</p>
-      <p><CopyText :text="copy.example" :values="{ example: term.example }"><template #label><strong>{{ copy.exampleLabel }}</strong></template></CopyText></p>
+      <p><CopyText :text="copy.example" :values="{ example: term.example }"><template #label><strong>{{ copy.labelWord }}</strong></template></CopyText></p>
       <template v-if="related.length">
         <h2 class="term__h">{{ copy.related }}</h2>
         <ul class="term__related">

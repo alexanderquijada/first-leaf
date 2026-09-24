@@ -7,10 +7,10 @@
   "allWords": "All words",
   "alsoCalled": "Also called {terms}",
   "example": "{label} {example}",
-  "exampleLabel": "Example:",
   "related": "Related words",
   "source": "Source: {link}",
   "newTab": " (opens in a new tab)",
   "notFound": "We could not find that word.",
-  "notFoundWhy": "Try searching for it in Words to know."
+  "notFoundWhy": "Try searching for it in Words to know.",
+  "labelWord": "Example:"
 }

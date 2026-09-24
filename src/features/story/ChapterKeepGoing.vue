@@ -39,7 +39,7 @@ const describeFriends = (i: number) => {
 }
 const friendsRows = ages.map((a) => ({ age: String(a), nia: whole(valueAt(nia.yearly, a) ?? 0), theo: valueAt(theo.yearly, a) === null ? K.notStarted : whole(valueAt(theo.yearly, a)!) }))
 const friendsCols = [{ key: 'age', label: K.colAge }, { key: 'nia', label: K.nia, numeric: true }, { key: 'theo', label: K.theo, numeric: true }]
-const friendsTitle = fill(K.friendsTitle, { from: nia.startAge, to: endAge })
+const friendsTitle = fill(K.friendsTitle, { startAge: nia.startAge, endAge })
 
 // 5d: every year counts
 const startAge = ref(nia.startAge)
@@ -72,7 +72,7 @@ const myAge = ref(story.yourTurn.startAge)
 const myMonthly = ref(story.yourTurn.monthly)
 const myResult = computed(() => project(myAge.value, myMonthly.value))
 const claim = (id: string) => story.claims.find((c) => c.id === id)?.text ?? ''
-const perMonth = (v: number) => fill(K.perMonth, { amount: v })
+const perMonth = (v: number) => fill(K.perMonth, { dollars: v })
 const startAt = (v: number) => fill(K.startAt, { age: v })
 </script>
 
@@ -129,7 +129,7 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
       :max="story.catchUp.slider.max"
       :step="story.catchUp.slider.step"
       :value-text="perMonth"
-      :mark="{ value: story.catchUp.monthlyNeeded, label: fill(K.passesMark, { amount: story.catchUp.monthlyNeeded }) }"
+      :mark="{ value: story.catchUp.monthlyNeeded, label: fill(K.passesMark, { dollars: story.catchUp.monthlyNeeded }) }"
     />
     <p class="chapter__claim" aria-live="polite" data-testid="catch-up">
       {{ fill(K.catchUp, { monthly: whole(theoMonthly), theo: whole(theoResult.value), nia: whole(nia.final.value) }) }}

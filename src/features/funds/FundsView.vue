@@ -2,6 +2,7 @@
 // All five funds: what each is, its yearly fee, its ups and downs, and what Rosa
 // has in it (or that she doesn't own it yet).
 import { computed } from 'vue'
+import CopyText from '@/shared/components/CopyText.vue'
 import Money from '@/shared/components/Money.vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useViewport } from '@/shared/composables/useViewport'
@@ -30,7 +31,7 @@ const rows = computed(() =>
         <RouterLink :to="`/funds/${r.f.ticker}`" class="funds__card">
           <span class="funds__ticker">{{ r.f.ticker }}</span>
           <span class="funds__name">{{ r.f.name }}</span>
-          <span v-if="r.h" class="funds__value fl-tabular">{{ fill(copy.cardValue, { value: formatMoney(r.h.value) }) }}<Money :amount="r.h.gainLoss" change /></span>
+          <span v-if="r.h" class="funds__value fl-tabular"><CopyText :text="copy.cardValue" :values="{ value: formatMoney(r.h.value) }"><template #change><Money :amount="r.h.gainLoss" change /></template></CopyText></span>
           <span v-else class="funds__value is-muted">{{ copy.notOwned }}</span>
         </RouterLink>
       </li>
@@ -55,8 +56,8 @@ const rows = computed(() =>
               <span class="funds__name">{{ r.f.name }}</span>
             </td>
             <td>{{ r.kind }}</td>
-            <td class="is-num fl-tabular">{{ fill(copy.percent, { value: r.fee.toFixed(2) }) }}</td>
-            <td class="is-num fl-tabular">{{ fill(copy.upsValue, { value: r.f.upsAndDowns }) }}</td>
+            <td class="is-num fl-tabular">{{ fill(copy.percent, { fee: r.fee.toFixed(2) }) }}</td>
+            <td class="is-num fl-tabular">{{ fill(copy.upsValue, { rating: r.f.upsAndDowns }) }}</td>
             <td class="is-num fl-tabular">{{ r.h ? formatMoney(r.h.value) : copy.notOwned }}</td>
             <td class="is-num fl-tabular"><Money v-if="r.h" :amount="r.h.gainLoss" change context="table" /></td>
           </tr>

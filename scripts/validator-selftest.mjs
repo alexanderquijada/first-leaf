@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validate, loadData, loadBriefExamples } from './validate-data.mjs';
+import { validate, loadData, loadBriefExamples, loadCopy } from './validate-data.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const r2 = (n) => Math.round(n * 100) / 100;
@@ -105,11 +105,26 @@ const CASES = [
   { rule: 'L2', why: "REVIEW FINDING (Sept. 23): FL-GREEN's description read at grade 10.7 and was not being checked", mutate: (d) => { d.funds.find((f) => f.ticker === 'FL-GREEN').inside = 'About 80 made-up companies that make solar panels, wind power and batteries.'; } },
   { rule: 'L3', why: 'an explanation uses jargon', mutate: (d) => { d.glossary.find((g) => g.id === 'cash').detail = 'Cash has no volatility and full liquidity.'; } },
   { rule: 'L4', why: 'an explanation first line is far too long', mutate: (d) => { d.glossary[1].short = 'Money that you choose to move out of your regular bank account and into this investing account so that you can use it later.'; } },
+  // L5 reads the copy files (src/**/copy.json). `copy` breaks a copy file; `mutate` breaks the data.
+  { rule: 'L5', why: 'a copy sentence is above grade 8', copy: (c) => { c['src/features/home/copy.json'].welcome.lede = 'Consequently, organizational considerations necessitate comprehensive evaluation of individual circumstances.'; } },
+  { rule: 'L5', why: 'a copy sentence uses jargon ("portfolio")', copy: (c) => { c['src/features/home/copy.json'].mix.title = 'Your portfolio today'; } },
+  { rule: 'L5', why: 'a copy sentence gives advice', copy: (c) => { c['src/features/funds/copy.json'].notOwnedYet = 'You should buy this fund soon.'; } },
+  { rule: 'L5', why: 'a copy sentence uses project language', copy: (c) => { c['src/layouts/copy.json'].phoneView.practiceNote = 'This is a demo, so nothing here is real.'; } },
+  { rule: 'L5', why: 'a fee change reads "+0.10%" instead of percentage points', copy: (c) => { c['src/features/alerts/copy.json'].facts.feeChange = '+{points}%'; } },
+  { rule: 'L5', why: 'a fee change reads "up 0.10%" instead of percentage points', copy: (c) => { c['src/features/funds/copy.json'].fee.change = 'The yearly fee goes from {oldFee}% to {newFee}% on {date}, up {points}%.'; } },
+  { rule: 'L5', why: 'money is written "$$" (a "$" before a placeholder that is already money)', copy: (c) => { c['src/features/home/copy.json'].balance.thisWeek = 'This week you added ${amount}.'; } },
+  { rule: 'L5', why: 'a sentence shows a signed amount instead of "up $X"', copy: (c) => { c['src/features/home/copy.json'].week.line = 'Your balance went +{balance} this week.'; } },
+  { rule: 'L5', why: 'a value has no words saying what it measures', copy: (c) => { c['src/features/home/copy.json'].balance.label = '{balance}'; } },
+  { rule: 'L5', why: 'a placeholder has no declared meaning', copy: (c) => { c['src/features/home/copy.json'].week.caption = 'You earned {bonus} this week.'; } },
+  { rule: 'L5', why: 'a generated story sentence is above grade 8', mutate: (d) => { d['story-p302'].rosaStory['rosa-all-clear'].claims[0].text = 'Notwithstanding considerable intermediate fluctuations, your accumulated contributions demonstrate substantial improvement.'; } },
+  { rule: 'L5', why: 'a generated story sentence writes money without cents or commas', mutate: (d) => { d['story-p302'].rosaStory['rosa-starter'].claims[0].text = 'You started with $150.5 and now have $1313.72.'; } },
+  { rule: 'L5', why: 'no copy files were loaded at all', copy: () => ({}) },
   { rule: 'B1', why: 'the brief quotes a balance the data does not have', briefExamples: [{ file: 'BRIEF.md', body: '{ "account.balance": 5000 }' }] },
 ];
 
 const { data: real, missing: realMissing } = loadData();
 const realBrief = loadBriefExamples();
+const realCopy = loadCopy();
 let bad = 0;
 
 console.log('1) Each rule must FAIL on its broken data\n');
@@ -119,7 +134,9 @@ for (const c of CASES) {
   if (c.missing) { missing = c.missing; for (const m of missing) delete d[m]; }
   if (c.mutate) c.mutate(d);
   if (c.file) d[c.file.name] = JSON.parse(readFileSync(join(HERE, c.file.path), 'utf8'));
-  const res = validate(d, { missing, briefExamples: c.briefExamples || realBrief });
+  let copy = clone(realCopy);
+  if (c.copy) copy = c.copy(copy) ?? copy;
+  const res = validate(d, { missing, briefExamples: c.briefExamples || realBrief, copy });
   const r = res.find((x) => x.id === c.rule);
   const failed = r && !r.ok;
   if (!failed) bad++;
@@ -127,7 +144,7 @@ for (const c of CASES) {
 }
 
 const covered = new Set(CASES.map((c) => c.rule));
-const all = validate(clone(real), { missing: realMissing, briefExamples: realBrief });
+const all = validate(clone(real), { missing: realMissing, briefExamples: realBrief, copy: clone(realCopy) });
 const uncovered = all.map((r) => r.id).filter((id) => !covered.has(id));
 if (uncovered.length) { bad++; console.log(`\nMISS  rules with no broken case: ${uncovered.join(', ')}`); }
 

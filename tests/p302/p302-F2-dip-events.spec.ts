@@ -27,3 +27,24 @@ test('in the calm account, the events say auto-invest kept buying', async ({ pag
   await expect(list).toContainText('Aug. 3: Your deposit bought your mix.')
   await expect(list).not.toContainText('paused')
 })
+
+// Phase 2: nothing in the calm account's story may mention pausing, anywhere a
+// person can read or hear it: text, tables, chart descriptions and labels.
+// The same reader must find "paus" in the paused account, so the check can fail.
+async function storyWords(page: import('@playwright/test').Page, scenario: string) {
+  await page.goto(`/story?scenario=${scenario}`)
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+  const show = page.getByRole('button', { name: 'Show as table' })
+  while (await show.count()) await show.first().click() // each click renames that button "Hide table"
+  return page.locator('.story').evaluate((el) => {
+    const attrs = [...el.querySelectorAll('*')].flatMap((n) =>
+      ['aria-label', 'aria-valuetext', 'aria-description', 'title', 'alt'].map((a) => n.getAttribute(a) ?? ''),
+    )
+    return [el.textContent ?? '', ...attrs].join('\n')
+  })
+}
+
+test('the calm account story never mentions pausing; the paused account story does', async ({ page }) => {
+  expect(await storyWords(page, 'all-clear')).not.toMatch(/paus/i)
+  expect(await storyWords(page, 'normal')).toMatch(/paus/i)
+})

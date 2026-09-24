@@ -22,7 +22,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 
 <template>
   <div class="slider">
-    <label :for="id" class="slider__label"><CopyText :text="copy.slider.label" :values="{ label }"><template #value><strong>{{ valueText(value) }}</strong></template></CopyText></label>
+    <label :for="id" class="slider__label"><CopyText :text="copy.slider.label" :values="{ label }"><template #setting><strong>{{ valueText(value) }}</strong></template></CopyText></label>
     <div class="slider__track">
       <input
         :id="id"

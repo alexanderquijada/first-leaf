@@ -70,6 +70,7 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
           </button>
         </div>
       </template>
+      <p v-if="shown.length" class="where__key">{{ M.rowsKey }}</p>
       <ul v-if="shown.length" class="where">
         <li v-for="p in shown" :key="p.name" class="where__row">
           <span class="where__name">{{ p.name }}</span>
@@ -129,6 +130,7 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
 
 .where__name {
   font-weight: 600;
+  white-space: nowrap; /* a ticker never breaks at its hyphen */
 }
 
 .where__bar {
@@ -143,6 +145,11 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
   height: 100%;
   border-radius: 4px;
   background: var(--color-forest);
+}
+
+.where__key {
+  margin: 0 0 4px;
+  color: var(--color-ink-muted);
 }
 
 .where__terms {
