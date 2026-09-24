@@ -2,7 +2,7 @@
 // The action on an alert, as a real app would run it: review → confirm → confirmation.
 // Deposits add a Pending deposit to this session's Activity; auto-invest changes the
 // session's setting. The data files never change, and reloading starts fresh.
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { AttentionFlag } from '../data'
 import { useScenario } from '../composables/useScenario'
 import { useSession } from '../composables/useSession'
@@ -32,6 +32,13 @@ const amount = computed(() => (kind.value === 'one-time-deposit' ? Number(amount
 
 // Auto-invest: the switch shows the new choice; confirming applies it.
 const wantOn = ref(false)
+
+// While the dialog is open, the page behind it is inert: no one can tab, tap or
+// read their way into it (the dialog itself is teleported outside the app shell).
+watch(open, (o) => {
+  document.querySelector('.fl-app')?.toggleAttribute('inert', o)
+})
+onBeforeUnmount(() => document.querySelector('.fl-app')?.removeAttribute('inert'))
 
 watch(open, (o) => {
   if (!o) return

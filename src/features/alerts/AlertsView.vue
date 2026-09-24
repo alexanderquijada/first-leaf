@@ -4,13 +4,14 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import AlertList from '@/shared/components/AlertList.vue'
+import WordChips from '@/shared/components/WordChips.vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useViewport } from '@/shared/composables/useViewport'
 import AlertDetail from './AlertDetail.vue'
 
 const route = useRoute()
 const { attention } = useScenario()
-const { isDesktop } = useViewport()
+const { isDesktop, isPhone } = useViewport()
 
 const id = computed(() => (route.params.id ? String(route.params.id) : undefined))
 const alert = computed(() => attention.value.find((a) => a.id === id.value))
@@ -33,7 +34,10 @@ const alert = computed(() => attention.value.find((a) => a.id === id.value))
     <template v-else>
       <template v-if="id">
         <RouterLink to="/alerts" class="alerts__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> All alerts</RouterLink>
-        <AlertDetail v-if="alert" :key="alert.id" :alert="alert" :heading-level="1" />
+        <AlertDetail v-if="alert" :key="alert.id" :alert="alert" :heading-level="1">
+          <!-- On a phone, every word on the page is also a 48px chip (P303 brief). -->
+          <template v-if="isPhone" #after><WordChips :ids="alert.terms" /></template>
+        </AlertDetail>
         <div v-else class="alerts__missing">
           <h1>We could not find that alert.</h1>
           <p>It may have been for another account, or it no longer applies.</p>
