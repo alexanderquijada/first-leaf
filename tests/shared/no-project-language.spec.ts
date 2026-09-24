@@ -4,7 +4,7 @@ import { test, expect } from '../fixtures'
 // This crawls every page in every scenario, at phone and laptop widths, with the
 // usual things opened, and searches the rendered text.
 const BANNED = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d/i
-const PAGES = ['/', '/alerts', '/alerts/deposit-returned', '/alerts/cash-sitting', '/activity', '/funds', '/funds/FL-GREEN', '/story', '/practice', '/learn', '/learn/expense-ratio', '/nope']
+const PAGES = ['/', '/alerts', '/alerts/deposit-returned', '/alerts/cash-sitting', '/activity', '/activity/rosa-starter-034', '/activity/rosa-starter-002', '/funds', '/funds/FL-GREEN', '/funds/FL-CALM', '/story', '/practice', '/learn', '/learn/expense-ratio', '/learn/practice-mode', '/nope']
 const SCENARIOS = ['normal', 'all-clear', 'brand-new']
 
 for (const width of [390, 1280]) {

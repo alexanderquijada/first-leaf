@@ -20,7 +20,7 @@ test('the chapter menu is a bottom sheet that takes you to the chapter', async (
 test('story sliders are at least 48px tall and the charts sit inline', async ({ page }) => {
   await page.goto('/story#chapter-5')
   const sliders = page.getByRole('slider')
-  expect(await sliders.count()).toBe(4)
+  await expect(sliders).toHaveCount(4)
   for (const h of await sliders.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height))) expect(h).toBeGreaterThanOrEqual(48)
   const chart = (await page.locator('#chapter-5 canvas').first().boundingBox())!
   expect(chart.x).toBeGreaterThanOrEqual(0)

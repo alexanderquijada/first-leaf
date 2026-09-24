@@ -24,7 +24,7 @@ async function seriousViolations(page: Page) {
     .map((v) => `${v.impact}: ${v.id}: ${v.help} (${v.nodes.map((n) => n.target.join(' ')).join(' | ')})`)
 }
 
-const PAGES = ['/', '/story', '/activity', '/alerts', '/alerts/deposit-returned', '/alerts/nope', '/?scenario=all-clear', '/?scenario=brand-new', '/story?scenario=brand-new']
+const PAGES = ['/', '/story', '/activity', '/activity/rosa-starter-034', '/alerts', '/alerts/deposit-returned', '/alerts/nope', '/funds', '/funds/FL-GREEN', '/funds/FL-CALM', '/practice', '/learn', '/learn/expense-ratio', '/?scenario=all-clear', '/?scenario=brand-new', '/story?scenario=brand-new', '/activity?scenario=brand-new']
 const WIDTHS = [
   { width: 390, height: 844 },
   { width: 1280, height: 800 },
@@ -61,6 +61,50 @@ for (const size of WIDTHS) {
       await page.goto('/')
       if (size.width < 600) await page.getByRole('button', { name: 'Why it moved this week' }).click()
       await page.getByRole('button', { name: 'Show as table' }).first().click()
+      expect(await seriousViolations(page)).toEqual([])
+    })
+
+    test('Practice with an order error showing', async ({ page }) => {
+      await page.goto('/practice')
+      if (size.width < 600) {
+        const pad = page.getByRole('group', { name: 'Number keypad' })
+        await pad.getByRole('button', { name: '9', exact: true }).click()
+        for (let i = 0; i < 4; i++) await pad.getByRole('button', { name: '9', exact: true }).click()
+      } else await page.getByLabel('Amount in dollars').fill('99999')
+      await expect(page.getByRole('alert').first()).toContainText('practice money')
+      expect(await seriousViolations(page)).toEqual([])
+    })
+
+    test('Words with no results, and the story at chapter 5', async ({ page }) => {
+      await page.goto('/learn')
+      await page.getByLabel('Search words').fill('zebra')
+      expect(await seriousViolations(page)).toEqual([])
+      await page.goto('/story#chapter-5')
+      await page.getByRole('group', { name: 'Your guess' }).getByRole('button', { name: 'Nia' }).click()
+      expect(await seriousViolations(page)).toEqual([])
+    })
+
+    test('the phone sheets open (filters, chapters, practice review)', async ({ page }) => {
+      test.skip(size.width >= 600, 'These sheets are phone-only')
+      await page.goto('/activity')
+      await page.getByRole('button', { name: 'Filters' }).click()
+      await expect(page.getByRole('dialog', { name: 'Filters' })).toBeVisible()
+      expect(await seriousViolations(page)).toEqual([])
+      await page.goto('/story')
+      await page.getByRole('button', { name: 'Chapters' }).click()
+      await expect(page.getByRole('dialog', { name: 'Chapters' })).toBeVisible()
+      expect(await seriousViolations(page)).toEqual([])
+      await page.goto('/practice')
+      for (const k of ['5', '0']) await page.getByRole('group', { name: 'Number keypad' }).getByRole('button', { name: k, exact: true }).click()
+      await page.getByRole('button', { name: 'Review' }).click()
+      await expect(page.getByRole('dialog', { name: 'Check your order' })).toBeVisible()
+      expect(await seriousViolations(page)).toEqual([])
+    })
+
+    test('with the phone view open on Practice', async ({ page }) => {
+      test.skip(size.width < 600, 'Phone view is hidden under 600px')
+      await page.goto('/practice?view=phone')
+      await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').locator('.porder__keys')).toBeVisible()
       expect(await seriousViolations(page)).toEqual([])
     })
 
