@@ -84,6 +84,8 @@ npm run dev          # http://localhost:5173
 npm run build        # production build (what Vercel runs)
 npm run validate     # data rules
 npm run test:e2e     # Playwright tests (first time: npx playwright install chromium)
+npm run check        # every local check in one go: build, data rules, boundaries, icons, tests
+npm run check:live   # the live site answers and runs the same build as this checkout
 ```
 
 ## Credits

@@ -2,16 +2,16 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 0 · Foundation)
+**Last updated:** Sept. 24, 2026 (Phase 0.5 · Rulings and guardrails)
 
 ## NEXT STEP
 
-Alex reviews Phase 0 on the live site (landing page, the three doors, one term explanation per case study, the disclaimer everywhere) and rules on:
-1. The **deviations** in the Phase 0 entry of the decision log (three extra fix commits, Node engines range, and the others listed there).
-2. The **Pelipper Post comparison** list (13 gaps plus permissions), each one ratify / decline / amend.
-3. The **DRAFT copy** listed under Known issues.
+Alex reviews Phase 0.5:
+- "Back to …" in a term explanation (open "yearly fee" on /p301, then a related word)
+- the Demo menu
+- the approved landing line
 
-Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`.
+Then he rules on the deviations in the Phase 0.5 decision-log entry (especially the permissions file that was never committed, and the related-word link height on P303). Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`. From now on, `npm run check` is the one local gate, and `check:deploy` runs `check:live` itself.
 
 ## Live links
 
@@ -52,6 +52,7 @@ Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`.
 |---|---|---|---|---|
 | Plan (Sept. 23) | ✅ Briefs, data (3 accounts), validator (42 rules, 65 broken cases), AI docs, setup script | ✅ Brief | ✅ Brief | ✅ Brief |
 | 0 · Foundation (Sept. 24) | ✅ Scaffold, tokens, fonts, TermTip, Disclaimer, DemoMenu, Money, SeverityBadge, landing, 404 | ✅ Route shell | ✅ Route shell | ✅ Route shell |
+| 0.5 · Rulings and guardrails (Sept. 24) | ✅ check:live, test guard, check:icons, axe scans, Demo menu semantics, TermTip Back, money format, permissions, `npm run check` | — | — | — |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
@@ -71,6 +72,44 @@ Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`.
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 0.5 · Rulings and guardrails
+
+- **The rulings were recorded brief first** (`16125fe`, docs only), before any code changed.
+- **New guardrails, each shown failing first:**
+  - **`check:live`:** six pages must return 200 with the app's HTML, and the live asset file names must match a fresh local build.
+    - It failed (exit 1) against a deliberately different local build, and against a site that isn't ours.
+    - `check:deploy` now prints https://first-leaf.vercel.app and runs `check:live`.
+  - **Test guard (`tests/fixtures.ts`):** fails any test on a console error, an uncaught error, or NaN/undefined/null/[object Object] on screen.
+    - It caught all five breakages on a temporary broken page (since removed).
+    - A meta-test fails if a spec skips the guard.
+  - **`check:icons`:** its self-test catches a fake name, and a misspelled real icon failed.
+  - **axe scans (WCAG 2.2 AA, zero serious or critical):** 4 pages × 2 widths, plus the open panel and the open Demo menu. They failed on a deliberately low-contrast token.
+  - **`npm run check`:** stops with exit 1 at the first failing step.
+- **Caught: the aria snapshot found a defect axe missed.**
+  - Vuetify puts `aria-owns` on the menu button, which pulled the whole list into the button's accessible name ("Demo: Rosa, 7 months in Rosa, 7 months in The main demo…").
+  - The choices were plain list items under `aria-haspopup="menu"`.
+  - Now: the button keeps its own name, and the choices are a "Demo scenarios" menu of radio items with the current one checked.
+  - The snapshot fails on the old markup and passes on the new.
+- **Caught: `.claude/settings.local.json` had never been committed.** A global git ignore on Alex's machine (`~/.config/git/ignore`) excludes `**/.claude/settings.local.json`, so the "committed on purpose" note was untrue from the first commit. It's now force-added and tracked (`c9ae855`). Other machines with the same global ignore still track it, because git only ignores untracked files.
+- **TermTip Back:**
+  - After a related word, "Back to {previous term}" appears (48px tall). It sends focus to the related-word link; going forward sends focus to the new heading.
+  - Tab stays inside the panel from the heading too.
+- **Money:** the approved format. It was checked on a temporary probe page, since Money isn't on a real page yet:
+  - in sentences: "up $15.57" in forest, "down $5.88" in terracotta
+  - in tables: "+$15.57" / "−$5.88", read as "up $15.57" / "down $5.88"
+- **Deviations (for Alex to rule on):**
+  - `check:icons:selftest` is its own script, matching `check:boundaries:selftest`. `npm run check:icons -- --selftest` also works.
+  - The Demo menu's semantics fix went into the icon-and-axe commit, because the aria snapshot that found it belongs there.
+  - The Demo menu has a new accessible name, "Demo scenarios". It's screen-reader-only copy, **DRAFT**.
+  - The Back button's wording "Back to {term}" was set by the ruling; its arrow icon is `mdi-arrow-left`.
+  - The approved landing line went in with the TermTip/Money commit.
+  - BRIEF.md §9 and CLAUDE.md §8 said "sign + word + color" for gains and losses. Both were changed to match the money ruling.
+  - `setup.sh`'s embedded payload (a snapshot of the first commit) was left as it was; only its live Node check changed.
+- **Verified:**
+  - Nothing of ours was lost in the scaffold (diff against `eb30959`: only filled placeholders and ruled amendments were removed).
+  - The devtools plugin is not in `dist/` (0 matches for "devtools").
+  - All nine Phase 0 commit subjects match the plan exactly.
 
 ### Sept. 24, 2026: Phase 0 rulings
 
@@ -165,12 +204,14 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **No favicon yet.** Vue's was removed in Phase 0; an original First Leaf icon comes in Phase 3.
 - **`scripts/setup.sh` embeds a snapshot of the first commit's files** (its payload). Only its live Node check was updated; the payload stays as it was on Sept. 23, because setup has already run.
 - **Money and SeverityBadge aren't on any page yet.** They're built but not rendered, so their colors (terracotta losses, mustard "Heads-up") will be measured in the rendered UI in Phase 1.
-- **Demo menu semantics:** the choices are keyboard-operable list items with `aria-current` on the active one, not a `menuitemradio` group. It works with a keyboard; a screen reader pass is still needed.
+- ~~Demo menu semantics~~ **Fixed Sept. 24:** a labelled menu of `menuitemradio` items, locked by an aria snapshot. A pass with a real screen reader (VoiceOver) is still worth doing.
+- **Related-word links in the explanation panel are about 27px tall** (71×27 measured). On desktop that's above the 24px minimum. On P303's bottom sheet, the amended rule may count them as standalone controls that need 48px. Needs a ruling before P303's Phase 1 screens.
 - **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
 - **The per-deployment Vercel URL redirects (302).** Use https://first-leaf.vercel.app.
 
 - **Pelipper Post location:** `setup.sh` looks for it in `~/Projects` and other common folders (and with Spotlight). If it isn't found, Phase 0 skips the pattern comparison. See the setup output.
 - **Illustrations:** Open Peeps / Open Doodles are downloaded from their sites in Phase 3. If Claude Code can't fetch them, Alex downloads one zip.
+- **`.claude/settings.local.json` and global git ignores:** tracked since `c9ae855`. If it ever shows as untracked again, a global ignore is the cause.
 - ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
 - **Copy is DRAFT** until Alex approves it in Phase 2: all glossary entries, flag text, fund descriptions and story claims.
@@ -194,6 +235,7 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 | Landing door link "Open P30X" | #1F5C3B → #FFFDF8 | 16px bold | **7.79:1** | 4.5 |
 
 **Fonts, computed:** h1 = `"Newsreader Variable", Georgia, …` (56–88px); buttons and body = `"Hanken Grotesk Variable", system-ui, …`. `document.fonts.check()` is true for both, and both faces report `loaded`.
+**Phase 0.5 additions:** TermTip "Back to …" button is 161×48 (desktop) / 210×48 (390), #1F5C3B on #FFFDF8 = **7.79:1** at 15px/600. The axe scans report zero serious or critical violations on /, /p301, /p302 and /p303 at 390 and 1280, with the panel open and with the Demo menu open.
 **Target sizes:** Demo button 211×48, TermTip close button 48×48, related-word links 71×27, inline TermTip button 79×29 (see Known issues).
 
 ## Compliance notes
