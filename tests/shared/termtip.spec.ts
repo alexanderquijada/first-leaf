@@ -4,7 +4,7 @@ import { test, expect } from '../fixtures'
 const SHELLS = [
   { path: '/', term: 'Balance', short: 'The total value of everything in your account right now.' },
   { path: '/story', term: 'Growth on growth', short: 'When your money earns money' },
-  { path: '/alerts', term: 'Returned deposit', short: 'A deposit your bank sent back' },
+  { path: '/alerts/deposit-returned', term: 'Returned deposit', short: 'A deposit your bank sent back' },
 ]
 
 for (const { path, term, short } of SHELLS) {
@@ -58,7 +58,7 @@ test('a related word opens its own explanation, and a click outside closes it', 
 
 test('under 600px wide the explanation opens as a bottom sheet', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/alerts')
+  await page.goto('/alerts/deposit-returned')
   await page.locator('main .fl-termtip__button').first().click()
   const panel = page.getByRole('dialog', { name: 'Returned deposit' })
   await expect(panel).toBeVisible()

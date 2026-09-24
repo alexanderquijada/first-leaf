@@ -1,13 +1,91 @@
 <script setup lang="ts">
-import PagePlaceholder from '@/shared/components/PagePlaceholder.vue'
-import TermTip from '@/shared/components/TermTip.vue'
+// Alerts (/alerts and /alerts/:id). On a laptop: two panes, the list beside the
+// open alert. Narrower: the list, or one alert as its own page.
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import AlertList from '@/shared/components/AlertList.vue'
+import { useScenario } from '@/shared/composables/useScenario'
+import { useViewport } from '@/shared/composables/useViewport'
+import AlertDetail from './AlertDetail.vue'
+
+const route = useRoute()
+const { attention } = useScenario()
+const { isDesktop } = useViewport()
+
+const id = computed(() => (route.params.id ? String(route.params.id) : undefined))
+const alert = computed(() => attention.value.find((a) => a.id === id.value))
 </script>
 
 <template>
-  <PagePlaceholder title="Alerts">
-    <p>
-      If your bank sends a deposit back, it is called a
-      <TermTip id="returned-deposit">returned deposit</TermTip>.
-    </p>
-  </PagePlaceholder>
+  <div class="alerts" :class="{ 'is-two': isDesktop }">
+    <template v-if="isDesktop">
+      <h1 class="fl-visually-hidden">Alerts</h1>
+      <div class="alerts__list"><AlertList :selected-id="id" /></div>
+      <div class="alerts__detail">
+        <AlertDetail v-if="alert" :key="alert.id" :alert="alert" />
+        <div v-else-if="id" class="alerts__missing">
+          <h2>We could not find that alert.</h2>
+          <p>It may have been for another account, or it no longer applies.</p>
+        </div>
+        <p v-else class="alerts__choose">Choose an alert to read it here.</p>
+      </div>
+    </template>
+    <template v-else>
+      <template v-if="id">
+        <RouterLink to="/alerts" class="alerts__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> All alerts</RouterLink>
+        <AlertDetail v-if="alert" :key="alert.id" :alert="alert" :heading-level="1" />
+        <div v-else class="alerts__missing">
+          <h1>We could not find that alert.</h1>
+          <p>It may have been for another account, or it no longer applies.</p>
+        </div>
+      </template>
+      <template v-else>
+        <h1 class="fl-visually-hidden">Alerts</h1>
+        <AlertList show-seen />
+      </template>
+    </template>
+  </div>
 </template>
+
+<style scoped>
+.alerts.is-two {
+  display: grid;
+  grid-template-columns: minmax(320px, 5fr) 7fr;
+  gap: 24px;
+  align-items: start;
+  max-width: 1280px;
+}
+
+.alerts__list,
+.alerts__detail {
+  padding: 20px 24px;
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 16px;
+  background: var(--color-paper);
+}
+
+.alerts__detail {
+  position: sticky;
+  top: 80px;
+}
+
+.alerts__choose,
+.alerts__missing p {
+  margin: 8px 0 0;
+  color: var(--color-ink-muted);
+}
+
+.alerts__missing h1,
+.alerts__missing h2 {
+  font-size: 1.75rem;
+}
+
+.alerts__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+</style>

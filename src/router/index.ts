@@ -10,7 +10,7 @@ const app: RouteRecordRaw = {
   children: [
     { path: '', name: 'home', component: HomeView, meta: { title: 'Home' } },
     { path: 'alerts', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
-    { path: 'alerts/:id', component: () => import('@/features/alerts/AlertDetailView.vue'), meta: { title: 'Alert' } },
+    { path: 'alerts/:id', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
     { path: 'activity', component: () => import('@/features/activity/ActivityView.vue'), meta: { title: 'Activity' } },
     { path: 'funds', component: () => import('@/features/funds/FundsView.vue'), meta: { title: 'Your funds' } },
     { path: 'funds/:ticker', component: () => import('@/features/funds/FundView.vue'), meta: { title: 'Your funds' } },

@@ -115,13 +115,18 @@ function next() {
             <p v-else-if="pausedSince">Auto-invest is paused. It has been off since {{ formatDate(pausedSince) }}.</p>
             <p v-else>Auto-invest is off.</p>
             <div class="fl-flow__switch">
-              <v-switch
-                v-model="wantOn"
-                color="forest"
-                inset
-                hide-details
-                :label="wantOn ? 'Auto-invest: On' : 'Auto-invest: Off'"
-              />
+              <span id="fl-flow-switch-label" class="fl-flow__switch-label">Auto-invest</span>
+              <button
+                type="button"
+                role="switch"
+                class="fl-switch"
+                :aria-checked="wantOn ? 'true' : 'false'"
+                aria-labelledby="fl-flow-switch-label"
+                @click="wantOn = !wantOn"
+              >
+                <span class="fl-switch__track" aria-hidden="true"><span class="fl-switch__thumb" /></span>
+                <span class="fl-switch__text">{{ wantOn ? 'On' : 'Off' }}</span>
+              </button>
             </div>
           </template>
           <template v-else-if="step === 'confirm'">
@@ -241,7 +246,66 @@ function next() {
 }
 
 .fl-flow__switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-top: 12px;
+  min-height: 48px;
+  border-top: 1px solid var(--color-mint);
+  border-bottom: 1px solid var(--color-mint);
+}
+
+.fl-flow__switch-label {
+  font-weight: 600;
+}
+
+.fl-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.fl-switch__track {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  border: 2px solid var(--color-ink-muted);
+  background: var(--color-paper);
+}
+
+.fl-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-ink-muted);
+  transition: left 150ms ease;
+}
+
+.fl-switch[aria-checked='true'] .fl-switch__track {
+  border-color: var(--color-forest);
+  background: var(--color-forest);
+}
+
+.fl-switch[aria-checked='true'] .fl-switch__thumb {
+  left: 23px;
+  background: var(--color-paper);
+}
+
+.fl-switch__text {
+  min-width: 2em;
 }
 
 .fl-flow__actions {
