@@ -79,6 +79,15 @@ He rules on the Phase 1B deviations and the DRAFT copy. Then the planning chat i
 
 Newest first. Include what we got wrong and why.
 
+### Sept. 24, 2026: Phase 1B rulings
+
+- **Ratified:** the `/activity/:id` route.
+- **The calm account and the July dip.** It shares the market's July dip dates, but its story must never say it paused: the dip is described as a market event only. (A test for this is added in Phase 2.)
+- **Ratified:**
+  - Rosa's monthly slider, $25–$500 in $5 steps
+  - the Words search scope (the term, its other names and its first line)
+  - the seven extra commits. Adding the brief flows before their code is the brief-first rule working.
+
 ### Sept. 24, 2026: Phase 1B · The rest of the core flows
 
 - **1A rulings applied:**
