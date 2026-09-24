@@ -23,6 +23,13 @@ a {
   color: var(--color-forest);
 }
 
+/* Typed text is ink, not the browser's default black. */
+input,
+textarea,
+select {
+  color: var(--color-ink);
+}
+
 /* Numbers line up in tables; headlines keep proportional figures. */
 table,
 .fl-tabular {
