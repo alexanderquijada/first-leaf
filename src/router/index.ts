@@ -39,6 +39,12 @@ const routes: RouteRecordRaw[] = [
   comingSoon('/p301/practice', 'Practice', P301, '/p301'),
   comingSoon('/p301/learn', 'Words to know', P301, '/p301'),
   {
+    path: '/p302',
+    name: 'p302',
+    component: () => import('@/p302-story/views/StoryView.vue'),
+    meta: { title: 'P302 · Start early beats start big' },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('@/landing/NotFoundView.vue'),
