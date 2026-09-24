@@ -13,6 +13,7 @@ import { practiceRules } from '@/shared/data'
 import { formatDate, formatMoney, formatMoneyShort } from '@/shared/format'
 import { colors } from '@/shared/tokens/tokens'
 import OrderForm from './OrderForm.vue'
+import PhoneOrder from './PhoneOrder.vue'
 
 const p = usePractice()
 const { isPhone } = useViewport()
@@ -46,7 +47,8 @@ function startOver() {
 
     <div class="practice__grid">
       <div class="practice__card">
-        <slot name="order"><OrderForm v-if="!isPhone" /></slot>
+        <PhoneOrder v-if="isPhone" />
+        <OrderForm v-else />
       </div>
 
       <div class="practice__card">
