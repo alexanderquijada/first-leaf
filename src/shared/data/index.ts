@@ -325,6 +325,17 @@ export interface GlossaryEntry {
 }
 
 // ── Loaders ──────────────────────────────────────────────────────────────────
+// The data never changes at run time: Practice, session state and every screen
+// only read it. Freezing it makes any accidental write throw (and fail the tests).
+function deepFreeze<T>(o: T): T {
+  if (o && typeof o === 'object' && !Object.isFrozen(o)) {
+    Object.freeze(o)
+    for (const v of Object.values(o as object)) deepFreeze(v)
+  }
+  return o
+}
+for (const d of [accountJson, accountAllClearJson, accountNewJson, activityJson, attentionJson, fundsJson, storyJson, practiceJson, metaJson, glossaryJson]) deepFreeze(d)
+
 export const meta = metaJson as Meta
 export const persona = personaJson as Persona
 export const funds = fundsJson as Fund[]
