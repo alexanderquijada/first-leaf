@@ -409,6 +409,34 @@ onBeforeUnmount(() => close(false))
   cursor: pointer;
 }
 
+/* On a phone the related words are standalone controls: 48 × 48px each (P303 ruling). */
+.fl-termtip__panel--sheet .fl-termtip__related ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.fl-termtip__panel--sheet .fl-termtip__related li + li::before {
+  content: none;
+}
+
+.fl-termtip__panel--sheet .fl-termtip__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--color-forest);
+  border-radius: 24px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.fl-termtip__panel--sheet .fl-termtip__back {
+  min-height: 48px;
+}
+
 .fl-termtip__source {
   font-family: var(--font-ui);
   font-size: 0.875rem;
