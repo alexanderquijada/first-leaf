@@ -9,9 +9,12 @@
 //   npm run check:deploy            wait up to 10 minutes for HEAD to be live
 //   node scripts/check-deploy.mjs --no-wait   check once and report
 //
+// After a successful deploy it runs check:live (pages answer, same build as local).
+//
 // Needs: the GitHub CLI (gh), logged in. No Vercel login needed.
 
 import { execSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 const sh = (cmd) => execSync(cmd, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const wait = !process.argv.includes('--no-wait');
@@ -41,7 +44,12 @@ for (;;) {
     const state = s?.state || 'pending';
     if (state === 'success') {
       console.log(`✓ Live: commit ${head.slice(0, 7)} deployed to Production.`);
-      if (s.environment_url || s.target_url) console.log(`  ${s.environment_url || s.target_url}`);
+      // The per-deployment URL Vercel reports is behind deployment protection,
+      // so print the public production URL instead, then prove it with check:live.
+      const prodUrl = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).firstLeaf?.productionUrl;
+      if (prodUrl) console.log(`  ${prodUrl}`);
+      console.log('Running check:live…');
+      try { execSync('node scripts/check-live.mjs', { stdio: 'inherit' }); } catch { process.exit(1); }
       process.exit(0);
     }
     if (state === 'error' || state === 'failure') {

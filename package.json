@@ -20,7 +20,8 @@
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "check:boundaries:selftest": "node scripts/check-boundaries.mjs --selftest",
     "check:deploy": "node scripts/check-deploy.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "check:live": "node scripts/check-live.mjs"
   },
   "dependencies": {
     "@fontsource-variable/hanken-grotesk": "^5.3.0",
@@ -44,5 +45,8 @@
     "vite": "^8.2.2",
     "vite-plugin-vue-devtools": "^8.2.1",
     "vue-tsc": "^3.3.11"
+  },
+  "firstLeaf": {
+    "productionUrl": "https://first-leaf.vercel.app"
   }
 }
