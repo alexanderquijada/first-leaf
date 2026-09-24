@@ -8,7 +8,9 @@
 
 **Your money story** tells Rosa the story of her own first seven months in First Leaf, using her real (fictional) account, and argues one point of view. The story states it on screen, in these words:
 
-> *"Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."*
+> *"Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."*
+
+(Second person, like the chapters that follow: the story speaks to Rosa. Ruling, Sept. 24.)
 
 It earns that point of view in six chapters. The first four read her own data: her balance since March, how much of it is her own deposits, the dip in July (when she paused auto-invest) and what happened after, and where her money sits now. The fifth shows why years matter, with two friends, Nia and Theo (invented for the lesson): Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. Then Rosa's own 26-to-65 slider shows it for her. The sixth invites her to try it with pretend money in Practice.
 
@@ -58,7 +60,7 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 | Claim on screen | Checked as |
 |---|---|
 | Almost all of Rosa's balance is money she put in | $1,250 of $1,313.72 (95.1%) is deposits; $63.72 (4.9%) is what it earned (R1) |
-| In July, prices dipped | FL-BROAD fell from $90.46 on June 26 to $84.45 on July 13, a 6.6% drop (R2). "The dip" is the biggest drop in FL-BROAD's closes from June 15 to July 31; the window is stored with the facts and R2 recomputes it. (Searching from June 1 would find a longer, slower slide from $91.34 on June 2, which is not the drop Rosa reacted to.) |
+| In July, prices dipped | FL-BROAD fell from $90.46 on June 26 to $84.45 on July 13, a 6.6% drop (R2). **The dip rule (ruling, Sept. 24):** the dip is the largest high-to-low drop in FL-BROAD's closes in the 30 calendar days before Rosa paused auto-invest (June 14 to July 14). It is tied to her action, not a hand-picked window. The market is the same for every account, so the calm account (which never paused) uses the same window. R2 recomputes the window from the pause date and the dip from the prices. |
 | At the low, her balance was below what she had put in | On July 13 her balance was $1,065.00, $35.00 below the $1,100 she had put in (R2) |
 | She paused auto-invest the next day | Paused July 14 (A14, R3) |
 | After the pause | By July 20 her balance ($1,100.61) was back above what she'd put in. Her Aug. 3 deposit stayed as cash. By Sept. 18 she was up $63.72 (R3) |

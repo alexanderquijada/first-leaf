@@ -17,6 +17,7 @@ You are building **First Leaf**, **one app** reviewed as three Protogen case stu
 
 ## 2. Commits, pushes and deploys (do these without asking)
 
+- **A pre-commit hook runs `npm run check` on the whole working tree** (not just what's staged). Commit or discard unrelated changes before committing, or they can block the commit. Never bypass it (`--no-verify` is denied).
 - **Commit and push at the end of every phase without asking.** Within a phase, commit each lens's work **separately**, with a prefix:
   `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Your money story, Practice, Words · `[P303]` the phone layout, phone navigation, Phone view and phone-specific screens · `[shared]` shared code, data, tokens, and layouts used at every size · `[docs]` briefs, STATUS, README only.
 - Messages say what changed and why, in the present tense: `[P303] Add "Why it moved" waterfall with per-fund breakdown`. Never just "update", "fix", "wip" or "changes".

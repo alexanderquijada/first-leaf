@@ -63,7 +63,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 
 | Alert | What the phone detail shows |
 |---|---|
-| Deposit sent back | The deposit's dates and status, and **Try again** (review → confirm → "Deposit requested") |
+| Deposit sent back | The deposit's dates and status, and **Try again** (review → confirm → "Your deposit is on its way.") |
 | Goal behind plan | Planned vs. put in, and **Add a one-time deposit** (the same flow, amount filled in) |
 | Waiting in cash | Auto-invest status (paused since July 14) with an On/Off switch and a confirmation |
 | Fee going up | The fund's name, old and new fee (0.30 percentage points), and the dollar difference |

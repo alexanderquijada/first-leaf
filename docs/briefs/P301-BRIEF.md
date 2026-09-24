@@ -74,7 +74,7 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 - Alerts raised since last Sunday's review (Sept. 13) show a **New** badge.
 - **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "FYI" (forest, info icon). Color never works alone.
 - **Every money action is a realistic flow:** review → confirm → confirmation, and it changes what the app shows for the rest of the session (a Pending deposit in Activity, "Auto-invest: On"). Reloading resets it; the data files never change.
-  - *Try the deposit again* ends with "Deposit requested. It usually arrives in 1–3 business days." and a Pending deposit in Activity.
+  - *Try the deposit again* ends with "Your deposit is on its way. It should arrive in 1 to 3 business days." and a Pending deposit in Activity. (The line lives in one place in the code and is used everywhere.)
   - *Add a one-time deposit* is the same flow with the amount filled in.
   - *See auto-invest settings* shows the paused status with an On/Off switch and a confirmation.
 - A fee change is described in **percentage points**, never as a percent of the old fee.

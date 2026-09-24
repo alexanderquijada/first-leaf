@@ -77,6 +77,19 @@ He rules on the deviations and the DRAFT copy in the Phase 1A decision-log entry
 
 Newest first. Include what we got wrong and why.
 
+### Sept. 24, 2026: Phase 1A rulings
+
+- **Amended: the deposit confirmation** becomes "Your deposit is on its way. It should arrive in 1 to 3 business days." Claude's original line scored grade 10. It lives in one place in the code.
+- **Adopted: the point of view in the second person:** "Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."
+- **Amended: the July dip rule.** The dip is the largest high-to-low drop in FL-BROAD in the 30 calendar days before the auto-invest pause (June 14 to July 14), so it is tied to Rosa's action, not a hand-picked window. *Claude's note:* the calm account never paused, so it uses the same window (the market is the same for every account).
+- **Ratified:**
+  - the pinned story chart, deferred to Phase 3
+  - the S3 matching ("not" or "nothing here is" investment advice)
+  - the brand-new account's split point of view
+  - the phone's fund moves in dollars
+  - the extra commits
+- **Noted in CLAUDE.md:** the pre-commit hook checks the whole working tree, so commit or discard unrelated changes first.
+
 ### Sept. 24, 2026: Phase 1A · Core screens, as a real app
 
 - **Rulings recorded brief first** (`b1ffd71`). A pre-commit hook now runs `npm run check` on every commit (`35b4d3e`). It blocked a deliberately failing test, then four real stale-test or timing problems during this phase, each fixed before the commit went in.
