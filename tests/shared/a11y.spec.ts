@@ -4,6 +4,8 @@ import { test, expect } from '../fixtures'
 
 // axe-core scans against WCAG 2.2 A and AA. Zero serious or critical violations allowed.
 async function seriousViolations(page: Page) {
+  // Measure the settled page: a fade-in caught halfway looks like low contrast.
+  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))))
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze()

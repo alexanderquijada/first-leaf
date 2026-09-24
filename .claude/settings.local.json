@@ -32,7 +32,9 @@
       "Bash(git rebase*)",
       "Bash(git clean*)",
       "Bash(git commit --amend*)",
-      "Bash(git filter-branch*)"
+      "Bash(git filter-branch*)",
+      "Bash(git commit *--no-verify*)",
+      "Bash(git push *--no-verify*)"
     ],
     "additionalDirectories": [
       "/Users/alex.quijada/Projects/pelipper-post"

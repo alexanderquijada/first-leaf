@@ -1,0 +1,10 @@
+#!/bin/sh
+# Runs every local check before each commit (CLAUDE.md §2–3). A failing check
+# blocks the commit. --no-verify is denied in .claude/settings.local.json.
+echo "pre-commit: running npm run check (build, data rules, boundaries, icons, tests)…"
+if ! npm run check > .git/pre-commit-check.log 2>&1; then
+  echo "pre-commit: BLOCKED. npm run check failed. Last lines:"
+  tail -25 .git/pre-commit-check.log
+  exit 1
+fi
+echo "pre-commit: all checks passed."
