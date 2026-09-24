@@ -66,3 +66,17 @@ test('a chapter link lands on its chapter', async ({ page }) => {
   await page.getByRole('navigation', { name: 'Chapters' }).getByRole('link', { name: 'Where it is now' }).click()
   await expect(page.getByRole('heading', { name: 'Where it is now' })).toBeInViewport()
 })
+
+for (const width of [1280, 768]) {
+  test(`a chapter link's heading lands below the top bar at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/story#chapter-5')
+    const heading = page.getByRole('heading', { name: 'What happens if you keep going' })
+    await expect(heading).toBeInViewport()
+    const bars = await page.evaluate(() =>
+      Math.max(...[...document.querySelectorAll('.fl-topbar, .fl-tabs')].map((e) => e.getBoundingClientRect().bottom)),
+    )
+    const box = (await heading.boundingBox())!
+    expect(box.y).toBeGreaterThanOrEqual(bars)
+  })
+}

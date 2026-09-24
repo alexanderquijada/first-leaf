@@ -49,7 +49,8 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash } : { top: 0 }),
+  // A #chapter link lands below the sticky top bar (and the tablet's tabs), not under it.
+  scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash, top: 128 } : { top: 0 }),
 })
 
 // Scenarios are reached by URL only, so ?scenario= rides along on every in-app link.
