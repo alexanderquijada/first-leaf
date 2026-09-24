@@ -134,6 +134,10 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 | F5 | **Move around one-handed** | Use the bottom tab bar: Activity, Story, Practice, Words, Home | Every tab is at least 48 × 48px, shows where you are, and keeps its place |
 | F6 | **Check every scenario** | Open `/?scenario=all-clear&view=phone`, then `/?scenario=brand-new&view=phone` (by URL only) | Home shows that scenario's account, and every sentence stays true |
 | F7 | **Review on a laptop** | Click the phone icon in the top bar, or open `/?view=phone` | The real phone Home and bottom tab bar show inside the frame, on the same route and scenario |
+| F8 | **Check activity one-handed** | Activity tab → a compact list (date, what, amount, status) → **Filters** opens a bottom sheet (type and status, 48px) → tap a row | The row opens as a full page with its words as chips; filters combine; an empty combination says so |
+| F9 | **Look at a fund** | Home or Activity → Funds → a card (ticker, name, value, up or down) → the fund page | The page leads with value and up or down, then a small price chart (Since you bought / 1 year / 5 years), then the yearly fee and "4 of 5" |
+| F10 | **Practice with a keypad** | Practice tab → pick a fund → amount on a large number keypad → review in a bottom sheet → confirm | Errors show above the keypad and Confirm stays disabled; the "Practice money. It isn't real money." banner is always visible |
+| F11 | **Read the story and Words on a phone** | Story tab → **Chapters** opens a bottom sheet → a chapter; sliders are at least 48px tall · Words tab → search at the top → 48px result rows | Charts sit inline; every control is at least 48 × 48px |
 
 **Term explanations on a phone** open as a bottom sheet (easier to reach and read than a floating bubble), with the same content and accessibility as everywhere else. **Related-word links in the sheet are standalone controls, so under 600px each is at least 48 × 48px** (ruling, Sept. 24).
 
