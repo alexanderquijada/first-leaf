@@ -41,21 +41,21 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 {
   "account.weeklyChange.from": "2026-09-11",
   "account.weeklyChange.to": "2026-09-18",
-  "account.weeklyChange.startBalance": 1298.15,
+  "account.weeklyChange.startBalance": 1347.79,
   "account.weeklyChange.deposits": 0,
-  "account.weeklyChange.dividends": 0.5,
-  "account.weeklyChange.marketChange": 15.07,
-  "account.weeklyChange.totalChange": 15.57,
-  "account.weeklyChange.endBalance": 1313.72,
+  "account.weeklyChange.dividends": 0,
+  "account.weeklyChange.marketChange": -10.99,
+  "account.weeklyChange.totalChange": -10.99,
+  "account.weeklyChange.endBalance": 1336.8,
   "attention.rosa-starter.0.title": "Your $150 deposit from Sept. 1 was sent back",
-  "meta.wordOfTheDay": "expense-ratio",
-  "activity.rosa-starter.34.type": "dividend",
-  "activity.rosa-starter.33.status": "returned",
-  "activity.rosa-starter.32.type": "dividend"
+  "meta.wordOfTheDay": "ups-and-downs",
+  "activity.rosa-starter.35.type": "dividend",
+  "activity.rosa-starter.34.status": "returned",
+  "activity.rosa-starter.33.type": "dividend"
 }
 ```
 
-**Last 3 transactions:** the newest three items in the account's activity (for Rosa: the Sept. 15 dividend, the returned Sept. 1 deposit, the Aug. 17 dividend). A returned deposit shows its status in words, not only in color.
+**Last 3 transactions:** the newest three items in the account's activity (for Rosa: the Sept. 10 Microsoft dividend, the returned Sept. 1 deposit, the Aug. 13 Apple dividend). A returned deposit shows its status in words, not only in color.
 
 **Word of the day:** set in the data (`meta.wordOfTheDay`, "Ups and downs" on Sept. 20, from Phase 2.5). **Next word** follows the glossary order, so it's predictable and testable.
 
@@ -76,8 +76,8 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 ┌──────────────────────────────┐
 │ First Leaf                   │  opaque top bar
 │                              │
-│ $1,313.72                    │  serif, big
-│ Up $15.57 this week          │
+│ $1,336.80                    │  serif, big
+│ Down $10.99 this week        │
 │ ╭─╮_╭╮__╱‾  small balance    │  chart since March
 │                              │
 │ ┌──────── PANEL ───────────┐ │
@@ -87,7 +87,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 │ │ + 3 heads-ups           › │ │  tap → Alerts
 │ └───────────────────────────┘ │
 │ ┌ Why it moved this week ──┐ │
-│ │ market up $15.07         │ │  tap → opens in place:
+│ │ market down $10.99       │ │  tap → opens in place:
 │ │ dividend $0.50         › │ │  waterfall, per fund, word chips
 │ └───────────────────────────┘ │
 │ ┌ Latest ──────────────────┐ │

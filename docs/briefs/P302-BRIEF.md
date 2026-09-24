@@ -30,28 +30,23 @@ Rosa, 26, and people like her: in their 20s, a few months into investing or abou
 
 All numbers come from `src/shared/data/` and are re-computed by the validator. **Every claim the story makes is a checked rule**: rules T1–T4 for Nia and Theo, and rules R1–R4 for Rosa's own data (R1–R4 are defined in BRIEF.md §4 now and built in Phase 1).
 
-**Rosa's own data** (the main demo account; the values are refreshed from the regenerated data in Phase 2.5 step 2):
+**Rosa's own data** (the main demo account):
 
 ```json brief-example
 {
   "account.openedOn": "2026-03-02",
-  "account.balance": 1313.72,
+  "account.balance": 1336.8,
   "account.moneyIn": 1250,
-  "account.gainLoss": 63.72,
-  "account.autoInvest.pausedOn": "2026-07-14",
-  "account.cashSince": "2026-08-03",
-  "account.history.91.date": "2026-07-13",
-  "account.history.91.balance": 1065,
-  "account.history.91.moneyIn": 1100,
-  "account.history.96.date": "2026-07-20",
-  "account.history.96.balance": 1100.61,
-  "funds.0.ticker": "FL-BROAD",
-  "funds.0.history.daily.81.date": "2026-06-26",
-  "funds.0.history.daily.81.close": 90.46,
-  "funds.0.history.daily.91.close": 84.45,
-  "funds.0.history.daily.92.date": "2026-07-14",
-  "funds.0.history.daily.92.close": 85.06,
-  "funds.0.history.daily.139.close": 96.35
+  "account.gainLoss": 86.8,
+  "account.autoInvest.pausedOn": "2026-05-27",
+  "account.cashSince": "2026-06-01",
+  "account.history.49.date": "2026-05-11",
+  "account.history.49.balance": 833.81,
+  "account.history.59.date": "2026-05-26",
+  "account.history.59.balance": 799.26,
+  "account.history.59.moneyIn": 800,
+  "story-p302.rosaStory.rosa-starter.facts.dip.fall": 34.89,
+  "story-p302.rosaStory.rosa-starter.facts.dip.month": "May"
 }
 ```
 

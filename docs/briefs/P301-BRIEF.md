@@ -42,21 +42,22 @@ P301 is **First Leaf's Home on a laptop**, plus the Alerts, Activity and Investm
 
 ## Data
 
-Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key facts, checked by the validator (the values are refreshed from the regenerated data in Phase 2.5 step 2):
+Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key facts, checked by the validator:
 
 ```json brief-example
 {
   "attention.rosa-starter.0.id": "deposit-returned",
   "attention.rosa-starter.0.severity": "needs-you",
+  "attention.rosa-starter.3.id": "sipc-crypto",
   "account.goal.target": 2000,
   "account.goal.behindBy": 150,
   "account.goal.plannedMoneyInToDate": 1400,
   "account.goal.actualMoneyInToDate": 1250,
-  "account.autoInvest.pausedOn": "2026-07-14",
-  "account.investedValue": 1158.96,
-  "account.dividendsTotal": 4.76,
-  "account.holdings.3.ticker": "FL-GREEN",
-  "account.holdings.3.gainLoss": -6.37
+  "account.autoInvest.pausedOn": "2026-05-27",
+  "account.investedValue": 884.69,
+  "account.dividendsTotal": 2.11,
+  "account.holdings.3.ticker": "COST",
+  "account.holdings.3.gainLoss": -10.59
 }
 ```
 

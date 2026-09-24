@@ -138,16 +138,20 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 - **"Ups and downs" (1–5)** is computed from each investment's 12-month daily price moves (the standard deviation of daily log returns, times √252 for stocks and √365 for crypto): **1** under 20% a year · **2** 20% to under 30% · **3** 30% to under 45% · **4** 45% to under 65% · **5** 65% or more.
 - **No logos.** Company logos are trademarked artwork, so each investment shows a ticker badge.
 
-**Rosa's account at a glance** (the validator checks this block against the data; the numbers are refreshed from the regenerated data in Phase 2.5 step 2):
+**Rosa's account at a glance** (the validator checks this block against the data):
 
 ```json brief-example
 {
   "persona.age": 26,
   "account.recurringDeposit.amount": 150,
-  "account.balance": 1313.72,
+  "account.balance": 1336.8,
   "account.moneyIn": 1250,
-  "account.gainLoss": 63.72,
-  "account.cash": 154.76,
+  "account.gainLoss": 86.8,
+  "account.cash": 452.11,
+  "account.autoInvest.pausedOn": "2026-05-27",
+  "funds.0.ticker": "AAPL",
+  "funds.0.history.daily.0.close": 245.5,
+  "funds.7.ticker": "BTC",
   "meta.asOf": "2026-09-20",
   "meta.lastClose": "2026-09-18"
 }
@@ -191,7 +195,7 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 - **Measured, not hoped for.** The validator scores every explanation, flag and story claim with the Flesch-Kincaid grade formula and fails anything above grade 8 (rule L2). It blocks a jargon list inside explanations (rule L3). We cross-checked our scoring against the `textstat` library, and it agreed within about one grade.
 - **Copy is held for approval.** Claude Code drafts copy. Alex approves it before it ships.
 - **Copy rules:** complete sentences, not headline fragments. Never label a value without saying what it measures. Card copy must stay true under every filter and every demo scenario. A subtitle is optional and has to earn its place.
-- **Money format:** account amounts always show cents ($1,313.72). Whole-dollar amounts in sentences drop them ("$150 deposit"). The Nia and Theo lesson's long-range numbers round to whole dollars ($242,251).
+- **Money format:** account amounts always show cents ($1,336.80). Whole-dollar amounts in sentences drop them ("$150 deposit"). The Nia and Theo lesson's long-range numbers round to whole dollars ($242,251).
 - **Gains and losses (amended Sept. 24, 2026):** in sentences, a change reads as a word with no sign: "up $15.57", "down $5.88". In tables and chart labels it reads "+$15.57" / "−$5.88" (a true minus sign), and the words "up" / "down" are in the accessible label. Color is added in both places, never alone.
 - **Rate changes are in percentage points.** A share of the mix going from 25% to 28% rose "3 percentage points", never "+12%". The same goes for any rate.
 - **Honest wording:** never "safe" without saying safe from what ("does not go up or down with the market"). No claims about what "most people" do unless we can cite it. Our own app terms (Practice, On pace, Auto-invest) cite no outside source, because none exists. No advice about the market, ever: never "buy the dip" (G3).
@@ -229,15 +233,13 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 | `terracotta` | #A8431E | "Needs you" severity, losses (always with icon + words) | 5.3:1 on cream |
 | `mustard` | #7A5C00 | "Heads-up" severity (the lighter #8A6A00 failed at 4.5:1) | 5.5:1 on cream |
 
-**Chart colors for categories** (the 7 holdings, plus cash). These are *not* a ramp of greens, because a one-hue ramp can't carry categories. Seven categories is more than a color-blind-safe palette can hold apart, so **the rule is: test the palette under simulated protanopia, deuteranopia and tritanopia (Phase 2.5 step 4); if any pair is too close, charts group the holdings into three categories (stocks, crypto, cash) and the per-holding detail lives in tables and lists**, where each row is labeled by its ticker. Color is never the only signal.
+**Chart colors for categories** (the 7 holdings, plus cash). These are *not* a ramp of greens, because a one-hue ramp can't carry categories. **Tested in Phase 2.5** (Machado 2009 simulation at full severity, CIEDE2000, the bar is ΔE 17): a 7-color per-holding palette fails, with its closest pair at **ΔE 6.4** under deuteranopia. So **charts group the holdings into stocks, crypto and cash**, and the per-holding detail lives in tables and lists, where each row is labeled by its ticker. Of the grouped palettes tested, lime/coral/cream failed deuteranopia (ΔE 13.9); the one below passes all three simulations, with its closest pair at **ΔE 22.7**. Lime stays reserved for the glowing balance line. Color is never the only signal.
 
 | Group | Color | On panel |
 |---|---|---|
-| Stocks | lime #C6F36B | 13.8:1 |
+| Stocks | sky #8FD3FF | 10.8:1 |
 | Crypto | coral #F08A5D | 7.1:1 |
 | Cash | cream #F5F0E6 | 15.5:1 |
-
-The candidate per-holding palette (lime, sky #8FD3FF, periwinkle #6B7FD7, coral, cream, and two more) is kept only if it passes the test; the result is recorded in STATUS.md.
 
 **Type.** Alex's choice is Klim's Financier Display, Financier Text and National. They are paid fonts: Klim's free test fonts can't be used on a public site, and web licenses start at $60 USD per style. **Decision: build with free, open-licensed stand-ins behind one font token each, so a later swap is a one-line change.**
 
