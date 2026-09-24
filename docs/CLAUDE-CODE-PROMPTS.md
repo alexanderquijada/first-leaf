@@ -297,6 +297,65 @@ Push, run check:deploy, and give me the CLAUDE.md §11 report.
 
 ---
 
+## Phase 1B · The rest of the core flows
+
+**What Alex should look at when it's done:** Activity filters (and an empty combination); FL-GREEN and FL-CALM; story chapter 5 (guess, Theo's slider to $196, Smooth / Bumpy) and chapter 6; Practice with an error and Start over; Words with no results; the phone view's Activity filters, keypad Practice and chapter sheet.
+**Likely to go wrong:** Practice leaking into the account; a slider result that doesn't match the validator's formula; a phone control under 48px; a sheet or dialog that leaves the page behind it usable.
+
+```text
+PHASE 1B · THE REST OF THE CORE FLOWS. This prompt is your go-ahead for Phase 1B only.
+
+Read CLAUDE.md, STATUS.md, BRIEF.md and all three lens briefs first. Follow CLAUDE.md exactly. Real-app rule: no project language on screen (G6). Use tokens but don't polish visuals yet (Phase 3). New sentences go under "Copy for approval", marked DRAFT, at grade 8 or below. Keep commit prefixes tight: shared code goes in [shared] commits, not lens commits.
+
+STEP 0: Phase 1A rulings (brief first, one [docs] commit before code)
+- STATUS.md decision log "Sept. 24: Phase 1A rulings":
+  - Amended: the confirmation line becomes "Your deposit is on its way. It should arrive in 1 to 3 business days." (Claude's original line was grade 10).
+  - Adopted: the point of view in the second person: "Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."
+  - Amended: the July dip is the largest high-to-low drop in FL-BROAD in the 30 calendar days before the auto-invest pause (June 14 to July 14). It is tied to Rosa's action, not a hand-picked window.
+  - Ratified: pinned story chart deferred to Phase 3; S3 matching; the brand-new split; phone fund moves in dollars; extra commits.
+  - Noted in CLAUDE.md: the pre-commit hook checks the whole working tree, so commit or discard unrelated changes first.
+- Update the P302 brief (point of view, dip rule) and anything else these rulings touch.
+Commit: [docs] Record the Phase 1A rulings
+
+STEP 1: Shared
+- Data: apply the point of view and the dip rule in the generator; R2 recomputes the dip from the new window. Show R2 failing on the old window's definition, then passing. The confirmation line lives in one place and is used everywhere.
+- Fix: dialog text uses the ink token, not pure black (measure it).
+- src/shared/composables/usePractice.ts: module scope. Starts with practice.startingCash. Buy/sell at latestPrice, parts of shares, min order $1, at most 2 decimals, no fees. Errors: not enough practice money, selling more than you own, $0 or blank, not a number, more than 2 decimals. Start over. Time machine: the practice mix's value over the weekly history (practice.timeMachine). It must NEVER change account data: add a test that snapshots every account value before and after a full practice session.
+- Money on the dark panel: add a test that renders a loss on the panel and measures its contrast.
+Commits: [shared] Apply the 1A rulings to the story data and dialog color · [shared] Add practice state with every order error, never touching the account
+
+STEP 2: P301 lens (laptop)
+- Activity (/activity): type filter (Deposits / Buys / Dividends) and status filter (Completed / Pending / Returned), combinable. Session items (e.g. a Pending deposit) appear with their status. Every combination with no results shows an empty state. The returned deposit opens its details. Number columns keep at least 24px between them.
+- Funds (/funds and /funds/:ticker) for all 5 funds, including FL-CALM, which Rosa doesn't own ("You don't own this fund yet."). Price chart: Since you bought / 1 year / 5 years, with a table. Yearly fee with its history; FL-GREEN's change reads "0.45% to 0.75% on Oct. 1, up 0.30 percentage points". Ups and downs as "4 of 5" plus the explanation. What's inside. What you paid vs. value for funds she owns.
+Commits: [P301] Build Activity with combinable filters and session items · [P301] Build Funds and fund pages with price history and fee changes
+
+STEP 3: P302 lens
+- Story chapter 5 "What happens if you keep going": the Nia and Theo lesson from story-p302.json (two friends); guess optional; the start-age slider (startAgeSlider, step 1); Theo's monthly slider (catchUp.slider, step $1, landing exactly on $196 with a marker where he passes Nia); the Smooth / Bumpy toggle ("same overall growth", never "average"); then Rosa's own 26-to-65 slider with yourTurn.note. Every result comes from the validator's formula.
+- Chapter 6 "Try it with pretend money": a short lead-in and a link into Practice.
+- Practice (/practice): pick a fund, amount, review, confirm, "What you own in Practice", practice mix, sell, every error inline with Confirm disabled, Time machine with a chart and table and the note, Start over with a confirmation. A persistent banner: "Practice money. It isn't real money."
+- Words (/learn and /learn/:termId): search with an empty state ("No words match … Try 'fee' or 'fund'."), every term page with related words and Back, deep links.
+Commits: [P302] Build story chapters 5 and 6 with the sliders and the smooth/bumpy toggle · [P302] Build Practice with the time machine · [P302] Build Words with search and term pages
+
+STEP 4: P303 lens (under 600px and in the phone view). Designed for the phone, not shrunk.
+- Activity: a compact list (date, what, amount, status) with filters in a bottom sheet (48px targets); tapping a row opens a full-page detail.
+- Funds: a list of cards (ticker, name, value, up/down); the fund page leads with value and up/down, then a small chart with the three ranges, then the fee and "4 of 5".
+- Practice: a large number keypad for the amount, a review bottom sheet, errors above the keypad, the banner always visible.
+- Story: inline charts, sliders at least 48px tall, the chapter menu as a bottom sheet.
+- Words: search at the top, results as 48px rows.
+Commits: [P303] Build phone Activity and Funds · [P303] Build phone Practice with a keypad and review sheet · [P303] Fit the story and Words to the phone
+
+STEP 5: Verify
+- npm run check, then check:deploy with check:live (add /activity, /funds, /funds/FL-CALM, /practice, /learn, /story#chapter-5).
+- Playwright tests named after each brief's flow IDs, plus: Practice never changes account data; Theo's slider reaches $196 and $195 is not enough; every practice error shows and disables Confirm; filter empty states; the G6 crawl covers every new page × 3 scenarios × 390/1280.
+- axe scans on every new page and state at 390 and 1280, and in the phone view.
+- Screenshots of Activity, a fund page (FL-GREEN and FL-CALM), story chapter 5, Practice (with an error) and Words (with no results) at 390, 768 and 1280: describe them.
+- Measure: new controls (contrast and size), number-column gutters, the loss on the dark panel, and the grade of every new sentence.
+Commit: [docs] Record Phase 1B in STATUS.md
+Push, run check:deploy, and give me the CLAUDE.md §11 report.
+```
+
+---
+
 ## Phase 1 · Core flows (all three)
 
 > **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.

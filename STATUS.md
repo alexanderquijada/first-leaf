@@ -2,17 +2,18 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 1A · Core screens, as a real app)
+**Last updated:** Sept. 24, 2026 (Phase 1B · The rest of the core flows)
 
 ## NEXT STEP
 
-Alex reviews Phase 1A:
-- on a laptop, Home and Alerts: try "Try the deposit again", Mark as handled and Undo
-- /story chapters 1–4
-- on a phone or at /?view=phone, the check-in Home, Why it moved and an alert page
-- all three scenarios by URL (README)
+Alex reviews Phase 1B:
+- **Laptop:** Activity filters, including an empty combination; FL-GREEN and FL-CALM.
+- **Story:** chapter 5 (the guess, Theo's slider to $196, Smooth / Bumpy) and chapter 6.
+- **Practice:** including an error and Start over.
+- **Words:** search "zebra".
+- **Phone view:** Activity filters, Practice's keypad and the chapter sheet.
 
-He rules on the deviations and the DRAFT copy in the Phase 1A decision-log entry. Then the planning chat issues Phase 1B: Activity filters, Funds and fund pages, Practice, Words, story chapters 5–6 and the pinned chart.
+He rules on the Phase 1B deviations and the DRAFT copy. Then the planning chat issues Phase 2 (plain language and copy approval).
 
 ## Live links
 
@@ -57,6 +58,7 @@ He rules on the deviations and the DRAFT copy in the Phase 1A decision-log entry
 | 0.5 · Rulings and guardrails (Sept. 24) | ✅ check:live, test guard, check:icons, axe scans, Demo menu semantics, TermTip Back, money format, permissions, `npm run check` | — | — | — |
 | 0.6 · One app (Sept. 24) | ✅ One-app re-plan, layouts, feature folders, About, redirects, 404 in the app | ✅ Desktop rail, Home placeholder | ✅ Story and Practice placeholders | ✅ Phone shell, bottom tab bar, Phone preview |
 | 1A · Core screens, real app (Sept. 24) | ✅ Disclosure, G6/R1–R4/S3/T4, About and Demo menu removed, scenarios by URL, handled and session state, chart helpers, pre-commit hook, project-language crawl | ✅ Laptop Home, Alerts with realistic flows, basic Activity | ✅ Story chapters 1–4 | ✅ Phone check-in Home, phone alert pages, 48px controls |
+| 1B · Rest of core flows (Sept. 24) | ✅ Dip rule and point of view, practice state (data frozen), line chart, formula, sheets, toggles, checks widened | ✅ Activity with filters and item pages, Funds and fund pages | ✅ Story chapters 5–6, Practice with time machine, Words | ✅ Phone Activity/Funds, keypad Practice, chapter sheet, 48px everywhere |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
@@ -76,6 +78,50 @@ He rules on the deviations and the DRAFT copy in the Phase 1A decision-log entry
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 1B · The rest of the core flows
+
+- **1A rulings applied:**
+  - R2 now derives the dip window from the pause date (June 14 to July 14) and was shown failing on the old window first. The dip itself is unchanged.
+  - The point of view is in the second person.
+  - "Your deposit is on its way. It should arrive in 1 to 3 business days." lives in one place.
+  - Dialog and input text are ink.
+- **Practice never touches the account, three ways:**
+  - it reads only fund prices and practice rules;
+  - the account data is deep-frozen at load, so any write throws and fails the test guard;
+  - a test snapshots everything Home, Activity and Funds show before and after a full practice session, in all three scenarios. It was shown failing when an order secretly turned auto-invest on.
+- **Built:**
+  - Activity: combinable filters, a live count, empty states, session items, and item pages at a new `/activity/:id`.
+  - Funds and fund pages: all 5 funds, "You don't own this fund yet.", 3 price ranges with tables, FL-GREEN's fee in percentage points, "N of 5".
+  - Story chapter 5: the two friends, guess, both sliders, Smooth / Bumpy and your turn; every figure from the validator's formula. Theo's slider reaches $196, and $195 is not enough.
+  - Story chapter 6.
+  - Practice: every error inline with Review and Confirm disabled; the time machine; Start over with a confirmation; a sticky banner.
+  - Words: search, an empty state and all 30 term pages.
+  - On the phone: a compact Activity with a filter sheet, fund cards, a keypad Practice with a review sheet, the chapter menu as a sheet, and 48px controls on every page (measured by a test).
+- **Found and fixed:**
+  - The bottom sheet announced two nested dialogs.
+  - `/story#chapter-5` hid the chapter heading under the sticky top bar (the screenshot review caught it).
+  - Several 44px or 20px controls (Activity row links, the source link on a word page and in the phone sheet).
+  - The loss-on-panel test first measured the wrong element (it passed at 13.75:1 on a gain). It now holds one element, measures coral at 7.11:1, and fails at 2.92:1 without the panel's loss color.
+- **What the hook caught:** six blocked commits, all stale or timing-sensitive tests (the old point-of-view text, a "Pending" text clash, 44px rows, counting sliders before they rendered). No broken commit reached the history.
+- **Measured:**
+  - Contrast: toggles 7.79 / 18.25:1; the banner, ink on lime, 14.52:1; errors 5.92:1; disabled Review 7.30:1; the "Passes Nia" mark 5.51:1 (13px bold); keypad 18.25:1.
+  - Size: every control is at least 48px; keypad keys are 100×64.
+  - Smallest gaps between number columns: 26px (phone Activity), 29px (Practice table), 32px (Activity), 47px (Funds).
+  - The loss on the dark panel: 7.11:1.
+- **Deviations (for Alex to rule on):**
+  1. **New route `/activity/:id`.** Opening an activity item and the phone's full-page detail both need an address.
+  2. **Three extra shared commits:** the line chart and formula, the bottom-sheet fix, and the input-color fix. Also an extra `[docs]` commit that adds P303 flows F8–F11 to the brief before their code.
+  3. **The calm account uses the main account's dip window.** It never paused; the market is the same for every account.
+  4. **Words searches only the term, its "also called" names and its first line**, not the full explanation, so results stay relevant.
+  5. **"Your turn" monthly slider:** $25–$500 in $5 steps (not specified).
+- **Copy for approval (DRAFT, grade 7 or below; one-word labels not scored):**
+  - **Activity:** "Showing N of M.", "Nothing matches these filters.", "Show everything", "Filters", "Type: … Status: …", "Show N items", the fact labels, "It should arrive in 1 to 3 business days.", "Auto-invest bought it with your deposit.", "We could not find that item."
+  - **Funds:** "Not owned", "Down $X on the $Y you paid.", "Price: $X a share.", the price summary, "0.45% to 0.75% on Oct. 1, up 0.30 percentage points. The fund told owners on Sept. 15.", "It has been X% since …", "Ups and downs: N of 5", "1 means its price barely moves. 5 means it moves the most.", the dividend lines, "We could not find that fund."
+  - **Chapter 5:** the intro, the guess and replies, the answer, "Why Nia ends ahead", "Every year counts", the slider results, "Starting at 45 still helps. …", "Theo is still behind.", "That is almost twice what Nia puts in.", "Real life is bumpy", "Your turn".
+  - **Chapter 6:** "Practice lets you try a mix with money that is not real. Nothing you do there touches your account.", "Go to Practice".
+  - **Practice:** "Practice money. It isn't real money." (Alex's), the summary labels, "Place an order", "Pick a fund", the review sentence, the confirmations, "New order", "Nothing yet. Buy a fund to start.", "Your practice mix", the time-machine summary, "Start over?" and its sentence, and the five order errors.
+  - **Words:** "Search words", "N words", "No words match “…”. Try “fee” or “fund”." (Alex's), "All words", "Related words", "We could not find that word.", "Try searching for it in Words to know."
 
 ### Sept. 24, 2026: Phase 1A rulings
 
