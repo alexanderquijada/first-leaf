@@ -19,6 +19,7 @@ const comingSoon = (
 })
 
 const P301 = 'P301 · Operational dashboard'
+const P303 = 'P303 · Mobile experience'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -44,6 +45,18 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/p302-story/views/StoryView.vue'),
     meta: { title: 'P302 · Start early beats start big' },
   },
+  {
+    path: '/p303',
+    name: 'p303',
+    component: () => import('@/p303-mobile/views/CheckInView.vue'),
+    meta: { title: 'P303 · Check-in' },
+  },
+  comingSoon('/p303/attention', 'What needs you', P303, '/p303'),
+  comingSoon('/p303/attention/:id', 'What needs you', P303, '/p303'),
+  comingSoon('/p303/why', 'Why it moved', P303, '/p303'),
+  comingSoon('/p303/learn', 'Words', P303, '/p303'),
+  comingSoon('/p303/learn/:termId', 'Words', P303, '/p303'),
+  comingSoon('/p303/practice', 'Practice', P303, '/p303'),
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
