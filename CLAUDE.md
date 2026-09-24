@@ -35,10 +35,13 @@ Never say "this should work." Before claiming a phase is done, run all of these 
 | Data rules can still fail | `npm run validate:selftest` |
 | Case-study folder boundaries | `npm run check:boundaries` |
 | Live site matches HEAD | `npm run check:deploy` (after push) |
+| Live site serves the pages and the same build | `npm run check:live` (after check:deploy) |
 
 - **Render it and look at it.** Take screenshots with Playwright at **390×844, 768×1024 and 1280×800** for every screen you touched, open them, and describe what you see. Some defects only show visually (an icon can be correct and still illegible at 20px).
 - **Measure, then report numbers:** computed contrast ratios, rendered font sizes, touch-target sizes, and the grade level of any new copy.
 - **A new validation rule must fail first.** Add a broken case to `scripts/validator-selftest.mjs`, show it FAIL, then show the real data PASS.
+- **Every new check must be shown failing, on screen, before app code changes.** That covers tests, measurements and scripts, not just validator rules. When a check fails, look at the screen before touching app code: the check itself may be wrong.
+- **No console errors, no NaN.** Every Playwright test fails on a console error, an uncaught page error, or visible text containing NaN, undefined, null or [object Object].
 
 ## 4. Data
 
@@ -74,6 +77,11 @@ If two case studies need the same thing, move it to `src/shared/`. `npm run chec
 - Delete starter leftovers: HelloWorld, AboutView, the Vue logo, starter CSS that fights Vuetify.
 - Install Vuetify as **`vuetify@^3`**. A bare install resolves to 4.x.
 - Vuetify's styles beat custom CSS. When a layout fix "doesn't take," use Vuetify props and utility classes. **Never `!important`.**
+- Beating a Vuetify rule takes a **two-class selector** (`.v-card.fl-thing`). Watch for `rounded="lg"` in component defaults (it brings its own `!important`) and for `v-container`'s max-width caps at each breakpoint.
+- **Theme-based selectors silently fail in scoped styles** (`:global(.v-theme--x) .foo` doesn't match). Bind a class in the template instead.
+- **Never silence Vite's chunk-size warning**, and **don't lazy-load what the first screen needs.**
+- After any scaffold or generator runs, **diff and merge every file it overwrote** (package.json, .gitignore, index.html, README…), not just package.json.
+- **Verify every `mdi-` icon name against the installed font** (`npm run check:icons`). A misspelled icon renders blank without an error.
 - **Lazy-load every route.** State that must survive navigation (demo scenario, practice portfolio, seen flags) lives at **module scope** in its composable, not inside the function.
 - `image-rendering: pixelated` is never a blanket rule.
 - Fonts come from `@fontsource-variable/newsreader` and `@fontsource-variable/hanken-grotesk` behind CSS variables `--font-display`, `--font-text` and `--font-ui`, so swapping in licensed Klim fonts later is one change.
@@ -81,10 +89,11 @@ If two case studies need the same thing, move it to `src/shared/`. `npm run chec
 ## 8. Accessibility is a gate
 
 - Text under 18px (or under 14px bold) needs **4.5:1**. Larger text, icons and chart marks need **3:1**. Measure every tinted chip: saturated text on a pale tint of the same hue often fails below 2:1. Darkening a tint of the *same hue* as its text makes contrast worse, not better.
-- Color is never the only signal (severity = icon + word + color; gains and losses = sign + word + color).
+- Color is never the only signal (severity = icon + word + color; gains and losses = the word "up"/"down" in sentences, or a sign with the word in the accessible label in tables and charts, plus color).
 - Categorical colors come from the tested palette in BRIEF.md §6. Never use a one-hue ramp for categories.
 - Term explanations use the toggletip pattern: a real `<button>` opens and closes on click, tap, Enter or Space and closes on Esc, and the content is announced. **No hover-only content.**
-- Keyboard works everywhere with a visible focus ring. P303 touch targets are at least 48×48px.
+- Keyboard works everywhere with a visible focus ring.
+- **P303 touch targets:** every standalone control is at least 48×48px. A term inside a sentence uses WCAG 2.5.8's inline exception; every P303 detail screen also lists its terms as 48px chips under "Words on this screen". P303 body text has a line-height of at least 1.6.
 - Bars over scrolling content are **opaque**.
 
 ## 9. Copy and layout rules

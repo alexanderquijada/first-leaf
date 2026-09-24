@@ -80,6 +80,59 @@ Then give me the end-of-phase report in the shape set out in CLAUDE.md §11.
 
 ---
 
+## Phase 0.5 · Rulings and guardrails
+
+**What Alex should look at when it's done:** the rulings are recorded in STATUS.md and the briefs; `npm run check` runs every local check in one go; `check:deploy` prints https://first-leaf.vercel.app and runs `check:live`; term explanations have a "Back to …" button after a related word.
+**Likely to go wrong:** a new check that has never been seen failing; the axe scan flagging Vuetify's own markup; the devtools plugin leaking into the production build.
+
+```text
+PHASE 0.5 · RULINGS AND GUARDRAILS. This prompt is your go-ahead for Phase 0.5 only.
+
+Read CLAUDE.md and STATUS.md first. Follow CLAUDE.md exactly. Brief first: STEP 1 is docs only and is committed before any code changes.
+
+STEP 1: Record Alex's rulings (docs only, one commit)
+a. STATUS.md decision log, new entry "Sept. 24, 2026: Phase 0 rulings":
+   - Ratified: three extra fix commits; Node ^22.18.0 || >=24.12.0; dev-only devtools plugin (must not ship in the production build: confirm in STEP 3); Playwright config + test:e2e + Demo menu test; per-route page titles; shared "Coming in Phase 1" page (temporary); favicon removal (original First Leaf icon comes in Phase 3, add to known issues).
+   - Amended: related words in the explanation panel get a "Back to {previous term}" button.
+   - Amended: P303 touch targets. Every standalone control stays at least 48x48px. Terms inside sentences use WCAG 2.5.8's inline exception ("the target is in a sentence or its size is otherwise constrained by the line-height of non-target text"). Every P303 detail screen also lists its terms as 48px chips under "Words on this screen". P303 body text line-height at least 1.6.
+   - Adopted from the Pelipper Post comparison: live-site check; console-error and NaN/undefined guard on every test; icon-name check; Vuetify and scoped-style traps; percentage points for rate changes; 24px minimum gutter between number columns; CSS grid when a card count doesn't divide into 12; keep Vite chunk-size warnings visible and don't lazy-load first-screen content; merge every file the scaffold overwrote; .env* in .gitignore; every new check must be shown failing first. Documentation only: a last-resort manual deploy, labeled unverified.
+   - Not a gap: "deny Write" for Pelipper. Claude Code checks file writes against Edit rules, and Edit is already denied. The real gap was Bash commands like cp/mv touching that folder; closed in STEP 2.
+   - Copy: Phase 0 copy APPROVED with two edits: landing line becomes "A made-up investing app for people who have never invested. This site shows it as three design case studies." Money in sentences reads "up $15.57" / "down $5.88" (word, no sign). In tables and chart labels it reads "+$15.57" / "−$5.88", with the word "up"/"down" in the accessible label. Everything else in the Phase 0 copy list is approved as written.
+b. docs/briefs/P303-BRIEF.md: replace the 48px bullet with the amended touch-target rule above, and add "Words on this screen" chips to the flag-detail and "Why it moved" screens.
+c. BRIEF.md §5 copy rules: add the percentage-points rule (fee 0.45% → 0.75% is "0.30 percentage points", never "+67%") and the amended money format. BRIEF.md §6 layout rules: 24px minimum gutter between number columns; CSS grid when a card count doesn't divide into 12. BRIEF.md §9: replace the touch-target bullet with the amended rule.
+d. CLAUDE.md: in §3 add npm run check:live (after check:deploy), the console/NaN guard, and "a new check must be shown failing, on screen, before app code changes". In §7 add: theme-based selectors silently fail in scoped styles; beating Vuetify takes a two-class selector, and watch rounded="lg" in component defaults and v-container's max-width caps; never silence Vite's chunk-size warning; don't lazy-load what the first screen needs; after any scaffold or generator, diff and merge every file it overwrote; verify every mdi- icon name against the installed font. In §8 the amended touch-target rule.
+e. docs/SETUP.md and scripts/setup.sh: the Node check becomes "22.18 or newer (or 24.12+)". Run `bash -n scripts/setup.sh`.
+f. .gitignore: add .env* (keep .env.example trackable if one is ever added).
+g. docs/CLAUDE-CODE-PROMPTS.md: save this prompt as "Phase 0.5 · Rulings and guardrails" between Phase 0 and Phase 1, and add a redirect prompt "Vercel's build queue is stuck (last resort, unverified)": build locally with the Vercel CLI and deploy the prebuilt output, only if check:deploy shows the build stuck in the queue, and record it in the decision log.
+Commit: [docs] Record Phase 0 rulings and amend the briefs, CLAUDE.md and setup docs
+
+STEP 2: Guardrails (code)
+1. Live-site check: add "firstLeaf": { "productionUrl": "https://first-leaf.vercel.app" } to package.json. Write scripts/check-live.mjs: fetch /, /p301, /p302, /p303, /p301/funds/FL-GREEN and /p303/learn/expense-ratio from the production URL (each must be 200 and return the app's HTML), then compare the /assets/*.js and *.css file names in the live index.html with a fresh local dist/index.html; they must match exactly. Add npm run check:live. Make check:deploy run check:live after a successful deploy and print the production URL, not the protected per-deployment URL. Show check:live FAILING first (e.g. against a deliberately different local build), then passing.
+2. Test guard: a shared Playwright fixture used by every spec that fails the test on any console error or uncaught page error, and fails if visible text contains NaN, undefined, null or [object Object] as whole words. Show it failing on a temporary broken page, then remove that page.
+3. Icon check: scripts/check-icons.mjs: every mdi-* class used in src/ exists in the installed @mdi/font CSS. Add --selftest with a fake bad name. npm run check:icons.
+4. Accessibility scans: add @axe-core/playwright. Scan /, /p301, /p302, /p303 at 390 and 1280, plus the states with the explanation panel open and the Demo menu open. Zero serious or critical violations. Lock the open Demo menu's structure with a Playwright aria snapshot.
+5. TermTip: add "Back to {previous term}" when you arrive via a related word (a small history stack). Focus goes to the new heading on forward and back to the related-word link on Back. Add a Playwright test.
+6. Money.vue: apply the amended format (word in sentences; sign in tables with the word in the accessible label).
+7. Permissions in .claude/settings.local.json: allow Bash(rm *), Bash(mv *), Bash(cp *), Bash(mkdir *), Bash(lsof *). Deny Bash(*pelipper*), Bash(rm -rf ~*), Bash(rm -rf /*), Bash(git branch -D*), Bash(git branch * -D*), Bash(git push *--delete*), Bash(git rebase*), Bash(git clean*), Bash(git commit --amend*), Bash(git filter-branch*). Keep every existing rule. Validate the JSON.
+8. Add npm run check that runs, in order: build, validate, validate:selftest, check:boundaries, check:boundaries:selftest, check:icons, check:icons --selftest, test:e2e.
+Commits, each its own:
+[shared] Add a live-site check and point check:deploy at the public URL
+[shared] Fail every test on console errors or NaN/undefined on screen
+[shared] Add an icon-name check and axe accessibility scans
+[shared] Add Back navigation to term explanations and the amended money format
+[shared] Tighten Claude Code permissions for the reference folder and git history
+[shared] Add npm run check as the one command for all local checks
+
+STEP 3: Verify, then finish
+- Paste the output of npm run check, check:deploy and check:live.
+- Confirm the devtools plugin is not in the production build (search dist/ for it and paste the result).
+- Diff our original files from the first commit (.gitignore, README.md, LICENSE, package.json scripts, CLAUDE.md, STATUS.md) against now and confirm nothing of ours was lost in the scaffold.
+- Paste `git log --oneline` for every commit so far. If any Phase 0 commit subject is shorter than the one planned in docs/CLAUDE-CODE-PROMPTS.md, say so. Do NOT rewrite history.
+- Commit: [docs] Record Phase 0.5 in STATUS.md. Push, run check:deploy, and give me the CLAUDE.md §11 report.
+```
+
+---
+
 ## Phase 1 · Core flows (all three)
 
 **Look at:** every flow in each brief's Interactions table works end to end, even if it looks plain.
@@ -238,6 +291,11 @@ Some copy is wrong for the current situation. Check every sentence on this scree
 **You changed something the brief didn't ask for**
 ```text
 This goes beyond the brief. List everything you did that isn't in BRIEF.md or the case study brief, and say why for each item. Don't undo anything yet. I'll rule on each item (ratify / decline / amend), and the rulings go into the STATUS.md decision log.
+```
+
+**Vercel's build queue is stuck (last resort, unverified)**
+```text
+Use this ONLY if `npm run check:deploy` timed out with the build stuck in the queue ("Initializing" or "Queued") because another project on the same Vercel account holds the one build slot, and it can't wait. This route has never been tried on this project, so treat it as unverified. Build locally with the Vercel CLI and deploy the prebuilt output: `npx vercel pull --yes --environment=production`, then `npx vercel build --prod`, then `npx vercel deploy --prebuilt --prod`. Then run `npm run check:live` to prove the live site serves the same build as local. Record it in the STATUS.md decision log: the date, why the queue was stuck, the commands you ran and their output, and whether check:live passed. Don't change vercel.json or any Vercel settings.
 ```
 
 **Works in dev but the Vercel build fails**

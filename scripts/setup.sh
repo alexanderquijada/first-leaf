@@ -79,14 +79,24 @@ fi
 # ----------------------------------------------------------------------------- Node
 step "4. Node (runs the project and its checks)"
 node_major() { node -v 2>/dev/null | sed -E 's/^v([0-9]+).*/\1/'; }
-if [ -n "$(node_major)" ] && [ "$(node_major)" -ge 20 ]; then ok "Node $(node -v) is installed"
+node_minor() { node -v 2>/dev/null | sed -E 's/^v[0-9]+\.([0-9]+).*/\1/'; }
+# Vite 8 and TypeScript 6 need Node 22.18 or newer (or 24.12+), matching package.json "engines".
+node_ok() {
+  local M m; M="$(node_major)"; m="$(node_minor)"
+  [ -n "$M" ] || return 1
+  [ "$M" -gt 24 ] && return 0
+  [ "$M" -eq 24 ] && [ "$m" -ge 12 ] && return 0
+  [ "$M" -eq 22 ] && [ "$m" -ge 18 ] && return 0
+  return 1
+}
+if node_ok; then ok "Node $(node -v) is installed"
 else
   if command -v node >/dev/null 2>&1; then note "Node $(node -v) is too old. Updating it with Homebrew…"; NODE_CMD="upgrade"
   else note "Installing Node with Homebrew…"; NODE_CMD="install"; fi
   if brew "$NODE_CMD" node >/dev/null 2>&1 || brew install node >/dev/null 2>&1; then
     hash -r
-    if [ -n "$(node_major)" ] && [ "$(node_major)" -ge 20 ]; then ok "Node $(node -v) installed"
-    else bad "Node is still older than version 20 ($(node -v 2>/dev/null)). Another copy of Node may come first on your computer." "Paste this line into the planning chat and I'll give you the exact fix."; finish; fi
+    if node_ok; then ok "Node $(node -v) installed"
+    else bad "Node is still older than 22.18 (or 24.12+) ($(node -v 2>/dev/null)). Another copy of Node may come first on your computer." "Paste this line into the planning chat and I'll give you the exact fix."; finish; fi
   else bad "Node install failed." "Run: brew install node   then run this script again."; finish; fi
 fi
 

@@ -22,6 +22,10 @@ screenshots/tmp/
 # Vercel
 .vercel/
 
+# local secrets (an example file stays trackable)
+.env*
+!.env.example
+
 # NOTE: .claude/settings.local.json is committed on purpose (see STATUS.md known issues).
 
 # from the Vue scaffold

@@ -144,6 +144,8 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 - **Copy is held for approval.** Claude Code drafts copy. Alex approves it before it ships.
 - **Copy rules:** complete sentences, not headline fragments. Never label a value without saying what it measures. Card copy must stay true under every filter and every demo scenario. A subtitle is optional and has to earn its place.
 - **Money format:** account amounts always show cents ($1,313.72). Whole-dollar amounts in sentences drop them ("$150 deposit"). P302's long-range numbers round to whole dollars ($242,251).
+- **Gains and losses (amended Sept. 24, 2026):** in sentences, a change reads as a word with no sign: "up $15.57", "down $5.88". In tables and chart labels it reads "+$15.57" / "−$5.88" (a true minus sign), and the words "up" / "down" are in the accessible label. Color is added in both places, never alone.
+- **Rate changes are in percentage points.** A fee going from 0.45% to 0.75% rose "0.30 percentage points", never "+67%". The same goes for returns and mix shares.
 - **Honest wording:** never "safe" without saying safe from what ("does not go up or down with the market"). No claims about what "most people" do unless we can cite it. Our own app terms (Practice, On pace, Auto-invest) cite no outside source, because none exists.
 
 ## 6. Style
@@ -211,7 +213,7 @@ Fonts are self-hosted from npm (`@fontsource-variable/*`), so the site loads not
 - Every chart has a plain-sentence summary above it and a "Show as table" option. Values are read out in words on hover, focus or tap.
 - Motion respects `prefers-reduced-motion`. Without motion, everything still reads.
 
-**Layout rules** (learned on the last project): at most two levels of cards, with separator lines at level three. No row ends in a big empty gap. Real gutters between columns of numbers. Opaque bars over scrolling content.
+**Layout rules** (learned on the last project): at most two levels of cards, with separator lines at level three. No row ends in a big empty gap. At least a **24px gutter** between columns of numbers, measured text edge to text edge. When a card count doesn't divide into 12 columns (five funds, say), use a **CSS grid**, not the 12-column grid. Opaque bars over scrolling content.
 
 ## 7. Tech
 
@@ -257,9 +259,9 @@ docs/                              setup, prompts, research notes, credits
 
 WCAG 2.1 AA is the floor, and each item is *measured and reported*, not asserted:
 - Text under 18px (or under 14px bold): 4.5:1 contrast. Larger text, icons and chart marks: 3:1. Tinted chips get measured one by one.
-- Color is never the only signal: severity uses icon + word + color; gains and losses use sign + word + color.
+- Color is never the only signal: severity uses icon + word + color; gains and losses use a word (in sentences) or a sign with the word in the accessible label (in tables and charts), plus color.
 - Everything works by keyboard with a visible focus ring; the order follows the reading order.
-- Touch targets are at least **48×48px on P303** and at least 24×24px everywhere else (WCAG 2.2 SC 2.5.8).
+- Touch targets (amended Sept. 24, 2026): on **P303**, every standalone control is at least **48×48px**; a term inside a sentence uses WCAG 2.5.8's inline exception, and every P303 detail screen also lists its terms as 48px chips under "Words on this screen"; P303 body text has a line-height of at least 1.6. Everywhere else, targets are at least 24×24px (WCAG 2.2 SC 2.5.8).
 - Works at 200% zoom and 320px width without horizontal scrolling (except data tables, which scroll inside themselves).
 - Charts have text summaries and table alternatives.
 

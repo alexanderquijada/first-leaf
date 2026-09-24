@@ -48,7 +48,7 @@ Reads only from `src/shared/data/`. This week's change (the "why did it move" an
 
 **Word of the day:** set in the data (`meta.wordOfTheDay`, "Yearly fee" on Sept. 20). **Next word** follows the glossary order, so it's predictable and testable.
 
-**Flags stay inside P303.** P303 never links into P301's pages. A flag's detail screen shows what it needs inline:
+**Flags stay inside P303.** P303 never links into P301's pages. A flag's detail screen shows what it needs inline, and ends with the flag's terms as 48px chips under "Words on this screen":
 
 | Flag | What P303's detail shows |
 |---|---|
@@ -88,7 +88,7 @@ Reads only from `src/shared/data/`. This week's change (the "why did it move" an
 ```
 
 - **Most important thing highest, most-used controls lowest.** Answers sit at the top; navigation sits at the bottom, within reach of the thumb.
-- **Every touch target is at least 48 × 48px** (above WCAG's 44px enhanced target), with 8px between targets.
+- **Touch targets (amended Sept. 24, 2026).** Every standalone control (buttons, tabs, list rows, chips, the keypad, close buttons) is at least **48 × 48px**, with 8px between targets. A term explanation inside a sentence uses WCAG 2.5.8's inline exception ("the target is in a sentence or its size is otherwise constrained by the line-height of non-target text"). So that no one has to hit a small inline word, every P303 detail screen also lists its terms as 48px chips under **"Words on this screen"**. P303 body text has a line-height of at least 1.6.
 - **The top and bottom bars are opaque**, so text scrolling behind them can never ruin contrast.
 - **Desktop:** a centered 480px-wide column on cream, with a short note that it's designed for phones. Nothing breaks, stretches or overflows.
 
@@ -97,8 +97,8 @@ Reads only from `src/shared/data/`. This week's change (the "why did it move" an
 | # | Flow | Steps | Done when |
 |---|---|---|---|
 | F1 | **Glance** | Open `/p303` | Balance, this week's change and the "needs you" count are visible without scrolling at 390 × 844 |
-| F2 | **See what needs me** | Tap the attention card → list → tap a flag → detail (what happened, what it means, what you can do) → back | Back returns to where she was; opened flags show as "Seen" for the session |
-| F3 | **Understand why it moved** | Tap "Why it moved" → a waterfall from last Friday's balance to this Friday's: market change, dividends, deposits → tap a fund for its share of the move | The pieces add up exactly (A10), and each piece has a term explanation |
+| F2 | **See what needs me** | Tap the attention card → list → tap a flag → detail (what happened, what it means, what you can do, and its terms as 48px chips under "Words on this screen") → back | Back returns to where she was; opened flags show as "Seen" for the session |
+| F3 | **Understand why it moved** | Tap "Why it moved" → a waterfall from last Friday's balance to this Friday's: market change, dividends, deposits → tap a fund for its share of the move | The pieces add up exactly (A10), each piece has a term explanation, and the screen lists its terms as 48px chips under "Words on this screen" |
 | F4 | **Learn a word** | Tap Word of the day → explanation → **Next word** or a related word | Works one-handed; Back works |
 | F5 | **Practice** | Practice tab → pick a fund → amount keypad → review sheet → confirm → see it in "What you own in Practice" | The "Practice money, not real" banner is always visible; the real account never changes |
 | F6 | **Switch demo scenario** | Demo ▾ → Nothing needs you / Brand-new | The home screen shows that scenario's account, and every sentence stays true |

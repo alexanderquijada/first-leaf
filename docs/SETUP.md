@@ -21,7 +21,7 @@ It takes 1–5 minutes, depending on what's already installed.
 | Step | What it does | If it's already done |
 |---|---|---|
 | Homebrew | Installs the Mac package manager | Skips |
-| Node | Installs Node 22 or newer (runs the project and its checks) | Skips if you have 20+ |
+| Node | Installs the current Node (runs the project and its checks) | Skips if you have 22.18 or newer (or 24.12+) |
 | Git | Checks it works; if not, opens Apple's installer | Skips |
 | GitHub CLI | Installs `gh` | Skips |
 | Claude Code | Installs the `claude` command (the VS Code extension is separate) | Skips |

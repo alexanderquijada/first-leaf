@@ -65,12 +65,50 @@ Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`.
 | Machine | Alex's MacBook Pro (Apple silicon) |
 | Project folder | `~/Projects/first-leaf` |
 | Reference (read-only) | Pelipper Post at `~/Projects/pelipper-post` |
-| Tools | Homebrew, Node (20+), Git, GitHub CLI, Claude Code in VS Code (installed/checked by `setup.sh`) |
+| Tools | Homebrew, Node (22.18 or newer, or 24.12+), Git, GitHub CLI, Claude Code in VS Code (installed/checked by `setup.sh`) |
 | Accounts | GitHub (logged in via `gh`); Vercel (Pelipper Post's account); Claude Code (confirm with `/status`) |
 
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 0 rulings
+
+Alex ruled on the Phase 0 deviations, the Pelipper Post comparison and the Phase 0 copy.
+
+- **Ratified:**
+  - the three extra fix commits
+  - `engines.node` `^22.18.0 || >=24.12.0`
+  - the dev-only devtools plugin (it must not ship in the production build; confirmed in Phase 0.5)
+  - the Playwright config, `test:e2e` and the Demo menu test
+  - per-route page titles
+  - the shared "Coming in Phase 1" page (temporary)
+  - the favicon removal (an original First Leaf icon comes in Phase 3)
+- **Amended: related words.** A related word in the explanation panel gets a "Back to {previous term}" button.
+- **Amended: P303 touch targets.**
+  - Every standalone control stays at least 48×48px.
+  - A term inside a sentence uses WCAG 2.5.8's inline exception ("the target is in a sentence or its size is otherwise constrained by the line-height of non-target text").
+  - Every P303 detail screen also lists its terms as 48px chips under "Words on this screen".
+  - P303 body text has a line-height of at least 1.6.
+  - Recorded in the P303 brief, BRIEF.md §9 and CLAUDE.md §8.
+- **Adopted from the Pelipper Post comparison:**
+  - a live-site check (`check:live`)
+  - a console-error and NaN/undefined guard on every test
+  - an icon-name check
+  - the Vuetify and scoped-style traps (CLAUDE.md §7)
+  - percentage points for rate changes (BRIEF.md §5)
+  - a 24px minimum gutter between number columns, and a CSS grid when a card count doesn't divide into 12 (BRIEF.md §6)
+  - Vite chunk-size warnings stay visible, and first-screen content is not lazy-loaded
+  - after any scaffold or generator, merge every file it overwrote
+  - `.env*` in `.gitignore`
+  - every new check is shown failing first
+  - *Documentation only:* a last-resort manual deploy, labeled unverified (redirect prompt in `docs/CLAUDE-CODE-PROMPTS.md`).
+- **Not a gap: "deny Write" for Pelipper.** Claude Code checks file writes against the Edit rules, and Edit is already denied. The real gap was Bash commands like `cp`/`mv` touching that folder, closed in Phase 0.5.
+- **Copy: the Phase 0 copy is APPROVED, with two edits.**
+  - The landing line becomes "A made-up investing app for people who have never invested. This site shows it as three design case studies."
+  - Money in sentences reads "up $15.57" / "down $5.88" (a word, no sign). In tables and chart labels it reads "+$15.57" / "−$5.88", with "up"/"down" in the accessible label.
+  - This replaces "sign + word + color" in BRIEF.md §5 and §9 and CLAUDE.md §8, which were updated to match.
+- **Node check:** `setup.sh` and `docs/SETUP.md` now require Node 22.18 or newer (or 24.12+).
 
 ### Sept. 24, 2026: Phase 0 · Foundation
 
@@ -123,7 +161,9 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 ## Known issues / open items
 
-- **TermTip buttons inside a sentence are 29px tall** (measured at 18px text). WCAG 2.5.8 exempts inline links, but the P303 brief asks for 48×48px on *every* touch target. Needs a ruling before P303's Phase 1 screens.
+- ~~TermTip buttons inside a sentence are 29px tall~~ **Ruled Sept. 24:** the inline exception applies, and P303 detail screens add 48px "Words on this screen" chips (built in Phase 1).
+- **No favicon yet.** Vue's was removed in Phase 0; an original First Leaf icon comes in Phase 3.
+- **`scripts/setup.sh` embeds a snapshot of the first commit's files** (its payload). Only its live Node check was updated; the payload stays as it was on Sept. 23, because setup has already run.
 - **Money and SeverityBadge aren't on any page yet.** They're built but not rendered, so their colors (terracotta losses, mustard "Heads-up") will be measured in the rendered UI in Phase 1.
 - **Demo menu semantics:** the choices are keyboard-operable list items with `aria-current` on the active one, not a `menuitemradio` group. It works with a keyboard; a screen reader pass is still needed.
 - **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
@@ -134,7 +174,7 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
 - **Copy is DRAFT** until Alex approves it in Phase 2: all glossary entries, flag text, fund descriptions and story claims.
-- **Phase 0 UI copy is DRAFT** (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
+- ~~Phase 0 UI copy is DRAFT~~ **APPROVED Sept. 24** with two edits (see the rulings entry). The list as it stood: (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
 
 
 ## Measured values (Phase 0, rendered in Chromium from the production build)
