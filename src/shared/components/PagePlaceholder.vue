@@ -27,6 +27,7 @@ defineProps<{ title: string }>()
 }
 
 .fl-page :deep(p) {
+  margin: 12px 0 0;
   line-height: 1.6;
 }
 </style>

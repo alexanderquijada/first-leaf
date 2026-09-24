@@ -37,6 +37,13 @@ for (const size of WIDTHS) {
       expect(await seriousViolations(page)).toEqual([])
     })
 
+    test('with the phone preview open', async ({ page }) => {
+      test.skip(size.width < 600, 'Phone preview is hidden under 600px')
+      await page.goto('/?view=phone')
+      await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').locator('.fl-bottombar')).toBeVisible()
+      expect(await seriousViolations(page)).toEqual([])
+    })
+
     test('with the Demo menu open', async ({ page }) => {
       await page.goto('/')
       await page.locator('.fl-demo__button').click()

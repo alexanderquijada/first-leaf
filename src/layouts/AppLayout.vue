@@ -5,8 +5,13 @@
 import AppFooter from './AppFooter.vue'
 import BottomTabBar from './BottomTabBar.vue'
 import DesktopRail from './DesktopRail.vue'
+import PhonePreview from './PhonePreview.vue'
+import PhonePreviewToggle from './PhonePreviewToggle.vue'
 import TopBar from './TopBar.vue'
 import TopTabs from './TopTabs.vue'
+import { usePhonePreview } from './usePhonePreview'
+
+const { open: previewOpen } = usePhonePreview()
 
 // "Skip to content" moves focus to the page, past the navigation.
 function skipToContent(e: Event) {
@@ -22,10 +27,17 @@ function skipToContent(e: Event) {
     <a class="fl-skip" href="#main" @click="skipToContent">Skip to content</a>
     <DesktopRail />
     <div class="fl-app__column">
-      <TopBar />
+      <TopBar>
+        <template #actions>
+          <PhonePreviewToggle />
+        </template>
+      </TopBar>
       <TopTabs />
       <main id="main" class="fl-app__main" tabindex="-1">
-        <router-view />
+        <PhonePreview v-if="previewOpen" />
+        <div v-show="!previewOpen">
+          <router-view />
+        </div>
       </main>
       <div class="fl-app__footer">
         <AppFooter />
