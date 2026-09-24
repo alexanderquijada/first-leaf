@@ -437,6 +437,12 @@ onBeforeUnmount(() => close(false))
   min-height: 48px;
 }
 
+.fl-termtip__panel--sheet .fl-termtip__source a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+
 .fl-termtip__source {
   font-family: var(--font-ui);
   font-size: 0.875rem;
