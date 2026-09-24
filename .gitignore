@@ -1,0 +1,25 @@
+# dependencies and builds
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# editor and OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# logs
+*.log
+npm-debug.log*
+
+# test output
+playwright-report/
+test-results/
+screenshots/tmp/
+
+# Vercel
+.vercel/
+
+# NOTE: .claude/settings.local.json is committed on purpose (see STATUS.md known issues).

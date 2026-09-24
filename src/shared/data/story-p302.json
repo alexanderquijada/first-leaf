@@ -1,0 +1,849 @@
+{
+  "id": "start-early",
+  "title": "Start early beats start big",
+  "fictional": true,
+  "pointOfView": "Starting early does more for you than putting in more money later. Early money has more years to grow on top of its own growth.",
+  "assumptions": {
+    "annualRate": 0.06,
+    "compounding": "monthly",
+    "contributionTiming": "end of each month",
+    "endAge": 65,
+    "note": "A made-up steady 6% a year. Real markets go up and down, and nobody can promise a rate."
+  },
+  "savers": [
+    {
+      "id": "nia",
+      "name": "Nia",
+      "startAge": 22,
+      "monthly": 100,
+      "fictional": true,
+      "yearly": [
+        {
+          "age": 22,
+          "putIn": 0,
+          "value": 0
+        },
+        {
+          "age": 23,
+          "putIn": 1200,
+          "value": 1233.56
+        },
+        {
+          "age": 24,
+          "putIn": 2400,
+          "value": 2543.2
+        },
+        {
+          "age": 25,
+          "putIn": 3600,
+          "value": 3933.61
+        },
+        {
+          "age": 26,
+          "putIn": 4800,
+          "value": 5409.78
+        },
+        {
+          "age": 27,
+          "putIn": 6000,
+          "value": 6977
+        },
+        {
+          "age": 28,
+          "putIn": 7200,
+          "value": 8640.89
+        },
+        {
+          "age": 29,
+          "putIn": 8400,
+          "value": 10407.39
+        },
+        {
+          "age": 30,
+          "putIn": 9600,
+          "value": 12282.85
+        },
+        {
+          "age": 31,
+          "putIn": 10800,
+          "value": 14273.99
+        },
+        {
+          "age": 32,
+          "putIn": 12000,
+          "value": 16387.93
+        },
+        {
+          "age": 33,
+          "putIn": 13200,
+          "value": 18632.26
+        },
+        {
+          "age": 34,
+          "putIn": 14400,
+          "value": 21015.02
+        },
+        {
+          "age": 35,
+          "putIn": 15600,
+          "value": 23544.73
+        },
+        {
+          "age": 36,
+          "putIn": 16800,
+          "value": 26230.48
+        },
+        {
+          "age": 37,
+          "putIn": 18000,
+          "value": 29081.87
+        },
+        {
+          "age": 38,
+          "putIn": 19200,
+          "value": 32109.13
+        },
+        {
+          "age": 39,
+          "putIn": 20400,
+          "value": 35323.11
+        },
+        {
+          "age": 40,
+          "putIn": 21600,
+          "value": 38735.32
+        },
+        {
+          "age": 41,
+          "putIn": 22800,
+          "value": 42357.99
+        },
+        {
+          "age": 42,
+          "putIn": 24000,
+          "value": 46204.09
+        },
+        {
+          "age": 43,
+          "putIn": 25200,
+          "value": 50287.41
+        },
+        {
+          "age": 44,
+          "putIn": 26400,
+          "value": 54622.59
+        },
+        {
+          "age": 45,
+          "putIn": 27600,
+          "value": 59225.14
+        },
+        {
+          "age": 46,
+          "putIn": 28800,
+          "value": 64111.58
+        },
+        {
+          "age": 47,
+          "putIn": 30000,
+          "value": 69299.4
+        },
+        {
+          "age": 48,
+          "putIn": 31200,
+          "value": 74807.19
+        },
+        {
+          "age": 49,
+          "putIn": 32400,
+          "value": 80654.69
+        },
+        {
+          "age": 50,
+          "putIn": 33600,
+          "value": 86862.85
+        },
+        {
+          "age": 51,
+          "putIn": 34800,
+          "value": 93453.92
+        },
+        {
+          "age": 52,
+          "putIn": 36000,
+          "value": 100451.5
+        },
+        {
+          "age": 53,
+          "putIn": 37200,
+          "value": 107880.69
+        },
+        {
+          "age": 54,
+          "putIn": 38400,
+          "value": 115768.09
+        },
+        {
+          "age": 55,
+          "putIn": 39600,
+          "value": 124141.97
+        },
+        {
+          "age": 56,
+          "putIn": 40800,
+          "value": 133032.33
+        },
+        {
+          "age": 57,
+          "putIn": 42000,
+          "value": 142471.03
+        },
+        {
+          "age": 58,
+          "putIn": 43200,
+          "value": 152491.89
+        },
+        {
+          "age": 59,
+          "putIn": 44400,
+          "value": 163130.81
+        },
+        {
+          "age": 60,
+          "putIn": 45600,
+          "value": 174425.92
+        },
+        {
+          "age": 61,
+          "putIn": 46800,
+          "value": 186417.68
+        },
+        {
+          "age": 62,
+          "putIn": 48000,
+          "value": 199149.07
+        },
+        {
+          "age": 63,
+          "putIn": 49200,
+          "value": 212665.71
+        },
+        {
+          "age": 64,
+          "putIn": 50400,
+          "value": 227016.02
+        },
+        {
+          "age": 65,
+          "putIn": 51600,
+          "value": 242251.43
+        }
+      ],
+      "final": {
+        "putIn": 51600,
+        "value": 242251.43,
+        "earned": 190651.43
+      }
+    },
+    {
+      "id": "theo",
+      "name": "Theo",
+      "startAge": 32,
+      "monthly": 150,
+      "fictional": true,
+      "yearly": [
+        {
+          "age": 32,
+          "putIn": 0,
+          "value": 0
+        },
+        {
+          "age": 33,
+          "putIn": 1800,
+          "value": 1850.33
+        },
+        {
+          "age": 34,
+          "putIn": 3600,
+          "value": 3814.79
+        },
+        {
+          "age": 35,
+          "putIn": 5400,
+          "value": 5900.42
+        },
+        {
+          "age": 36,
+          "putIn": 7200,
+          "value": 8114.67
+        },
+        {
+          "age": 37,
+          "putIn": 9000,
+          "value": 10465.5
+        },
+        {
+          "age": 38,
+          "putIn": 10800,
+          "value": 12961.33
+        },
+        {
+          "age": 39,
+          "putIn": 12600,
+          "value": 15611.09
+        },
+        {
+          "age": 40,
+          "putIn": 14400,
+          "value": 18424.28
+        },
+        {
+          "age": 41,
+          "putIn": 16200,
+          "value": 21410.98
+        },
+        {
+          "age": 42,
+          "putIn": 18000,
+          "value": 24581.9
+        },
+        {
+          "age": 43,
+          "putIn": 19800,
+          "value": 27948.39
+        },
+        {
+          "age": 44,
+          "putIn": 21600,
+          "value": 31522.52
+        },
+        {
+          "age": 45,
+          "putIn": 23400,
+          "value": 35317.1
+        },
+        {
+          "age": 46,
+          "putIn": 25200,
+          "value": 39345.71
+        },
+        {
+          "age": 47,
+          "putIn": 27000,
+          "value": 43622.81
+        },
+        {
+          "age": 48,
+          "putIn": 28800,
+          "value": 48163.7
+        },
+        {
+          "age": 49,
+          "putIn": 30600,
+          "value": 52984.67
+        },
+        {
+          "age": 50,
+          "putIn": 32400,
+          "value": 58102.98
+        },
+        {
+          "age": 51,
+          "putIn": 34200,
+          "value": 63536.98
+        },
+        {
+          "age": 52,
+          "putIn": 36000,
+          "value": 69306.13
+        },
+        {
+          "age": 53,
+          "putIn": 37800,
+          "value": 75431.12
+        },
+        {
+          "age": 54,
+          "putIn": 39600,
+          "value": 81933.88
+        },
+        {
+          "age": 55,
+          "putIn": 41400,
+          "value": 88837.72
+        },
+        {
+          "age": 56,
+          "putIn": 43200,
+          "value": 96167.37
+        },
+        {
+          "age": 57,
+          "putIn": 45000,
+          "value": 103949.09
+        },
+        {
+          "age": 58,
+          "putIn": 46800,
+          "value": 112210.78
+        },
+        {
+          "age": 59,
+          "putIn": 48600,
+          "value": 120982.03
+        },
+        {
+          "age": 60,
+          "putIn": 50400,
+          "value": 130294.27
+        },
+        {
+          "age": 61,
+          "putIn": 52200,
+          "value": 140180.87
+        },
+        {
+          "age": 62,
+          "putIn": 54000,
+          "value": 150677.26
+        },
+        {
+          "age": 63,
+          "putIn": 55800,
+          "value": 161821.03
+        },
+        {
+          "age": 64,
+          "putIn": 57600,
+          "value": 173652.14
+        },
+        {
+          "age": 65,
+          "putIn": 59400,
+          "value": 186212.95
+        }
+      ],
+      "final": {
+        "putIn": 59400,
+        "value": 186212.95,
+        "earned": 126812.95
+      }
+    }
+  ],
+  "catchUp": {
+    "saverId": "theo",
+    "mustMatch": "nia",
+    "monthlyNeeded": 196,
+    "slider": {
+      "min": 150,
+      "max": 300,
+      "step": 1
+    }
+  },
+  "startAgeSlider": {
+    "min": 18,
+    "max": 45,
+    "step": 1,
+    "monthly": 100
+  },
+  "bumpy": {
+    "seed": 317,
+    "yearlyReturns": [
+      0.1545,
+      0.0686,
+      0.1773,
+      0.2666,
+      -0.1365,
+      0.0838,
+      0.0318,
+      0.0733,
+      -0.0928,
+      0.0384,
+      0.1304,
+      0.1831,
+      0.044,
+      0.035,
+      -0.0382,
+      -0.0046,
+      0.0555,
+      0.0475,
+      -0.0524,
+      0.1229,
+      0.0807,
+      0.0653,
+      -0.0466,
+      -0.0349,
+      0.2183,
+      0.1613,
+      0.1318,
+      0.0089,
+      -0.0794,
+      0.1517,
+      -0.0417,
+      0.1792,
+      0.0535,
+      0.1831,
+      0.1271,
+      0.1608,
+      0.0309,
+      0.0877,
+      0.1769,
+      -0.0813,
+      -0.0876,
+      0.0542,
+      0.0748
+    ],
+    "overallGrowth": 0.06,
+    "nia": [
+      {
+        "age": 22,
+        "value": 0
+      },
+      {
+        "age": 23,
+        "value": 1282.77
+      },
+      {
+        "age": 24,
+        "value": 2608.05
+      },
+      {
+        "age": 25,
+        "value": 4365.1
+      },
+      {
+        "age": 26,
+        "value": 6869.21
+      },
+      {
+        "age": 27,
+        "value": 7054.5
+      },
+      {
+        "age": 28,
+        "value": 8891.09
+      },
+      {
+        "age": 29,
+        "value": 10391.21
+      },
+      {
+        "age": 30,
+        "value": 12392.69
+      },
+      {
+        "age": 31,
+        "value": 12390.71
+      },
+      {
+        "age": 32,
+        "value": 14087.49
+      },
+      {
+        "age": 33,
+        "value": 17194.63
+      },
+      {
+        "age": 34,
+        "value": 21640.62
+      },
+      {
+        "age": 35,
+        "value": 23816.82
+      },
+      {
+        "age": 36,
+        "value": 25869.54
+      },
+      {
+        "age": 37,
+        "value": 26060.16
+      },
+      {
+        "age": 38,
+        "value": 27137.76
+      },
+      {
+        "age": 39,
+        "value": 29874.13
+      },
+      {
+        "age": 40,
+        "value": 32519.06
+      },
+      {
+        "age": 41,
+        "value": 31985.96
+      },
+      {
+        "age": 42,
+        "value": 37183.21
+      },
+      {
+        "age": 43,
+        "value": 41427.66
+      },
+      {
+        "age": 44,
+        "value": 45368.39
+      },
+      {
+        "age": 45,
+        "value": 44428.37
+      },
+      {
+        "age": 46,
+        "value": 44058.51
+      },
+      {
+        "age": 47,
+        "value": 54992.26
+      },
+      {
+        "age": 48,
+        "value": 65148.84
+      },
+      {
+        "age": 49,
+        "value": 75006.32
+      },
+      {
+        "age": 50,
+        "value": 76878.77
+      },
+      {
+        "age": 51,
+        "value": 71930.27
+      },
+      {
+        "age": 52,
+        "value": 84123.4
+      },
+      {
+        "age": 53,
+        "value": 81792.34
+      },
+      {
+        "age": 54,
+        "value": 97745.16
+      },
+      {
+        "age": 55,
+        "value": 104203.67
+      },
+      {
+        "age": 56,
+        "value": 124581.02
+      },
+      {
+        "age": 57,
+        "value": 141683.66
+      },
+      {
+        "age": 58,
+        "value": 165752.45
+      },
+      {
+        "age": 59,
+        "value": 172091.1
+      },
+      {
+        "age": 60,
+        "value": 188430.99
+      },
+      {
+        "age": 61,
+        "value": 223058.87
+      },
+      {
+        "age": 62,
+        "value": 206078.79
+      },
+      {
+        "age": 63,
+        "value": 189177.31
+      },
+      {
+        "age": 64,
+        "value": 200660.24
+      },
+      {
+        "age": 65,
+        "value": 216910.23
+      }
+    ],
+    "theo": [
+      {
+        "age": 32,
+        "value": 0
+      },
+      {
+        "age": 33,
+        "value": 1905.2
+      },
+      {
+        "age": 34,
+        "value": 4200.52
+      },
+      {
+        "age": 35,
+        "value": 6221.36
+      },
+      {
+        "age": 36,
+        "value": 8267.8
+      },
+      {
+        "age": 37,
+        "value": 9720.23
+      },
+      {
+        "age": 38,
+        "value": 11471.72
+      },
+      {
+        "age": 39,
+        "value": 13953.74
+      },
+      {
+        "age": 40,
+        "value": 16455.4
+      },
+      {
+        "age": 41,
+        "value": 17349.49
+      },
+      {
+        "age": 42,
+        "value": 21381.02
+      },
+      {
+        "age": 43,
+        "value": 24972.11
+      },
+      {
+        "age": 44,
+        "value": 28456.04
+      },
+      {
+        "age": 45,
+        "value": 28891.22
+      },
+      {
+        "age": 46,
+        "value": 29653.94
+      },
+      {
+        "age": 47,
+        "value": 38101.07
+      },
+      {
+        "age": 48,
+        "value": 46176.25
+      },
+      {
+        "age": 49,
+        "value": 54168.59
+      },
+      {
+        "age": 50,
+        "value": 56458.02
+      },
+      {
+        "age": 51,
+        "value": 53708.77
+      },
+      {
+        "age": 52,
+        "value": 63778.35
+      },
+      {
+        "age": 53,
+        "value": 62884.13
+      },
+      {
+        "age": 54,
+        "value": 76096.41
+      },
+      {
+        "age": 55,
+        "value": 82011.29
+      },
+      {
+        "age": 56,
+        "value": 98974.03
+      },
+      {
+        "age": 57,
+        "value": 113456.22
+      },
+      {
+        "age": 58,
+        "value": 133629.07
+      },
+      {
+        "age": 59,
+        "value": 139583.56
+      },
+      {
+        "age": 60,
+        "value": 153696.29
+      },
+      {
+        "age": 61,
+        "value": 182826.81
+      },
+      {
+        "age": 62,
+        "value": 169694.9
+      },
+      {
+        "age": 63,
+        "value": 156556.16
+      },
+      {
+        "age": 64,
+        "value": 166885.79
+      },
+      {
+        "age": 65,
+        "value": 181229.75
+      }
+    ],
+    "note": "Same overall growth as the smooth line: 6% a year. The order of good and bad years changes the ending."
+  },
+  "yourTurn": {
+    "personaId": "rosa",
+    "startAge": 26,
+    "monthly": 150,
+    "note": "This uses Rosa, a made-up learner, as an example. It is not a plan for you."
+  },
+  "claims": [
+    {
+      "id": "early-ends-ahead",
+      "text": "Nia ends with more money than Theo."
+    },
+    {
+      "id": "early-puts-in-less",
+      "text": "Nia puts in less money than Theo."
+    },
+    {
+      "id": "early-earned-share",
+      "text": "Most of Nia's money at 65 came from growth, not from what she put in."
+    },
+    {
+      "id": "catch-up-costs-more",
+      "text": "To catch up, Theo would need about $196 a month."
+    },
+    {
+      "id": "early-ahead-when-bumpy",
+      "text": "Even when the years go up and down, Nia still ends ahead."
+    }
+  ],
+  "sources": [
+    {
+      "label": "Investor.gov compound interest calculator (U.S. SEC)",
+      "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"
+    }
+  ]
+}

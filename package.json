@@ -1,0 +1,20 @@
+{
+  "name": "first-leaf",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "First Leaf: a made-up investing app for first-time investors. Protogen case studies P301, P302, P303. Everything is fictional; not financial advice.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/placeholder-build.mjs",
+    "data:generate": "node scripts/generate-data.mjs",
+    "validate": "node scripts/validate-data.mjs",
+    "validate:selftest": "node scripts/validator-selftest.mjs",
+    "check:boundaries": "node scripts/check-boundaries.mjs",
+    "check:boundaries:selftest": "node scripts/check-boundaries.mjs --selftest",
+    "check:deploy": "node scripts/check-deploy.mjs"
+  }
+}
