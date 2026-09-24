@@ -29,7 +29,7 @@ const range = defineModel<RangeId>({ required: true })
 }
 
 .ranges__btn {
-  min-height: 44px;
+  min-height: 48px;
   min-width: 56px;
   padding: 0 14px;
   border: 0;

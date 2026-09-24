@@ -220,7 +220,7 @@ function next() {
 
 .fl-flow__input {
   width: 8em;
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 8px;
   border: 1px solid var(--color-ink-muted);
   border-radius: 4px;

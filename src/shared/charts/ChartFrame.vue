@@ -88,7 +88,7 @@ const showTable = ref(false)
 }
 
 .fl-chart__toggle {
-  min-height: 44px;
+  min-height: 48px;
   margin-top: 8px;
   padding: 0 4px;
   border: 0;

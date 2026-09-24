@@ -38,7 +38,7 @@ const chapters = computed(() =>
 
     <nav class="story__menu" aria-label="Chapters">
       <ol>
-        <li v-for="c in chapters" :key="c.n">
+        <li v-for="c in chapters" :key="c.n" :value="c.n">
           <a :href="`#chapter-${c.n}`" class="story__menu-link">{{ c.title }}</a>
         </li>
       </ol>
@@ -101,7 +101,7 @@ const chapters = computed(() =>
 .story__menu-link {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  min-height: 48px;
 }
 
 .story :deep(.chapter) {

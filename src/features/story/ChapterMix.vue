@@ -85,7 +85,7 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
 }
 
 .filters__btn {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0 14px;
   border: 1px solid var(--color-ink-muted);
   border-radius: 999px;

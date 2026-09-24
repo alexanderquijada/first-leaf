@@ -207,7 +207,7 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 }
 
 .fl-alerts__undo {
-  min-height: 44px;
+  min-height: 48px;
   min-width: 48px;
   padding: 0 12px;
   border: 1px solid var(--color-forest);

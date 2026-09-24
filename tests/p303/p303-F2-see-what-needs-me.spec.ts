@@ -45,3 +45,23 @@ test('Mark as handled on the phone updates the needs-you card', async ({ page })
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Home' }).click()
   await expect(page.locator('.phome__needs-title')).toHaveText('3 heads-ups')
 })
+
+// Every standalone control on the phone is at least 48 × 48px (inline words in
+// sentences use WCAG 2.5.8's inline exception and are listed as chips).
+test('every standalone control on the phone pages is at least 48px tall', async ({ page }) => {
+  const small: string[] = []
+  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/story', '/activity']) {
+    await page.goto(path)
+    const show = page.getByRole('button', { name: 'Show as table' })
+    if (await show.count()) await show.first().click()
+    const found = await page.evaluate(() =>
+      [...document.querySelectorAll('main button, main a[href], main input, nav a[href]')]
+        .filter((e) => !e.classList.contains('fl-termtip__button') || e.closest('.chips, .phome__word-actions'))
+        .filter((e) => (e as HTMLElement).offsetParent !== null)
+        .map((e) => ({ name: (e.textContent || (e as HTMLInputElement).value || '').trim().slice(0, 30), h: e.getBoundingClientRect().height }))
+        .filter((x) => x.h < 47.5),
+    )
+    small.push(...found.map((x) => `${path}: "${x.name}" is ${x.h.toFixed(1)}px`))
+  }
+  expect(small).toEqual([])
+})
