@@ -197,6 +197,106 @@ Code (commit as [P303] Add a phone preview so reviewers can see the phone design
 
 ---
 
+## Phase 1A · Core screens, as a real app
+
+**What Alex should look at when it's done:** the laptop Home and Alerts (try a money flow, Mark as handled, Undo); /story chapters 1–4; the phone check-in at /?view=phone; all three scenarios by URL; nothing on screen reads as a project.
+**Likely to go wrong:** a sentence that is false in one scenario; a story number that isn't a checked fact; a phone control under 48px; project language leaking back through a placeholder.
+
+```text
+PHASE 1A · CORE SCREENS, AS A REAL APP. This prompt is your go-ahead for Phase 1A only.
+
+Read CLAUDE.md, STATUS.md, BRIEF.md and all three lens briefs first. Follow CLAUDE.md exactly. Build what the briefs describe; use tokens but don't polish visuals yet (Phase 3). All new sentences go in the report under "Copy for approval", marked DRAFT, each at grade 8 or below.
+
+ALEX'S RULING (Sept. 24): inside the site, First Leaf must read like a real investing app. No "made up", "demo", "case study", "for this project", "fictional" or "for reviewers" language anywhere on screen. Reviewer and project explanations live only in README.md. The data rules behind the scenes do not loosen.
+
+STEP 0: Rulings, docs and a commit guard (before any feature code)
+a. STATUS.md decision log "Sept. 24: Phase 0.6 rulings":
+   - Ratified: story follows the scenario; "Why it moved" opens in place on the phone Home; Alerts two-pane on laptop; Practice and Words in P302; app frame + Home load up front; preview frame scales on short desktop windows; 404 folder; sub-page redirects; skip link; corrected July dip numbers (Claude's planning error: it read every third row of the data).
+   - Temporary: the story's 90% stand-in, replaced by rule R1 in this phase.
+   - Amended: tablet Home must show "Prices as of Fri., Sept. 18".
+   - Closed: related-word links are standalone controls, so under 600px they are at least 48x48px. Add to the P303 brief.
+   - Copy approved: 404, top bar, skip link, nav labels.
+   - Real-app ruling (this prompt). What we got wrong: the About page, the Demo menu and the "made up" copy made the site read as an exercise, not a product.
+b. Docs for the real-app ruling: BRIEF.md, all three lens briefs, CLAUDE.md §5 and README.md.
+   - The on-screen disclaimer becomes a footer disclosure: "Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."
+   - README keeps the full statement (fictional data, learning only, not financial advice), holds the whole reviewer map, and lists the scenario links for each case study: ?scenario=normal, ?scenario=all-clear, ?scenario=brand-new, plus /?view=phone for P303.
+   - Remove About this demo from the routes, folders and brief tables. Demo scenarios are reached only by URL.
+   - The phone toggle is labeled "Phone view".
+   - Money actions end in realistic confirmations, never "nothing real happens" dialogs.
+c. Commit guard: add .githooks/pre-commit running `npm run check`, and a "prepare" script that sets `git config core.hooksPath .githooks`. Add deny rules Bash(git commit *--no-verify*) and Bash(git push *--no-verify*). Show the hook blocking a commit with a deliberately failing test, then remove the failure.
+Commits: [docs] Record the Phase 0.6 rulings and make First Leaf read as a real app · [shared] Run all checks before every commit
+
+STEP 1: Shared foundations
+- Data (change scripts/generate-data.mjs and glossary.json, then validate; never hand-edit generated JSON):
+  - meta.disclaimer = the footer disclosure.
+  - Remove "made-up" / "made up" / "demo" from every learner-facing string. Fund descriptions: "It owns bits of about 3,000 U.S. companies, big and small." (and the same pattern for the others). Story note: "An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate." Nia and Theo are "two friends". yourTurn.note: "This is an example, not a plan or advice." practice.timeMachine.note: drop "made-up" and keep "The past does not tell you what will happen next."
+  - Glossary: delete the "made-up" term and every link to it. Ticker detail: "Real tickers are a few letters long. First Leaf funds all start with FL-." Rewrite any other line that mentions a demo or made-up data. Keep "Practice" (pretend money is a real app feature).
+  - Keep fictional:true on every fund, person and account.
+- Validator (scripts/validate-data.mjs), each change with broken cases in validator-selftest.mjs, shown FAILING first, then passing:
+  - Implement R1–R4 (Rosa's story claims as defined in BRIEF.md). Generate any numbers the story needs in the generator. Replace the story's 90% stand-in with R1's data.
+  - S3: the footer disclosure must say "risk", "simulated" and "not investment advice".
+  - New G6 "No project language on screen": fail if any learner-facing string contains made up / made-up / demo / case study / this project / for reviewers / fictional. Scenario descriptions are reviewer-only (README) and are exempt, but keep them plain.
+  - T4 now requires "example" and "nobody can promise". Update X1 and L1 for the removed glossary term. G1–G5 stay unchanged.
+- Remove from the UI: the About page, its route (/about redirects to /), its footer link and its tests; the Demo menu (useScenario still reads ?scenario= and carries it through navigation and into the phone view); the phone preview's explanatory notes (keep only "Practice here is kept apart from the full view", shown only while Practice is open). Rename the phone toggle to "Phone view" with the same accessibility rules.
+- src/shared/composables/:
+  - useHandled: module scope; handled alerts plus Undo; survives navigation; resets on reload.
+  - useSession: module scope; realistic session-only state from money actions, e.g. a Pending deposit in Activity, "Auto-invest: On" after turning it on. The data files never change; reload resets it.
+- src/shared/charts/: Chart.js registration, token colors, a plain-sentence summary above every chart, "Show as table", values read out in words on hover, focus or tap. The table and the chart come from the same series.
+- Money and SeverityBadge now appear on real pages: measure their rendered contrast and report it.
+
+STEP 2: P301 lens (laptop, 1024px and up)
+- Home: the layout in the P301 brief.
+  - Alerts first: severity word + icon + color, New badges, count.
+  - Balance panel: balance, up/down vs. money put in, this week, auto-invest status.
+  - Balance over time: 1M / 3M / Since March; "What you put in" vs. "What it earned" layers; table.
+  - Your mix: now vs. the mix you set.
+  - Goal: money put in vs. plan, deposits only.
+  - This week: start → market → dividends → end, adding up to the cent.
+- Alerts at /alerts and /alerts/:id: two panes, deep links work.
+  - Detail shows what happened, what it means (term explanations) and what you can do.
+  - Every money action is a realistic flow: review → confirm → confirmation, with session state. "Try the deposit again" ends with "Deposit requested. It usually arrives in 1–3 business days." and a Pending deposit in Activity. "Add a one-time deposit" is the same flow with the amount prefilled. "See auto-invest settings" shows the paused status with a working session-only On/Off toggle and a confirmation.
+  - Mark as handled, with Undo; handled alerts collapse into a "Handled" group.
+- Every scenario: the calm account shows "Nothing needs you this week" with the FYI under "Just so you know"; the brand-new account shows a welcome state; no sentence is false in any scenario.
+
+STEP 3: P302 lens (/story chapters 1–4)
+- Chapter 1 "Seven months in": balance since March, drawn in (reduced motion: shown whole), with the toggle "What you put in / What it earned" and the 1M / 3M / Since March filter.
+- Chapter 2 "Most of it is still your money": the deposits share of her balance (R1).
+- Chapter 3 "The dip in July": the dip's dates and size and the auto-invest pause (R2–R4), with a toggle to show or hide those events on the chart.
+- Chapter 4 "Where it is now": the mix, with a stocks / bonds / reserve / cash filter.
+- The point of view on screen, exactly as in the P302 brief. A chapter menu with #chapter-1 to #chapter-4 anchors. Chapters 5–6 show "Coming soon" (no project language).
+- Every chart: summary sentence, table, keyboard access. Every claim comes from checked data.
+
+STEP 4: P303 lens (under 600px, and inside the phone view)
+- Phone Home check-in: balance, up/down this week, a small balance-over-time chart, the "needs you" card (count + top alert), "Why it moved" opening in place (market, dividends, deposits, and per fund, adding up to the cent), the last 3 transactions, and word of the day (meta.wordOfTheDay) with "Next word" in glossary order.
+- Alert detail as a full page: what happened, what it means, what you can do (the same realistic flows), Mark as handled, and "Words on this screen" as 48px chips. Opened alerts show "Seen".
+- Term explanations as a bottom sheet; related-word links at least 48x48px.
+- Every scenario (by URL) works on the phone Home.
+
+STEP 5: Verify
+- npm run check (including R1–R4, S3, G6, T4 and their broken cases), then check:deploy with check:live. Update check:live's routes: remove /about (now a redirect to /) and add every new route.
+- Search the built app's on-screen text for made up, demo, case study, project, reviewer and fictional, and paste the result. It must be empty apart from the footer's "concept app".
+- Playwright tests named after the flow IDs in each brief, plus: handled state and session state survive navigation and reset on reload; chart table values equal the chart's data; every scenario's Home has no false sentence (assert the visible numbers against the data); the Demo menu and About page are gone; ?scenario= carries into the phone view.
+- axe scans on every new page and state, at 390 and 1280, and with the phone view open.
+- Screenshots of Home, /alerts, /alerts/deposit-returned and /story at 390, 768 and 1280, in all three scenarios (by URL): describe them.
+- Measure: every new chip, badge and button (contrast and size), the gutter between number columns (at least 24px), and the grade of every new sentence.
+
+COMMITS (each its own; the hook runs all checks before each):
+[docs] Record the Phase 0.6 rulings and make First Leaf read as a real app
+[shared] Run all checks before every commit
+[shared] Replace the disclaimer and project language, and add rules R1–R4, G6 to the data checker
+[shared] Remove About and the Demo menu, keep scenarios by URL, rename Phone view
+[shared] Add handled-alert and session state, and chart helpers with summaries and tables
+[P301] Build the laptop Home with alerts first, balance over time, mix, goal and this week
+[P301] Build Alerts with realistic money flows and Mark as handled
+[P302] Build story chapters 1–4 on Rosa's own data, with toggles and filters
+[P303] Build the phone check-in Home with Why it moved and word of the day
+[P303] Build phone alert details with words-on-this-screen chips
+[docs] Record Phase 1A in STATUS.md
+Push, run check:deploy, and give me the CLAUDE.md §11 report.
+```
+
+---
+
 ## Phase 1 · Core flows (all three)
 
 > **SUPERSEDED: will be reissued for the one-app shape** (Sept. 24, 2026). Kept for the record; don't run it as written.

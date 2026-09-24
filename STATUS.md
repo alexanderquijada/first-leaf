@@ -2,17 +2,17 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 0.6 · One app)
+**Last updated:** Sept. 24, 2026 (Phase 1A · Core screens, as a real app)
 
 ## NEXT STEP
 
-Alex reviews Phase 0.6 (one app):
-- the three rewritten lens briefs (their Summaries are in the Phase 0.6 report)
-- the app shell at https://first-leaf.vercel.app at 1280, 768 and 390
-- Phone preview (https://first-leaf.vercel.app/?view=phone)
-- the About this demo copy (DRAFT)
+Alex reviews Phase 1A:
+- on a laptop, Home and Alerts: try "Try the deposit again", Mark as handled and Undo
+- /story chapters 1–4
+- on a phone or at /?view=phone, the check-in Home, Why it moved and an alert page
+- all three scenarios by URL (README)
 
-He rules on the open questions in the Phase 0.6 decision-log entry. Then the planning chat reissues the Phase 1 prompt for the one-app shape (the old Phase 1–5 prompts are marked SUPERSEDED).
+He rules on the deviations and the DRAFT copy in the Phase 1A decision-log entry. Then the planning chat issues Phase 1B: Activity filters, Funds and fund pages, Practice, Words, story chapters 5–6 and the pinned chart.
 
 ## Live links
 
@@ -56,6 +56,7 @@ He rules on the open questions in the Phase 0.6 decision-log entry. Then the pla
 | 0 · Foundation (Sept. 24) | ✅ Scaffold, tokens, fonts, TermTip, Disclaimer, DemoMenu, Money, SeverityBadge, landing, 404 | ✅ Route shell | ✅ Route shell | ✅ Route shell |
 | 0.5 · Rulings and guardrails (Sept. 24) | ✅ check:live, test guard, check:icons, axe scans, Demo menu semantics, TermTip Back, money format, permissions, `npm run check` | — | — | — |
 | 0.6 · One app (Sept. 24) | ✅ One-app re-plan, layouts, feature folders, About, redirects, 404 in the app | ✅ Desktop rail, Home placeholder | ✅ Story and Practice placeholders | ✅ Phone shell, bottom tab bar, Phone preview |
+| 1A · Core screens, real app (Sept. 24) | ✅ Disclosure, G6/R1–R4/S3/T4, About and Demo menu removed, scenarios by URL, handled and session state, chart helpers, pre-commit hook, project-language crawl | ✅ Laptop Home, Alerts with realistic flows, basic Activity | ✅ Story chapters 1–4 | ✅ Phone check-in Home, phone alert pages, 48px controls |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
@@ -75,6 +76,114 @@ He rules on the open questions in the Phase 0.6 decision-log entry. Then the pla
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 1A · Core screens, as a real app
+
+- **Rulings recorded brief first** (`b1ffd71`). A pre-commit hook now runs `npm run check` on every commit (`35b4d3e`). It blocked a deliberately failing test, then four real stale-test or timing problems during this phase, each fixed before the commit went in.
+- **Data and rules** (`f2dbb55`):
+  - The footer disclosure replaces the old disclaimer.
+  - "Made up" and "demo" are gone from every learner-facing string, and the "made-up" glossary term is deleted.
+  - Your money story's facts and sentences are generated per account (`rosaStory`).
+  - New and changed rules: R1–R4, G6, S3 ("risk", "simulated", "not investment advice") and T4 ("example", "nobody can promise"). All 18 new broken cases showed MISSING first. Result: 47/47 rules, and all 83 cases caught.
+- **Caught: the dip's search window matters.** Searched from June 1, "the dip" would be a slower slide from $91.34 on June 2. The window is now June 15 to July 31, which gives the ratified June 26 → July 13 dip ($90.46 → $84.45, −6.6%), and R2 recomputes it from the stored window.
+- **Caught: the brand-new point of view read at grade 8.4** when its second sentence stood alone. For that account only it's split into two sentences (5.4). The full point of view stays word for word.
+- **Removed:** About (and `/about`, which redirects to `/`), the Demo menu, the phone view's explanatory notes, and "Coming in Phase 1" (now "Coming soon.").
+- **Scenarios** ride along on every link through a router guard, and carry into the phone view.
+- **Built:**
+  - Laptop Home (alerts first).
+  - Alerts: two panes on a laptop, and realistic review → confirm → confirmation flows with session state (a Pending deposit, auto-invest on).
+  - Mark as handled with Undo.
+  - A basic Activity list.
+  - Story chapters 1–4 with their toggles and filters.
+  - The phone check-in Home (Why it moved in place, the latest three, word of the day).
+  - Phone alert pages with 48px "Words on this screen" chips.
+- **Accessibility found and fixed:**
+  - Vuetify's `v-switch` had no `role="switch"`; it's replaced with a native switch.
+  - The page behind a money-flow dialog stayed interactive (axe `target-size`); the app shell is now inert while the dialog is open.
+  - Six phone controls were 40–44px; they're now 48px, with a test that measures every standalone control.
+  - The axe scans read fading elements mid-animation; they now wait for the page to settle.
+- **What went wrong:** four commits were blocked by the new hook because older tests still pointed at placeholder content ("yearly fee" on Home, the Alerts placeholder, "growth on growth" on the story). No broken commit reached the history this phase.
+- **Measured:**
+  - Contrast: severity badges 5.92 / 6.15 / 7.79:1; New 18.25:1; lime gains on the panel 13.75:1; terracotta losses 5.92:1; buttons and chips 7.79:1; Seen on the panel 10.02:1.
+  - Size: every phone control is 48px or more, and the phone bottom tabs are 78×56.
+  - Smallest gutter between number columns: 32px (Activity), then 58px (the phone's latest three), 71px (This week) and 133–220px elsewhere.
+  - The built app's text contains no project language: the only hits are "deMo" inside Vue's `onVnodeMounted` and the data's `fictional: true` flags, neither of which is ever rendered.
+- **Deviations (for Alex to rule on):**
+  1. **Your exact confirmation, "Deposit requested. It usually arrives in 1–3 business days.", scores grade 10.0** (9.7 for its second sentence). It ships as you wrote it. The review step uses "It takes 1 to 3 days to arrive, not counting weekends." (5.9). A grade-4.8 alternative for the confirmation: "Deposit requested. It should get here in 1 to 3 workdays."
+  2. **The P302 point of view is in the third person** ("Rosa's balance… she put in"), while the chapters speak to her ("your balance"). Suggestion: "Right now, almost all of your balance is money you put in. …"
+  3. **The pinned chart beside the text from 1024px is deferred** to Phase 1B/3. Chapters 1–4 show their charts inline at every width.
+  4. **S3 accepts "Nothing here is investment advice."** The ruling asked for "not investment advice", which that exact sentence doesn't contain literally; S3 matches "not" or "nothing here is" investment advice.
+  5. **On the phone, tapping a fund in Why it moved shows its dollar move** next to the whole market change, not a percent share: with some funds down, one fund's share can exceed 100%.
+  6. **Shared code landed in lens commits** where only that lens used it at the time: AlertList (P301 Home), activityText (P301 Alerts), ranges and RangeButtons (P302). There are two extra commits: the project-language crawl with the check:live update, and the 48px fix.
+  7. **Activity is a basic list** so a Pending deposit has somewhere to show. Filters (F5) come in 1B.
+  8. **The dialog's text is Vuetify's black (#000, 20.66:1)**, not the ink token: the theme has no "on-paper" color. Fix in Phase 3.
+- **Copy for approval (DRAFT, grade 7.6 or below unless noted):**
+  - **Home:**
+    - "Needs your attention"
+    - "N alerts need a look."
+    - "Nothing needs you this week."
+    - "You have handled everything for this week."
+    - "Just so you know"
+    - "Handled (N)", "Undo" (label), "Mark as handled"
+    - "Up $X on the $Y you put in."
+    - "This week: up $X."
+    - "In funds", "Cash", "You put in"
+    - "Auto-invest: On." / "Paused since July 14." (label)
+    - the balance-over-time summary
+    - "The biggest difference is FL-X: N% now and M% in the mix you set."
+    - "$X in cash is not part of your mix."
+    - the goal lines
+    - "This counts deposits only, not the market."
+    - "Your balance went up $X this week."
+  - **Welcome:**
+    - "Welcome, Rosa." (label)
+    - "Your account is open. Here is what happens next."
+    - the three steps
+    - "Your balance over time will show here after your first deposit arrives."
+  - **Alerts:**
+    - "What happened", "What it means", "What you can do"
+    - the fact labels
+    - "Choose an alert to read it here."
+    - "We could not find that alert."
+    - "It may have been for another account, or it no longer applies."
+    - "All alerts"
+  - **Flows:**
+    - "Try your deposit again" / "Add a one-time deposit" / "Auto-invest"
+    - "Check the amount, then continue."
+    - "From your bank account" / "To your First Leaf account"
+    - the amount error
+    - the confirm sentences
+    - the auto-invest status and confirm sentences
+    - "You can see it as Pending in Activity."
+  - **Activity:** "Nothing yet. Your deposits, buys and dividends will show here."
+  - **Story:**
+    - chapter titles
+    - "Show what you put in and what it earned"
+    - "Show events on the chart"
+    - the event labels
+    - "Tap either part to read it."
+    - "What it earned is its return. It needs years to grow."
+    - "Here is how your money is split today, as of the last prices."
+    - the mix summaries
+    - the brand-new chapter
+    - "Coming soon."
+  - **Phone:**
+    - "N thing(s) need(s) you"
+    - "See N heads-ups"
+    - "Nothing needs you today."
+    - "Why it moved this week"
+    - "The market: … Dividends: …"
+    - "The market, fund by fund"
+    - "X moved up $Y this week. The whole market change was up $Z."
+    - "Some funds went down this week. Ups and downs are normal."
+    - "See your funds", "Latest", "See all activity"
+    - "Word of the day", "Read more", "Next word"
+    - "Words on this screen"
+  - **Chart helpers:**
+    - "Show as table" / "Hide table"
+    - "Move across the chart, tap it, or use the arrow keys to read each day."
+    - the readout sentence
+  - **Generated story sentences:** everything in `rosaStory`, now data and checked by R1–R4.
 
 ### Sept. 24, 2026: Phase 0.6 rulings (and the real-app ruling)
 
@@ -304,7 +413,9 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **`scripts/setup.sh` embeds a snapshot of the first commit's files** (its payload). Only its live Node check was updated; the payload stays as it was on Sept. 23, because setup has already run.
 - **Money and SeverityBadge aren't on any page yet.** They're built but not rendered, so their colors (terracotta losses, mustard "Heads-up") will be measured in the rendered UI in Phase 1.
 - ~~Demo menu semantics~~ **Fixed Sept. 24:** a labelled menu of `menuitemradio` items, locked by an aria snapshot. A pass with a real screen reader (VoiceOver) is still worth doing.
-- **Phone preview limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario is carried through the URL. A scenario picked inside the frame doesn't change the full view.
+- **The pre-commit hook checks the working tree, not only what's staged**, so an unstaged broken file can block an unrelated commit (and a staged-only problem is still caught). Acceptable for now.
+- **Money has no loss on the dark panel yet in the data** (Rosa is up in every scenario). Coral on the panel is 7.1:1 by the token table, but not yet measured rendered.
+- **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario is carried through the URL. A scenario picked inside the frame doesn't change the full view.
 - **The rail's paper background is 100vh tall and sticky.** Full-page screenshots show it ending at one screen height; a real window always shows it full height.
 - **Related-word links in the explanation panel are about 27px tall** (71×27 measured). On desktop that's above the 24px minimum. On P303's bottom sheet, the amended rule may count them as standalone controls that need 48px. Needs a ruling before P303's Phase 1 screens.
 - **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
