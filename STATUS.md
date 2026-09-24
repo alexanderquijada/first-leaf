@@ -97,6 +97,8 @@ Newest first. Include what we got wrong and why.
   - **Commit `13405e2` ([P301] rail + Home) went in with one test failing.** The Demo menu test clicked through the old landing page's doors. My commit command didn't stop on the failing test run. The test was rewritten in `f460bcc`; from then on every commit ran after a passing suite.
   - **A skip-link test was flaky under parallel load:** it pressed Tab before the page rendered. Fixed by waiting for the page heading, then passed 3 runs in a row.
   - **The redirect functions failed type-check under vue-router 5.** The router now infers the types.
+  - **The footer test was flaky against the live site** (2 of 3 runs failed). It scrolled before the lazily loaded page had rendered. The live screen showed the footer clear of the bar (763 against 787), so the test was fixed, not the app. It now waits for the heading and polls: 5 of 5 runs pass live, and it still fails when the bar's padding is removed.
+- **The full suite passed against the live site:** 44 of 44.
 - **Measured** (Chromium, production build):
   - Bottom tabs are 78×56 each; the bottom bar is opaque (#FFFDF8), and so is the top bar (#F5F0E6).
   - Nav text on the phone: 18.25:1 (current 7.79:1). On the tablet: 16.33:1 (current 6.97:1). On the desktop rail: 18.25:1 (current 6.57:1, forest on mint).
