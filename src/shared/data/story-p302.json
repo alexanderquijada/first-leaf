@@ -920,14 +920,14 @@
           "text": "You paused auto-invest the next day, July 14."
         },
         {
-          "id": "cash-after",
-          "chapter": 3,
-          "text": "After that, your Aug. 3 deposit stayed as cash."
-        },
-        {
           "id": "back-above",
           "chapter": 3,
           "text": "By July 20, your balance was back above what you had put in."
+        },
+        {
+          "id": "cash-after",
+          "chapter": 3,
+          "text": "After that, your Aug. 3 deposit stayed as cash."
         },
         {
           "id": "up-now",
@@ -1006,14 +1006,14 @@
           "text": "On July 13, your balance was $1,064.27. That was $35.73 below the $1,100 you had put in."
         },
         {
-          "id": "kept-buying",
-          "chapter": 3,
-          "text": "Auto-invest stayed on. Your Aug. 3 and Sept. 1 deposits bought your mix the day they arrived."
-        },
-        {
           "id": "back-above",
           "chapter": 3,
           "text": "By July 20, your balance was back above what you had put in."
+        },
+        {
+          "id": "kept-buying",
+          "chapter": 3,
+          "text": "Auto-invest stayed on. Your Aug. 3 and Sept. 1 deposits bought your mix the day they arrived."
         },
         {
           "id": "up-now",

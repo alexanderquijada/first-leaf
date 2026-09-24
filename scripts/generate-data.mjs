@@ -449,9 +449,10 @@ function rosaStoryFor({ account, activity }) {
     ...(atLow.below > 0 ? [{ id: 'at-low', chapter: 3, text: `On ${apDate(atLow.date)}, your balance was ${fmtCents(atLow.balance)}. That was ${fmtCents(atLow.below)} below the ${fmt(atLow.moneyIn)} you had put in.` }] : []),
     ...(paused
       ? [{ id: 'pause', chapter: 3, text: `You paused auto-invest the next day, ${apDate(paused)}.` },
+         { id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
          { id: 'cash-after', chapter: 3, text: `After that, your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} stayed as cash.` }]
-      : [{ id: 'kept-buying', chapter: 3, text: `Auto-invest stayed on. Your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} bought your mix the day ${depositsAfter.length > 1 ? 'they' : 'it'} arrived.` }]),
-    { id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
+      : [{ id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
+         { id: 'kept-buying', chapter: 3, text: `Auto-invest stayed on. Your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} bought your mix the day ${depositsAfter.length > 1 ? 'they' : 'it'} arrived.` }]),
     { id: 'up-now', chapter: 3, text: a.gainLoss >= 0 ? `On ${apDate(LAST_CLOSE)}, you were up ${fmtCents(a.gainLoss)}.` : `On ${apDate(LAST_CLOSE)}, you were down ${fmtCents(-a.gainLoss)}.` },
   ];
   const pointOfView = share >= 0.9 ? `${POV_NOW} ${POV_REST}` : POV_GENERAL;

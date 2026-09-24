@@ -4,32 +4,16 @@
 import { computed, ref } from 'vue'
 import BalanceChart from '@/shared/charts/BalanceChart.vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
+import RangeButtons from '@/shared/charts/RangeButtons.vue'
+import { inRange, type RangeId } from '@/shared/charts/ranges'
 import { useScenario } from '@/shared/composables/useScenario'
-import { meta } from '@/shared/data'
 import { formatDate, formatMoney, formatSigned } from '@/shared/format'
 
 const props = withDefaults(defineProps<{ compact?: boolean; title?: string }>(), { compact: false, title: 'Balance over time' })
 const { account } = useScenario()
 
-type Range = '1m' | '3m' | 'all'
-const RANGES: { id: Range; label: string; name: string }[] = [
-  { id: '1m', label: '1M', name: 'Last month' },
-  { id: '3m', label: '3M', name: 'Last 3 months' },
-  { id: 'all', label: 'Since March', name: 'Since March' },
-]
-const range = ref<Range>(props.compact ? 'all' : '3m')
-
-function monthsBack(iso: string, n: number) {
-  const d = new Date(iso + 'T00:00:00Z')
-  d.setUTCMonth(d.getUTCMonth() - n)
-  return d.toISOString().slice(0, 10)
-}
-const points = computed(() => {
-  const h = account.value.history
-  if (range.value === 'all') return h
-  const from = monthsBack(meta.lastClose, range.value === '1m' ? 1 : 3)
-  return h.filter((r) => r.date >= from)
-})
+const range = ref<RangeId>(props.compact ? 'all' : '3m')
+const points = computed(() => inRange(account.value.history, range.value))
 
 const summary = computed(() => {
   const a = account.value, p = points.value
@@ -59,51 +43,8 @@ const rows = computed(() =>
 <template>
   <ChartFrame :title="title" :summary="summary" :columns="columns" :rows="rows">
     <template #controls>
-      <div v-if="!compact" class="ranges" role="group" aria-label="Time range">
-        <button
-          v-for="r in RANGES"
-          :key="r.id"
-          type="button"
-          class="ranges__btn"
-          :aria-pressed="range === r.id ? 'true' : 'false'"
-          :aria-label="r.name"
-          @click="range = r.id"
-        >
-          {{ r.label }}
-        </button>
-      </div>
+      <RangeButtons v-if="!compact" v-model="range" />
     </template>
     <BalanceChart :points="points" :label="title" :compact="compact" :height="compact ? 120 : 280" />
   </ChartFrame>
 </template>
-
-<style scoped>
-.ranges {
-  display: inline-flex;
-  border: 1px solid var(--color-ink-muted);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.ranges__btn {
-  min-height: 44px;
-  min-width: 56px;
-  padding: 0 14px;
-  border: 0;
-  background: var(--color-paper);
-  color: var(--color-ink);
-  font: inherit;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.ranges__btn + .ranges__btn {
-  border-left: 1px solid var(--color-ink-muted);
-}
-
-.ranges__btn[aria-pressed='true'] {
-  background: var(--color-forest);
-  color: var(--color-paper);
-  font-weight: 700;
-}
-</style>

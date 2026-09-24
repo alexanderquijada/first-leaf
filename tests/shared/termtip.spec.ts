@@ -3,7 +3,7 @@ import { test, expect } from '../fixtures'
 // Each placeholder page with a term demo has one working explanation (BRIEF.md §5).
 const SHELLS = [
   { path: '/', term: 'Balance', short: 'The total value of everything in your account right now.' },
-  { path: '/story', term: 'Growth on growth', short: 'When your money earns money' },
+  { path: '/story', term: 'Return', short: 'How much your money grew or shrank' },
   { path: '/alerts/deposit-returned', term: 'Returned deposit', short: 'A deposit your bank sent back' },
 ]
 
