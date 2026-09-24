@@ -55,11 +55,18 @@ test.describe('phone, 390px', () => {
 
   test('the footer is not hidden behind the bottom tab bar', async ({ page }) => {
     await page.goto('/about')
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    // Wait for the (lazily loaded) page, or the scroll lands before it has height.
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('About this demo')
     const about = page.locator('footer').getByRole('link', { name: 'About this demo' })
-    const a = (await about.boundingBox())!
-    const bar = (await page.locator('.fl-bottombar').boundingBox())!
-    expect(a.y + a.height).toBeLessThanOrEqual(bar.y)
+    const bar = page.locator('.fl-bottombar')
+    await expect
+      .poll(async () => {
+        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+        const a = (await about.boundingBox())!
+        const b = (await bar.boundingBox())!
+        return b.y - (a.y + a.height)
+      })
+      .toBeGreaterThanOrEqual(0)
   })
 })
 
