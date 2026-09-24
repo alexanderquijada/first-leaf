@@ -14,7 +14,7 @@ async function seriousViolations(page: Page) {
     .map((v) => `${v.impact}: ${v.id}: ${v.help} (${v.nodes.map((n) => n.target.join(' ')).join(' | ')})`)
 }
 
-const PAGES = ['/', '/story', '/activity', '/about']
+const PAGES = ['/', '/story', '/activity', '/alerts']
 const WIDTHS = [
   { width: 390, height: 844 },
   { width: 1280, height: 800 },
@@ -46,11 +46,5 @@ for (const size of WIDTHS) {
       expect(await seriousViolations(page)).toEqual([])
     })
 
-    test('with the Demo menu open', async ({ page }) => {
-      await page.goto('/')
-      await page.locator('.fl-demo__button').click()
-      await expect(page.locator('.fl-demo__list')).toBeVisible()
-      expect(await seriousViolations(page)).toEqual([])
-    })
   })
 }

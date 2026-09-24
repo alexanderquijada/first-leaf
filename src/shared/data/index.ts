@@ -230,6 +230,48 @@ export interface Saver {
   final: { putIn: number; value: number; earned: number }
 }
 
+export interface StoryClaim {
+  id: string
+  /** Which chapter of Your money story states it (1–4). */
+  chapter: number
+  text: string
+}
+
+/** Rosa's own facts for one account, recomputed by rules R1–R4. */
+export interface RosaStory {
+  accountId: AccountId
+  pointOfView: string
+  facts: {
+    openedOn: ISODate
+    firstDeposit: number
+    moneyIn: number
+    balance: number
+    earned: number
+    depositsShare: number
+    lastClose: ISODate
+    dip: {
+      ticker: Ticker
+      window: { from: ISODate; to: ISODate }
+      highDate: ISODate
+      high: number
+      lowDate: ISODate
+      low: number
+      drop: number
+    }
+    atLow: { date: ISODate; balance: number; moneyIn: number; below: number }
+    pause: { date: ISODate } | null
+    after: {
+      backAboveDate: ISODate
+      backAboveBalance: number
+      backAboveMoneyIn: number
+      deposits: { date: ISODate; amount: number }[]
+      depositsInvested: boolean
+      upNow: number
+    }
+  }
+  claims: StoryClaim[]
+}
+
 export interface Story {
   id: string
   title: string
@@ -261,6 +303,8 @@ export interface Story {
   yourTurn: { personaId: string; startAge: number; monthly: number; note: string }
   claims: { id: string; text: string }[]
   sources: { label: string; url: string }[]
+  /** Per account; null for an account with no history yet. */
+  rosaStory: Record<AccountId, RosaStory | null>
 }
 
 // ── glossary.json (hand-written copy) ────────────────────────────────────────

@@ -1,5 +1,5 @@
 import { computed, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import {
   getAccount,
   getActivity,
@@ -23,12 +23,12 @@ const attention = computed(() => getAttention(scenario.value.accountId))
 const activity = computed(() => getActivity(scenario.value.accountId))
 
 /**
- * The current demo scenario and ITS account. Reads ?scenario=normal|all-clear|brand-new
- * from the URL. An unknown value falls back to the main demo ("normal").
+ * The current scenario and ITS account. Scenarios are reached by URL only
+ * (?scenario=normal|all-clear|brand-new); there is no menu on screen. An unknown
+ * value falls back to "normal". The router keeps ?scenario on every link.
  */
 export function useScenario() {
   const route = useRoute()
-  const router = useRouter()
 
   watch(
     () => route.query.scenario,
@@ -39,10 +39,5 @@ export function useScenario() {
     { immediate: true },
   )
 
-  function setScenario(id: ScenarioId) {
-    scenarioId.value = id
-    router.replace({ query: { ...route.query, scenario: id } })
-  }
-
-  return { scenarios, scenarioId, scenario, account, attention, activity, setScenario }
+  return { scenarioId, scenario, account, attention, activity }
 }

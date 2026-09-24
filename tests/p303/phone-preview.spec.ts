@@ -8,7 +8,7 @@ test.describe('at 1280px', () => {
 
   test('the toggle opens and closes the preview, moving focus in and back', async ({ page }) => {
     await page.goto('/')
-    const toggle = page.getByRole('button', { name: 'Preview on a phone' })
+    const toggle = page.getByRole('button', { name: 'Phone view' })
     await expect(toggle).toHaveAttribute('aria-pressed', 'false')
     await toggle.click()
     await expect(toggle).toHaveAttribute('aria-pressed', 'true')
@@ -30,7 +30,7 @@ test.describe('at 1280px', () => {
     await frame.focus()
     await page.frameLocator(FRAME).locator('body').press('Escape')
     await expect(frame).toHaveCount(0)
-    await expect(page.getByRole('button', { name: 'Preview on a phone' })).toBeFocused()
+    await expect(page.getByRole('button', { name: 'Phone view' })).toBeFocused()
   })
 
   test('?view=phone opens it on the phone Home with the bottom tab bar', async ({ page }) => {
@@ -50,7 +50,10 @@ test.describe('at 1280px', () => {
     await page.goto('/story?scenario=brand-new&view=phone')
     const phone = page.frameLocator(FRAME)
     await expect(phone.getByRole('heading', { level: 1 })).toHaveText('Your money story')
-    await expect(phone.locator('.fl-demo__button')).toContainText('Brand-new account')
+    // The brand-new account has no history, so the story states only the general point of view.
+    await expect(phone.getByText('Growth needs years. Starting early')).toBeVisible()
+    await expect(phone.getByText('Right now, almost all')).toHaveCount(0)
+    expect(await page.locator(FRAME).getAttribute('src')).toContain('scenario=brand-new')
     // Moving in the full view keeps the preview open and moves the phone too.
     await page.locator('.fl-rail').getByRole('link', { name: 'Activity' }).click()
     await expect(page).toHaveURL(/\/activity\?.*view=phone/)
@@ -88,7 +91,7 @@ test.describe('at 390px', () => {
 
   test('the toggle is hidden, and ?view=phone just shows the app', async ({ page }) => {
     await page.goto('/?view=phone')
-    await expect(page.getByRole('button', { name: 'Preview on a phone' })).toBeHidden()
+    await expect(page.getByRole('button', { name: 'Phone view' })).toBeHidden()
     await expect(page.locator('iframe')).toHaveCount(0)
     await expect(page.locator('.fl-bottombar')).toBeVisible()
   })

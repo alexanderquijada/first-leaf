@@ -21,7 +21,7 @@ onBeforeUnmount(() => {
     @click="setOpen(!open)"
   >
     <span class="mdi mdi-cellphone" aria-hidden="true" />
-    Preview on a phone
+    Phone view
   </button>
 </template>
 

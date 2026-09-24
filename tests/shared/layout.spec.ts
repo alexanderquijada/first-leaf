@@ -54,15 +54,14 @@ test.describe('phone, 390px', () => {
   })
 
   test('the footer is not hidden behind the bottom tab bar', async ({ page }) => {
-    await page.goto('/about')
-    // Wait for the (lazily loaded) page, or the scroll lands before it has height.
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('About this demo')
-    const about = page.locator('footer').getByRole('link', { name: 'About this demo' })
+    await page.goto('/story')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your money story')
+    const disclosure = page.locator('footer .fl-disclaimer')
     const bar = page.locator('.fl-bottombar')
     await expect
       .poll(async () => {
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-        const a = (await about.boundingBox())!
+        const a = (await disclosure.boundingBox())!
         const b = (await bar.boundingBox())!
         return b.y - (a.y + a.height)
       })
@@ -70,11 +69,12 @@ test.describe('phone, 390px', () => {
   })
 })
 
-test('every page has the disclaimer and a link to About this demo', async ({ page }) => {
+test('every page has the risk disclosure in the footer', async ({ page }) => {
   for (const path of ['/', '/story', '/practice', '/learn/expense-ratio', '/nope']) {
     await page.goto(path)
-    await expect(page.locator('footer .fl-disclaimer')).toContainText('Nothing here is investment advice.')
-    await expect(page.locator('footer').getByRole('link', { name: 'About this demo' })).toBeVisible()
+    await expect(page.locator('footer .fl-disclaimer')).toHaveText(
+      'Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice.',
+    )
   }
 })
 
@@ -86,14 +86,14 @@ test('old case-study addresses redirect and keep the scenario', async ({ page })
     ['/p301/funds/FL-GREEN', '/funds/FL-GREEN'],
     ['/p303/learn/expense-ratio', '/learn/expense-ratio'],
     ['/p303/attention', '/alerts'],
+    ['/about', '/'],
   ]
   for (const [from, to] of cases) {
     await page.goto(from!)
     await expect(page).toHaveURL(new RegExp(`${to!.replace(/\//g, '\\/')}$`))
   }
-  await page.goto('/p301?scenario=all-clear')
-  await expect(page).toHaveURL(/\/\?scenario=all-clear$/)
-  await expect(page.locator('.fl-demo__button')).toContainText('Nothing needs you')
+  await page.goto('/p302?scenario=brand-new')
+  await expect(page).toHaveURL(/\/story\?scenario=brand-new$/)
 })
 
 test('an unknown address shows the friendly 404 inside the app', async ({ page }) => {
@@ -104,15 +104,15 @@ test('an unknown address shows the friendly 404 inside the app', async ({ page }
   await expect(page).toHaveURL(/\/$/)
 })
 
-test('About this demo explains Rosa, the scenarios and where each case study lives', async ({ page }) => {
+test('the About page and the Demo menu are gone', async ({ page }) => {
   await page.goto('/about')
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('About this demo')
-  await expect(page.getByText('Rosa is 26. She is a dental hygienist in Tucson, Arizona.')).toBeVisible()
-  for (const h of ['P301 · Operational dashboard', 'P302 · Interactive data story', 'P303 · Mobile experience']) {
-    await expect(page.getByRole('heading', { name: h })).toBeVisible()
+  await expect(page).toHaveURL(/\/$/)
+  for (const path of ['/', '/story', '/alerts']) {
+    await page.goto(path)
+    await expect(page.getByText('About this demo')).toHaveCount(0)
+    await expect(page.getByRole('button', { name: /^Demo/ })).toHaveCount(0)
+    await expect(page.locator('.fl-demo__button')).toHaveCount(0)
   }
-  await page.getByRole('link', { name: 'Nothing needs you' }).click()
-  await expect(page).toHaveURL(/\/\?scenario=all-clear$/)
 })
 
 test('the skip link moves focus to the page content', async ({ page }) => {
@@ -129,6 +129,6 @@ test('the story states its point of view, and only the part that is true', async
   await page.goto('/story')
   await expect(page.getByText('Right now, almost all of Rosa\'s balance is money she put in.')).toBeVisible()
   await page.goto('/story?scenario=brand-new')
-  await expect(page.getByText('Growth needs years, so starting early')).toBeVisible()
+  await expect(page.getByText('Growth needs years. Starting early')).toBeVisible()
   await expect(page.getByText('Right now, almost all')).toHaveCount(0)
 })

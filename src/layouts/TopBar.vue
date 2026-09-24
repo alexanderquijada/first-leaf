@@ -1,7 +1,6 @@
 <script setup lang="ts">
-// The top bar at every size. Phone: wordmark and Demo menu. Tablet: the same.
-// Desktop: the greeting and "Prices as of …" (the wordmark sits in the rail).
-import DemoMenu from '@/shared/components/DemoMenu.vue'
+// The top bar at every size. Phone: the wordmark. Tablet: the wordmark and
+// "Prices as of …". Desktop: the greeting and "Prices as of …" (the wordmark sits in the rail).
 import { meta, persona } from '@/shared/data'
 import { formatDayDate } from '@/shared/format'
 </script>
@@ -15,7 +14,6 @@ import { formatDayDate } from '@/shared/format'
     </div>
     <div class="fl-topbar__actions">
       <slot name="actions" />
-      <DemoMenu />
     </div>
   </header>
 </template>
@@ -49,6 +47,10 @@ import { formatDayDate } from '@/shared/format'
   display: none;
 }
 
+.fl-topbar__greeting {
+  display: none;
+}
+
 .fl-topbar__actions {
   display: flex;
   align-items: center;
@@ -75,6 +77,12 @@ import { formatDayDate } from '@/shared/format'
   }
 }
 
+@media (min-width: 600px) {
+  .fl-topbar__hello {
+    display: block;
+  }
+}
+
 @media (min-width: 1024px) {
   .fl-topbar {
     padding: 8px 32px;
@@ -84,7 +92,7 @@ import { formatDayDate } from '@/shared/format'
     display: none;
   }
 
-  .fl-topbar__hello {
+  .fl-topbar__greeting {
     display: block;
   }
 }

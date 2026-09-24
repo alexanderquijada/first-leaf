@@ -4,10 +4,14 @@
 // the bottom tab bar and the touch targets are the real ones. No notch and no
 // brand shapes. The frame scales down (a CSS transform) to fit the window height;
 // the 390px layout inside never changes.
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { usePhonePreview } from './usePhonePreview'
 
 const { frameSrc, setOpen } = usePhonePreview()
+const route = useRoute()
+// The only note beside the frame: Practice in the frame is a separate session.
+const onPractice = computed(() => route.path.startsWith('/practice'))
 
 const SCREEN_W = 390
 const SCREEN_H = 844
@@ -84,8 +88,7 @@ onBeforeUnmount(() => {
       <button type="button" class="fl-pp__back" @click="close">
         <span class="mdi mdi-arrow-left" aria-hidden="true" /> Back to full view
       </button>
-      <p>This is the real app at phone size, 390 by 844 pixels.</p>
-      <p>Practice here is kept apart from the full view.</p>
+      <p v-if="onPractice">Practice here is kept apart from the full view.</p>
     </div>
   </section>
 </template>

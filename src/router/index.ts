@@ -18,7 +18,6 @@ const app: RouteRecordRaw = {
     { path: 'practice', component: () => import('@/features/practice/PracticeView.vue'), meta: { title: 'Practice' } },
     { path: 'learn', component: () => import('@/features/learn/LearnView.vue'), meta: { title: 'Words to know' } },
     { path: 'learn/:termId', component: () => import('@/features/learn/TermView.vue'), meta: { title: 'Words to know' } },
-    { path: 'about', component: () => import('@/features/about/AboutView.vue'), meta: { title: 'About this demo' } },
     { path: ':pathMatch(.*)*', name: 'not-found', component: () => import('@/features/not-found/NotFoundView.vue'), meta: { title: 'Page not found' } },
   ],
 }
@@ -39,6 +38,7 @@ function oldPath(rest: string | string[] | undefined): string {
 }
 
 const routes: RouteRecordRaw[] = [
+  { path: '/about', redirect: (to) => ({ path: '/', query: to.query }) },
   { path: '/p301/:rest(.*)*', redirect: (to) => ({ path: oldPath(to.params.rest), query: to.query, hash: to.hash }) },
   { path: '/p302/:rest(.*)*', redirect: (to) => ({ path: '/story', query: to.query, hash: to.hash }) },
   { path: '/p303/:rest(.*)*', redirect: (to) => ({ path: oldPath(to.params.rest), query: to.query, hash: to.hash }) },
@@ -49,6 +49,14 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash } : { top: 0 }),
+})
+
+// Scenarios are reached by URL only, so ?scenario= rides along on every in-app link.
+router.beforeEach((to, from) => {
+  if (from.query.scenario !== undefined && to.query.scenario === undefined) {
+    return { path: to.path, query: { ...to.query, scenario: from.query.scenario }, hash: to.hash }
+  }
+  return true
 })
 
 // Each page gets its own title, so tabs and screen readers can tell them apart.

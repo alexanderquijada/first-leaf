@@ -1,24 +1,19 @@
 <script setup lang="ts">
-// Your money story (P302). The six chapters are built in Phase 1.
-// The point of view is stated on screen. Its "right now" half is only shown when
-// it is true for the current demo account (rule R1 checks it in Phase 1).
+// Your money story (P302). The point of view comes from the data: each account's
+// own version (checked by rule R1), or the general one when there is no history yet.
 import { computed } from 'vue'
 import PagePlaceholder from '@/shared/components/PagePlaceholder.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { useScenario } from '@/shared/composables/useScenario'
+import { story } from '@/shared/data'
 
 const { account } = useScenario()
-
-const mostlyDeposits = computed(
-  () => account.value.balance > 0 && account.value.moneyIn / account.value.balance >= 0.9,
-)
+const pointOfView = computed(() => story.rosaStory[account.value.id]?.pointOfView ?? story.pointOfView)
 </script>
 
 <template>
   <PagePlaceholder title="Your money story">
-    <p class="story__pov">
-      <template v-if="mostlyDeposits">Right now, almost all of Rosa's balance is money she put in. </template>Growth needs years, so starting early and staying steady matter more than picking the perfect moment.
-    </p>
+    <p class="story__pov">{{ pointOfView }}</p>
     <p>
       The story ends by naming the idea behind it:
       <TermTip id="compound-growth">growth on growth</TermTip>.

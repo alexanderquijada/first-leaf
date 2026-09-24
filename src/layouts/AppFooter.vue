@@ -5,7 +5,6 @@ import Disclaimer from '@/shared/components/Disclaimer.vue'
 <template>
   <footer class="fl-footer">
     <Disclaimer />
-    <RouterLink to="/about" class="fl-footer__about">About this demo</RouterLink>
   </footer>
 </template>
 
@@ -21,10 +20,4 @@ import Disclaimer from '@/shared/components/Disclaimer.vue'
   border-top: 1px solid var(--color-ink-muted);
 }
 
-.fl-footer__about {
-  display: inline-flex;
-  align-items: center;
-  min-height: 48px;
-  font-weight: 600;
-}
 </style>
