@@ -50,7 +50,7 @@ test('Mark as handled on the phone updates the needs-you card', async ({ page })
 // sentences use WCAG 2.5.8's inline exception and are listed as chips).
 test('every standalone control on the phone pages is at least 48px tall', async ({ page }) => {
   const small: string[] = []
-  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/story', '/activity']) {
+  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/story', '/activity', '/activity/rosa-starter-034', '/funds', '/funds/FL-GREEN', '/practice', '/learn', '/learn/expense-ratio']) {
     await page.goto(path)
     const show = page.getByRole('button', { name: 'Show as table' })
     if (await show.count()) await show.first().click()
@@ -58,6 +58,8 @@ test('every standalone control on the phone pages is at least 48px tall', async 
       [...document.querySelectorAll('main button, main a[href], main input, nav a[href]')]
         .filter((e) => !e.classList.contains('fl-termtip__button') || e.closest('.chips, .phome__word-actions'))
         .filter((e) => (e as HTMLElement).offsetParent !== null)
+        // A radio or checkbox inside its label is tapped through the label: measure that.
+        .map((e) => (e.matches('input[type=radio], input[type=checkbox]') && e.closest('label') ? e.closest('label')! : e))
         .map((e) => ({ name: (e.textContent || (e as HTMLInputElement).value || '').trim().slice(0, 30), h: e.getBoundingClientRect().height }))
         .filter((x) => x.h < 47.5),
     )

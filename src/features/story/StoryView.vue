@@ -1,7 +1,9 @@
 <script setup lang="ts">
 // Your money story (P302). Rosa's own facts and sentences come from the data
 // (rosaStory), checked by rules R1-R4; a brand-new account gets a short version.
-import { computed } from 'vue'
+import { computed, nextTick, ref } from 'vue'
+import BottomSheet from '@/shared/components/BottomSheet.vue'
+import { useViewport } from '@/shared/composables/useViewport'
 import { useScenario } from '@/shared/composables/useScenario'
 import { story } from '@/shared/data'
 import ChapterDip from './ChapterDip.vue'
@@ -12,6 +14,22 @@ import ChapterShare from './ChapterShare.vue'
 import ChapterSinceMarch from './ChapterSinceMarch.vue'
 
 const { account } = useScenario()
+const { isPhone } = useViewport()
+const menuOpen = ref(false)
+// On a phone the chapter menu is a bottom sheet; choosing a chapter closes it,
+// then scrolls to the chapter and moves focus to its heading.
+async function goTo(n: number) {
+  menuOpen.value = false
+  await nextTick()
+  const el = document.getElementById(`chapter-${n}`)
+  el?.scrollIntoView()
+  const h = el?.querySelector('h2') as HTMLElement | null
+  if (h) {
+    h.tabIndex = -1
+    h.focus()
+  }
+  history.replaceState(history.state, '', `#chapter-${n}`)
+}
 const rosa = computed(() => story.rosaStory[account.value.id] ?? null)
 const pointOfView = computed(() => rosa.value?.pointOfView ?? story.pointOfView)
 
@@ -38,7 +56,19 @@ const chapters = computed(() =>
     <h1>Your money story</h1>
     <p class="story__pov">{{ pointOfView }}</p>
 
-    <nav class="story__menu" aria-label="Chapters">
+    <template v-if="isPhone">
+      <button type="button" class="story__chapters" @click="menuOpen = true">
+        <span class="mdi mdi-format-list-numbered" aria-hidden="true" /> Chapters
+      </button>
+      <BottomSheet v-model="menuOpen" title="Chapters">
+        <ol class="story__sheet-list">
+          <li v-for="c in chapters" :key="c.n" :value="c.n">
+            <a :href="`#chapter-${c.n}`" class="story__sheet-link" @click.prevent="goTo(c.n)">{{ c.title }}</a>
+          </li>
+        </ol>
+      </BottomSheet>
+    </template>
+    <nav v-else class="story__menu" aria-label="Chapters">
       <ol>
         <li v-for="c in chapters" :key="c.n" :value="c.n">
           <a :href="`#chapter-${c.n}`" class="story__menu-link">{{ c.title }}</a>
@@ -90,6 +120,34 @@ const chapters = computed(() =>
 .story__menu ol {
   margin: 0;
   padding-left: 1.4em;
+}
+
+.story__chapters {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  margin-top: 16px;
+  padding: 0 18px;
+  border: 1px solid var(--color-forest);
+  border-radius: 24px;
+  background: var(--color-paper);
+  color: var(--color-forest);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.story__sheet-list {
+  margin: 8px 0 0;
+  padding-left: 1.4em;
+}
+
+.story__sheet-link {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  font-weight: 600;
 }
 
 .story__menu-link {

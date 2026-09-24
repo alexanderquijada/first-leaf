@@ -106,4 +106,11 @@ p.term__source {
 .term__source {
   color: var(--color-ink-muted);
 }
+
+/* The source is a standalone link: 48px tall (P303 touch targets). */
+.term__source a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
 </style>
