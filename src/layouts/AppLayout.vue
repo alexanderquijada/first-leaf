@@ -3,6 +3,7 @@
 // a left rail from 1024px, top tabs at 600–1023px, a bottom tab bar under 600px.
 // The router puts each feature's page inside <router-view>.
 import AppFooter from './AppFooter.vue'
+import BottomTabBar from './BottomTabBar.vue'
 import TopBar from './TopBar.vue'
 import TopTabs from './TopTabs.vue'
 
@@ -28,6 +29,7 @@ function skipToContent(e: Event) {
         <AppFooter />
       </div>
     </div>
+    <BottomTabBar />
   </div>
 </template>
 
@@ -61,6 +63,18 @@ function skipToContent(e: Event) {
 
 .fl-app__footer {
   padding: 0 16px;
+}
+
+/* Phone: room for the fixed bottom tab bar, and roomier lines (P303 brief). */
+@media (max-width: 599px) {
+  .fl-app {
+    padding-bottom: calc(57px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .fl-app__main {
+    padding-top: 24px;
+    line-height: 1.6;
+  }
 }
 
 @media (min-width: 600px) {
