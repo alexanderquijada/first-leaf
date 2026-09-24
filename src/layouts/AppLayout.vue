@@ -4,6 +4,7 @@
 // The router puts each feature's page inside <router-view>.
 import AppFooter from './AppFooter.vue'
 import BottomTabBar from './BottomTabBar.vue'
+import DesktopRail from './DesktopRail.vue'
 import TopBar from './TopBar.vue'
 import TopTabs from './TopTabs.vue'
 
@@ -19,6 +20,7 @@ function skipToContent(e: Event) {
 <template>
   <div class="fl-app">
     <a class="fl-skip" href="#main" @click="skipToContent">Skip to content</a>
+    <DesktopRail />
     <div class="fl-app__column">
       <TopBar />
       <TopTabs />
@@ -86,6 +88,11 @@ function skipToContent(e: Event) {
 }
 
 @media (min-width: 1024px) {
+  .fl-app {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+
   .fl-app__main,
   .fl-app__footer {
     padding-left: 32px;

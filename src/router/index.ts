@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import AppLayout from '@/layouts/AppLayout.vue'
+import HomeView from '@/features/home/HomeView.vue'
 
 // Every route is lazy-loaded (CLAUDE.md §7). Routes follow BRIEF.md §7.
 // Sub-pages that are built in Phase 1 show a shared "Coming in Phase 1" page.
@@ -27,6 +28,8 @@ const app: RouteRecordRaw = {
   path: '/',
   component: AppLayout,
   children: [
+    // Home is the first screen, so it loads with the app, not lazily.
+    { path: '', name: 'home', component: HomeView, meta: { title: 'Home' } },
     { path: 'alerts', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
     { path: 'alerts/:id', component: () => import('@/features/alerts/AlertDetailView.vue'), meta: { title: 'Alert' } },
     { path: 'activity', component: () => import('@/features/activity/ActivityView.vue'), meta: { title: 'Activity' } },
@@ -38,12 +41,6 @@ const app: RouteRecordRaw = {
 }
 
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    name: 'landing',
-    component: () => import('@/landing/LandingView.vue'),
-    meta: { title: 'First Leaf' },
-  },
   {
     path: '/p301',
     name: 'p301',
@@ -91,7 +88,7 @@ const router = createRouter({
 // Each page gets its own title, so tabs and screen readers can tell them apart.
 router.afterEach((to) => {
   const t = to.meta.title as string | undefined
-  document.title = t && t !== 'First Leaf' ? `${t} · First Leaf` : 'First Leaf'
+  document.title = t && t !== 'First Leaf' && t !== 'Home' ? `${t} · First Leaf` : 'First Leaf'
 })
 
 export default router
