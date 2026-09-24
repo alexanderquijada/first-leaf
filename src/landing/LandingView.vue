@@ -8,8 +8,8 @@ import DoorList from './DoorList.vue'
     <main>
       <h1 class="fl-landing__title">First Leaf</h1>
       <p class="fl-landing__line">
-        A made-up investing app for people who have never invested, shown as three design case
-        studies.
+        A made-up investing app for people who have never invested. It is shown here as three
+        design case studies.
       </p>
       <h2 class="fl-visually-hidden">Choose a case study</h2>
       <DoorList />
