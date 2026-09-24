@@ -257,7 +257,8 @@ onBeforeUnmount(() => close(false))
   padding: 0;
   cursor: pointer;
   text-decoration: underline dotted;
-  text-decoration-color: var(--color-forest);
+  /* Panels on a dark background set --fl-term-underline (for example to lime). */
+  text-decoration-color: var(--fl-term-underline, var(--color-forest));
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
 }

@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures'
 
 // Each placeholder page with a term demo has one working explanation (BRIEF.md §5).
 const SHELLS = [
-  { path: '/', term: 'Yearly fee', short: 'What a fund charges each year to run' },
+  { path: '/', term: 'Balance', short: 'The total value of everything in your account right now.' },
   { path: '/story', term: 'Growth on growth', short: 'When your money earns money' },
   { path: '/alerts', term: 'Returned deposit', short: 'A deposit your bank sent back' },
 ]
@@ -46,7 +46,7 @@ for (const { path, term, short } of SHELLS) {
 test('a related word opens its own explanation, and a click outside closes it', async ({ page }) => {
   await page.goto('/')
   await page.locator('main .fl-termtip__button').first().click()
-  const panel = page.getByRole('dialog', { name: 'Yearly fee' })
+  const panel = page.getByRole('dialog', { name: 'Balance' })
   await expect(panel).toBeVisible()
   const related = panel.locator('.fl-termtip__link').first()
   const relatedName = (await related.innerText()).trim()
@@ -71,7 +71,7 @@ test('under 600px wide the explanation opens as a bottom sheet', async ({ page }
 test('after a related word, "Back to" returns to the previous word with focus on that link', async ({ page }) => {
   await page.goto('/')
   await page.locator('main .fl-termtip__button').first().click()
-  const first = page.getByRole('dialog', { name: 'Yearly fee' })
+  const first = page.getByRole('dialog', { name: 'Balance' })
   await expect(first).toBeVisible()
   await expect(first.getByRole('button', { name: /^Back to/ })).toHaveCount(0)
 
@@ -85,8 +85,8 @@ test('after a related word, "Back to" returns to the previous word with focus on
   await expect(second.getByRole('heading', { name: relatedName })).toBeFocused()
 
   // Back: the first word again, with focus on the link that was followed.
-  await second.getByRole('button', { name: 'Back to Yearly fee' }).click()
-  const again = page.getByRole('dialog', { name: 'Yearly fee' })
+  await second.getByRole('button', { name: 'Back to Balance' }).click()
+  const again = page.getByRole('dialog', { name: 'Balance' })
   await expect(again).toBeVisible()
   await expect(again.getByRole('button', { name: relatedName, exact: true })).toBeFocused()
   await expect(again.getByRole('button', { name: /^Back to/ })).toHaveCount(0)

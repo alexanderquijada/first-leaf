@@ -1,12 +1,12 @@
 <script setup lang="ts">
-// A page that is built in Phase 1. The layout's footer carries the disclaimer.
+// A page that is not built yet. The layout's footer carries the disclosure.
 defineProps<{ title: string }>()
 </script>
 
 <template>
   <div class="fl-page">
     <h1 class="fl-page__title">{{ title }}</h1>
-    <p class="fl-page__soon">Coming in Phase 1.</p>
+    <p class="fl-page__soon">Coming soon.</p>
     <slot />
   </div>
 </template>

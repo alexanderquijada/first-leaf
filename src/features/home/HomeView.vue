@@ -1,11 +1,13 @@
 <script setup lang="ts">
-// Home: P301's weekly review on a laptop, P303's check-in on a phone. Built in Phase 1.
+// Home. From 600px it's P301's weekly review; under 600px it's P303's check-in.
 import PagePlaceholder from '@/shared/components/PagePlaceholder.vue'
-import TermTip from '@/shared/components/TermTip.vue'
+import { useViewport } from '@/shared/composables/useViewport'
+import DesktopHome from './DesktopHome.vue'
+
+const { isPhone } = useViewport()
 </script>
 
 <template>
-  <PagePlaceholder title="Home">
-    <p>Every fund takes a small <TermTip id="expense-ratio">yearly fee</TermTip> out of its value.</p>
-  </PagePlaceholder>
+  <PagePlaceholder v-if="isPhone" title="Home" />
+  <DesktopHome v-else />
 </template>

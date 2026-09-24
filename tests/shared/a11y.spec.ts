@@ -33,7 +33,7 @@ for (const size of WIDTHS) {
     }
 
     test('with the explanation panel open', async ({ page }) => {
-      await page.goto('/')
+      await page.goto('/story')
       await page.locator('main .fl-termtip__button').first().click()
       await expect(page.getByRole('dialog')).toBeVisible()
       expect(await seriousViolations(page)).toEqual([])
