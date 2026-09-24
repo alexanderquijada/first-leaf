@@ -26,7 +26,7 @@ test('Try the deposit again: review → confirm → confirmation, then Pending i
   await dialog.getByRole('button', { name: 'Continue' }).click()
   await expect(dialog).toContainText('You are about to ask your bank for a $150 deposit.')
   await dialog.getByRole('button', { name: 'Confirm deposit' }).click()
-  await expect(dialog).toContainText('Deposit requested. It usually arrives in 1–3 business days.')
+  await expect(dialog).toContainText('Your deposit is on its way. It should arrive in 1 to 3 business days.')
   await dialog.getByRole('button', { name: 'Done' }).click()
   await page.locator('.fl-rail').getByRole('link', { name: 'Activity' }).click()
   const first = page.locator('tbody tr').first()
@@ -47,7 +47,7 @@ test('Add a one-time deposit is filled in, and checks the amount', async ({ page
   await input.fill('75')
   await dialog.getByRole('button', { name: 'Continue' }).click()
   await dialog.getByRole('button', { name: 'Confirm deposit' }).click()
-  await expect(dialog).toContainText('Deposit requested.')
+  await expect(dialog).toContainText('Your deposit is on its way.')
 })
 
 test('auto-invest can be turned on, with a confirmation, and Home shows it', async ({ page }) => {

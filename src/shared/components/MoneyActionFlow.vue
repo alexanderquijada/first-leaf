@@ -6,6 +6,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { AttentionFlag } from '../data'
 import { useScenario } from '../composables/useScenario'
 import { useSession } from '../composables/useSession'
+import { DEPOSIT_CONFIRMATION } from '../copy'
 import { formatDate, formatMoney, formatMoneyShort } from '../format'
 
 const props = defineProps<{ alert: AttentionFlag }>()
@@ -109,7 +110,7 @@ function next() {
           <template v-else>
             <p class="fl-flow__done" role="status">
               <span class="mdi mdi-check-circle" aria-hidden="true" />
-              Deposit requested. It usually arrives in 1–3 business days.
+              {{ DEPOSIT_CONFIRMATION }}
             </p>
             <p>You can see it as Pending in Activity.</p>
           </template>

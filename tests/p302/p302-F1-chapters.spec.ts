@@ -26,7 +26,7 @@ for (const s of SCENARIOS) {
 test('the point of view is exactly the one in the P302 brief', async ({ page }) => {
   await page.goto('/story')
   await expect(page.locator('.story__pov')).toHaveText(
-    "Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
+    "Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
   )
 })
 

@@ -521,10 +521,19 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
       if (saysAlmostAll !== (share >= 0.9)) fail(`${p}point of view ${saysAlmostAll ? 'says' : 'does not say'} "almost all" but the share is ${(share * 100).toFixed(1)}%`);
     }
   });
-  rule('R2', "The July dip's high, low, dates and size, and her balance at the low, match the history", (fail) => {
+  // The dip rule (ruling, Sept. 24): the largest high-to-low drop in FL-BROAD in the 30
+  // calendar days before Rosa paused auto-invest. The market is the same for every
+  // account, so accounts that never paused use the same window.
+  const pauseAnchor = funded.map((a) => a.autoInvest.pausedOn).find(Boolean);
+  const DIP_WINDOW = pauseAnchor ? { from: addDays(pauseAnchor, -30), to: pauseAnchor } : null;
+  rule('R2', "The July dip (largest drop in the 30 days before the pause) and her balance at the low match the history", (fail) => {
+    if (!DIP_WINDOW) { fail('no account paused auto-invest, so the dip has no anchor'); return; }
     for (const acc of funded) {
       const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue;
-      const d = r.facts.dip, re = recomputeDip(d.window, d.ticker);
+      const d = r.facts.dip;
+      if (d.ticker !== 'FL-BROAD') fail(`${p}the dip must be measured on FL-BROAD, not ${d.ticker}`);
+      if (d.window.from !== DIP_WINDOW.from || d.window.to !== DIP_WINDOW.to) fail(`${p}dip window is ${d.window.from} to ${d.window.to}; the rule says the 30 days before the pause: ${DIP_WINDOW.from} to ${DIP_WINDOW.to}`);
+      const re = recomputeDip(DIP_WINDOW, 'FL-BROAD');
       for (const k of ['highDate', 'high', 'lowDate', 'low', 'drop']) if (d[k] !== re[k]) fail(`${p}dip.${k} is ${d[k]}, the prices say ${re[k]} (window ${d.window.from} to ${d.window.to})`);
       const row = acc.history.find((x) => x.date === re.lowDate), a = r.facts.atLow;
       if (!row) { fail(`${p}no balance history on the low ${re.lowDate}`); continue; }

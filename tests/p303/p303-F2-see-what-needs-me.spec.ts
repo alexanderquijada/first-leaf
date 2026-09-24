@@ -32,7 +32,7 @@ test('the same realistic flow works on the phone', async ({ page }) => {
   await page.getByRole('button', { name: 'Try the deposit again' }).click()
   await page.getByRole('dialog').getByRole('button', { name: 'Continue' }).click()
   await page.getByRole('dialog').getByRole('button', { name: 'Confirm deposit' }).click()
-  await expect(page.getByRole('dialog')).toContainText('Deposit requested. It usually arrives in 1–3 business days.')
+  await expect(page.getByRole('dialog')).toContainText('Your deposit is on its way. It should arrive in 1 to 3 business days.')
   await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click()
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Home' }).click()
   await expect(page.locator('.phome__latest li').first()).toContainText('Pending')

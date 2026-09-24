@@ -19,6 +19,8 @@ export const firstLeaf: ThemeDefinition = {
     success: colors.leaf,
     cream: colors.cream,
     paper: colors.paper,
+    // Text on paper-colored surfaces (cards, dialogs) is ink, not Vuetify's default black.
+    'on-paper': colors.ink,
     panel: colors.panel,
     'on-panel': colors.onPanel,
     'panel-raised': colors.panelRaised,

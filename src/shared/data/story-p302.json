@@ -849,7 +849,7 @@
   "rosaStory": {
     "rosa-starter": {
       "accountId": "rosa-starter",
-      "pointOfView": "Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
+      "pointOfView": "Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
       "facts": {
         "openedOn": "2026-03-02",
         "firstDeposit": 500,
@@ -861,8 +861,8 @@
         "dip": {
           "ticker": "FL-BROAD",
           "window": {
-            "from": "2026-06-15",
-            "to": "2026-07-31"
+            "from": "2026-06-14",
+            "to": "2026-07-14"
           },
           "highDate": "2026-06-26",
           "high": 90.46,
@@ -938,7 +938,7 @@
     },
     "rosa-all-clear": {
       "accountId": "rosa-all-clear",
-      "pointOfView": "Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
+      "pointOfView": "Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
       "facts": {
         "openedOn": "2026-03-02",
         "firstDeposit": 500,
@@ -950,8 +950,8 @@
         "dip": {
           "ticker": "FL-BROAD",
           "window": {
-            "from": "2026-06-15",
-            "to": "2026-07-31"
+            "from": "2026-06-14",
+            "to": "2026-07-14"
           },
           "highDate": "2026-06-26",
           "high": 90.46,

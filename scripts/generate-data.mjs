@@ -61,6 +61,7 @@ const HISTORY_START = '2021-09-20';    // 5 years of made-up history
 const ACCOUNT_OPENED = '2026-03-02';
 const WEEK_START_CLOSE = '2026-09-11'; // "this week" = close Sept. 11 -> close Sept. 18
 const WORD_OF_THE_DAY = 'expense-ratio';
+const PAUSED_ON = '2026-07-14';        // Rosa paused auto-invest after the July dip
 const CASH_WAITING = 25;         // dollars of cash before we call it "waiting"
 
 const meta = {
@@ -306,7 +307,7 @@ function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} })
 }
 
 const main = simulate({ id: 'rosa-starter', mix: { 'FL-BROAD': 0.6, 'FL-WORLD': 0.2, 'FL-BOND': 0.15, 'FL-GREEN': 0.05 },
-  autoInvestPausedOn: '2026-07-14', returnedDeposits: { '2026-09-01': '2026-09-03' } });
+  autoInvestPausedOn: PAUSED_ON, returnedDeposits: { '2026-09-01': '2026-09-03' } });
 const calm = simulate({ id: 'rosa-all-clear', mix: { 'FL-BROAD': 0.65, 'FL-WORLD': 0.2, 'FL-BOND': 0.15 } });
 const emptyAccount = {
   id: 'rosa-new', ownerId: 'rosa', name: 'Starter account', fictional: true, openedOn: LAST_CLOSE, asOf: AS_OF, lastClose: LAST_CLOSE,
@@ -331,7 +332,7 @@ const practice = {
 // ---------- P302 story: start early beats start big ----------
 const RATE = 0.06, END_AGE = 65;
 // Your money story's point of view (P302 brief). The "right now" half is only used when rule R1 holds.
-const POV_NOW = "Right now, almost all of Rosa's balance is money she put in.";
+const POV_NOW = 'Right now, almost all of your balance is money you put in.'; // second person (ruling, Sept. 24)
 const POV_REST = 'Growth needs years, so starting early and staying steady matter more than picking the perfect moment.';
 // Standing alone (no history yet), the second sentence is split: as one sentence it reads at grade 8.4.
 const POV_GENERAL = 'Growth needs years. Starting early and staying steady matter more than picking the perfect moment.';
@@ -408,7 +409,10 @@ const story = {
 // ---------- Your money story: Rosa's own facts and claims, per account (rules R1-R4) ----------
 // Every number the story states about Rosa comes from here, and the validator recomputes
 // each one from the price and balance history.
-const DIP = { ticker: 'FL-BROAD', from: '2026-06-15', to: '2026-07-31' }; // "the dip in July": the biggest drop in this window (the June 26 high into July)
+// "The dip in July" (ruling, Sept. 24): the largest high-to-low drop in FL-BROAD in the 30
+// calendar days before Rosa paused auto-invest. Tied to her action, not a hand-picked window.
+// The market is the same for every account, so the calm account uses the same window.
+const DIP = { ticker: 'FL-BROAD', from: addDays(PAUSED_ON, -30), to: PAUSED_ON };
 const pct1 = (x) => (Math.round(x * 1000) / 10).toFixed(1);
 function findDip() {
   const rows = funds.find((f) => f.ticker === DIP.ticker).history.daily.filter((d) => d.date >= DIP.from && d.date <= DIP.to);

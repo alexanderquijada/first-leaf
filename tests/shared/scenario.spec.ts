@@ -12,7 +12,7 @@ test('?scenario= rides along on every in-app link', async ({ page }) => {
 
 test('an unknown scenario falls back to the main account', async ({ page }) => {
   await page.goto('/story?scenario=nonsense')
-  await expect(page.getByText("Right now, almost all of Rosa's balance is money she put in.")).toBeVisible()
+  await expect(page.getByText("Right now, almost all of your balance is money you put in.")).toBeVisible()
 })
 
 test.describe('with the phone view open', () => {

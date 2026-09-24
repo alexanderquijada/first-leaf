@@ -127,7 +127,7 @@ test('the skip link moves focus to the page content', async ({ page }) => {
 
 test('the story states its point of view, and only the part that is true', async ({ page }) => {
   await page.goto('/story')
-  await expect(page.getByText('Right now, almost all of Rosa\'s balance is money she put in.')).toBeVisible()
+  await expect(page.getByText('Right now, almost all of your balance is money you put in.')).toBeVisible()
   await page.goto('/story?scenario=brand-new')
   await expect(page.getByText('Growth needs years. Starting early')).toBeVisible()
   await expect(page.getByText('Right now, almost all')).toHaveCount(0)
