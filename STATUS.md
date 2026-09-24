@@ -2,7 +2,7 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 0.5 · Rulings and guardrails)
+**Last updated:** Sept. 24, 2026 (Phase 0.6 · One app)
 
 ## NEXT STEP
 
@@ -55,7 +55,7 @@ He rules on the open questions in the Phase 0.6 decision-log entry. Then the pla
 | Plan (Sept. 23) | ✅ Briefs, data (3 accounts), validator (42 rules, 65 broken cases), AI docs, setup script | ✅ Brief | ✅ Brief | ✅ Brief |
 | 0 · Foundation (Sept. 24) | ✅ Scaffold, tokens, fonts, TermTip, Disclaimer, DemoMenu, Money, SeverityBadge, landing, 404 | ✅ Route shell | ✅ Route shell | ✅ Route shell |
 | 0.5 · Rulings and guardrails (Sept. 24) | ✅ check:live, test guard, check:icons, axe scans, Demo menu semantics, TermTip Back, money format, permissions, `npm run check` | — | — | — |
-| 0.6 · One app (Sept. 24) | ⬜ One-app re-plan, layouts, feature folders, About, redirects, Phone preview | ⬜ Desktop rail, Home placeholder | ⬜ Story and Practice placeholders | ⬜ Phone shell, bottom tabs, Phone preview |
+| 0.6 · One app (Sept. 24) | ✅ One-app re-plan, layouts, feature folders, About, redirects, 404 in the app | ✅ Desktop rail, Home placeholder | ✅ Story and Practice placeholders | ✅ Phone shell, bottom tab bar, Phone preview |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
@@ -75,6 +75,47 @@ He rules on the open questions in the Phase 0.6 decision-log entry. Then the pla
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 0.6 · One app (built)
+
+- **Built:**
+  - `/` is Home. Layouts live in `src/layouts/`: the rail from 1024px, top tabs at 600–1023px, a bottom tab bar under 600px, a skip link, the top bar and a footer with "About this demo".
+  - Placeholder pages sit in `src/features/*`. The term demos moved: "yearly fee" to Home, "growth on growth" to the story, "returned deposit" to Alerts.
+  - `/about` has real copy (DRAFT).
+  - The friendly 404 sits inside the app.
+  - `/p301`, `/p302`, `/p303` and their old sub-pages redirect, keeping `?scenario`.
+  - Phone preview works, with `?view=phone`.
+  - The old landing page, the three shells and ComingSoon are deleted.
+- **Checks:**
+  - `check:boundaries` enforces the feature rules. Its self-test catches 6 bad imports; the old check missed feature-to-feature.
+  - 44 Playwright tests, including axe with the preview open.
+  - `check:live` covers the new routes, the `/p301` redirect and `/?view=phone`.
+  - Shown failing first:
+    - a transparent bottom bar, and a bar covering the footer (the footer ended at 819.9 against a bar top of 787)
+    - a nesting preview, and a preview that doesn't move focus
+- **What went wrong:**
+  - **Commit `13405e2` ([P301] rail + Home) went in with one test failing.** The Demo menu test clicked through the old landing page's doors. My commit command didn't stop on the failing test run. The test was rewritten in `f460bcc`; from then on every commit ran after a passing suite.
+  - **A skip-link test was flaky under parallel load:** it pressed Tab before the page rendered. Fixed by waiting for the page heading, then passed 3 runs in a row.
+  - **The redirect functions failed type-check under vue-router 5.** The router now infers the types.
+- **Measured** (Chromium, production build):
+  - Bottom tabs are 78×56 each; the bottom bar is opaque (#FFFDF8), and so is the top bar (#F5F0E6).
+  - Nav text on the phone: 18.25:1 (current 7.79:1). On the tablet: 16.33:1 (current 6.97:1). On the desktop rail: 18.25:1 (current 6.57:1, forest on mint).
+  - Rail links are 215×48, tablet tabs 48px tall, the preview toggle 169×48, "Back to full view" 169×48 (7.79:1).
+  - The preview frame is scaled to 0.78 at 1280×800 and 0.98 at 768×1024.
+- **Deviations (for Alex to rule on):**
+  1. The Phone preview frame also scales down on desktop when the window is shorter than the frame (1280×800 → 0.78). The ruling named 600–1023px only.
+  2. At 600–1023px the top bar shows the wordmark, the preview toggle and the Demo menu; the greeting and "Prices as of" appear only from 1024px, because they don't fit beside the tabs.
+  3. The 404 lives in `src/features/not-found/`, a ninth feature folder that wasn't in the list.
+  4. Old sub-page addresses (for example `/p303/learn/expense-ratio`, `/p303/attention`) also redirect to their new pages; the ruling named only `/p301`, `/p302` and `/p303`.
+  5. A "Skip to content" link was added (WCAG 2.4.1, now that there's a rail).
+  6. The story placeholder shows the point of view's "Right now…" half only when deposits are at least 90% of the balance (a stand-in for rule R1).
+- **Copy for approval (DRAFT, grade 7.6 or below):**
+  - About this demo (all of it)
+  - "We couldn't find that page." / "The link may be old or mistyped." / "Go to Home"
+  - "Good morning, Rosa." / "Prices as of Fri., Sept. 18"
+  - "Skip to content"
+  - Nav labels: Home, Activity, Funds, Your money story (Story on phones), Practice, Words; page titles: Alerts, Alert, Home
+  - Phone preview: "Preview on a phone", "Back to full view", "This is the real app at phone size, 390 by 844 pixels.", "Practice here is kept apart from the full view."
 
 ### Sept. 24, 2026: Ruling: one app, three lenses (Phase 0.6)
 
@@ -236,6 +277,8 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **`scripts/setup.sh` embeds a snapshot of the first commit's files** (its payload). Only its live Node check was updated; the payload stays as it was on Sept. 23, because setup has already run.
 - **Money and SeverityBadge aren't on any page yet.** They're built but not rendered, so their colors (terracotta losses, mustard "Heads-up") will be measured in the rendered UI in Phase 1.
 - ~~Demo menu semantics~~ **Fixed Sept. 24:** a labelled menu of `menuitemradio` items, locked by an aria snapshot. A pass with a real screen reader (VoiceOver) is still worth doing.
+- **Phone preview limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario is carried through the URL. A scenario picked inside the frame doesn't change the full view.
+- **The rail's paper background is 100vh tall and sticky.** Full-page screenshots show it ending at one screen height; a real window always shows it full height.
 - **Related-word links in the explanation panel are about 27px tall** (71×27 measured). On desktop that's above the 24px minimum. On P303's bottom sheet, the amended rule may count them as standalone controls that need 48px. Needs a ruling before P303's Phase 1 screens.
 - **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
 - **The per-deployment Vercel URL redirects (302).** Use https://first-leaf.vercel.app.
