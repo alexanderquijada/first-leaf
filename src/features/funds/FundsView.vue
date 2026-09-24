@@ -4,10 +4,12 @@
 import { computed } from 'vue'
 import Money from '@/shared/components/Money.vue'
 import { useScenario } from '@/shared/composables/useScenario'
+import { useViewport } from '@/shared/composables/useViewport'
 import { funds } from '@/shared/data'
 import { formatMoney } from '@/shared/format'
 
 const { account } = useScenario()
+const { isPhone } = useViewport()
 const KIND = { stocks: 'Stocks', bonds: 'Bonds', reserve: 'Reserve' } as const
 const rows = computed(() =>
   funds.map((f) => {
@@ -21,7 +23,17 @@ const rows = computed(() =>
 <template>
   <div class="funds">
     <h1>Your funds</h1>
-    <div class="funds__wrap" role="region" aria-label="Your funds" tabindex="0">
+    <ul v-if="isPhone" class="funds__cards">
+      <li v-for="r in rows" :key="r.f.ticker">
+        <RouterLink :to="`/funds/${r.f.ticker}`" class="funds__card">
+          <span class="funds__ticker">{{ r.f.ticker }}</span>
+          <span class="funds__name">{{ r.f.name }}</span>
+          <span v-if="r.h" class="funds__value fl-tabular">{{ formatMoney(r.h.value) }} · <Money :amount="r.h.gainLoss" change /></span>
+          <span v-else class="funds__value is-muted">Not owned</span>
+        </RouterLink>
+      </li>
+    </ul>
+    <div v-else class="funds__wrap" role="region" aria-label="Your funds" tabindex="0">
       <table class="funds__table">
         <caption class="fl-visually-hidden">All funds, with what you have in each</caption>
         <thead>
@@ -99,4 +111,38 @@ const rows = computed(() =>
   color: var(--color-ink-muted);
 }
 
+.funds__cards {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.funds__card {
+  display: grid;
+  gap: 2px;
+  min-height: 48px;
+  padding: 14px 16px;
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 12px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.funds__ticker {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.funds__value {
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.is-muted {
+  color: var(--color-ink-muted);
+  font-weight: 400;
+}
 </style>

@@ -8,6 +8,7 @@ import SeriesChart from '@/shared/charts/SeriesChart.vue'
 import Money from '@/shared/components/Money.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
+import WordChips from '@/shared/components/WordChips.vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useViewport } from '@/shared/composables/useViewport'
 import { getFund, meta } from '@/shared/data'
@@ -111,6 +112,8 @@ const KIND = { stocks: 'Stocks', bonds: 'Bonds', reserve: 'Reserve' } as const
           <template v-else>It does not pay dividends.</template>
         </p>
       </section>
+      <!-- On a phone, the page's words are also 48px chips (P303 brief). -->
+      <WordChips v-if="isPhone" :ids="['expense-ratio', 'ups-and-downs', 'share', 'price', ...(fund.dividend ? ['dividend'] : [])]" />
     </template>
     <template v-else>
       <h1>We could not find that fund.</h1>

@@ -2,11 +2,19 @@
 // Activity: every deposit, buy and dividend, newest first, with this session's
 // pending deposits on top. Type and status filters combine.
 import { describeActivity } from '@/shared/activityText'
+import { computed, ref } from 'vue'
+import BottomSheet from '@/shared/components/BottomSheet.vue'
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
+import { useViewport } from '@/shared/composables/useViewport'
 import { formatDate, formatMoney } from '@/shared/format'
 import { STATUS_OPTIONS, TYPE_OPTIONS, useActivityRows } from './useActivityRows'
 
 const { all, shown, type, status, reset } = useActivityRows()
+const { isPhone } = useViewport()
+const sheetOpen = ref(false)
+const filterSummary = computed(
+  () => `Type: ${TYPE_OPTIONS.find((o) => o.id === type.value)!.label}. Status: ${STATUS_OPTIONS.find((o) => o.id === status.value)!.label}.`,
+)
 </script>
 
 <template>
@@ -14,7 +22,24 @@ const { all, shown, type, status, reset } = useActivityRows()
     <h1>Activity</h1>
     <p v-if="!all.length" class="activity__empty">Nothing yet. Your deposits, buys and dividends will show here.</p>
     <template v-else>
-      <div class="activity__filters">
+      <template v-if="isPhone">
+        <div class="activity__phonebar">
+          <p class="activity__summary">{{ filterSummary }}</p>
+          <button type="button" class="activity__filterbtn" @click="sheetOpen = true">
+            <span class="mdi mdi-filter-variant" aria-hidden="true" /> Filters
+          </button>
+        </div>
+        <BottomSheet v-model="sheetOpen" title="Filters">
+          <p class="activity__filter-label" aria-hidden="true">Type</p>
+          <ToggleGroup v-model="type" label="Type" :options="TYPE_OPTIONS" />
+          <p class="activity__filter-label activity__filter-label--gap" aria-hidden="true">Status</p>
+          <ToggleGroup v-model="status" label="Status" :options="STATUS_OPTIONS" />
+          <button type="button" class="activity__show" @click="sheetOpen = false">
+            Show {{ shown.length === 1 ? '1 item' : `${shown.length} items` }}
+          </button>
+        </BottomSheet>
+      </template>
+      <div v-else class="activity__filters">
         <div class="activity__filter">
           <p class="activity__filter-label" aria-hidden="true">Type</p>
           <ToggleGroup v-model="type" label="Type" :options="TYPE_OPTIONS" />
@@ -29,6 +54,15 @@ const { all, shown, type, status, reset } = useActivityRows()
         <p>Nothing matches these filters.</p>
         <button type="button" class="activity__reset" @click="reset">Show everything</button>
       </div>
+      <ul v-else-if="isPhone" class="activity__list">
+        <li v-for="r in shown" :key="r.id">
+          <RouterLink :to="`/activity/${r.id}`" class="activity__row" :class="`is-${describeActivity(r).status.toLowerCase()}`">
+            <span class="activity__date">{{ formatDate(r.date) }}</span>
+            <span class="activity__what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="activity__status"> · {{ describeActivity(r).status }}</span></span>
+            <span class="fl-tabular">{{ formatMoney(r.amount) }}</span>
+          </RouterLink>
+        </li>
+      </ul>
       <div v-else class="activity__wrap" role="region" aria-label="Activity" tabindex="0">
         <table class="activity__table">
           <caption class="fl-visually-hidden">Activity, newest first</caption>
@@ -138,6 +172,74 @@ const { all, shown, type, status, reset } = useActivityRows()
 .activity__table .is-num {
   text-align: right;
   padding-left: 24px;
+}
+
+.activity__phonebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.activity__summary {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+
+.activity__filterbtn,
+.activity__show {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--color-forest);
+  border-radius: 24px;
+  background: var(--color-paper);
+  color: var(--color-forest);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.activity__show {
+  width: 100%;
+  justify-content: center;
+  margin-top: 20px;
+  border-radius: 4px;
+  background: var(--color-forest);
+  color: var(--color-paper);
+}
+
+.activity__filter-label--gap {
+  margin-top: 16px;
+}
+
+.activity__list {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-mint);
+}
+
+.activity__row {
+  display: grid;
+  grid-template-columns: 4.2em 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 56px;
+  border-bottom: 1px solid var(--color-mint);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.activity__date {
+  color: var(--color-ink-muted);
+}
+
+.activity__status {
+  font-weight: 700;
 }
 
 .is-pending td,
