@@ -4,7 +4,7 @@ A made-up investing app for people who have never invested before. Built as **th
 
 > **Disclaimer:** First Leaf is a made-up company for a design case study. Every fund, price and person here is made up. This is for learning only. It is not financial advice.
 
-**Live site:** _(added in Phase 0)_ · **Plan:** [BRIEF.md](BRIEF.md) · **Progress:** [STATUS.md](STATUS.md)
+**Live site:** https://first-leaf.vercel.app · **Plan:** [BRIEF.md](BRIEF.md) · **Progress:** [STATUS.md](STATUS.md)
 
 ---
 
@@ -14,7 +14,7 @@ Each case study is reviewed on its own. Jump to yours; you don't need the others
 
 ### P301 · Operational dashboard
 
-- **Open:** _(live site)_/p301 on a laptop (1280px or wider is best)
+- **Open:** https://first-leaf.vercel.app/p301 on a laptop (1280px or wider is best)
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P301-BRIEF.md](docs/briefs/P301-BRIEF.md)
 - **Code:** `src/p301-dashboard/` · **History:** commits starting `[P301]`
 - **Try these:**
@@ -27,7 +27,7 @@ Each case study is reviewed on its own. Jump to yours; you don't need the others
 
 ### P302 · Interactive data story
 
-- **Open:** _(live site)_/p302 on a phone or a laptop
+- **Open:** https://first-leaf.vercel.app/p302 on a phone or a laptop
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P302-BRIEF.md](docs/briefs/P302-BRIEF.md)
 - **Code:** `src/p302-story/` · **History:** commits starting `[P302]`
 - **Try these:**
@@ -39,7 +39,7 @@ Each case study is reviewed on its own. Jump to yours; you don't need the others
 
 ### P303 · Mobile experience
 
-- **Open:** _(live site)_/p303 on a phone (or narrow your browser to 390px)
+- **Open:** https://first-leaf.vercel.app/p303 on a phone (or narrow your browser to 390px)
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P303-BRIEF.md](docs/briefs/P303-BRIEF.md)
 - **Code:** `src/p303-mobile/` · **History:** commits starting `[P303]`
 - **Try these:**
@@ -83,6 +83,7 @@ npm install
 npm run dev          # http://localhost:5173
 npm run build        # production build (what Vercel runs)
 npm run validate     # data rules
+npm run test:e2e     # Playwright tests (first time: npx playwright install chromium)
 ```
 
 ## Credits

@@ -2,21 +2,26 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 23, 2026 (planning session, before Phase 0)
+**Last updated:** Sept. 24, 2026 (Phase 0 · Foundation)
 
 ## NEXT STEP
 
-Alex runs `setup.sh` once (it creates this repo on GitHub and pushes the first commit). Then he imports the repo into Vercel (Pelipper Post's Vercel account) and pastes the **Phase 0** prompt from `docs/CLAUDE-CODE-PROMPTS.md` into Claude Code.
+Alex reviews Phase 0 on the live site (landing page, the three doors, one term explanation per case study, the disclaimer everywhere) and rules on:
+1. The **deviations** in the Phase 0 entry of the decision log (three extra fix commits, Node engines range, and the others listed there).
+2. The **Pelipper Post comparison** list (13 gaps plus permissions), each one ratify / decline / amend.
+3. The **DRAFT copy** listed under Known issues.
+
+Then he pastes the **Phase 1** prompt from `docs/CLAUDE-CODE-PROMPTS.md`.
 
 ## Live links
 
 | What | Link |
 |---|---|
 | GitHub repo | https://github.com/alexanderquijada/first-leaf |
-| Live site | _(filled in during Phase 0, after the Vercel import)_ |
-| P301 | _(live site)_/p301 |
-| P302 | _(live site)_/p302 |
-| P303 | _(live site)_/p303 |
+| Live site | https://first-leaf.vercel.app |
+| P301 | https://first-leaf.vercel.app/p301 |
+| P302 | https://first-leaf.vercel.app/p302 |
+| P303 | https://first-leaf.vercel.app/p303 |
 
 ## Decisions already made (do not relitigate)
 
@@ -46,7 +51,7 @@ Alex runs `setup.sh` once (it creates this repo on GitHub and pushes the first c
 | Phase | Shared | P301 dashboard | P302 story | P303 mobile |
 |---|---|---|---|---|
 | Plan (Sept. 23) | ✅ Briefs, data (3 accounts), validator (42 rules, 65 broken cases), AI docs, setup script | ✅ Brief | ✅ Brief | ✅ Brief |
-| 0 · Foundation | ⬜ Scaffold, tokens, fonts, TermTip, Disclaimer, scenario switcher, landing | ⬜ Route shell | ⬜ Route shell | ⬜ Route shell |
+| 0 · Foundation (Sept. 24) | ✅ Scaffold, tokens, fonts, TermTip, Disclaimer, DemoMenu, Money, SeverityBadge, landing, 404 | ✅ Route shell | ✅ Route shell | ✅ Route shell |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
@@ -66,6 +71,28 @@ Alex runs `setup.sh` once (it creates this repo on GitHub and pushes the first c
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 0 · Foundation
+
+- **The deploy check works.** Before any code, `check:deploy` confirmed commit `eb30959` (the placeholder) live on Production. The per-deployment URL it prints (`first-leaf-…-alex-quijada-s-projects.vercel.app`) redirects (302), probably because of Vercel's deployment protection. The public URL is **https://first-leaf.vercel.app**, which served the placeholder's "First Leaf" heading.
+- **Installed versions:** vue 3.5.43, vue-router 5.3.1, **vuetify 3.13.5** (major 3, as required), vite-plugin-vuetify 2.1.3, @mdi/font 7.4.47, chart.js 4.5.1, vue-chartjs 5.3.4, @fontsource-variable/newsreader 5.3.0, @fontsource-variable/hanken-grotesk 5.3.0, @playwright/test 1.63.0, vite 8.3.1, typescript 6.0.3, vue-tsc 3.3.11.
+- **One source for tokens.** `src/shared/tokens/tokens.ts` holds every color and font stack. It writes the CSS variables (`--color-*`, `--chart-fl-*`, `--font-display|text|ui`) and feeds the `firstLeaf` Vuetify theme, so the two can't drift apart.
+- **Caught: Vuetify quietly lowered text contrast.** By default it draws text at 87% opacity (secondary text at 60%). The theme sets both to 100%, because our muted color is its own measured token. Measured ink on cream: 16.33:1.
+- **Found by measuring, fixed in their own commits** (all after the planned shells):
+  1. *Two `<main>` landmarks on every page.* Vuetify's `v-main` renders a `<main>` around each page's own `<main>`. It now renders as a `div`.
+  2. *Keyboard focus got lost after a Demo menu choice.* It fell onto the page body. A `ref` inside Vuetify's activator slot is never set, so the first fix didn't work. Focus now returns to the Demo button once the menu has closed. A Playwright test was shown to fail on the old code first.
+  3. *The landing doors wrapped 2 + 1 at 768px,* leaving a large empty gap. They're now one column below 900px and three across above it.
+  4. *One-word last lines:* "big" alone on P302's headline at 1280px, and "1." alone on P303 at 390px. Headlines now use balanced wrapping, and P303 keeps "Phase&nbsp;1" together.
+  5. *The landing line scored grade 8.4* (limit 8). It's now two sentences, grade 4.9.
+- **Deviations (for Alex to rule on):**
+  - Three extra `[shared]` fix commits after the nine planned ones. History can't be rewritten, so the fixes couldn't be folded into earlier commits.
+  - `engines.node` is now `^22.18.0 || >=24.12.0`, the scaffold's requirement for Vite 8 and TypeScript 6. It was `>=20`.
+  - Kept the scaffold's `vite-plugin-vue-devtools` (dev server only). Removed Vue's favicon along with the other starter files; there's no First Leaf favicon yet.
+  - Added `playwright.config.ts` (tests run against the production build), a `test:e2e` script, and `tests/shared/demomenu.spec.ts`, which wasn't asked for, to hold the focus fix in place.
+  - Added a page title per route ("Activity · First Leaf") for tabs and screen readers.
+  - A related word in a term explanation replaces the panel's content. There's no Back button; Esc returns to the original word.
+  - The sub-routes use one shared "Coming in Phase 1" page (`src/shared/components/ComingSoon.vue`) instead of a placeholder per case study.
+- **Pelipper Post comparison (read-only):** 13 gaps and some permission differences, reported to Alex for a ruling. Nothing was copied, and our docs haven't changed yet.
 
 ### Sept. 23, 2026: independent review of the plan (before any code)
 
@@ -96,11 +123,38 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 ## Known issues / open items
 
+- **TermTip buttons inside a sentence are 29px tall** (measured at 18px text). WCAG 2.5.8 exempts inline links, but the P303 brief asks for 48×48px on *every* touch target. Needs a ruling before P303's Phase 1 screens.
+- **Money and SeverityBadge aren't on any page yet.** They're built but not rendered, so their colors (terracotta losses, mustard "Heads-up") will be measured in the rendered UI in Phase 1.
+- **Demo menu semantics:** the choices are keyboard-operable list items with `aria-current` on the active one, not a `menuitemradio` group. It works with a keyboard; a screen reader pass is still needed.
+- **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
+- **The per-deployment Vercel URL redirects (302).** Use https://first-leaf.vercel.app.
+
 - **Pelipper Post location:** `setup.sh` looks for it in `~/Projects` and other common folders (and with Spotlight). If it isn't found, Phase 0 skips the pattern comparison. See the setup output.
 - **Illustrations:** Open Peeps / Open Doodles are downloaded from their sites in Phase 3. If Claude Code can't fetch them, Alex downloads one zip.
-- **`check:deploy`** uses GitHub's Deployments API, which Vercel's GitHub integration writes to. Its first real run happens at the start of Phase 0 and is **unverified until then**.
+- ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
 - **Copy is DRAFT** until Alex approves it in Phase 2: all glossary entries, flag text, fund descriptions and story claims.
+- **Phase 0 UI copy is DRAFT** (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
+
+
+## Measured values (Phase 0, rendered in Chromium from the production build)
+
+| Pair | Foreground → background | Size | Ratio | Needs |
+|---|---|---|---|---|
+| Body text on cream | #15130F → #F5F0E6 | 18px | **16.33:1** | 4.5 |
+| Muted text (eyebrow, disclaimer) on cream | #4F4A40 → #F5F0E6 | 14–16px | **7.75:1** | 4.5 |
+| TermTip dotted underline on cream | #1F5C3B → #F5F0E6 | 2px line | **6.97:1** | 3 |
+| TermTip panel text (term, short line, detail) | #15130F → #FFFDF8 | 16–22px | **18.25:1** | 4.5 |
+| TermTip "also called" and source | #4F4A40 → #FFFDF8 | 14px | **8.66:1** | 4.5 |
+| TermTip related-word and source links | #1F5C3B → #FFFDF8 | 14–15px | **7.79:1** | 4.5 |
+| Demo button text and border | #15130F → #F5F0E6 | 14px | **16.33:1** | 4.5 |
+| Demo menu choice label | #15130F → #FFFDF8 | 16px bold | **18.25:1** | 4.5 |
+| Demo menu description | #4F4A40 → #FFFDF8 | 14px | **8.66:1** | 4.5 |
+| Demo menu check icon | #1F5C3B → #FFFDF8 | 24px icon | **7.79:1** | 3 |
+| Landing door link "Open P30X" | #1F5C3B → #FFFDF8 | 16px bold | **7.79:1** | 4.5 |
+
+**Fonts, computed:** h1 = `"Newsreader Variable", Georgia, …` (56–88px); buttons and body = `"Hanken Grotesk Variable", system-ui, …`. `document.fonts.check()` is true for both, and both faces report `loaded`.
+**Target sizes:** Demo button 211×48, TermTip close button 48×48, related-word links 71×27, inline TermTip button 79×29 (see Known issues).
 
 ## Compliance notes
 
