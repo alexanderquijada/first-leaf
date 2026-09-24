@@ -1,10 +1,10 @@
 import { test, expect } from '../fixtures'
 
-// Each case study's shell has one working term explanation (BRIEF.md §5).
+// Each placeholder page with a term demo has one working explanation (BRIEF.md §5).
 const SHELLS = [
-  { path: '/p301', term: 'Yearly fee', short: 'What a fund charges each year to run' },
-  { path: '/p302', term: 'Growth on growth', short: 'When your money earns money' },
-  { path: '/p303', term: 'Returned deposit', short: 'A deposit your bank sent back' },
+  { path: '/', term: 'Yearly fee', short: 'What a fund charges each year to run' },
+  { path: '/story', term: 'Growth on growth', short: 'When your money earns money' },
+  { path: '/alerts', term: 'Returned deposit', short: 'A deposit your bank sent back' },
 ]
 
 for (const { path, term, short } of SHELLS) {
@@ -44,7 +44,7 @@ for (const { path, term, short } of SHELLS) {
 }
 
 test('a related word opens its own explanation, and a click outside closes it', async ({ page }) => {
-  await page.goto('/p301')
+  await page.goto('/')
   await page.locator('main .fl-termtip__button').first().click()
   const panel = page.getByRole('dialog', { name: 'Yearly fee' })
   await expect(panel).toBeVisible()
@@ -58,7 +58,7 @@ test('a related word opens its own explanation, and a click outside closes it', 
 
 test('under 600px wide the explanation opens as a bottom sheet', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/p303')
+  await page.goto('/alerts')
   await page.locator('main .fl-termtip__button').first().click()
   const panel = page.getByRole('dialog', { name: 'Returned deposit' })
   await expect(panel).toBeVisible()
@@ -69,7 +69,7 @@ test('under 600px wide the explanation opens as a bottom sheet', async ({ page }
 })
 
 test('after a related word, "Back to" returns to the previous word with focus on that link', async ({ page }) => {
-  await page.goto('/p301')
+  await page.goto('/')
   await page.locator('main .fl-termtip__button').first().click()
   const first = page.getByRole('dialog', { name: 'Yearly fee' })
   await expect(first).toBeVisible()

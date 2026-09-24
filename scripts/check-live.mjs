@@ -23,7 +23,7 @@ const urlArg = process.argv.indexOf('--url');
 const BASE = (urlArg > -1 ? process.argv[urlArg + 1] : pkg.firstLeaf?.productionUrl)?.replace(/\/$/, '');
 if (!BASE) { console.log('✗ No production URL. Set "firstLeaf": { "productionUrl": … } in package.json.'); process.exit(1); }
 
-const PAGES = ['/', '/p301', '/p302', '/p303', '/p301/funds/FL-GREEN', '/p303/learn/expense-ratio'];
+const PAGES = ['/', '/story', '/activity', '/funds/FL-GREEN', '/learn/expense-ratio', '/about', '/p301'];
 const assets = (html) => [...new Set(html.match(/\/assets\/[^"'\s>]+\.(?:js|css)/g) ?? [])].sort();
 const isAppHtml = (html) => html.includes('<div id="app">') && html.includes('<title>First Leaf</title>');
 

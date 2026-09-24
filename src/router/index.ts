@@ -2,33 +2,12 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import AppLayout from '@/layouts/AppLayout.vue'
 import HomeView from '@/features/home/HomeView.vue'
 
-// Every route is lazy-loaded (CLAUDE.md §7). Routes follow BRIEF.md §7.
-// Sub-pages that are built in Phase 1 show a shared "Coming in Phase 1" page.
-const comingSoon = (
-  path: string,
-  title: string | ((params: Record<string, string | string[]>) => string),
-  caseStudy: string,
-  backTo: string,
-): RouteRecordRaw => ({
-  path,
-  component: () => import('@/shared/components/ComingSoon.vue'),
-  props: (route) => ({
-    title: typeof title === 'function' ? title(route.params) : title,
-    caseStudy,
-    backTo,
-  }),
-  meta: { title: typeof title === 'string' ? title : caseStudy },
-})
-
-const P301 = 'P301 · Operational dashboard'
-const P303 = 'P303 · Mobile experience'
-
-// The one app (BRIEF.md §7). The layout loads with the first screen; pages inside it are lazy.
+// One app (BRIEF.md §3, §7). The router wires the layout to each feature's pages.
+// The layout and Home load with the first screen; every other page is lazy.
 const app: RouteRecordRaw = {
   path: '/',
   component: AppLayout,
   children: [
-    // Home is the first screen, so it loads with the app, not lazily.
     { path: '', name: 'home', component: HomeView, meta: { title: 'Home' } },
     { path: 'alerts', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
     { path: 'alerts/:id', component: () => import('@/features/alerts/AlertDetailView.vue'), meta: { title: 'Alert' } },
@@ -39,46 +18,31 @@ const app: RouteRecordRaw = {
     { path: 'practice', component: () => import('@/features/practice/PracticeView.vue'), meta: { title: 'Practice' } },
     { path: 'learn', component: () => import('@/features/learn/LearnView.vue'), meta: { title: 'Words to know' } },
     { path: 'learn/:termId', component: () => import('@/features/learn/TermView.vue'), meta: { title: 'Words to know' } },
+    { path: 'about', component: () => import('@/features/about/AboutView.vue'), meta: { title: 'About this demo' } },
+    { path: ':pathMatch(.*)*', name: 'not-found', component: () => import('@/features/not-found/NotFoundView.vue'), meta: { title: 'Page not found' } },
   ],
 }
 
+// Old case-study addresses (Phase 0) still work. The demo scenario in the query is kept.
+const OLD_SUBPAGES: Record<string, string> = {
+  funds: '/funds',
+  activity: '/activity',
+  practice: '/practice',
+  learn: '/learn',
+  attention: '/alerts',
+  why: '/',
+}
+function oldPath(rest: string | string[] | undefined): string {
+  const [first, ...more] = ([] as string[]).concat(rest ?? []).filter(Boolean)
+  const base = first ? OLD_SUBPAGES[first] : undefined
+  return base ? [base === '/' ? '' : base, ...more].join('/') || '/' : '/'
+}
+
 const routes: RouteRecordRaw[] = [
-  {
-    path: '/p301',
-    name: 'p301',
-    component: () => import('@/p301-dashboard/views/WeeklyReviewView.vue'),
-    meta: { title: 'P301 · Weekly review' },
-  },
-  comingSoon('/p301/funds', 'Your funds', P301, '/p301'),
-  comingSoon('/p301/funds/:ticker', (p) => String(p.ticker), P301, '/p301'),
-  comingSoon('/p301/activity', 'Activity', P301, '/p301'),
-  comingSoon('/p301/practice', 'Practice', P301, '/p301'),
-  comingSoon('/p301/learn', 'Words to know', P301, '/p301'),
-  {
-    path: '/p302',
-    name: 'p302',
-    component: () => import('@/p302-story/views/StoryView.vue'),
-    meta: { title: 'P302 · Start early beats start big' },
-  },
-  {
-    path: '/p303',
-    name: 'p303',
-    component: () => import('@/p303-mobile/views/CheckInView.vue'),
-    meta: { title: 'P303 · Check-in' },
-  },
-  comingSoon('/p303/attention', 'What needs you', P303, '/p303'),
-  comingSoon('/p303/attention/:id', 'What needs you', P303, '/p303'),
-  comingSoon('/p303/why', 'Why it moved', P303, '/p303'),
-  comingSoon('/p303/learn', 'Words', P303, '/p303'),
-  comingSoon('/p303/learn/:termId', 'Words', P303, '/p303'),
-  comingSoon('/p303/practice', 'Practice', P303, '/p303'),
+  { path: '/p301/:rest(.*)*', redirect: (to) => ({ path: oldPath(to.params.rest), query: to.query, hash: to.hash }) },
+  { path: '/p302/:rest(.*)*', redirect: (to) => ({ path: '/story', query: to.query, hash: to.hash }) },
+  { path: '/p303/:rest(.*)*', redirect: (to) => ({ path: oldPath(to.params.rest), query: to.query, hash: to.hash }) },
   app,
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('@/landing/NotFoundView.vue'),
-    meta: { title: 'Page not found' },
-  },
 ]
 
 const router = createRouter({
@@ -90,7 +54,7 @@ const router = createRouter({
 // Each page gets its own title, so tabs and screen readers can tell them apart.
 router.afterEach((to) => {
   const t = to.meta.title as string | undefined
-  document.title = t && t !== 'First Leaf' && t !== 'Home' ? `${t} · First Leaf` : 'First Leaf'
+  document.title = t && t !== 'Home' ? `${t} · First Leaf` : 'First Leaf'
 })
 
 export default router

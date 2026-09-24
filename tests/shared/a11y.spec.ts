@@ -12,7 +12,7 @@ async function seriousViolations(page: Page) {
     .map((v) => `${v.impact}: ${v.id}: ${v.help} (${v.nodes.map((n) => n.target.join(' ')).join(' | ')})`)
 }
 
-const PAGES = ['/', '/p301', '/p302', '/p303']
+const PAGES = ['/', '/story', '/activity', '/about']
 const WIDTHS = [
   { width: 390, height: 844 },
   { width: 1280, height: 800 },
@@ -31,14 +31,14 @@ for (const size of WIDTHS) {
     }
 
     test('with the explanation panel open', async ({ page }) => {
-      await page.goto('/p301')
+      await page.goto('/')
       await page.locator('main .fl-termtip__button').first().click()
       await expect(page.getByRole('dialog')).toBeVisible()
       expect(await seriousViolations(page)).toEqual([])
     })
 
     test('with the Demo menu open', async ({ page }) => {
-      await page.goto('/p303')
+      await page.goto('/')
       await page.locator('.fl-demo__button').click()
       await expect(page.locator('.fl-demo__list')).toBeVisible()
       expect(await seriousViolations(page)).toEqual([])
