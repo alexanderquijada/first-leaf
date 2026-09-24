@@ -64,8 +64,8 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 
 | Severity | Alert | Why it's there | What she can do (never "what to buy") |
 |---|---|---|---|
-| Needs you | Your $150 deposit from Sept. 1 was sent back | Her bank returned it on Sept. 3 | **Try the deposit again** (demo dialog) |
-| Heads-up | Your goal is $150 behind your plan | $1,400 planned vs. $1,250 went through. Deposits only; the market doesn't count. | **Add a one-time deposit** (demo), or keep going |
+| Needs you | Your $150 deposit from Sept. 1 was sent back | Her bank returned it on Sept. 3 | **Try the deposit again** (review, confirm, confirmation) |
+| Heads-up | Your goal is $150 behind your plan | $1,400 planned vs. $1,250 went through. Deposits only; the market doesn't count. | **Add a one-time deposit** (same flow, amount filled in), or keep going |
 | Heads-up | $154.76 is waiting in cash | Auto-invest paused since July 14; the Aug. 3 deposit and dividends stayed as cash | **See auto-invest settings** |
 | Heads-up | FL-GREEN is raising its yearly fee on Oct. 1 | Announced Sept. 15: 0.45% → 0.75% (0.30 percentage points) on $48.63 ≈ $0.15 more a year | **Open FL-GREEN** to see its fee over time |
 | FYI | FL-BOND paid you $0.50 | Dividend on Sept. 15 | Nothing to do |
@@ -73,15 +73,18 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 - Every alert can be **marked handled** (remembered for the session, with "Undo").
 - Alerts raised since last Sunday's review (Sept. 13) show a **New** badge.
 - **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "FYI" (forest, info icon). Color never works alone.
-- **Every action that would move money opens a demo dialog** that says plainly that nothing real happens in this demo.
+- **Every money action is a realistic flow:** review → confirm → confirmation, and it changes what the app shows for the rest of the session (a Pending deposit in Activity, "Auto-invest: On"). Reloading resets it; the data files never change.
+  - *Try the deposit again* ends with "Deposit requested. It usually arrives in 1–3 business days." and a Pending deposit in Activity.
+  - *Add a one-time deposit* is the same flow with the amount filled in.
+  - *See auto-invest settings* shows the paused status with an On/Off switch and a confirmation.
 - A fee change is described in **percentage points**, never as a percent of the old fee.
 
 ## Layout
 
-**Desktop, 1024px and up (designed at 1280):** the app's left rail (Home, Activity, Funds, Your money story, Practice, Words), a top bar with the greeting, "Prices as of Fri., Sept. 18" and the Demo menu, and a 12-column Home on cream. The footer on every page holds the disclaimer and "About this demo".
+**Desktop, 1024px and up (designed at 1280):** the app's left rail (Home, Activity, Funds, Your money story, Practice, Words), a top bar with the greeting, "Prices as of Fri., Sept. 18" and the Phone view toggle, and a 12-column Home on cream. The footer on every page holds the risk disclosure.
 
 ```
-┌ rail ────┐┌ top bar: Good morning, Rosa.   Prices as of Fri., Sept. 18   [Demo ▾] ┐
+┌ rail ────┐┌ top bar: Good morning, Rosa.   Prices as of Fri., Sept. 18   [Phone view] ┐
 │ Home     │├──────────────────────────────────────────────────────────────────────┤
 │ Activity ││ ┌─ Needs your attention (7 col) ──────────┐┌─ Balance (5, PANEL) ──┐│
 │ Funds    ││ │ ● Needs you  Deposit sent back       › ││ $1,313.72             ││
@@ -97,7 +100,7 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 │          ││ │ ring: now vs.  ││ $1,250 of $2,000 put in ││ start → market →     ││
 │          ││ │ the mix you set││ $150 behind plan        ││ dividends → end      ││
 │          ││ └────────────────┘└─────────────────────────┘└──────────────────────┘│
-│          ││ Footer: disclaimer · About this demo                                 │
+│          ││ Footer: the risk disclosure                                          │
 └──────────┘└──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -111,12 +114,12 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 
 | # | Flow | Steps | Done when |
 |---|---|---|---|
-| F1 | **Act on an alert** | Home → click an alert → its detail shows *what happened*, *what it means* (with term explanations) and *what you can do* → use its action → **Mark as handled** | Every alert opens at its own address and closes with Esc or Back. Money actions open a demo dialog. Handled alerts move to a collapsed "Handled" group with Undo. |
+| F1 | **Act on an alert** | Home → click an alert → its detail shows *what happened*, *what it means* (with term explanations) and *what you can do* → use its action → **Mark as handled** | Every alert opens at its own address. Money actions run review → confirm → confirmation and change the session (a Pending deposit, auto-invest on). Handled alerts move to a collapsed "Handled" group with Undo; handled and session state survive navigation and reset on reload. |
 | F2 | **Understand any word** | Click or tab to any dotted-underlined term → the explanation opens → follow a related word → **Back to** the first word | Works by mouse, keyboard and screen reader on every page |
 | F3 | **Read the balance chart** | Switch 1M / 3M / All → move across the chart → **Show as table** | Values are read out in words; the table matches the chart |
 | F4 | **Look at a fund** | Funds → FL-GREEN → price chart (since you bought / 1 year / 5 years), yearly fee with the Oct. 1 change, ups and downs 1–5, what's inside, what you paid vs. its value | Every fund page works, including FL-CALM, which Rosa doesn't own ("You don't own this fund") |
 | F5 | **Check activity** | Activity → filter by type (Deposits / Buys / Dividends) and status (Completed / Returned) → open the returned deposit | Filters combine; a combination with no results (e.g. Dividends + Returned) shows a friendly empty state |
-| F6 | **Switch demo scenario** | Demo ▾ in the top bar → *Nothing needs you* → *Brand-new account* | Each scenario shows its own account, and every sentence on every card stays true |
+| F6 | **Check every scenario** | Open `/?scenario=all-clear`, then `/?scenario=brand-new` (scenarios are reached by URL only; the README lists the links) | Each scenario shows its own account, and every sentence on every card stays true |
 
 ## Edge cases and empty states (go-further)
 

@@ -76,6 +76,31 @@ He rules on the open questions in the Phase 0.6 decision-log entry. Then the pla
 
 Newest first. Include what we got wrong and why.
 
+### Sept. 24, 2026: Phase 0.6 rulings (and the real-app ruling)
+
+- **Ratified:**
+  - the story follows the scenario
+  - "Why it moved" opens in place on the phone Home
+  - Alerts is two-pane on a laptop
+  - Practice and Words belong to P302
+  - the app frame and Home load up front
+  - the preview frame scales on short desktop windows
+  - the 404 folder
+  - the sub-page redirects
+  - the skip link
+  - the corrected July dip numbers. *Claude's planning error: it read every third row of the data.*
+- **Temporary:** the story's 90% stand-in, replaced by rule R1 in Phase 1A.
+- **Amended:** the tablet Home must show "Prices as of Fri., Sept. 18".
+- **Closed:** related-word links in the explanation panel are standalone controls, so under 600px they are at least 48 × 48px (added to the P303 brief).
+- **Copy approved:** the 404, the top bar, the skip link and the nav labels.
+- **Real-app ruling (Alex, Sept. 24):**
+  - Inside the site, First Leaf must read like a real investing app: no "made up", "demo", "case study", "for this project", "fictional" or "for reviewers" on screen. Reviewer and project explanations live only in README.md.
+  - The on-screen disclaimer becomes a footer disclosure: *"Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."*
+  - About this demo and the Demo menu are removed; scenarios are reached by URL only (listed in the README). The phone toggle is labeled "Phone view". Money actions end in realistic confirmations.
+  - The data rules behind the scenes don't loosen: everything is still fictional and marked so in the data.
+  - **What we got wrong:** the About page, the Demo menu and the "made up" copy made the site read as an exercise, not a product.
+- **Commit guard:** from Phase 1A a pre-commit hook runs `npm run check`, and `--no-verify` is denied. (Phase 0.6 had a commit go in with a failing test.)
+
 ### Sept. 24, 2026: Phase 0.6 · One app (built)
 
 - **Built:**

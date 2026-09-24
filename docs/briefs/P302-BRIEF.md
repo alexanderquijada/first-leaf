@@ -10,7 +10,7 @@
 
 > *"Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."*
 
-It earns that point of view in six chapters. The first four read her own data: her balance since March, how much of it is her own deposits, the dip in July (when she paused auto-invest) and what happened after, and where her money sits now. The fifth shows why years matter, with the made-up friends Nia and Theo: Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. Then Rosa's own 26-to-65 slider shows it for her. The sixth invites her to try it with pretend money in Practice.
+It earns that point of view in six chapters. The first four read her own data: her balance since March, how much of it is her own deposits, the dip in July (when she paused auto-invest) and what happened after, and where her money sits now. The fifth shows why years matter, with two friends, Nia and Theo (invented for the lesson): Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. Then Rosa's own 26-to-65 slider shows it for her. The sixth invites her to try it with pretend money in Practice.
 
 **Why this story.** Rosa's July reaction is the most common beginner mistake in miniature: a dip felt like the moment to stop. Her own chart shows that seven months is far too short for growth to show up (about 95% of her balance is still her own deposits), and the Nia and Theo lesson shows what the years do. A story about *her* money is more persuasive to her than a story about strangers, and it keeps First Leaf one product instead of an app with an essay attached.
 
@@ -65,7 +65,7 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 
 The story says what happened and stops there. It never says pausing was right or wrong, and never tells Rosa to turn auto-invest back on; that stays her choice (BRIEF.md §8).
 
-**Nia and Theo** (chapter 5). All numbers come from `story-p302.json`, computed by the generator and re-computed by the validator (rules T1–T4). **Assumption (shown on screen):** a made-up steady **6% a year**, added monthly, with money put in at the end of each month, until age 65. The note always says: *"Real markets go up and down, and nobody can promise a rate."*
+**Nia and Theo** (chapter 5). All numbers come from `story-p302.json`, computed by the generator and re-computed by the validator (rules T1–T4). **Assumption (shown on screen):** an example rate of **6% a year**, added monthly, with money put in at the end of each month, until age 65. The note always says: *"An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate."* On screen Nia and Theo are "two friends"; the data still marks them fictional.
 
 ```json brief-example
 {
@@ -97,7 +97,7 @@ The story says what happened and stops there. It never says pausing was right or
 
 **The bumpy version is honest by rule (T3):** the same *overall* growth as the smooth line (6% a year, compounded; the simple average of the years is higher, so we never say "average"). No year is worse than −20%, no staged late crash (Nia's balance never falls more than 25% from a peak), and both endings land within 15% of the smooth ones, so bumpiness never looks like a bonus or a disaster.
 
-**Every demo scenario gets a true story (R4).** The story reads the current scenario's account through `useScenario`.
+**Every scenario gets a true story (R4).** The story reads the current scenario's account through `useScenario`. Rosa's facts and the sentences that state them are generated per account into `story-p302.json` (`rosaStory`), and R1–R4 recompute every number from the price and balance history, so the screen only ever shows checked sentences.
 - *Nothing needs you:* auto-invest stayed on, so chapter 3 says so ("auto-invest stayed on and kept buying"), with that account's own numbers ($1,400 of $1,486.94 is deposits, 94.2%).
 - *Brand-new account:* there is no history yet, so chapters 1–4 become one short chapter ("Your story starts with your first deposit") and the point of view is stated without the "right now" half. Chapters 5 and 6 work unchanged.
 
@@ -110,7 +110,7 @@ The story says what happened and stops there. It never says pausing was right or
 | 1 | Seven months in | Here is your balance since March. | Balance over time since March 2, drawn in | **Toggle: "What you put in vs. what it earned"** splits the area into a flat "put in" layer and a grainy "earned" layer. **Time range: 1M / 3M / Since March.** |
 | 2 | Most of it is still your money | About 95% of your balance is money you put in. Growth hasn't had time yet. | One bar: deposits vs. earned | Tap either part to read it in words |
 | 3 | The dip in July | Prices fell for two weeks. You paused auto-invest on July 14. Here is what happened after. | The balance line with the dip marked | **Toggle: show or hide the events** (the dip's low, the pause, the Aug. 3 deposit staying as cash) |
-| 4 | Where it is now | Here is how your money is split today. | Her mix: FL-BROAD, FL-WORLD, FL-BOND, FL-GREEN and cash | **Filter: stocks / bonds / cash** |
+| 4 | Where it is now | Here is how your money is split today. | Her mix: FL-BROAD, FL-WORLD, FL-BOND, FL-GREEN and cash | **Filter: stocks / bonds / reserve / cash** (reserve shows an empty state when she owns none) |
 | 5 | What happens if you keep going | Years do the work. Nia starts at 22 with $100 a month; Theo waits until 32 and puts in $150. | Nia and Theo from 22 to 65 | See the steps below |
 | 6 | Try it with pretend money | Practice lets you try a mix with money that isn't real. | — | A link into **Practice** |
 
@@ -124,7 +124,7 @@ The story says what happened and stops there. It never says pausing was right or
 | 5d Every year counts | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
 | 5e Can Theo catch up? | Yes, with about $196 a month, nearly twice Nia's. | Theo's line rises with the amount | **Theo's monthly slider, $150–$300, step $1**, with a marker where he passes Nia |
 | 5f Real life is bumpy | Real years go up and down. Same overall growth, and Nia still ends ahead. | Smooth vs. bumpy | **Smooth / Bumpy toggle** |
-| 5g Your turn | Rosa, 26, $150 a month. "This uses Rosa, a made-up learner, as an example. It is not a plan for you." | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
+| 5g Your turn | Rosa, 26, $150 a month. "This is an example, not a plan or advice." | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
 
 Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, and the sources. The footer carries the disclaimer.
 
@@ -146,7 +146,7 @@ Closing: a three-line takeaway, then **Words from this story** (growth on growth
 |---|---|---|
 | F1 | Read chapters 1–4 and use the put-in vs. earned toggle and the time range | The chart and its sentence change together; the numbers match the account |
 | F2 | Show and hide the July events | The dip, the pause and the Aug. 3 cash appear and disappear; the table matches |
-| F3 | Filter the mix by stocks / bonds / cash | The mix and its sentence change; an empty filter says so |
+| F3 | Filter the mix by stocks / bonds / reserve / cash | The mix and its sentence change; an empty filter says so |
 | F4 | Make a guess, then read the answer | The reply matches the guess; skipping it gives neutral copy |
 | F5 | Move the start-age slider and Theo's slider by keyboard | Values are announced in words; Theo's marker appears at $196 |
 | F6 | Switch Smooth / Bumpy | The caption explains why the ending differs |

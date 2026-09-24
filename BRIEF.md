@@ -2,7 +2,7 @@
 
 > **Status:** Plan, written before building (Sept. 23, 2026). **Re-planned Sept. 24, 2026 as one app with three case-study lenses.** Later changes follow the brief-first loop: this file is updated and committed *before* the code changes. The dated reasons live in [STATUS.md](STATUS.md#decision-log).
 >
-> **Everything in First Leaf is made up.** Every fund, price, person and account is fictional. It is for learning only and is not financial advice.
+> **Everything in First Leaf is made up.** Every fund, price, person and account is fictional. It is for learning only and is not financial advice. (This is a reviewer document; on screen, the app reads as a real product with a risk disclosure. See §1.)
 
 ## Where each case study lives
 
@@ -28,11 +28,14 @@ The rest of this file is the foundation all three share: product, person, data, 
 
 | Lens | What it is in the app |
 |---|---|
-| **P301 · Operational dashboard** | Home on a laptop (alerts first, then balance, balance over time, mix, goal, this week), plus Alerts, Activity and Funds. Every alert has its action (money actions open demo dialogs), Mark as handled, and "New" badges. |
+| **P301 · Operational dashboard** | Home on a laptop (alerts first, then balance, balance over time, mix, goal, this week), plus Alerts, Activity and Funds. Every alert has its action (money actions run a realistic review, confirm and confirmation flow), Mark as handled, and "New" badges. |
 | **P302 · Interactive data story** | Your money story (`/story`): Rosa's own seven months, told in six chapters that argue one point of view, plus the Nia and Theo lesson. Practice (investing with pretend money) and the learning moments (term explanations, Words) count toward P302 too. |
 | **P303 · Mobile experience** | The same app under 600px wide, designed for a 60-second glance, not a shrunk desktop. Home becomes a check-in. Everything else is one tap away. |
 
 Why: a real product is one app that a person uses in different moments, not three demos. One app means one navigation, one set of words, one account and one voice, so a reviewer sees a coherent product. The case studies stay separately reviewable because each lens has its own brief, its own routes and screen size, its own "Try these" steps in the README, its own commit prefix and its own definition of done.
+
+**Decision: inside the site, First Leaf reads like a real investing app** (Alex's ruling, Sept. 24, 2026). Nothing on screen says "made up", "demo", "case study", "for this project", "fictional" or "for reviewers" (validator rule G6). Reviewer and project explanations live only in `README.md`. The one on-screen disclosure is the footer: *Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice.* Money actions end in realistic confirmations ("Deposit requested…"), never in "nothing real happens" dialogs. The data rules behind the scenes don't loosen: every fund, person and account is still fictional and marked so in the data (G1, G5).
+*What we got wrong:* the About page, the Demo menu and the "made up" copy made the site read as an exercise, not a product.
 
 *Rejected by Alex:* three separate sections behind a landing page with three doors. It read as three projects, not one product.
 *Rejected earlier:* three unrelated products. Easier to review, but a weaker story, and three datasets would each be thinner.
@@ -64,15 +67,15 @@ Why: a real product is one app that a person uses in different moments, not thre
 
   | Width | Navigation |
   |---|---|
-  | 1024px and up | A left rail (Home, Activity, Funds, Your money story, Practice, Words) and a top bar (greeting, "Prices as of Fri., Sept. 18", Demo menu) |
-  | 600–1023px | The same top bar, with the rail's six items as top tabs |
-  | Under 600px | An opaque top bar (wordmark, Demo menu) and an opaque bottom tab bar (Home, Activity, Story, Practice, Words) with 48px targets. Funds and Alerts are reached from Home. |
+  | 1024px and up | A left rail (Home, Activity, Funds, Your money story, Practice, Words) and a top bar (greeting, "Prices as of Fri., Sept. 18", Phone view) |
+  | 600–1023px | A top bar (wordmark, "Prices as of Fri., Sept. 18", Phone view), with the rail's six items as top tabs |
+  | Under 600px | An opaque top bar (wordmark) and an opaque bottom tab bar (Home, Activity, Story, Practice, Words) with 48px targets. Funds and Alerts are reached from Home. |
 
-  **Phone preview** (Alex's ruling, Sept. 24, 2026): at 600px and wider, the top bar has a phone-icon toggle, "Preview on a phone". It shows the real app inside a generic 390 × 844 phone frame, so a P303 reviewer can see the phone design on a laptop. It is an iframe of the same app, not a mock-up, and `?view=phone` opens it directly. Details and its known limitation are in the P303 brief.
+  **Phone view** (Alex's rulings, Sept. 24, 2026): at 600px and wider, the top bar has a phone-icon toggle labeled "Phone view". It shows the real app inside a generic 390 × 844 phone frame, so a P303 reviewer can see the phone design on a laptop. It is an iframe of the same app, not a mock-up, and `?view=phone` opens it directly. Details and its known limitation are in the P303 brief.
 
-  Every page has the same footer: the disclaimer and a link to **About this demo** (`/about`), which explains who Rosa is, lists the demo scenarios and maps where each case study lives.
-- **Old addresses still work.** `/p301` and `/p303` redirect to `/`, and `/p302` redirects to `/story`.
-- **Shared building blocks, feature folders.** Term explanations, the disclaimer, money formatting, data and state live in `src/shared/`. The shells and navigation live in `src/layouts/`. Each screen family lives in its own feature folder (`src/features/home`, `alerts`, `activity`, `funds`, `story`, `practice`, `learn`, `about`). **Features and layouts import only from `src/shared/`**, never from each other; the router wires them together.
+  Every page has the same footer: the risk disclosure (§8). There is no About page; `/about` redirects to `/`, and the reviewer map lives in `README.md`.
+- **Old addresses still work.** `/p301` and `/p303` redirect to `/`, `/p302` redirects to `/story`, and `/about` redirects to `/`.
+- **Shared building blocks, feature folders.** Term explanations, the disclaimer, money formatting, data and state live in `src/shared/`. The shells and navigation live in `src/layouts/`. Each screen family lives in its own feature folder (`src/features/home`, `alerts`, `activity`, `funds`, `story`, `practice`, `learn`, and `not-found` for the 404). **Features and layouts import only from `src/shared/`**, never from each other; the router wires them together.
 - **Which lens owns which code** (this sets the commit prefix):
 
   | Prefix | Owns |
@@ -82,12 +85,12 @@ Why: a real product is one app that a person uses in different moments, not thre
   | `[P303]` | The phone layout, phone navigation and phone-specific screens |
   | `[shared]` | Shared code, data, tokens, and layouts used at every size |
 
-- **Demo scenarios** let a reviewer see empty and edge states without editing anything. Each scenario has **its own account**, so every sentence stays true in it, including the story's:
+- **Scenarios** let a reviewer see empty and edge states without editing anything. They are reached **only by URL** (there is no menu on screen); the README lists the links for each case study. Each scenario has **its own account**, so every sentence stays true in it, including the story's:
   - *Rosa, 7 months in* (default): a few things need her.
   - *Nothing needs you*: a calmer Rosa. Every deposit went through, auto-invest stayed on, and she skipped the clean energy fund.
   - *Brand-new account*: she hasn't added money yet.
 
-  Add `?scenario=all-clear` or `?scenario=brand-new` to any URL, or use the Demo menu in the top bar.
+  Add `?scenario=normal`, `?scenario=all-clear` or `?scenario=brand-new` to any URL. The choice carries through navigation and into the phone view. Scenario labels and descriptions are for the README only and never appear on screen.
 
 ---
 
@@ -97,7 +100,7 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 
 | File | What it holds |
 |---|---|
-| `meta.json` | Product name, "as of" date, last market close, the disclaimer |
+| `meta.json` | Product name, "as of" date, last market close, the footer disclosure (`meta.disclaimer`) |
 | `persona.json` | Rosa, and her three moments |
 | `funds.json` | 5 made-up funds, 5 years of made-up weekly prices, daily prices since Rosa opened her account |
 | `account.json` | Rosa's starter account (main demo): balance, cash, what she owns, auto-invest, goal, this week's change, daily history |
@@ -107,7 +110,7 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 | `attention.json` | What needs attention, per account, most urgent first. **Generated from rules**, so a flag appears exactly when the account's facts call for it |
 | `scenarios.json` | The three demo scenarios |
 | `practice.json` | Practice mode rules ($1,000 pretend money) |
-| `story-p302.json` | Every number and claim in the Nia and Theo lesson (chapter 5 of Your money story) |
+| `story-p302.json` | Every number and claim in Your money story: Rosa's own facts and claims for each account (`rosaStory`, chapters 1–4) and the Nia and Theo lesson (chapter 5) |
 | `glossary.json` | 31 plain-language explanations |
 
 **Dates.** "Today" in the app is **Sunday, Sept. 20, 2026**. The latest prices are from **Friday, Sept. 18, 2026**. Fixing the date means every sentence stays true, including "this week."
@@ -150,14 +153,14 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 
 | Group | Rules |
 |---|---|
-| S · Structure | S1 files exist · S2 required fields · S3 disclaimer says made up / learning only / not financial advice |
-| G · Finance guardrails | G1 FL- tickers, marked fictional · G2 no real tickers or brand names · G3 no advice language, no absolute safety claims ("is safe"), no invented crowd claims ("most people") · G4 no account numbers · G5 every person and account fictional |
+| S · Structure | S1 files exist · S2 required fields · S3 the footer disclosure says "risk", "simulated" and "not investment advice" |
+| G · Finance guardrails | G1 FL- tickers, marked fictional · G2 no real tickers or brand names · G3 no advice language, no absolute safety claims ("is safe"), no invented crowd claims ("most people") · G4 no account numbers · G5 every person and account fictional · G6 no project language on screen (made up, demo, case study, this project, for reviewers, fictional) in any learner-facing text; scenario descriptions are README-only and exempt |
 | F · Funds | F1 prices positive, trading days only · F2 daily and weekly agree · F3 latest price, practice dates and time machine agree · F4 fees 0–2% and announced before they change, ratings 1–5, reserve fund stays $1.00 |
 | A · Accounts (every account, every scenario) | A1 value = shares × price · A2 up/down per fund · A3 balance = funds + cash · A4 money in = deposits that went through · A5 cost and shares = buys · A6 cash reconciles · A7 overall up/down · A8 history ends at balance · A9 mix adds to 100% · A10 this week adds up to the cent · A11 goal counts deposits only and the plan reaches it · A12 buys priced right and settle T+1 · A13 "waiting since" date is true · A14 auto-invest behaves as stated |
 | N · Attention flags | N1 well formed, most urgent first, "New" is true · N2 each flag appears exactly when the account's facts call for it, with matching numbers · N3 every dollar figure in flag copy exists in that account |
 | C · Scenarios | C1 scenarios point at real accounts; "Nothing needs you" has nothing that needs you · C2 brand-new account is truly empty |
-| T · P302 story | T1 savers match the growth formula · T2 every claim is true and the sliders can reach it · T3 bumpy version has the same overall growth and no staged crash · T4 the rate is labeled made up |
-| R · Rosa's story (**defined now, built in Phase 1**) | R1 the deposits share of her balance is what the story says · R2 the July dip's high, low, dates and size are what the story says · R3 the auto-invest pause date and everything the story says happened "after" it are true · R4 each claim holds, or has its own version, in every demo scenario |
+| T · P302 story | T1 savers match the growth formula · T2 every claim is true and the sliders can reach it · T3 bumpy version has the same overall growth and no staged crash · T4 the rate is labeled an example that nobody can promise |
+| R · Rosa's story | R1 the deposits share of her balance is what the story says, and "almost all" is only said when it is at least 90% · R2 the July dip's high, low, dates and size, and her balance at the low, match the price and balance history · R3 the auto-invest pause date and everything the story says happened "after" it are true · R4 every scenario has its own true version (brand-new has none), and every number in a story sentence is one of that account's checked facts |
 | X · Cross-lens | X1 Rosa's age and deposit agree across every lens · X2 dates agree everywhere |
 | L · Plain language | L1 glossary links resolve, word of the day exists · L2 grade 8 or below for **every** learner-facing text in the data (explanations, examples, flags, fund descriptions, story notes, scenario descriptions) · L3 no jargon · L4 explanation first lines ≤ 16 words |
 | B · Brief | B1 every `brief-example` block in the briefs matches the data |
@@ -266,13 +269,13 @@ src/
   shared/                          data, tokens, components, composables, charts, illustrations
   layouts/                         the desktop, tablet and phone shells and navigation  → imports only from shared/
   features/<feature>/              one folder per screen family: home, alerts, activity, funds,
-                                   story, practice, learn, about  → imports only from shared/ (never another feature)
+                                   story, practice, learn, not-found  → imports only from shared/ (never another feature)
 scripts/                           data generator, validator, self-test, boundary check, icon check, deploy and live checks
 docs/briefs/                       one lens brief per case study
 docs/                              setup, prompts, research notes, credits
 ```
 
-**Routes:** `/` (Home) · `/alerts` · `/alerts/:id` · `/activity` · `/funds` · `/funds/:ticker` · `/story` (Your money story) · `/practice` · `/learn` · `/learn/:termId` · `/about` (About this demo) · a friendly 404. Old addresses redirect: `/p301` → `/`, `/p302` → `/story`, `/p303` → `/`. The app layout and Home load with the first screen (CLAUDE.md §7: don't lazy-load what the first screen needs); every other route is lazy-loaded.
+**Routes:** `/` (Home) · `/alerts` · `/alerts/:id` · `/activity` · `/funds` · `/funds/:ticker` · `/story` (Your money story) · `/practice` · `/learn` · `/learn/:termId` · a friendly 404. Old addresses redirect: `/p301` → `/`, `/p302` → `/story`, `/p303` → `/`, `/about` → `/`. The app layout and Home load with the first screen (CLAUDE.md §7: don't lazy-load what the first screen needs); every other route is lazy-loaded.
 
 **Password: deferred by decision.** No gate now. All routes sit behind one router and one Vercel project, so a single gate can be added later without touching the case studies.
 
@@ -281,9 +284,9 @@ docs/                              setup, prompts, research notes, credits
 1. **Everything is invented.** Funds, tickers, prices, returns, people, accounts. No real company names or real tickers, not even with invented numbers (G1, G2).
 2. **Teach, never advise.** No call to action about a specific investment ("you should buy", "best fund", "switch to"). FINRA's suitability guidance treats general education as not a recommendation; a call to action about specific securities is what makes it one. Flags say what happened and what it means. Where there is something to do, it is about *money movement or settings* (retry a deposit, add a one-time deposit, auto-invest on or off), always offered as a choice, never *what to invest in* (G3). The one place the words "Buy" and "Sell" appear as buttons is **Practice**, with pretend money.
 3. **Real account vs. Practice are always visually separate.** Buying and selling only happen in Practice, with pretend money, under a persistent "Practice money, not real" banner.
-4. **A plain disclaimer on every page** (in the footer) and in the README: *"First Leaf is a made-up company for a design case study. Every fund, price and person here is made up. This is for learning only. It is not financial advice."* (S3)
+4. **A risk disclosure on every page** (the footer): *Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice.* It comes from `meta.disclaimer` and is never retyped (S3). The README carries the full statement: every fund, price and person is fictional, it is for learning only, and it is not financial advice.
 5. **No real personal or financial data, ever.** No account or routing numbers (G4).
-6. **Past prices don't promise anything.** Anywhere past or projected numbers appear, we say they are made up and that no one can promise a rate (T4).
+6. **Past prices don't promise anything.** Anywhere past or projected numbers appear, we say they are an example and that nobody can promise a rate (T4).
 
 ## 9. Accessibility is a gate, not a pass
 
@@ -302,7 +305,7 @@ One app, three layouts. Each lens is designed for its own size; every screen mus
 | | Phone, under 600px (designed at 390×844, works from 320px) | Tablet, 600–1023px | Desktop, 1024px and up (designed at 1280) |
 |---|---|---|---|
 | **Navigation** | Opaque top bar and opaque bottom tab bar, 48px targets | Top bar and top tabs | Left rail and top bar |
-| **Phone preview** | Hidden (you're already on a phone) | Toggle in the top bar; the frame scales down to fit the height | Toggle in the top bar; the 390 × 844 frame is shown at full size |
+| **Phone view** | Hidden (you're already on a phone) | Toggle in the top bar; the frame scales down to fit the height | Toggle in the top bar; the 390 × 844 frame is shown at full size |
 | **Home** | **P303's check-in:** balance, up or down this week, a small balance chart, a "needs you" card, why it moved, the last 3 transactions, word of the day | Two columns: alerts, then balance; charts full width | **P301's dashboard:** alerts first (top left), balance beside them, then balance over time, mix, goal, this week |
 | **Alerts, Activity, Funds** | Full-screen pages, one tap from Home; alert details end with "Words on this screen" chips | Single column | Two panes where useful (the list with its detail) |
 | **Your money story** | The chart sits inline after each passage | Inline below 1024px | The chart is pinned beside the text |

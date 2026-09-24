@@ -2,7 +2,7 @@
 
 > **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a separate phone site). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Everything here is made up and is not financial advice.
 >
-> **Live:** the whole app under 600px wide, starting at `/`. Open it on a phone, narrow your browser to 390px, or on a laptop use **Phone preview**: https://first-leaf.vercel.app/?view=phone · **Code:** `src/layouts/` (the phone shell and navigation) and the phone-specific parts of each feature · **Commits:** prefixed `[P303]`
+> **Live:** the whole app under 600px wide, starting at `/`. Open it on a phone, narrow your browser to 390px, or on a laptop use **Phone view**: https://first-leaf.vercel.app/?view=phone · **Code:** `src/layouts/` (the phone shell and navigation) and the phone-specific parts of each feature · **Commits:** prefixed `[P303]`
 
 ## Summary
 
@@ -63,9 +63,9 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 
 | Alert | What the phone detail shows |
 |---|---|
-| Deposit sent back | The deposit's dates and status, and a **Try again** demo dialog |
-| Goal behind plan | Planned vs. put in, and an **Add a one-time deposit** demo dialog |
-| Waiting in cash | Auto-invest status (paused since July 14) with a demo toggle |
+| Deposit sent back | The deposit's dates and status, and **Try again** (review → confirm → "Deposit requested") |
+| Goal behind plan | Planned vs. put in, and **Add a one-time deposit** (the same flow, amount filled in) |
+| Waiting in cash | Auto-invest status (paused since July 14) with an On/Off switch and a confirmation |
 | Fee going up | The fund's name, old and new fee (0.30 percentage points), and the dollar difference |
 | Dividend paid | Amount, fund and date |
 
@@ -73,7 +73,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 
 ```
 ┌──────────────────────────────┐
-│ First Leaf        Demo ▾     │  opaque top bar
+│ First Leaf                   │  opaque top bar
 │                              │
 │ $1,313.72                    │  serif, big
 │ Up $15.57 this week          │
@@ -97,7 +97,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 │ ┌ Word of the day ─────────┐ │
 │ │ Yearly fee             › │ │
 │ └───────────────────────────┘ │
-│ Disclaimer · About this demo  │
+│ Risk disclosure (footer)      │
 ├──────────────────────────────┤
 │ Home Activity Story Practice Words │  opaque tab bar, 48px targets
 └──────────────────────────────┘
@@ -110,12 +110,12 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 - **Why it moved** opens in place on Home (a disclosure), not on a separate page: the waterfall, the per-fund breakdown and its "Words on this screen" chips. This keeps the 60-second job on one screen.
 - **At 600px and wider** the app switches to the tablet and laptop layouts (P301's Home). P303 is judged under 600px.
 
-## Phone preview (for reviewing on a laptop)
+## Phone view (for reviewing on a laptop)
 
 A P303 reviewer may never open the site on a real phone, so the app offers a one-click way to see the real phone design on a laptop.
 
-- **Where:** at 600px and wider, the top bar has a phone-icon toggle button labeled **"Preview on a phone"** (`aria-pressed` on or off). It's hidden under 600px.
-- **On:** the page shows the real app inside a generic rounded phone frame (a 390 × 844 CSS px screen area, a thin dark bezel, rounded corners), centered on cream, with a **"Back to full view"** button beside it.
+- **Where:** at 600px and wider, the top bar has a phone-icon toggle button labeled **"Phone view"** (`aria-pressed` on or off). It's hidden under 600px.
+- **On:** the page shows the real app inside a generic rounded phone frame (a 390 × 844 CSS px screen area, a thin dark bezel, rounded corners), centered on cream, with a **"Back to full view"** button beside it. The only note beside the frame is "Practice here is kept apart from the full view.", shown only while Practice is open; nothing on screen explains the project.
 - **It is not a mock-up.** The frame is an iframe of the same app, so the real phone breakpoints, bottom tabs and touch targets apply. It opens on the current route and demo scenario, and it follows route changes in the full view.
 - **Shareable:** `?view=phone` opens it directly (the reviewer link is https://first-leaf.vercel.app/?view=phone).
 - **The frame never imitates a real device brand:** no notch, no camera cutout, no brand shapes.
@@ -127,15 +127,15 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 
 | # | Flow | Steps | Done when |
 |---|---|---|---|
-| F1 | **Glance** | Open `/` on a phone (or Phone preview) | Balance, this week's change and the "needs you" card are visible without scrolling at 390 × 844 |
+| F1 | **Glance** | Open `/` on a phone (or Phone view) | Balance, this week's change and the "needs you" card are visible without scrolling at 390 × 844 |
 | F2 | **See what needs me** | Tap the "needs you" card → the alert's page (what happened, what it means, what you can do, "Words on this screen") → back → Alerts list | Back returns to where she was; opened alerts show as "Seen" for the session |
 | F3 | **Understand why it moved** | Tap "Why it moved" → the waterfall from last Friday's balance to this Friday's: market change, dividends, deposits → tap a fund for its share of the move | The pieces add up exactly (A10), each piece has a term explanation, and its words are listed as 48px chips under "Words on this screen" |
 | F4 | **Learn a word** | Tap Word of the day → its page → **Next word** or a related word | Works one-handed; Back works |
 | F5 | **Move around one-handed** | Use the bottom tab bar: Activity, Story, Practice, Words, Home | Every tab is at least 48 × 48px, shows where you are, and keeps its place |
-| F6 | **Switch demo scenario** | Demo ▾ → Nothing needs you / Brand-new | Home shows that scenario's account, and every sentence stays true |
+| F6 | **Check every scenario** | Open `/?scenario=all-clear&view=phone`, then `/?scenario=brand-new&view=phone` (by URL only) | Home shows that scenario's account, and every sentence stays true |
 | F7 | **Review on a laptop** | Click the phone icon in the top bar, or open `/?view=phone` | The real phone Home and bottom tab bar show inside the frame, on the same route and scenario |
 
-**Term explanations on a phone** open as a bottom sheet (easier to reach and read than a floating bubble), with the same content and accessibility as everywhere else.
+**Term explanations on a phone** open as a bottom sheet (easier to reach and read than a floating bubble), with the same content and accessibility as everywhere else. **Related-word links in the sheet are standalone controls, so under 600px each is at least 48 × 48px** (ruling, Sept. 24).
 
 ## Edge cases and empty states (go-further)
 
@@ -156,7 +156,7 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 
 | # | Done when… | LI |
 |---|---|---|
-| 1 | `/` loads on the live site on a real phone and in Phone preview (`/?view=phone`); the old `/p303` address redirects to `/` | 1 |
+| 1 | `/` loads on the live site on a real phone and in Phone view (`/?view=phone`); the old `/p303` address redirects to `/` | 1 |
 | 2 | Flows F1–F7 work end to end at 390px, each with a passing Playwright test | 2 |
 | 3 | Under 600px, Home does *one* job, the check-in, for Rosa in a financial-services context, as this brief describes | 3, 6 |
 | 4 | Nothing-needs-you, brand-new, down-moving funds and interruptions are handled | 7 |

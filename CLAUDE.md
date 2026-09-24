@@ -18,7 +18,7 @@ You are building **First Leaf**, **one app** reviewed as three Protogen case stu
 ## 2. Commits, pushes and deploys (do these without asking)
 
 - **Commit and push at the end of every phase without asking.** Within a phase, commit each lens's work **separately**, with a prefix:
-  `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Your money story, Practice, Words · `[P303]` the phone layout, phone navigation, Phone preview and phone-specific screens · `[shared]` shared code, data, tokens, and layouts used at every size · `[docs]` briefs, STATUS, README only.
+  `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Your money story, Practice, Words · `[P303]` the phone layout, phone navigation, Phone view and phone-specific screens · `[shared]` shared code, data, tokens, and layouts used at every size · `[docs]` briefs, STATUS, README only.
 - Messages say what changed and why, in the present tense: `[P303] Add "Why it moved" waterfall with per-fund breakdown`. Never just "update", "fix", "wip" or "changes".
 - After pushing, run `npm run check:deploy`. It waits until Vercel's **Production deployment of this exact commit** has succeeded. Report the short commit hash and the result. **A green badge is not proof.** Only a matching commit hash is.
 - If check:deploy times out with the build stuck in "Initializing": Vercel's free plan builds one project at a time *across the whole account*. Another project may be holding the queue. Report it; don't try to fix it from the repo.
@@ -55,16 +55,17 @@ Never say "this should work." Before claiming a phase is done, run all of these 
 1. **Everything is invented:** funds, tickers (always `FL-XXXX`), prices, returns, people, accounts. **No real company names or real tickers**, not even with made-up numbers.
 2. **Teach, never advise.** No call to action about a specific investment: no "you should buy/sell", "best fund", "switch to", "guaranteed", no "safe" without saying safe from what, no "most people…". Actions are only about money movement or settings (retry a deposit, add a one-time deposit, auto-invest on/off), always offered as a choice, or about learning. **Exception:** inside Practice, the buttons may say **Buy** and **Sell**, because the money is pretend and the banner says so.
 3. **Real account vs. Practice are always visually separate.** Buying and selling happen only in Practice, under a persistent "Practice money, not real" banner.
-4. **The disclaimer is visible on every case study:** *"First Leaf is a made-up company for a design case study. Every fund, price and person here is made up. This is for learning only. It is not financial advice."* Use `meta.disclaimer`; never retype it.
+4. **The risk disclosure is in the footer of every page:** *"Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."* Use `meta.disclaimer`; never retype it. The README carries the full statement (fictional data, learning only, not financial advice).
 5. **No real client data, no Slalom data, no real personal or financial data**, ever. No account or routing numbers.
+6. **Inside the site, First Leaf reads like a real investing app.** No "made up", "demo", "case study", "for this project", "fictional" or "for reviewers" on screen (rule G6, plus a search of the built app's text). Reviewer and project explanations live only in README.md. Money actions end in realistic confirmations, never "nothing real happens" dialogs. The data rules behind the scenes never loosen.
 
 ## 6. Folder boundaries
 
 ```
 src/shared/             → never imports from layouts/ or features/
-src/layouts/            → may import from src/shared/ only (desktop, tablet and phone shells, navigation, Phone preview)
+src/layouts/            → may import from src/shared/ only (desktop, tablet and phone shells, navigation, Phone view)
 src/features/<feature>/ → may import from its own folder and src/shared/ only; never from another feature or from layouts/
-                          (features: home, alerts, activity, funds, story, practice, learn, about)
+                          (features: home, alerts, activity, funds, story, practice, learn, not-found)
 src/router/, App.vue, main.ts → may import anything; the router wires layouts and features together
 ```
 

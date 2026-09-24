@@ -2,7 +2,9 @@
 
 A made-up investing app for people who have never invested before. It is **one app**, reviewed as **three Protogen case studies**, each a lens on it: an operational dashboard (P301), an interactive data story (P302) and a mobile experience (P303).
 
-> **Disclaimer:** First Leaf is a made-up company for a design case study. Every fund, price and person here is made up. This is for learning only. It is not financial advice.
+> **Disclaimer:** First Leaf is a made-up company for a design case study. Every fund, price, account and person here is fictional. This is for learning only. It is not financial advice.
+>
+> Inside the site, First Leaf is designed to read like a real investing app, so it never says "demo" or "case study" on screen. Its footer carries a short risk disclosure: *"Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."* Everything a reviewer needs to know about the project is on this page.
 
 **Live site:** https://first-leaf.vercel.app · **Plan:** [BRIEF.md](BRIEF.md) · **Progress:** [STATUS.md](STATUS.md)
 
@@ -10,7 +12,15 @@ A made-up investing app for people who have never invested before. It is **one a
 
 ## For reviewers
 
-First Leaf opens straight into Rosa's app. Each case study is a lens on that one app and is reviewed on its own: jump to yours. **About this demo** (`/about`, linked in every page's footer) has the same map inside the app.
+First Leaf opens straight into Rosa's app. Each case study is a lens on that one app and is reviewed on its own: jump to yours.
+
+**Scenarios (by URL only).** The app has no demo menu. Add one of these to any address, and it carries through navigation and into the phone view:
+
+| Scenario | Add to the address | What it shows |
+|---|---|---|
+| Rosa, 7 months in (default) | `?scenario=normal` | A few things need her: a returned deposit, a goal behind plan, cash waiting, a fee change |
+| Nothing needs you | `?scenario=all-clear` | A calmer account: every deposit went through and auto-invest stayed on |
+| Brand-new account | `?scenario=brand-new` | Rosa has just opened her account and hasn't added money yet |
 
 ### P301 · Operational dashboard
 
@@ -22,7 +32,7 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
   2. On the balance chart, switch **1M / 3M / All**, then click **Show as table**.
   3. In the rail, go to **Funds → FL-GREEN**. Find the yearly fee and its Oct. 1 change.
   4. Go to **Activity**. Filter to *Deposits* and find the returned one. Then choose *Dividends* + *Returned* to see the empty state.
-  5. Open **Demo ▾** in the top bar and switch to *Nothing needs you*, then *Brand-new account*.
+  5. Check every scenario: https://first-leaf.vercel.app/?scenario=normal · https://first-leaf.vercel.app/?scenario=all-clear · https://first-leaf.vercel.app/?scenario=brand-new
 
 ### P302 · Interactive data story
 
@@ -36,6 +46,7 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
   4. In chapter 5, **make a guess**, move the **start-age slider** with your arrow keys, raise Theo's amount until he catches up, and switch **Smooth / Bumpy**.
   5. In chapter 6, follow the link into **Practice**. Buy $200 of any fund with pretend money, sell part of it, try the **Time machine**, then **Start over**.
   6. Go to **Words**, search for "fee" and open **Yearly fee**.
+  7. Check every scenario: https://first-leaf.vercel.app/story?scenario=normal · https://first-leaf.vercel.app/story?scenario=all-clear · https://first-leaf.vercel.app/story?scenario=brand-new
 
 ### P303 · Mobile experience
 
@@ -43,13 +54,13 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P303-BRIEF.md](docs/briefs/P303-BRIEF.md)
 - **Code:** `src/layouts/` (the phone shell and bottom tab bar) and the phone parts of each feature · **History:** commits starting `[P303]`
 - **Try these:**
-  1. Click the phone icon in the top bar, or use the link above.
+  1. Click **Phone view** in the top bar, or use the link above.
   2. Without scrolling: does anything need Rosa, and how much did her balance move this week?
   3. Tap the "needs you" card, read the alert and its **Words on this screen**, then go back. It now shows as *Seen*.
   4. Tap **Why it moved**, then tap a fund to see its share of the change.
   5. Open **Word of the day**, then **Next word**.
   6. Use the bottom tab bar to reach **Practice** and buy a fund with pretend money.
-  7. Open **Demo ▾** and choose *Brand-new account*.
+  7. Check every scenario in the phone view: https://first-leaf.vercel.app/?scenario=normal&view=phone · https://first-leaf.vercel.app/?scenario=all-clear&view=phone · https://first-leaf.vercel.app/?scenario=brand-new&view=phone
 
 ---
 
