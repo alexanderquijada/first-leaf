@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures'
 
 // Each case study's shell has one working term explanation (BRIEF.md §5).
 const SHELLS = [

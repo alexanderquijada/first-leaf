@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from '../fixtures'
 
 test('the Demo menu switches scenario by keyboard, updates the URL and keeps focus', async ({ page }) => {
   await page.goto('/p301')
