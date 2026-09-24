@@ -5,6 +5,8 @@ import { computed } from 'vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { story } from '@/shared/data'
 import ChapterDip from './ChapterDip.vue'
+import ChapterKeepGoing from './ChapterKeepGoing.vue'
+import ChapterPractice from './ChapterPractice.vue'
 import ChapterMix from './ChapterMix.vue'
 import ChapterShare from './ChapterShare.vue'
 import ChapterSinceMarch from './ChapterSinceMarch.vue'
@@ -56,16 +58,8 @@ const chapters = computed(() =>
       <p class="chapter__claim">Once your first deposit arrives, this story will show how your money has moved.</p>
     </section>
 
-    <section id="chapter-5" class="chapter" aria-labelledby="chapter-5-title">
-      <p class="chapter__num">Chapter 5</p>
-      <h2 id="chapter-5-title">What happens if you keep going</h2>
-      <p class="chapter__claim">Coming soon.</p>
-    </section>
-    <section id="chapter-6" class="chapter" aria-labelledby="chapter-6-title">
-      <p class="chapter__num">Chapter 6</p>
-      <h2 id="chapter-6-title">Try it with pretend money</h2>
-      <p class="chapter__claim">Coming soon.</p>
-    </section>
+    <ChapterKeepGoing />
+    <ChapterPractice />
   </div>
 </template>
 

@@ -12,7 +12,7 @@ for (const s of SCENARIOS) {
     await expect(page.locator('.story__pov')).toHaveText(rosa ? rosa.pointOfView : story.pointOfView)
     if (!rosa) {
       await expect(page.getByRole('heading', { name: 'Your story starts with your first deposit' })).toBeVisible()
-      await expect(page.locator('canvas')).toHaveCount(0)
+      await expect(page.locator('#chapter-1 canvas')).toHaveCount(0)
       return
     }
     for (const c of rosa.claims) await expect(page.locator(`#chapter-${c.chapter}`)).toContainText(c.text)
