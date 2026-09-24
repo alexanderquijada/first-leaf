@@ -1,14 +1,14 @@
 {
-  "id": "start-early",
-  "title": "Start early beats start big",
+  "id": "your-money-story",
+  "title": "Your money story",
   "fictional": true,
-  "pointOfView": "Starting early does more for you than putting in more money later. Early money has more years to grow on top of its own growth.",
+  "pointOfView": "Growth needs years. Starting early and staying steady matter more than picking the perfect moment.",
   "assumptions": {
     "annualRate": 0.06,
     "compounding": "monthly",
     "contributionTiming": "end of each month",
     "endAge": 65,
-    "note": "A made-up steady 6% a year. Real markets go up and down, and nobody can promise a rate."
+    "note": "An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate."
   },
   "savers": [
     {
@@ -816,7 +816,7 @@
     "personaId": "rosa",
     "startAge": 26,
     "monthly": 150,
-    "note": "This uses Rosa, a made-up learner, as an example. It is not a plan for you."
+    "note": "This is an example, not a plan or advice."
   },
   "claims": [
     {
@@ -845,5 +845,183 @@
       "label": "Investor.gov compound interest calculator (U.S. SEC)",
       "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator"
     }
-  ]
+  ],
+  "rosaStory": {
+    "rosa-starter": {
+      "accountId": "rosa-starter",
+      "pointOfView": "Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
+      "facts": {
+        "openedOn": "2026-03-02",
+        "firstDeposit": 500,
+        "moneyIn": 1250,
+        "balance": 1313.72,
+        "earned": 63.72,
+        "depositsShare": 0.9515,
+        "lastClose": "2026-09-18",
+        "dip": {
+          "ticker": "FL-BROAD",
+          "window": {
+            "from": "2026-06-15",
+            "to": "2026-07-31"
+          },
+          "highDate": "2026-06-26",
+          "high": 90.46,
+          "lowDate": "2026-07-13",
+          "low": 84.45,
+          "drop": -0.0664
+        },
+        "atLow": {
+          "date": "2026-07-13",
+          "balance": 1065,
+          "moneyIn": 1100,
+          "below": 35
+        },
+        "pause": {
+          "date": "2026-07-14"
+        },
+        "after": {
+          "backAboveDate": "2026-07-20",
+          "backAboveBalance": 1100.61,
+          "backAboveMoneyIn": 1100,
+          "deposits": [
+            {
+              "date": "2026-08-03",
+              "amount": 150
+            }
+          ],
+          "depositsInvested": false,
+          "upNow": 63.72
+        }
+      },
+      "claims": [
+        {
+          "id": "since-march",
+          "chapter": 1,
+          "text": "You opened your account on March 2 with $500. Since then you have put in $1,250. On Sept. 18 your balance was $1,313.72."
+        },
+        {
+          "id": "deposits-share",
+          "chapter": 2,
+          "text": "About 95% of your balance is money you put in. The other $63.72 is what it earned."
+        },
+        {
+          "id": "dip",
+          "chapter": 3,
+          "text": "From June 26 to July 13, FL-BROAD fell from $90.46 to $84.45. That is a drop of 6.6%."
+        },
+        {
+          "id": "at-low",
+          "chapter": 3,
+          "text": "On July 13, your balance was $1,065.00. That was $35.00 below the $1,100 you had put in."
+        },
+        {
+          "id": "pause",
+          "chapter": 3,
+          "text": "You paused auto-invest the next day, July 14."
+        },
+        {
+          "id": "cash-after",
+          "chapter": 3,
+          "text": "After that, your Aug. 3 deposit stayed as cash."
+        },
+        {
+          "id": "back-above",
+          "chapter": 3,
+          "text": "By July 20, your balance was back above what you had put in."
+        },
+        {
+          "id": "up-now",
+          "chapter": 3,
+          "text": "On Sept. 18, you were up $63.72."
+        }
+      ]
+    },
+    "rosa-all-clear": {
+      "accountId": "rosa-all-clear",
+      "pointOfView": "Right now, almost all of Rosa's balance is money she put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment.",
+      "facts": {
+        "openedOn": "2026-03-02",
+        "firstDeposit": 500,
+        "moneyIn": 1400,
+        "balance": 1486.94,
+        "earned": 86.94,
+        "depositsShare": 0.9415,
+        "lastClose": "2026-09-18",
+        "dip": {
+          "ticker": "FL-BROAD",
+          "window": {
+            "from": "2026-06-15",
+            "to": "2026-07-31"
+          },
+          "highDate": "2026-06-26",
+          "high": 90.46,
+          "lowDate": "2026-07-13",
+          "low": 84.45,
+          "drop": -0.0664
+        },
+        "atLow": {
+          "date": "2026-07-13",
+          "balance": 1064.27,
+          "moneyIn": 1100,
+          "below": 35.73
+        },
+        "pause": null,
+        "after": {
+          "backAboveDate": "2026-07-20",
+          "backAboveBalance": 1102.71,
+          "backAboveMoneyIn": 1100,
+          "deposits": [
+            {
+              "date": "2026-08-03",
+              "amount": 150
+            },
+            {
+              "date": "2026-09-01",
+              "amount": 150
+            }
+          ],
+          "depositsInvested": true,
+          "upNow": 86.94
+        }
+      },
+      "claims": [
+        {
+          "id": "since-march",
+          "chapter": 1,
+          "text": "You opened your account on March 2 with $500. Since then you have put in $1,400. On Sept. 18 your balance was $1,486.94."
+        },
+        {
+          "id": "deposits-share",
+          "chapter": 2,
+          "text": "About 94% of your balance is money you put in. The other $86.94 is what it earned."
+        },
+        {
+          "id": "dip",
+          "chapter": 3,
+          "text": "From June 26 to July 13, FL-BROAD fell from $90.46 to $84.45. That is a drop of 6.6%."
+        },
+        {
+          "id": "at-low",
+          "chapter": 3,
+          "text": "On July 13, your balance was $1,064.27. That was $35.73 below the $1,100 you had put in."
+        },
+        {
+          "id": "kept-buying",
+          "chapter": 3,
+          "text": "Auto-invest stayed on. Your Aug. 3 and Sept. 1 deposits bought your mix the day they arrived."
+        },
+        {
+          "id": "back-above",
+          "chapter": 3,
+          "text": "By July 20, your balance was back above what you had put in."
+        },
+        {
+          "id": "up-now",
+          "chapter": 3,
+          "text": "On Sept. 18, you were up $86.94."
+        }
+      ]
+    },
+    "rosa-new": null
+  }
 }

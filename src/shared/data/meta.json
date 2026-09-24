@@ -1,6 +1,6 @@
 {
   "product": "First Leaf",
-  "company": "First Leaf Investing (fictional)",
+  "company": "First Leaf Investing",
   "asOf": "2026-09-20",
   "lastClose": "2026-09-18",
   "lastReview": "2026-09-13",
@@ -9,5 +9,5 @@
   "currency": "USD",
   "fictional": true,
   "dataVersion": 2,
-  "disclaimer": "First Leaf is a made-up company for a design case study. Every fund, price and person here is made up. This is for learning only. It is not financial advice."
+  "disclaimer": "Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."
 }

@@ -50,6 +50,7 @@ const fmt = (n) => (Number.isInteger(r2(n))
   ? `$${r2(n).toLocaleString('en-US')}`
   : `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
 const AP_MONTHS = ['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+const fmtCents = (n) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const apDate = (s) => `${AP_MONTHS[Number(s.slice(5, 7)) - 1]} ${Number(s.slice(8, 10))}`;
 
 // ---------- fixed facts ----------
@@ -64,7 +65,7 @@ const CASH_WAITING = 25;         // dollars of cash before we call it "waiting"
 
 const meta = {
   product: 'First Leaf',
-  company: 'First Leaf Investing (fictional)',
+  company: 'First Leaf Investing',
   asOf: AS_OF,
   lastClose: LAST_CLOSE,
   lastReview: LAST_REVIEW,
@@ -73,8 +74,9 @@ const meta = {
   currency: 'USD',
   fictional: true,
   dataVersion: 2,
+  // The on-screen footer disclosure (real-app ruling, Sept. 24). The README carries the full statement.
   disclaimer:
-    'First Leaf is a made-up company for a design case study. Every fund, price and person here is made up. This is for learning only. It is not financial advice.',
+    'Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice.',
 };
 
 const persona = {
@@ -105,23 +107,23 @@ const FUND_DEFS = [
   { ticker: 'FL-BROAD', name: 'Broad U.S. Market Index Fund', kind: 'stocks', region: 'United States', upsAndDowns: 4,
     expenseRatio: [{ effective: '2021-01-01', value: 0.04 }], mu: 0.085, sigma: 0.17, start: 62.4,
     dividend: { frequency: 'quarterly', annualRate: 0.014 },
-    inside: 'It owns bits of about 3,000 made-up U.S. companies, big and small.' },
+    inside: 'It owns bits of about 3,000 U.S. companies, big and small.' },
   { ticker: 'FL-WORLD', name: 'World Markets Index Fund', kind: 'stocks', region: 'Outside the U.S.', upsAndDowns: 4,
     expenseRatio: [{ effective: '2021-01-01', value: 0.08 }], mu: 0.06, sigma: 0.18, start: 41.1,
     dividend: null,
-    inside: 'It owns bits of about 7,000 made-up companies. They are in other countries.' },
+    inside: 'It owns bits of about 7,000 companies. They are in other countries.' },
   { ticker: 'FL-BOND', name: 'Steady Bond Index Fund', kind: 'bonds', region: 'United States', upsAndDowns: 2,
     expenseRatio: [{ effective: '2021-01-01', value: 0.05 }], mu: 0.025, sigma: 0.05, start: 24.8,
     dividend: { frequency: 'monthly', annualRate: 0.036 },
-    inside: 'It lends to thousands of made-up governments and big companies.' },
+    inside: 'It lends to thousands of governments and big companies.' },
   { ticker: 'FL-GREEN', name: 'Clean Energy Theme Fund', kind: 'stocks', region: 'Worldwide', upsAndDowns: 5,
     expenseRatio: [{ effective: '2021-01-01', value: 0.45 }, { effective: '2026-10-01', value: 0.75, announcedOn: '2026-09-15' }], mu: 0.07, sigma: 0.32, start: 18.3,
     dividend: null,
-    inside: 'It owns bits of about 80 made-up companies. They make solar panels, wind power and batteries.' },
+    inside: 'It owns bits of about 80 companies. They make solar panels, wind power and batteries.' },
   { ticker: 'FL-CALM', name: 'Calm Reserve Fund', kind: 'reserve', region: 'United States', upsAndDowns: 1,
     expenseRatio: [{ effective: '2021-01-01', value: 0.1 }], mu: 0, sigma: 0, start: 1.0,
     dividend: { frequency: 'monthly', annualRate: 0.035 },
-    inside: 'It makes very short made-up loans. Its price is meant to stay at $1.00. It pays a little each month.' },
+    inside: 'It makes very short loans. Its price is meant to stay at $1.00. It pays a little each month.' },
 ];
 
 const days = [];
@@ -313,7 +315,7 @@ const emptyAccount = {
 };
 
 const scenarios = [
-  { id: 'normal', label: 'Rosa, 7 months in', description: 'The main demo. Her account has a few things worth a look.', accountId: 'rosa-starter' },
+  { id: 'normal', label: 'Rosa, 7 months in', description: 'Seven months in. Her account has a few things worth a look.', accountId: 'rosa-starter' },
   { id: 'all-clear', label: 'Nothing needs you', description: 'A calmer version of Rosa. Every deposit went through, auto-invest is on, and she skipped the clean energy fund.', accountId: 'rosa-all-clear' },
   { id: 'brand-new', label: 'Brand-new account', description: 'Rosa just opened her account and has not added money yet.', accountId: 'rosa-new' },
 ];
@@ -323,11 +325,16 @@ const practice = {
   startingCash: 1000, fictional: true, minOrder: 1, maxDecimals: 2, fractionalShares: true, tradeFee: 0,
   priceDate: LAST_CLOSE, funds: FUND_DEFS.map((f) => f.ticker),
   timeMachine: { from: weeklyDates[0], to: LAST_CLOSE, series: 'weekly',
-    note: 'This uses made-up past prices to show how a mix could have moved. The past does not tell you what will happen next.' },
+    note: 'This uses past prices to show how a mix could have moved. The past does not tell you what will happen next.' },
 };
 
 // ---------- P302 story: start early beats start big ----------
 const RATE = 0.06, END_AGE = 65;
+// Your money story's point of view (P302 brief). The "right now" half is only used when rule R1 holds.
+const POV_NOW = "Right now, almost all of Rosa's balance is money she put in.";
+const POV_REST = 'Growth needs years, so starting early and staying steady matter more than picking the perfect moment.';
+// Standing alone (no history yet), the second sentence is split: as one sentence it reads at grade 8.4.
+const POV_GENERAL = 'Growth needs years. Starting early and staying steady matter more than picking the perfect moment.';
 function project(startAge, monthly, rate = RATE) {
   const i = rate / 12; let v = 0, putIn = 0; const yearly = [{ age: startAge, putIn: 0, value: 0 }];
   for (let age = startAge; age < END_AGE; age++) {
@@ -373,17 +380,19 @@ for (;; bumpySeed++) {
 }
 
 const story = {
-  id: 'start-early', title: 'Start early beats start big', fictional: true,
-  pointOfView: 'Starting early does more for you than putting in more money later. Early money has more years to grow on top of its own growth.',
+  id: 'your-money-story', title: 'Your money story', fictional: true,
+  // Shown when an account has no story of its own yet (the brand-new account). Accounts with
+  // history carry their own point of view in rosaStory, checked by rule R1.
+  pointOfView: POV_GENERAL,
   assumptions: { annualRate: RATE, compounding: 'monthly', contributionTiming: 'end of each month', endAge: END_AGE,
-    note: 'A made-up steady 6% a year. Real markets go up and down, and nobody can promise a rate.' },
+    note: 'An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate.' },
   savers: savers.map(({ id, name, startAge, monthly, fictional, yearly, final }) => ({ id, name, startAge, monthly, fictional, yearly, final })),
   catchUp: { saverId: 'theo', mustMatch: 'nia', monthlyNeeded, slider: { min: 150, max: 300, step: 1 } },
   startAgeSlider: { min: 18, max: 45, step: 1, monthly: 100 },
   bumpy: { seed: bumpySeed, yearlyReturns, overallGrowth: RATE, nia: bNia, theo: bTheo,
     note: 'Same overall growth as the smooth line: 6% a year. The order of good and bad years changes the ending.' },
   yourTurn: { personaId: 'rosa', startAge: persona.age, monthly: RECURRING.amount,
-    note: 'This uses Rosa, a made-up learner, as an example. It is not a plan for you.' },
+    note: 'This is an example, not a plan or advice.' },
   claims: [
     { id: 'early-ends-ahead', text: 'Nia ends with more money than Theo.' },
     { id: 'early-puts-in-less', text: 'Nia puts in less money than Theo.' },
@@ -395,6 +404,60 @@ const story = {
     { label: 'Investor.gov compound interest calculator (U.S. SEC)', url: 'https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator' },
   ],
 };
+
+// ---------- Your money story: Rosa's own facts and claims, per account (rules R1-R4) ----------
+// Every number the story states about Rosa comes from here, and the validator recomputes
+// each one from the price and balance history.
+const DIP = { ticker: 'FL-BROAD', from: '2026-06-15', to: '2026-07-31' }; // "the dip in July": the biggest drop in this window (the June 26 high into July)
+const pct1 = (x) => (Math.round(x * 1000) / 10).toFixed(1);
+function findDip() {
+  const rows = funds.find((f) => f.ticker === DIP.ticker).history.daily.filter((d) => d.date >= DIP.from && d.date <= DIP.to);
+  let peak = rows[0], best = { high: rows[0], low: rows[0], drop: 0 };
+  for (const r of rows) {
+    if (r.close > peak.close) peak = r;
+    const drop = r.close / peak.close - 1;
+    if (drop < best.drop) best = { high: peak, low: r, drop };
+  }
+  return { ticker: DIP.ticker, window: { from: DIP.from, to: DIP.to }, highDate: best.high.date, high: best.high.close,
+    lowDate: best.low.date, low: best.low.close, drop: r4(best.low.close / best.high.close - 1) };
+}
+function rosaStoryFor({ account, activity }) {
+  const a = account, h = a.history, dip = findDip();
+  const at = h.find((r) => r.date === dip.lowDate);
+  const atLow = { date: dip.lowDate, balance: at.balance, moneyIn: at.moneyIn, below: r2(at.moneyIn - at.balance) };
+  const share = r4(a.moneyIn / a.balance);
+  const paused = a.autoInvest.pausedOn;
+  const since = paused || dip.lowDate;
+  const backAbove = h.find((r) => r.date > since && r.balance > r.moneyIn);
+  const depositsAfter = activity.filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > since)
+    .map((x) => ({ date: x.settledDate, amount: x.amount }));
+  const first = activity.find((x) => x.type === 'deposit' && x.kind === 'first');
+  const facts = {
+    openedOn: a.openedOn, firstDeposit: first.amount, moneyIn: a.moneyIn, balance: a.balance, earned: a.gainLoss,
+    depositsShare: share, lastClose: LAST_CLOSE, dip, atLow,
+    pause: paused ? { date: paused } : null,
+    after: { backAboveDate: backAbove.date, backAboveBalance: backAbove.balance, backAboveMoneyIn: backAbove.moneyIn,
+      deposits: depositsAfter, depositsInvested: !paused, upNow: a.gainLoss },
+  };
+  const list = (xs) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1)}`);
+  const claims = [
+    { id: 'since-march', chapter: 1, text: `You opened your account on ${apDate(a.openedOn)} with ${fmt(first.amount)}. Since then you have put in ${fmt(a.moneyIn)}. On ${apDate(LAST_CLOSE)} your balance was ${fmtCents(a.balance)}.` },
+    { id: 'deposits-share', chapter: 2, text: a.gainLoss >= 0
+      ? `About ${Math.round(share * 100)}% of your balance is money you put in. The other ${fmtCents(a.gainLoss)} is what it earned.`
+      : `Your balance is ${fmtCents(-a.gainLoss)} below the ${fmt(a.moneyIn)} you put in.` },
+    { id: 'dip', chapter: 3, text: `From ${apDate(dip.highDate)} to ${apDate(dip.lowDate)}, ${dip.ticker} fell from ${fmtCents(dip.high)} to ${fmtCents(dip.low)}. That is a drop of ${pct1(-dip.drop)}%.` },
+    ...(atLow.below > 0 ? [{ id: 'at-low', chapter: 3, text: `On ${apDate(atLow.date)}, your balance was ${fmtCents(atLow.balance)}. That was ${fmtCents(atLow.below)} below the ${fmt(atLow.moneyIn)} you had put in.` }] : []),
+    ...(paused
+      ? [{ id: 'pause', chapter: 3, text: `You paused auto-invest the next day, ${apDate(paused)}.` },
+         { id: 'cash-after', chapter: 3, text: `After that, your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} stayed as cash.` }]
+      : [{ id: 'kept-buying', chapter: 3, text: `Auto-invest stayed on. Your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} bought your mix the day ${depositsAfter.length > 1 ? 'they' : 'it'} arrived.` }]),
+    { id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
+    { id: 'up-now', chapter: 3, text: a.gainLoss >= 0 ? `On ${apDate(LAST_CLOSE)}, you were up ${fmtCents(a.gainLoss)}.` : `On ${apDate(LAST_CLOSE)}, you were down ${fmtCents(-a.gainLoss)}.` },
+  ];
+  const pointOfView = share >= 0.9 ? `${POV_NOW} ${POV_REST}` : POV_GENERAL;
+  return { accountId: a.id, pointOfView, facts, claims };
+}
+story.rosaStory = { 'rosa-starter': rosaStoryFor(main), 'rosa-all-clear': rosaStoryFor(calm), 'rosa-new': null };
 
 // ---------- write ----------
 const write = (name, obj) => writeFileSync(join(OUT, name), JSON.stringify(obj, null, 2) + '\n');

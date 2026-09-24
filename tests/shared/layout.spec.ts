@@ -73,7 +73,7 @@ test.describe('phone, 390px', () => {
 test('every page has the disclaimer and a link to About this demo', async ({ page }) => {
   for (const path of ['/', '/story', '/practice', '/learn/expense-ratio', '/nope']) {
     await page.goto(path)
-    await expect(page.locator('footer .fl-disclaimer')).toContainText('It is not financial advice.')
+    await expect(page.locator('footer .fl-disclaimer')).toContainText('Nothing here is investment advice.')
     await expect(page.locator('footer').getByRole('link', { name: 'About this demo' })).toBeVisible()
   }
 })

@@ -58,7 +58,7 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 | Claim on screen | Checked as |
 |---|---|
 | Almost all of Rosa's balance is money she put in | $1,250 of $1,313.72 (95.1%) is deposits; $63.72 (4.9%) is what it earned (R1) |
-| In July, prices dipped | FL-BROAD fell from $90.46 on June 26 to $84.45 on July 13, a 6.6% drop (R2) |
+| In July, prices dipped | FL-BROAD fell from $90.46 on June 26 to $84.45 on July 13, a 6.6% drop (R2). "The dip" is the biggest drop in FL-BROAD's closes from June 15 to July 31; the window is stored with the facts and R2 recomputes it. (Searching from June 1 would find a longer, slower slide from $91.34 on June 2, which is not the drop Rosa reacted to.) |
 | At the low, her balance was below what she had put in | On July 13 her balance was $1,065.00, $35.00 below the $1,100 she had put in (R2) |
 | She paused auto-invest the next day | Paused July 14 (A14, R3) |
 | After the pause | By July 20 her balance ($1,100.61) was back above what she'd put in. Her Aug. 3 deposit stayed as cash. By Sept. 18 she was up $63.72 (R3) |

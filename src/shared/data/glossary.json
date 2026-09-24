@@ -131,11 +131,10 @@
       "symbol"
     ],
     "short": "A short nickname for a fund, a bit like a username.",
-    "detail": "Real tickers are a few letters long. In this demo, every ticker starts with FL- so you always know it is made up.",
-    "example": "FL-BROAD is the ticker for the Broad U.S. Market Index Fund in this demo.",
+    "detail": "Real tickers are a few letters long. First Leaf funds all start with FL-.",
+    "example": "FL-BROAD is the ticker for the Broad U.S. Market Index Fund.",
     "related": [
-      "fund",
-      "made-up"
+      "fund"
     ],
     "source": {
       "label": "Investor.gov glossary (U.S. SEC)",
@@ -479,7 +478,7 @@
     "detail": "You start with $1,000 that is not real. Nothing you do here touches your real account, and you can start over at any time.",
     "example": "Buy a fund with pretend money and see how it would have moved.",
     "related": [
-      "made-up"
+      "fund"
     ],
     "source": null
   },
@@ -500,19 +499,5 @@
       "label": "Investor.gov glossary (U.S. SEC)",
       "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
     }
-  },
-  {
-    "id": "made-up",
-    "term": "Made up",
-    "alsoCalled": [
-      "fictional"
-    ],
-    "short": "Every fund, price and person in First Leaf is made up.",
-    "detail": "First Leaf was built for a design case study. Nothing here is real money, and nothing here tells you what to buy or sell.",
-    "example": "Rosa is not a real person, and FL-BROAD is not a real fund.",
-    "related": [
-      "practice-mode"
-    ],
-    "source": null
   }
 ]

@@ -16,7 +16,7 @@
       "frequency": "quarterly",
       "annualRate": 0.014
     },
-    "inside": "It owns bits of about 3,000 made-up U.S. companies, big and small.",
+    "inside": "It owns bits of about 3,000 U.S. companies, big and small.",
     "latestPrice": 96.35,
     "history": {
       "weekly": [
@@ -1643,7 +1643,7 @@
       }
     ],
     "dividend": null,
-    "inside": "It owns bits of about 7,000 made-up companies. They are in other countries.",
+    "inside": "It owns bits of about 7,000 companies. They are in other countries.",
     "latestPrice": 68.29,
     "history": {
       "weekly": [
@@ -3273,7 +3273,7 @@
       "frequency": "monthly",
       "annualRate": 0.036
     },
-    "inside": "It lends to thousands of made-up governments and big companies.",
+    "inside": "It lends to thousands of governments and big companies.",
     "latestPrice": 25.91,
     "history": {
       "weekly": [
@@ -4905,7 +4905,7 @@
       }
     ],
     "dividend": null,
-    "inside": "It owns bits of about 80 made-up companies. They make solar panels, wind power and batteries.",
+    "inside": "It owns bits of about 80 companies. They make solar panels, wind power and batteries.",
     "latestPrice": 23.46,
     "history": {
       "weekly": [
@@ -6535,7 +6535,7 @@
       "frequency": "monthly",
       "annualRate": 0.035
     },
-    "inside": "It makes very short made-up loans. Its price is meant to stay at $1.00. It pays a little each month.",
+    "inside": "It makes very short loans. Its price is meant to stay at $1.00. It pays a little each month.",
     "latestPrice": 1,
     "history": {
       "weekly": [

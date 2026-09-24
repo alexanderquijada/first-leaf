@@ -78,6 +78,9 @@ export const REAL_NAMES = ['Apple','Microsoft','Amazon','Alphabet','Google','Met
   'Ally','Capital One','Nasdaq','NYSE','Dow Jones','S&P','Russell','MSCI','FTSE','Morningstar','Greenlight','Groundwork','Saguaro Credit Union'];
 // Calls to action about specific investments are advice; education is not (FINRA Rule 2111 FAQ).
 // Absolute safety claims are also banned: nothing in investing is "safe" without qualification.
+// Real-app ruling (Sept. 24): inside the site, First Leaf reads as a real app, so no
+// project language may reach the screen. The data itself stays marked fictional (G1, G5).
+export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i, /this project/i, /for reviewers/i, /\bfictional\b/i];
 export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we recommend/i, /\bbest (fund|investment|stock)s?\b/i, /guarantee/i,
   /can'?t lose/i, /risk[- ]free/i, /\bsure thing\b/i, /\bbuy now\b/i, /\bsell now\b/i, /will (definitely|surely) (grow|go up)/i,
   /\b(is|are|very) safe\b/i, /\bcompare fees\b/i, /\bswitch (to|funds)\b/i, /\bmost people\b/i];
@@ -127,6 +130,23 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
   const flagsOf = (acc) => attention[acc.id] || [];
   const forEachFunded = (fn) => { for (const a of funded) fn(a, acts(a), `[${a.id}] `); };
 
+  // Everything a learner can read (used by G6 and the L rules).
+  const flagTexts = allAccounts.flatMap((acc) => flagsOf(acc).map((a) => [`attention:${acc.id}:${a.id}`, `${a.title}. ${a.body} ${a.nextStep}`]));
+  const glossTexts = glossary.flatMap((g) => [[`glossary:${g.id}`, `${g.short} ${g.detail}`], [`glossary:${g.id}.example`, g.example]]);
+  const rosaTexts = Object.values(story.rosaStory || {}).filter(Boolean).flatMap((r) => [
+    [`story:rosaStory:${r.accountId}.pointOfView`, r.pointOfView],
+    ...r.claims.map((c) => [`story:rosaStory:${r.accountId}:${c.id}`, c.text]),
+  ]);
+  const otherTexts = [
+    ...rosaTexts,
+    ['meta:disclaimer', meta.disclaimer], ['story:pointOfView', story.pointOfView], ['story:note', story.assumptions.note],
+    ['story:bumpy.note', story.bumpy.note], ['story:yourTurn.note', story.yourTurn.note], ['practice:timeMachine.note', practice.timeMachine.note],
+    ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
+    ...funds.map((f) => [`funds:${f.ticker}.inside`, f.inside]),
+    ...scenarios.map((s) => [`scenarios:${s.id}.description`, s.description]), // README-only: exempt from G6, still plain
+    ...allAccounts.flatMap((acc) => (activity[acc.id] || []).filter((a) => a.returnReason).map((a) => [`activity:${a.id}.returnReason`, a.returnReason])),
+  ];
+
   // ----- S: structure -----
   rule('S2', 'Required fields are present', (fail) => {
     const req = {
@@ -145,11 +165,11 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
     }
     for (const g of glossary) for (const k of ['id', 'term', 'short', 'detail', 'example', 'related']) if (g[k] === undefined) fail(`glossary[${g.id}].${k} missing`);
   });
-  rule('S3', 'The disclaimer says the data is made up, for learning only and not financial advice', (fail) => {
+  rule('S3', 'The footer disclosure says "risk", "simulated" and "not investment advice"', (fail) => {
     if (meta.fictional !== true) fail('meta.fictional must be true');
-    if (!/made[- ]up/i.test(meta.disclaimer)) fail('disclaimer must say "made up"');
-    if (!/not financial advice/i.test(meta.disclaimer)) fail('disclaimer must say "not financial advice"');
-    if (!/learning only/i.test(meta.disclaimer)) fail('disclaimer must say "learning only"');
+    if (!/\brisk\b/i.test(meta.disclaimer)) fail('disclosure must say "risk"');
+    if (!/\bsimulated\b/i.test(meta.disclaimer)) fail('disclosure must say the accounts, funds and prices are "simulated"');
+    if (!/\b(not|nothing here is) investment advice\b/i.test(meta.disclaimer)) fail('disclosure must say it is not investment advice');
   });
 
   // ----- G: finance guardrails -----
@@ -184,6 +204,17 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
     if (persona.fictional !== true) fail('persona not fictional');
     for (const s of story.savers) if (s.fictional !== true) fail(`saver ${s.id} not fictional`);
     for (const a of allAccounts) if (a.fictional !== true) fail(`${a.id} not fictional`);
+  });
+
+  rule('G6', 'No project language on screen (made up, demo, case study, this project, for reviewers, fictional)', (fail) => {
+    const screen = [
+      ...glossary.flatMap((g) => [[`glossary:${g.id}.term`, g.term], [`glossary:${g.id}.alsoCalled`, (g.alsoCalled || []).join(', ')], [`glossary:${g.id}.short`, g.short], [`glossary:${g.id}.detail`, g.detail], [`glossary:${g.id}.example`, g.example]]),
+      ...allAccounts.flatMap((acc) => flagsOf(acc).flatMap((a) => [[`attention:${acc.id}:${a.id}`, `${a.title}. ${a.body} ${a.nextStep} ${a.action?.label ?? ''}`]])),
+      ...funds.flatMap((f) => [[`funds:${f.ticker}.name`, f.name], [`funds:${f.ticker}.inside`, f.inside]]),
+      ['story:title', story.title], ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
+      ...otherTexts.filter(([where]) => !where.startsWith('scenarios:')),
+    ];
+    for (const [where, text] of screen) for (const re of PROJECT_LANGUAGE) if (re.test(text)) fail(`${where} uses project language ${re}: "${text.slice(0, 80)}"`);
   });
 
   // ----- F: funds -----
@@ -456,14 +487,95 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
     if (dd > 0.25) fail(`Nia's bumpy balance falls ${(dd * 100).toFixed(0)}% from a peak (limit 25%)`);
     if (!/overall growth/i.test(story.bumpy.note)) fail('bumpy note must say "overall growth" (the simple average of the years is higher)');
   });
-  rule('T4', 'The story says its rate is made up and is not a promise', (fail) => {
+  rule('T4', 'The story says its rate is an example that nobody can promise', (fail) => {
     const a = story.assumptions;
     if (!(a.annualRate > 0 && a.annualRate <= 0.1)) fail(`annualRate ${a.annualRate} out of range`);
-    if (!/made-up/i.test(a.note) || !/(no one|nobody) can promise/i.test(a.note)) fail('assumptions.note must say it is made-up and nobody can promise a rate');
+    if (!/\bexample\b/i.test(a.note)) fail('assumptions.note must say the rate is an example');
+    if (!/nobody can promise/i.test(a.note)) fail('assumptions.note must say nobody can promise a rate');
+  });
+
+  // ----- R: Rosa's own story (Your money story, chapters 1-4) -----
+  // Every fact is recomputed from the price and balance history; every number in a
+  // story sentence must be one of that account's checked facts.
+  const rosa = story.rosaStory || {};
+  const money = (n) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const pct1 = (x) => (Math.round(x * 1000) / 10).toFixed(1);
+  const claimOf = (r, id) => r.claims.find((c) => c.id === id);
+  function recomputeDip(win, ticker) {
+    const rows = fundBy[ticker].history.daily.filter((d) => d.date >= win.from && d.date <= win.to);
+    let peak = rows[0], best = { high: rows[0], low: rows[0], drop: 0 };
+    for (const r of rows) { if (r.close > peak.close) peak = r; const drop = r.close / peak.close - 1; if (drop < best.drop) best = { high: peak, low: r, drop }; }
+    return { highDate: best.high.date, high: best.high.close, lowDate: best.low.date, low: best.low.close, drop: r4(best.low.close / best.high.close - 1) };
+  }
+  rule('R1', 'The deposits share of her balance is what the story says; "almost all" only when it is at least 90%', (fail) => {
+    if (/right now|almost all/i.test(story.pointOfView)) fail('the general point of view (no history yet) must not claim "right now, almost all"');
+    for (const acc of funded) {
+      const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue; // R4 reports a missing story
+      const share = r4(acc.moneyIn / acc.balance), f = r.facts;
+      if (!eq(f.depositsShare, share, 0.00005)) fail(`${p}depositsShare ${f.depositsShare} != moneyIn / balance ${share}`);
+      if (!eq(f.moneyIn, acc.moneyIn) || !eq(f.balance, acc.balance) || !eq(f.earned, acc.gainLoss)) fail(`${p}moneyIn, balance or earned do not match the account`);
+      const c = claimOf(r, 'deposits-share');
+      if (!c) fail(`${p}no deposits-share claim`);
+      else if (acc.gainLoss >= 0 && !c.text.includes(`${Math.round(share * 100)}%`)) fail(`${p}deposits-share says "${c.text}" but the share is ${Math.round(share * 100)}%`);
+      const saysAlmostAll = /almost all/i.test(r.pointOfView);
+      if (saysAlmostAll !== (share >= 0.9)) fail(`${p}point of view ${saysAlmostAll ? 'says' : 'does not say'} "almost all" but the share is ${(share * 100).toFixed(1)}%`);
+    }
+  });
+  rule('R2', "The July dip's high, low, dates and size, and her balance at the low, match the history", (fail) => {
+    for (const acc of funded) {
+      const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue;
+      const d = r.facts.dip, re = recomputeDip(d.window, d.ticker);
+      for (const k of ['highDate', 'high', 'lowDate', 'low', 'drop']) if (d[k] !== re[k]) fail(`${p}dip.${k} is ${d[k]}, the prices say ${re[k]} (window ${d.window.from} to ${d.window.to})`);
+      const row = acc.history.find((x) => x.date === re.lowDate), a = r.facts.atLow;
+      if (!row) { fail(`${p}no balance history on the low ${re.lowDate}`); continue; }
+      if (a.date !== re.lowDate || !eq(a.balance, row.balance) || !eq(a.moneyIn, row.moneyIn) || !eq(a.below, r2(row.moneyIn - row.balance))) fail(`${p}atLow does not match the balance history on ${re.lowDate}`);
+      const dc = claimOf(r, 'dip');
+      if (!dc || !dc.text.includes(money(re.high)) || !dc.text.includes(money(re.low)) || !dc.text.includes(`${pct1(-re.drop)}%`)) fail(`${p}the dip sentence does not state the recomputed high, low and drop`);
+      if (Boolean(claimOf(r, 'at-low')) !== (r2(row.moneyIn - row.balance) > 0)) fail(`${p}"below what you had put in" is ${claimOf(r, 'at-low') ? 'said' : 'missing'} but the balance was ${row.balance} vs ${row.moneyIn}`);
+    }
+  });
+  rule('R3', 'The auto-invest pause date and everything the story says happened "after" it are true', (fail) => {
+    for (const acc of funded) {
+      const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue;
+      const f = r.facts, paused = acc.autoInvest.pausedOn;
+      if ((f.pause?.date ?? null) !== paused) fail(`${p}pause ${f.pause?.date ?? null} != autoInvest.pausedOn ${paused}`);
+      if (paused && f.pause && f.pause.date !== nextTradingDay(addDays(f.dip.lowDate, 1))) fail(`${p}the story says she paused "the next day", but ${f.pause.date} is not the trading day after the low ${f.dip.lowDate}`);
+      const since = paused || f.dip.lowDate;
+      const back = acc.history.find((x) => x.date > since && x.balance > x.moneyIn);
+      if (!back || f.after.backAboveDate !== back.date || !eq(f.after.backAboveBalance, back.balance)) fail(`${p}back above what she put in on ${f.after.backAboveDate}, the history says ${back?.date}`);
+      const deps = acts(acc).filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > since).map((x) => ({ date: x.settledDate, amount: x.amount }));
+      if (JSON.stringify(deps) !== JSON.stringify(f.after.deposits)) fail(`${p}deposits after ${since} do not match the activity`);
+      for (const dp of deps) {
+        const bought = buysOf(acts(acc)).some((b) => b.date === dp.date);
+        if (bought !== !paused) fail(`${p}the ${dp.date} deposit ${bought ? 'was' : 'was not'} invested, but the story says it ${paused ? 'stayed as cash' : 'bought the mix'}`);
+      }
+      if (f.after.depositsInvested !== !paused) fail(`${p}after.depositsInvested must be ${!paused}`);
+      if (!eq(f.after.upNow, acc.gainLoss)) fail(`${p}upNow != gainLoss`);
+      const has = (id) => Boolean(claimOf(r, id));
+      if (paused && !(has('pause') && has('cash-after') && !has('kept-buying'))) fail(`${p}a paused account must tell the pause and cash-after, not kept-buying`);
+      if (!paused && (has('pause') || has('cash-after') || !has('kept-buying'))) fail(`${p}an account that never paused must say auto-invest stayed on, and never tell a pause`);
+    }
+  });
+  rule('R4', 'Every scenario has its own true story, and every number in a story sentence is a checked fact', (fail) => {
+    for (const acc of funded) if (!rosa[acc.id]) fail(`[${acc.id}] has no story of its own`);
+    if (rosa[accountNew.id] !== null) fail(`[${accountNew.id}] a brand-new account has no history, so it must have no story (null)`);
+    for (const acc of funded) {
+      const r = rosa[acc.id]; if (!r) continue;
+      if (r.accountId !== acc.id) fail(`[${acc.id}] story accountId ${r.accountId}`);
+      const nums = new Set(), pcts = new Set();
+      const walk = (o) => { if (typeof o === 'number') { nums.add(Math.abs(r2(o)).toFixed(2)); } else if (o && typeof o === 'object') Object.values(o).forEach(walk); };
+      walk(r.facts);
+      pcts.add(String(Math.round(r.facts.depositsShare * 100))); pcts.add(pct1(-r.facts.dip.drop));
+      for (const c of r.claims) {
+        if (!(c.chapter >= 1 && c.chapter <= 4)) fail(`[${acc.id}] ${c.id} chapter ${c.chapter} is not 1-4`);
+        for (const m of c.text.match(/\$[\d,]+(\.\d\d)?/g) || []) if (!nums.has(Number(m.replace(/[$,]/g, '')).toFixed(2))) fail(`[${acc.id}] ${c.id} says ${m}, which is not one of this account's checked facts`);
+        for (const m of c.text.match(/[\d.]+%/g) || []) if (!pcts.has(m.slice(0, -1))) fail(`[${acc.id}] ${c.id} says ${m}, which is not a checked percentage`);
+      }
+    }
   });
 
   // ----- X: cross-case-study consistency -----
-  rule('X1', 'The same learner means the same thing in P301, P302 and P303', (fail) => {
+  rule('X1', 'The same learner means the same thing in every lens (P301, P302, P303)', (fail) => {
     for (const a of allAccounts) if (a.ownerId !== persona.id) fail(`${a.id} owner != persona`);
     if (story.yourTurn.personaId !== persona.id) fail('P302 yourTurn persona != persona');
     if (story.yourTurn.startAge !== persona.age) fail(`P302 yourTurn age ${story.yourTurn.startAge} != persona age ${persona.age}`);
@@ -477,16 +589,6 @@ export function validate(data, { missing = [], briefExamples = [] } = {}) {
   });
 
   // ----- L: plain language (everything a learner can read) -----
-  const flagTexts = allAccounts.flatMap((acc) => flagsOf(acc).map((a) => [`attention:${acc.id}:${a.id}`, `${a.title}. ${a.body} ${a.nextStep}`]));
-  const glossTexts = glossary.flatMap((g) => [[`glossary:${g.id}`, `${g.short} ${g.detail}`], [`glossary:${g.id}.example`, g.example]]);
-  const otherTexts = [
-    ['meta:disclaimer', meta.disclaimer], ['story:pointOfView', story.pointOfView], ['story:note', story.assumptions.note],
-    ['story:bumpy.note', story.bumpy.note], ['story:yourTurn.note', story.yourTurn.note], ['practice:timeMachine.note', practice.timeMachine.note],
-    ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
-    ...funds.map((f) => [`funds:${f.ticker}.inside`, f.inside]),
-    ...scenarios.map((s) => [`scenarios:${s.id}.description`, s.description]),
-    ...allAccounts.flatMap((acc) => (activity[acc.id] || []).filter((a) => a.returnReason).map((a) => [`activity:${a.id}.returnReason`, a.returnReason])),
-  ];
   rule('L1', 'Glossary is complete: unique ids, links resolve, word of the day exists, sources are https or deliberately none', (fail) => {
     const ids = glossary.map((g) => g.id); if (new Set(ids).size !== ids.length) fail('glossary ids not unique');
     for (const g of glossary) for (const r of g.related) if (!glossIds.has(r)) fail(`${g.id} related ${r} missing`);
