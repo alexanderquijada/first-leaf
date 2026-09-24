@@ -2,18 +2,20 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 1B · The rest of the core flows)
+**Last updated:** Sept. 24, 2026 (Phase 2 · Plain language, in progress: waiting on Alex's copy approval)
 
 ## NEXT STEP
 
-Alex reviews Phase 1B:
-- **Laptop:** Activity filters, including an empty combination; FL-GREEN and FL-CALM.
-- **Story:** chapter 5 (the guess, Theo's slider to $196, Smooth / Bumpy) and chapter 6.
-- **Practice:** including an error and Start over.
-- **Words:** search "zebra".
-- **Phone view:** Activity filters, Practice's keypad and the chapter sheet.
+Alex reviews **`docs/copy/COPY-REVIEW.md`**. That is every piece of text on the site, 716 rows, all DRAFT.
+1. **The ten recommended rewrites at the top, in order.** Approve, decline or amend each one.
+2. **The consistency pass** below them, and any other row with a suggestion (34 in all).
+3. **The three strings rule L5 already changed on screen** (DRAFT):
+   - the phone fund card, "Your value: $684.15 · up $24.15"
+   - the chapter 4 key line, "Each row shows the amount and its share of your balance."
+   - the Activity buy note, "Auto-invest used your deposit to buy it."
+4. **The Phase 2 deviations** in the decision log.
 
-He rules on the Phase 1B deviations and the DRAFT copy. Then the planning chat issues Phase 2 (plain language and copy approval).
+Then Claude applies only the approved wording: brief first if agreed behavior changes, copy files and `generate-data.mjs`/`glossary.json` for data text, with L5 green. Phase 2 closes after that. **No suggested rewrite is applied before Alex approves it.**
 
 ## Live links
 
@@ -60,7 +62,7 @@ He rules on the Phase 1B deviations and the DRAFT copy. Then the planning chat i
 | 1A · Core screens, real app (Sept. 24) | ✅ Disclosure, G6/R1–R4/S3/T4, About and Demo menu removed, scenarios by URL, handled and session state, chart helpers, pre-commit hook, project-language crawl | ✅ Laptop Home, Alerts with realistic flows, basic Activity | ✅ Story chapters 1–4 | ✅ Phone check-in Home, phone alert pages, 48px controls |
 | 1B · Rest of core flows (Sept. 24) | ✅ Dip rule and point of view, practice state (data frozen), line chart, formula, sheets, toggles, checks widened | ✅ Activity with filters and item pages, Funds and fund pages | ✅ Story chapters 5–6, Practice with time machine, Words | ✅ Phone Activity/Funds, keypad Practice, chapter sheet, 48px everywhere |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
-| 2 · Plain language | ⬜ Copy files + validator rule L5 for UI copy | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
+| 2 · Plain language (in progress: waiting on Alex's copy approval) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ⬜ Approved rewrites applied | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
 | 4 · Edge cases + sizes | ⬜ | ⬜ Scenarios, errors, 390/768/1280 | ⬜ Extremes, deep links, 390/768/1280 | ⬜ Scenarios, errors, 320–1280 |
 | 5 · Verification | ⬜ README final | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD |
@@ -78,6 +80,37 @@ He rules on the Phase 1B deviations and the DRAFT copy. Then the planning chat i
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 2 · Plain language (in progress: waiting on Alex's copy approval)
+
+**Done**
+- **Copy files.** Every word a person reads or hears lives in `src/shared/copy.json`, `src/layouts/copy.json` or `src/features/<feature>/copy.json`. That includes aria labels, screen-reader-only text, chart descriptions, page titles and month names.
+  - Numbers and dates use named placeholders. Each sentence is one template, never joined fragments.
+  - `CopyText` fills a template and places a term button or styled amount in its named slot.
+  - Proof of no visible change: 0 of 266 text/accessibility snapshots differ. All 8 before/after screenshots are pixel-identical. (Practice at 1280 differed by 28 pixels on one capture; 2 of 3 fresh captures of the same build matched exactly. That's capture noise.)
+- **Rule L5.**
+  - Fills every copy sentence with each scenario's real values (every glossary entry and alert title where those appear) and also reads the generated story sentences.
+  - Checks: grade, jargon, advice and project language, "+X%" for rates, money format, unlabeled values, undeclared placeholders.
+  - Self-test: 13 broken cases, each failing for its own reason.
+- **Calm-story test.** The calm account's story never mentions pausing, anywhere: text, tables or chart labels. The same check finds "paus" in the paused account, and it was shown failing when pointed there.
+- **`docs/copy/COPY-REVIEW.md`.** One section per screen: text as rendered, grade, the other scenarios' versions, suggested rewrite and why. Ten top rewrites and a consistency pass sit at the top.
+
+**Deviations, for Alex to rule on**
+- **Placeholder names have one meaning each, app-wide.** L5 fails on any it doesn't know. This found `{value}` meaning a fee in some places ("$1,313.72%") and `{amount}` meaning a raw number in others ("$$150 a month"). Those were renamed: `{fee}`, `{rating}`, `{oldFee}`/`{newFee}`, `{dollars}`, `{startAge}`, `{setting}`. No visible change.
+- **How L5 grades.**
+  - A quoted name (a term, the industry's word for it, a source, a ticker) counts as one word, because the grade is for our own writing. Without this, "Also called asset allocation" scored 12.5.
+  - A leading label of 3 words or fewer ("Example:", "Source:") is set aside, like the ≤3-word label exemption.
+  - The syllable counter now splits hyphenated words ("one-time" is 2 syllables, not 3), so "Add a one-time deposit" is no longer a false 9.6.
+- **Values labeled somewhere else.** A value with no words around it is allowed only when it's listed in `LABELED_ELSEWHERE` with the visible label that names it: table cells under a column header, the practice mix list, and the keypad amount under "Amount".
+- **Three on-screen changes, only where a rule required them (DRAFT):**
+  - The phone fund card now says "Your value:".
+  - Chapter 4 gets a key line above its rows. Putting the words in each row made "FL-BROAD" break at its hyphen at 390px; tickers there no longer wrap.
+  - The buy note is reworded; it scored grade 8.4.
+- **The phone sheet tests** now wait for the sheet's slide-in to finish before measuring. They sometimes caught 47.9999px mid-animation. The wait is shared with the axe scans as `settle()`.
+
+**What we got wrong**
+- Phase 1 built sentences in code with reused names like `{value}`. Nothing checked what a placeholder meant until L5 filled one with real values.
+- Two sheet tests measured mid-animation and passed by luck.
 
 ### Sept. 24, 2026: Phase 1B rulings
 
@@ -494,7 +527,8 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **`.claude/settings.local.json` and global git ignores:** tracked since `c9ae855`. If it ever shows as untracked again, a global ignore is the cause.
 - ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
-- **Copy is DRAFT** until Alex approves it in Phase 2: all glossary entries, flag text, fund descriptions and story claims.
+- **Copy is DRAFT** until Alex approves `docs/copy/COPY-REVIEW.md` (Phase 2): every copy-file string, glossary entry, flag, fund description and story sentence, plus the three L5 changes (the phone fund card, the chapter 4 key line, the buy note).
+- **The copy review was generated** from the copy files, the data and rendered snapshots (390 and 1280). The generator lives outside the repo, so the table is a snapshot. 173 rows use example values because their text isn't on a captured screen: errors, dialog steps, empty states, bare values in table cells. Tablet (768) wasn't captured separately; it uses the same strings.
 - ~~Phase 0 UI copy is DRAFT~~ **APPROVED Sept. 24** with two edits (see the rulings entry). The list as it stood: (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
 
 
