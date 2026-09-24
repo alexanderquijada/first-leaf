@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // Desktop navigation (1024px and up): the wordmark and a left rail.
 import { useRoute } from 'vue-router'
+import copy from './copy.json'
 import { mainNav } from './nav'
 
 const route = useRoute()
@@ -8,8 +9,8 @@ const route = useRoute()
 
 <template>
   <div class="fl-rail">
-    <RouterLink to="/" class="fl-rail__wordmark">First Leaf</RouterLink>
-    <nav aria-label="Main">
+    <RouterLink to="/" class="fl-rail__wordmark">{{ copy.wordmark }}</RouterLink>
+    <nav :aria-label="copy.navLabel">
       <ul>
         <li v-for="item in mainNav" :key="item.to">
           <RouterLink v-slot="{ href, navigate }" :to="item.to" custom>

@@ -11,6 +11,11 @@ import { story } from '@/shared/data'
 import { project } from '@/shared/story'
 import { colors } from '@/shared/tokens/tokens'
 import StorySlider from './StorySlider.vue'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
+
+const K = copy.keepGoing
 
 const whole = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`
 const nia = story.savers.find((s) => s.id === 'nia')!
@@ -22,18 +27,19 @@ const valueAt = (yearly: { age: number; value: number }[], age: number) => yearl
 // 5a–5c: the guess and the answer
 const guess = ref<'nia' | 'theo' | null>(null)
 const reply = computed(() =>
-  guess.value === 'nia' ? 'You got it.' : guess.value === 'theo' ? 'Theo puts in more each month, so he seems like the safe guess.' : 'Here is how it turns out.',
+  guess.value === 'nia' ? K.gotIt : guess.value === 'theo' ? K.theoGuess : K.noGuess,
 )
 const friendsSeries = computed(() => [
-  { label: 'Nia', data: ages.map((a) => valueAt(nia.yearly, a)), color: colors.forest, width: 4 },
-  { label: 'Theo', data: ages.map((a) => valueAt(theo.yearly, a)), color: colors.mustard, width: 2.5 },
+  { label: K.nia, data: ages.map((a) => valueAt(nia.yearly, a)), color: colors.forest, width: 4 },
+  { label: K.theo, data: ages.map((a) => valueAt(theo.yearly, a)), color: colors.mustard, width: 2.5 },
 ])
 const describeFriends = (i: number) => {
   const a = ages[i]!, n = valueAt(nia.yearly, a), t = valueAt(theo.yearly, a)
-  return `Age ${a}: Nia has ${whole(n ?? 0)}. ${t === null ? 'Theo has not started yet.' : `Theo has ${whole(t)}.`}`
+  return fill(K.day, { age: a, nia: whole(n ?? 0), theo: t === null ? K.theoNotYet : fill(K.theoHas, { amount: whole(t) }) })
 }
-const friendsRows = ages.map((a) => ({ age: String(a), nia: whole(valueAt(nia.yearly, a) ?? 0), theo: valueAt(theo.yearly, a) === null ? 'Not started' : whole(valueAt(theo.yearly, a)!) }))
-const friendsCols = [{ key: 'age', label: 'Age' }, { key: 'nia', label: 'Nia', numeric: true }, { key: 'theo', label: 'Theo', numeric: true }]
+const friendsRows = ages.map((a) => ({ age: String(a), nia: whole(valueAt(nia.yearly, a) ?? 0), theo: valueAt(theo.yearly, a) === null ? K.notStarted : whole(valueAt(theo.yearly, a)!) }))
+const friendsCols = [{ key: 'age', label: K.colAge }, { key: 'nia', label: K.nia, numeric: true }, { key: 'theo', label: K.theo, numeric: true }]
+const friendsTitle = fill(K.friendsTitle, { from: nia.startAge, to: endAge })
 
 // 5d: every year counts
 const startAge = ref(nia.startAge)
@@ -50,15 +56,15 @@ const shapeSeries = computed(() => {
   const n = shape.value === 'smooth' ? nia.yearly : story.bumpy.nia
   const t = shape.value === 'smooth' ? theo.yearly : story.bumpy.theo
   return [
-    { label: 'Nia', data: ages.map((a) => valueAt(n, a)), color: colors.forest, width: 4 },
-    { label: 'Theo', data: ages.map((a) => valueAt(t, a)), color: colors.mustard, width: 2.5 },
+    { label: K.nia, data: ages.map((a) => valueAt(n, a)), color: colors.forest, width: 4 },
+    { label: K.theo, data: ages.map((a) => valueAt(t, a)), color: colors.mustard, width: 2.5 },
   ]
 })
 const describeShape = (i: number) => {
   const [n, t] = shapeSeries.value
-  return `Age ${ages[i]}: Nia has ${whole(n!.data[i] ?? 0)}. ${t!.data[i] === null ? 'Theo has not started yet.' : `Theo has ${whole(t!.data[i]!)}.`}`
+  return fill(K.day, { age: ages[i]!, nia: whole(n!.data[i] ?? 0), theo: t!.data[i] === null ? K.theoNotYet : fill(K.theoHas, { amount: whole(t!.data[i]!) }) })
 }
-const shapeRows = computed(() => ages.map((a, i) => ({ age: String(a), nia: whole(shapeSeries.value[0]!.data[i] ?? 0), theo: shapeSeries.value[1]!.data[i] === null ? 'Not started' : whole(shapeSeries.value[1]!.data[i]!) })))
+const shapeRows = computed(() => ages.map((a, i) => ({ age: String(a), nia: whole(shapeSeries.value[0]!.data[i] ?? 0), theo: shapeSeries.value[1]!.data[i] === null ? K.notStarted : whole(shapeSeries.value[1]!.data[i]!) })))
 const shapeEnd = computed(() => ({ nia: shapeSeries.value[0]!.data.at(-1)!, theo: shapeSeries.value[1]!.data.at(-1)! }))
 
 // 5g: your turn
@@ -66,90 +72,92 @@ const myAge = ref(story.yourTurn.startAge)
 const myMonthly = ref(story.yourTurn.monthly)
 const myResult = computed(() => project(myAge.value, myMonthly.value))
 const claim = (id: string) => story.claims.find((c) => c.id === id)?.text ?? ''
+const perMonth = (v: number) => fill(K.perMonth, { amount: v })
+const startAt = (v: number) => fill(K.startAt, { age: v })
 </script>
 
 <template>
   <section id="chapter-5" class="chapter" aria-labelledby="chapter-5-title">
-    <p class="chapter__num">Chapter 5</p>
-    <h2 id="chapter-5-title">What happens if you keep going</h2>
+    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 5 }) }}</p>
+    <h2 id="chapter-5-title">{{ copy.titles['5'] }}</h2>
     <p class="chapter__claim">
-      Meet two friends, Nia and Theo. Nia starts at {{ nia.startAge }} and puts in {{ whole(nia.monthly) }} a month.
-      Theo waits until {{ theo.startAge }} and puts in {{ whole(theo.monthly) }} a month.
+      {{ fill(K.meet, { niaAge: nia.startAge, niaMonthly: whole(nia.monthly), theoAge: theo.startAge, theoMonthly: whole(theo.monthly) }) }}
     </p>
     <p class="k5__note">{{ story.assumptions.note }}</p>
 
-    <h3 class="k5__h">Make a guess: who has more at {{ endAge }}?</h3>
+    <h3 class="k5__h">{{ fill(K.guessHeading, { age: endAge }) }}</h3>
     <ToggleGroup
       v-model="guess as unknown as 'nia' | 'theo'"
-      label="Your guess"
-      :options="[{ id: 'nia', label: 'Nia' }, { id: 'theo', label: 'Theo' }]"
+      :label="K.guessLabel"
+      :options="[{ id: 'nia', label: K.nia }, { id: 'theo', label: K.theo }]"
     />
     <p class="chapter__claim" aria-live="polite">
-      {{ reply }} At {{ endAge }}, Nia has {{ whole(nia.final.value) }}. Theo has {{ whole(theo.final.value) }}.
+      {{ fill(K.result, { reply, age: endAge, nia: whole(nia.final.value), theo: whole(theo.final.value) }) }}
     </p>
     <div class="k5__card">
-      <ChartFrame title="Nia and Theo from 22 to 65" :level="3" :summary="`${claim('early-ends-ahead')} ${claim('early-puts-in-less')}`" :columns="friendsCols" :rows="friendsRows">
-        <SeriesChart :labels="ages.map(String)" :series="friendsSeries" :describe="describeFriends" label="Nia and Theo from 22 to 65" />
+      <ChartFrame :title="friendsTitle" :level="3" :summary="`${claim('early-ends-ahead')} ${claim('early-puts-in-less')}`" :columns="friendsCols" :rows="friendsRows">
+        <SeriesChart :labels="ages.map(String)" :series="friendsSeries" :describe="describeFriends" :label="friendsTitle" />
       </ChartFrame>
     </div>
 
-    <h3 class="k5__h">Why Nia ends ahead</h3>
+    <h3 class="k5__h">{{ K.whyHeading }}</h3>
     <p class="chapter__claim">
-      Nia put in {{ whole(nia.final.putIn) }}. Theo put in {{ whole(theo.final.putIn) }}. {{ claim('early-earned-share') }}
-      That is <TermTip id="compound-growth">growth on growth</TermTip>: your money earns money, and that money earns more.
+      <CopyText :text="K.why" :values="{ nia: whole(nia.final.putIn), theo: whole(theo.final.putIn), claim: claim('early-earned-share') }"
+        ><template #growth><TermTip id="compound-growth">{{ K.growthWord }}</TermTip></template></CopyText
+      >
     </p>
 
-    <h3 class="k5__h">Every year counts</h3>
+    <h3 class="k5__h">{{ K.everyYear }}</h3>
     <StorySlider
       v-model="startAge"
-      label="Start age"
+      :label="K.startAge"
       :min="story.startAgeSlider.min"
       :max="story.startAgeSlider.max"
       :step="story.startAgeSlider.step"
-      :value-text="(v) => `Start at ${v}`"
+      :value-text="startAt"
     />
     <p class="chapter__claim" aria-live="polite">
-      Start at {{ startAge }}. At {{ endAge }} you would have {{ whole(startResult.value) }}. You would put in
-      {{ whole(startResult.putIn) }}.<template v-if="startAge === story.startAgeSlider.max"> Starting at {{ startAge }} still helps. It just has fewer years to grow.</template>
+      {{ fill(K.startResult, { age: startAge, endAge, value: whole(startResult.value), putIn: whole(startResult.putIn) })
+      }}<template v-if="startAge === story.startAgeSlider.max">{{ fill(K.startLate, { age: startAge }) }}</template>
     </p>
 
-    <h3 class="k5__h">Can Theo catch up?</h3>
+    <h3 class="k5__h">{{ K.catchUpHeading }}</h3>
     <StorySlider
       v-model="theoMonthly"
-      label="Theo each month"
+      :label="K.theoMonthly"
       :min="story.catchUp.slider.min"
       :max="story.catchUp.slider.max"
       :step="story.catchUp.slider.step"
-      :value-text="(v) => `$${v} a month`"
-      :mark="{ value: story.catchUp.monthlyNeeded, label: `Passes Nia: $${story.catchUp.monthlyNeeded}` }"
+      :value-text="perMonth"
+      :mark="{ value: story.catchUp.monthlyNeeded, label: fill(K.passesMark, { amount: story.catchUp.monthlyNeeded }) }"
     />
     <p class="chapter__claim" aria-live="polite" data-testid="catch-up">
-      At {{ whole(theoMonthly) }} a month, Theo ends with {{ whole(theoResult.value) }}. Nia ends with {{ whole(nia.final.value) }}.
-      <template v-if="passes"> At {{ whole(theoMonthly) }} a month, Theo passes Nia.</template>
-      <template v-else> Theo is still behind.</template>
+      {{ fill(K.catchUp, { monthly: whole(theoMonthly), theo: whole(theoResult.value), nia: whole(nia.final.value) }) }}
+      <template v-if="passes">{{ fill(K.passes, { monthly: whole(theoMonthly) }) }}</template>
+      <template v-else>{{ K.behind }}</template>
     </p>
-    <p class="k5__note">{{ claim('catch-up-costs-more') }} That is almost twice what Nia puts in.</p>
+    <p class="k5__note">{{ fill(K.catchUpNote, { claim: claim('catch-up-costs-more') }) }}</p>
 
-    <h3 class="k5__h">Real life is bumpy</h3>
-    <ToggleGroup v-model="shape" label="Growth" :options="[{ id: 'smooth', label: 'Smooth' }, { id: 'bumpy', label: 'Bumpy' }]" />
+    <h3 class="k5__h">{{ K.bumpyHeading }}</h3>
+    <ToggleGroup v-model="shape" :label="K.growth" :options="[{ id: 'smooth', label: K.smooth }, { id: 'bumpy', label: K.bumpy }]" />
     <div class="k5__card">
       <ChartFrame
-        :title="shape === 'smooth' ? 'Smooth years' : 'Bumpy years'"
+        :title="shape === 'smooth' ? K.smoothTitle : K.bumpyTitle"
         :level="3"
-        :summary="`${story.bumpy.note} Nia ends with ${whole(shapeEnd.nia)}. Theo ends with ${whole(shapeEnd.theo)}.`"
+        :summary="fill(K.shapeSummary, { note: story.bumpy.note, nia: whole(shapeEnd.nia), theo: whole(shapeEnd.theo) })"
         :columns="friendsCols"
         :rows="shapeRows"
       >
-        <SeriesChart :labels="ages.map(String)" :series="shapeSeries" :describe="describeShape" :label="shape === 'smooth' ? 'Smooth years' : 'Bumpy years'" />
+        <SeriesChart :labels="ages.map(String)" :series="shapeSeries" :describe="describeShape" :label="shape === 'smooth' ? K.smoothTitle : K.bumpyTitle" />
       </ChartFrame>
     </div>
     <p class="chapter__claim">{{ claim('early-ahead-when-bumpy') }}</p>
 
-    <h3 class="k5__h">Your turn</h3>
-    <StorySlider v-model="myAge" label="Start age" :min="story.startAgeSlider.min" :max="story.startAgeSlider.max" :step="1" :value-text="(v) => `Start at ${v}`" />
-    <StorySlider v-model="myMonthly" label="Each month" :min="25" :max="500" :step="5" :value-text="(v) => `$${v} a month`" />
+    <h3 class="k5__h">{{ K.yourTurn }}</h3>
+    <StorySlider v-model="myAge" :label="K.startAge" :min="story.startAgeSlider.min" :max="story.startAgeSlider.max" :step="1" :value-text="startAt" />
+    <StorySlider v-model="myMonthly" :label="K.eachMonth" :min="25" :max="500" :step="5" :value-text="perMonth" />
     <p class="chapter__claim" aria-live="polite" data-testid="your-turn">
-      Start at {{ myAge }} with {{ whole(myMonthly) }} a month. At {{ endAge }} you would have {{ whole(myResult.value) }}.
+      {{ fill(K.yourResult, { age: myAge, monthly: whole(myMonthly), endAge, value: whole(myResult.value) }) }}
     </p>
     <p class="k5__note">{{ story.yourTurn.note }}</p>
   </section>

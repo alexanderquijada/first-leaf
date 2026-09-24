@@ -4,7 +4,12 @@ import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import type { RosaStory } from '@/shared/data'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
 import { formatMoney } from '@/shared/format'
+import copy from './copy.json'
+
+const S = copy.share
 
 const props = defineProps<{ story: RosaStory }>()
 const f = computed(() => props.story.facts)
@@ -14,29 +19,29 @@ const earnedPct = computed(() => 100 - putInPct.value)
 const picked = ref<'in' | 'earned' | null>(null)
 const readout = computed(() =>
   picked.value === 'in'
-    ? `${formatMoney(f.value.moneyIn)} of your balance is money you put in. That is ${putInPct.value}%.`
+    ? fill(S.readIn, { amount: formatMoney(f.value.moneyIn), pct: putInPct.value })
     : picked.value === 'earned'
-      ? `${formatMoney(f.value.earned)} is what it earned. That is ${earnedPct.value}%.`
-      : 'Tap either part to read it.',
+      ? fill(S.readEarned, { amount: formatMoney(f.value.earned), pct: earnedPct.value })
+      : S.readHint,
 )
 const columns = [
-  { key: 'part', label: 'Part' },
-  { key: 'amount', label: 'Amount', numeric: true },
-  { key: 'share', label: 'Share', numeric: true },
+  { key: 'part', label: S.colPart },
+  { key: 'amount', label: S.colAmount, numeric: true },
+  { key: 'share', label: S.colShare, numeric: true },
 ]
 const rows = computed(() => [
-  { part: 'Money you put in', amount: formatMoney(f.value.moneyIn), share: `${putInPct.value}%` },
-  { part: 'What it earned', amount: formatMoney(f.value.earned), share: `${earnedPct.value}%` },
+  { part: S.partIn, amount: formatMoney(f.value.moneyIn), share: fill(S.percent, { pct: putInPct.value }) },
+  { part: S.partEarned, amount: formatMoney(f.value.earned), share: fill(S.percent, { pct: earnedPct.value }) },
 ])
 </script>
 
 <template>
   <section id="chapter-2" class="chapter" aria-labelledby="chapter-2-title">
-    <p class="chapter__num">Chapter 2</p>
-    <h2 id="chapter-2-title">Most of it is still your money</h2>
+    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 2 }) }}</p>
+    <h2 id="chapter-2-title">{{ copy.titles['2'] }}</h2>
     <p class="chapter__claim">{{ claim }}</p>
-    <ChartFrame title="Your balance, in two parts" :level="3" :summary="claim" :columns="columns" :rows="rows">
-      <div v-if="f.earned >= 0" class="share" role="group" aria-label="Your balance, in two parts">
+    <ChartFrame :title="S.chartTitle" :level="3" :summary="claim" :columns="columns" :rows="rows">
+      <div v-if="f.earned >= 0" class="share" role="group" :aria-label="S.chartTitle">
         <button
           type="button"
           class="share__part is-in"
@@ -44,20 +49,20 @@ const rows = computed(() => [
           :aria-pressed="picked === 'in' ? 'true' : 'false'"
           @click="picked = 'in'"
         >
-          <span class="share__label">Money you put in</span>
+          <span class="share__label">{{ S.partIn }}</span>
         </button>
         <button
           type="button"
           class="share__part is-earned"
           :style="{ flexBasis: `${earnedPct}%` }"
           :aria-pressed="picked === 'earned' ? 'true' : 'false'"
-          aria-label="What it earned"
+          :aria-label="S.partEarned"
           @click="picked = 'earned'"
         />
       </div>
       <p class="share__readout" aria-live="polite">{{ readout }}</p>
       <p class="share__note">
-        What it earned is its <TermTip id="return">return</TermTip>. It needs years to grow.
+        <CopyText :text="S.note"><template #return><TermTip id="return">{{ S.returnWord }}</TermTip></template></CopyText>
       </p>
     </ChartFrame>
   </section>

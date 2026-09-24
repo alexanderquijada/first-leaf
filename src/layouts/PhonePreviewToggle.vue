@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // The top-bar toggle for Phone preview. Hidden under 600px and inside the frame.
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import copy from './copy.json'
 import { isEmbedded, toggleEl, usePhonePreview } from './usePhonePreview'
 
 const { open, setOpen } = usePhonePreview()
@@ -21,7 +22,7 @@ onBeforeUnmount(() => {
     @click="setOpen(!open)"
   >
     <span class="mdi mdi-cellphone" aria-hidden="true" />
-    Phone view
+    {{ copy.phoneView.toggle }}
   </button>
 </template>
 

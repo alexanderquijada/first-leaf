@@ -7,6 +7,7 @@ import type { ActiveDataPoint, ChartDataset } from 'chart.js'
 import { Chart } from './register'
 import { colors } from '../tokens/tokens'
 import { formatChange, formatDate, formatMoney } from '../format'
+import { copy, fill } from '../copy'
 
 export interface BalancePoint {
   date: string
@@ -42,11 +43,12 @@ function sentence(i: number): string {
   if (!p) return ''
   const diff = p.balance - p.moneyIn
   const ev = eventAt.value.get(p.date)
-  return `${formatDate(p.date)}: balance ${formatMoney(p.balance)}. You had put in ${formatMoney(p.moneyIn)}, so you were ${formatChange(diff)}.${ev ? ` ${ev}` : ''}`
+  const day = fill(copy.chart.dayReadout, { date: formatDate(p.date), balance: formatMoney(p.balance), moneyIn: formatMoney(p.moneyIn), change: formatChange(diff) })
+  return ev ? `${day} ${ev}` : day
 }
 const readout = computed(() =>
   active.value === null
-    ? 'Move across the chart, tap it, or use the arrow keys to read each day.'
+    ? copy.chart.readHint
     : sentence(active.value),
 )
 
@@ -56,7 +58,7 @@ function datasets(): ChartDataset<'line'>[] {
   const sets: ChartDataset<'line'>[] = []
   if (props.layers) {
     sets.push({
-      label: 'What you put in',
+      label: copy.chart.putIn,
       data: moneyIn,
       stepped: true,
       borderColor: colors.inkMuted,
@@ -67,7 +69,7 @@ function datasets(): ChartDataset<'line'>[] {
     })
   }
   sets.push({
-    label: 'Balance',
+    label: copy.chart.balance,
     data: balance,
     borderColor: colors.forest,
     borderWidth: 3,
@@ -78,7 +80,7 @@ function datasets(): ChartDataset<'line'>[] {
   })
   if (props.events.length) {
     sets.push({
-      label: 'Events',
+      label: copy.chart.events,
       data: props.points.map((p) => (eventAt.value.has(p.date) ? p.balance : null)) as number[],
       showLine: false,
       pointRadius: 7,
@@ -116,8 +118,8 @@ function build() {
         legend: { display: false },
         tooltip: {
           enabled: !props.compact,
-          filter: (item) => item.dataset.label !== 'Events',
-          callbacks: { label: (item) => `${item.dataset.label}: ${formatMoney(Number(item.raw))}` },
+          filter: (item) => item.dataset.label !== copy.chart.events,
+          callbacks: { label: (item) => fill(copy.chart.tooltip, { series: item.dataset.label ?? '', value: formatMoney(Number(item.raw)) }) },
         },
       },
       scales: {
@@ -164,7 +166,7 @@ onBeforeUnmount(() => chart?.destroy())
       :style="{ height: `${height}px` }"
       tabindex="0"
       role="group"
-      :aria-label="`${label}. Use the left and right arrow keys to read each day.`"
+      :aria-label="fill(copy.chart.keyboardDays, { label })"
       :data-series="JSON.stringify(points.map((p) => p.balance))"
       @keydown="onKeydown"
       @mouseleave="active = null"
@@ -172,10 +174,10 @@ onBeforeUnmount(() => chart?.destroy())
       <canvas ref="canvasEl" role="img" :aria-label="label" />
     </div>
     <p v-if="!compact" class="fl-balchart__readout" aria-live="polite">{{ readout }}</p>
-    <ul v-if="layers && !compact" class="fl-balchart__key" aria-label="Chart key">
-      <li><span class="fl-balchart__swatch is-in" aria-hidden="true" />What you put in</li>
-      <li><span class="fl-balchart__swatch is-earned" aria-hidden="true" />What it earned</li>
-      <li v-if="events.length"><span class="fl-balchart__swatch is-event" aria-hidden="true" />Events</li>
+    <ul v-if="layers && !compact" class="fl-balchart__key" :aria-label="copy.chart.key">
+      <li><span class="fl-balchart__swatch is-in" aria-hidden="true" />{{ copy.chart.putIn }}</li>
+      <li><span class="fl-balchart__swatch is-earned" aria-hidden="true" />{{ copy.chart.earned }}</li>
+      <li v-if="events.length"><span class="fl-balchart__swatch is-event" aria-hidden="true" />{{ copy.chart.events }}</li>
     </ul>
   </div>
 </template>

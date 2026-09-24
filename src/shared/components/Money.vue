@@ -6,6 +6,7 @@
 //                                  the accessible label, so it's read as "up $15.57")
 // Color is added in both places, never alone.
 import { computed } from 'vue'
+import { copy, fill } from '../copy'
 
 const props = withDefaults(
   defineProps<{
@@ -42,7 +43,7 @@ const cap = (s: string) => (props.capitalize ? s[0]!.toUpperCase() + s.slice(1) 
 
 // "up $15.57" / "down $5.88" / "no change": shown in sentences, spoken everywhere.
 const spoken = computed(() =>
-  direction.value === 'none' ? cap('no change') : `${cap(direction.value)} ${dollars.value}`,
+  cap(direction.value === 'none' ? copy.change.none : fill(copy.change[direction.value], { amount: dollars.value })),
 )
 // "+$15.57" / "−$5.88" (a true minus sign) / "$0.00": shown in tables and charts.
 const signed = computed(() =>

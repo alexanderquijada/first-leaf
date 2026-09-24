@@ -1,4 +1,14 @@
-// Lines used in more than one place live here, so they can only ever say one thing.
+// Every user-facing sentence lives in a copy file (this folder's copy.json, the
+// layouts' and each feature's). Components read from them; fill() puts values into
+// named placeholders. Rule L5 checks every sentence in every copy file.
+import copy from './copy.json'
+
+export { copy }
+
+/** Fills {name} placeholders: fill('up {amount}', { amount: '$5.00' }) → 'up $5.00'. */
+export function fill(template: string, values: Record<string, string | number> = {}): string {
+  return template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? String(values[k]) : m))
+}
 
 /** Shown when a deposit request is confirmed (ruling, Sept. 24). */
-export const DEPOSIT_CONFIRMATION = 'Your deposit is on its way. It should arrive in 1 to 3 business days.'
+export const DEPOSIT_CONFIRMATION = copy.deposit.confirmation

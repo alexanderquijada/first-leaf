@@ -4,23 +4,28 @@ import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { getFund, type Account } from '@/shared/data'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
 import { formatMoney } from '@/shared/format'
+import copy from './copy.json'
+
+const M = copy.mix
 
 const props = defineProps<{ account: Account }>()
 type Kind = 'all' | 'stocks' | 'bonds' | 'reserve' | 'cash'
 const FILTERS: { id: Kind; label: string; term?: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'stocks', label: 'Stocks', term: 'stocks' },
-  { id: 'bonds', label: 'Bonds', term: 'bonds' },
-  { id: 'reserve', label: 'Reserve' },
-  { id: 'cash', label: 'Cash', term: 'cash' },
+  { id: 'all', label: M.filters.all },
+  { id: 'stocks', label: M.filters.stocks, term: 'stocks' },
+  { id: 'bonds', label: M.filters.bonds, term: 'bonds' },
+  { id: 'reserve', label: M.filters.reserve },
+  { id: 'cash', label: M.filters.cash, term: 'cash' },
 ]
 const kind = ref<Kind>('all')
 
 const parts = computed(() => {
   const a = props.account
   const funds = a.holdings.map((h) => ({ name: h.ticker, kind: (getFund(h.ticker)?.kind ?? 'stocks') as Kind, value: h.value }))
-  return [...funds, { name: 'Cash', kind: 'cash' as Kind, value: a.cash }].filter((p) => p.value > 0)
+  return [...funds, { name: M.cash, kind: 'cash' as Kind, value: a.cash }].filter((p) => p.value > 0)
 })
 const shown = computed(() => parts.value.filter((p) => kind.value === 'all' || p.kind === kind.value))
 const pct = (v: number) => Math.round((v / props.account.balance) * 100)
@@ -29,27 +34,30 @@ const total = computed(() => shown.value.reduce((s, p) => s + p.value, 0))
 const summary = computed(() => {
   const a = props.account
   const n = a.holdings.length
-  if (kind.value === 'all') return `Your ${formatMoney(a.balance)} is split across ${n} ${n === 1 ? 'fund' : 'funds'}${a.cash > 0 ? ' and cash' : ''}.`
+  if (kind.value === 'all') {
+    const t = a.cash > 0 ? (n === 1 ? M.summaryOneCash : M.summaryManyCash) : n === 1 ? M.summaryOne : M.summaryMany
+    return fill(t, { balance: formatMoney(a.balance), count: n })
+  }
   const label = FILTERS.find((x) => x.id === kind.value)!.label
-  if (!shown.value.length) return kind.value === 'cash' ? 'You have no cash waiting right now.' : `You do not own any ${label.toLowerCase()} funds right now.`
-  return `${label} ${kind.value === 'cash' ? 'is' : 'are'} ${formatMoney(total.value)} of your balance, or ${pct(total.value)}%.`
+  if (!shown.value.length) return kind.value === 'cash' ? M.noCash : fill(M.noneOfKind, { kind: label.toLowerCase() })
+  return fill(kind.value === 'cash' ? M.cashShare : M.kindShare, { kind: label, amount: formatMoney(total.value), pct: pct(total.value) })
 })
 const columns = [
-  { key: 'name', label: 'Where' },
-  { key: 'value', label: 'Amount', numeric: true },
-  { key: 'share', label: 'Share of balance', numeric: true },
+  { key: 'name', label: M.colWhere },
+  { key: 'value', label: M.colAmount, numeric: true },
+  { key: 'share', label: M.colShare, numeric: true },
 ]
-const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: formatMoney(p.value), share: `${pct(p.value)}%` })))
+const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: formatMoney(p.value), share: fill(M.percent, { pct: pct(p.value) }) })))
 </script>
 
 <template>
   <section id="chapter-4" class="chapter" aria-labelledby="chapter-4-title">
-    <p class="chapter__num">Chapter 4</p>
-    <h2 id="chapter-4-title">Where it is now</h2>
-    <p class="chapter__claim">Here is how your money is split today, as of the last prices.</p>
-    <ChartFrame title="Where your money is" :level="3" :summary="summary" :columns="columns" :rows="rows">
+    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 4 }) }}</p>
+    <h2 id="chapter-4-title">{{ copy.titles['4'] }}</h2>
+    <p class="chapter__claim">{{ M.claim }}</p>
+    <ChartFrame :title="M.chartTitle" :level="3" :summary="summary" :columns="columns" :rows="rows">
       <template #controls>
-        <div class="filters" role="group" aria-label="Show">
+        <div class="filters" role="group" :aria-label="M.filterGroup">
           <button
             v-for="x in FILTERS"
             :key="x.id"
@@ -65,13 +73,16 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
       <ul v-if="shown.length" class="where">
         <li v-for="p in shown" :key="p.name" class="where__row">
           <span class="where__name">{{ p.name }}</span>
-          <span class="where__nums fl-tabular">{{ formatMoney(p.value) }} · {{ pct(p.value) }}%</span>
+          <span class="where__nums fl-tabular">{{ fill(M.rowNums, { amount: formatMoney(p.value), pct: pct(p.value) }) }}</span>
           <span class="where__bar" aria-hidden="true"><span :style="{ width: `${pct(p.value)}%` }" /></span>
         </li>
       </ul>
       <p class="where__terms">
-        Words: <TermTip id="stocks">stocks</TermTip>, <TermTip id="bonds">bonds</TermTip>,
-        <TermTip id="cash">cash</TermTip>.
+        <CopyText :text="M.words"
+          ><template #stocks><TermTip id="stocks">{{ M.stocksWord }}</TermTip></template
+          ><template #bonds><TermTip id="bonds">{{ M.bondsWord }}</TermTip></template
+          ><template #cash><TermTip id="cash">{{ M.cashWord }}</TermTip></template></CopyText
+        >
       </p>
     </ChartFrame>
   </section>

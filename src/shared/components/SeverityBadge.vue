@@ -1,14 +1,15 @@
 <script setup lang="ts">
 // Severity is an icon, a word and a color, in that order. Color never works alone.
 import { computed } from 'vue'
+import { copy } from '../copy'
 import type { Severity } from '../data'
 
 const props = defineProps<{ severity: Severity }>()
 
 const LOOK: Record<Severity, { word: string; icon: string; color: string }> = {
-  'needs-you': { word: 'Needs you', icon: 'mdi-alert-circle', color: 'var(--color-terracotta)' },
-  'heads-up': { word: 'Heads-up', icon: 'mdi-clock-outline', color: 'var(--color-mustard)' },
-  fyi: { word: 'FYI', icon: 'mdi-information-outline', color: 'var(--color-forest)' },
+  'needs-you': { word: copy.severity['needs-you'], icon: 'mdi-alert-circle', color: 'var(--color-terracotta)' },
+  'heads-up': { word: copy.severity['heads-up'], icon: 'mdi-clock-outline', color: 'var(--color-mustard)' },
+  fyi: { word: copy.severity.fyi, icon: 'mdi-information-outline', color: 'var(--color-forest)' },
 }
 
 const look = computed(() => LOOK[props.severity])

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 // A page that is not built yet. The layout's footer carries the disclosure.
+import { copy } from '../copy'
+
 defineProps<{ title: string }>()
 </script>
 
 <template>
   <div class="fl-page">
     <h1 class="fl-page__title">{{ title }}</h1>
-    <p class="fl-page__soon">Coming soon.</p>
+    <p class="fl-page__soon">{{ copy.placeholder.soon }}</p>
     <slot />
   </div>
 </template>

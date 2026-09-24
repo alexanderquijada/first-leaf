@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test'
+import { test as base, expect, type Page } from '@playwright/test'
 
 // Every spec imports { test, expect } from here, not from '@playwright/test'.
 // An automatic guard fails any test that:
@@ -33,3 +33,18 @@ export const test = base.extend<{ guard: void }>({
 })
 
 export { expect }
+
+/** Waits until every animation that ends has ended, so sizes and colors are measured settled.
+ * (An infinite one, such as a spinner, never finishes. Two frames first, so a transition
+ * that starts on the next frame is counted.) */
+export async function settle(page: Page) {
+  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  )
+}

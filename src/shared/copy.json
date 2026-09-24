@@ -1,0 +1,157 @@
+{
+  "deposit": {
+    "confirmation": "Your deposit is on its way. It should arrive in 1 to 3 business days."
+  },
+  "change": {
+    "up": "up {amount}",
+    "down": "down {amount}",
+    "none": "no change"
+  },
+  "activity": {
+    "oneTimeDeposit": "One-time deposit",
+    "retriedDeposit": "Deposit, tried again",
+    "firstDeposit": "First deposit",
+    "monthlyDeposit": "Monthly deposit",
+    "bought": "Bought {ticker}",
+    "dividend": "{ticker} paid you",
+    "status": {
+      "completed": "Completed",
+      "returned": "Returned",
+      "pending": "Pending"
+    }
+  },
+  "practiceErrors": {
+    "min": "Enter an amount of $1 or more.",
+    "notNumber": "Enter a number, like 25 or 25.50.",
+    "decimals": "Use no more than {decimals} decimals, like 25.50.",
+    "notEnough": "You have {cash} in practice money. Enter that much or less.",
+    "noneOwned": "You do not own any {ticker} in Practice.",
+    "tooMuch": "You own {value} of {ticker} in Practice. Enter that much or less."
+  },
+  "severity": {
+    "needs-you": "Needs you",
+    "heads-up": "Heads-up",
+    "fyi": "FYI"
+  },
+  "placeholder": {
+    "soon": "Coming soon."
+  },
+  "wordChips": {
+    "title": "Words on this screen"
+  },
+  "sheet": {
+    "close": "Close"
+  },
+  "termTip": {
+    "alsoCalled": "Also called {terms}",
+    "example": "Example:",
+    "related": "Related words:",
+    "source": "Source:",
+    "newTab": "(opens in a new tab)",
+    "close": "Close explanation",
+    "back": "Back to {term}"
+  },
+  "alerts": {
+    "title": "Needs your attention",
+    "countOne": "1 alert needs a look.",
+    "countMany": "{count} alerts need a look.",
+    "allHandled": "You have handled everything for this week.",
+    "nothing": "Nothing needs you this week.",
+    "fyiTitle": "Just so you know",
+    "new": "New",
+    "seen": "Seen",
+    "handled": "Handled ({count})",
+    "undo": "Undo",
+    "undoWhich": ": {title}",
+    "undone": "{title}: moved back to your alerts."
+  },
+  "moneyFlow": {
+    "titleRetry": "Try your deposit again",
+    "titleOneTime": "Add a one-time deposit",
+    "titleAutoInvest": "Auto-invest",
+    "checkAmount": "Check the amount, then continue.",
+    "amount": "Amount",
+    "amountLabel": "Amount in dollars",
+    "from": "From",
+    "fromValue": "Your bank account",
+    "to": "To",
+    "toValue": "Your First Leaf account",
+    "amountError": "Enter an amount from $1 to $10,000, with no more than 2 decimals.",
+    "timing": "It takes 1 to 3 days to arrive, not counting weekends.",
+    "confirmDeposit": "You are about to ask your bank for a {amount} deposit. It takes 1 to 3 days to arrive, not counting weekends.",
+    "seeInActivity": "You can see it as Pending in Activity.",
+    "autoOnNow": "Auto-invest is on. Each deposit buys your mix on the day it arrives.",
+    "autoPausedSince": "Auto-invest is paused. It has been off since {date}.",
+    "autoOff": "Auto-invest is off.",
+    "switchLabel": "Auto-invest",
+    "on": "On",
+    "off": "Off",
+    "confirmOn": "Turn on auto-invest? From now on, each deposit will buy your mix on the day it arrives. The {cash} already in cash stays as cash.",
+    "confirmOff": "Pause auto-invest? New deposits will stay as cash until you turn it back on.",
+    "doneOn": "Auto-invest is on.",
+    "donePaused": "Auto-invest is paused.",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "confirmDepositButton": "Confirm deposit",
+    "turnOn": "Turn on",
+    "pause": "Pause",
+    "done": "Done"
+  },
+  "chart": {
+    "showTable": "Show as table",
+    "hideTable": "Hide table",
+    "asTable": "{title}, as a table",
+    "readHint": "Move across the chart, tap it, or use the arrow keys to read each day.",
+    "readHintSeries": "Move across the chart, tap it, or use the arrow keys to read it.",
+    "keyboardDays": "{label}. Use the left and right arrow keys to read each day.",
+    "keyboardSeries": "{label}. Use the left and right arrow keys to read it.",
+    "key": "Chart key",
+    "putIn": "What you put in",
+    "earned": "What it earned",
+    "events": "Events",
+    "balance": "Balance",
+    "tooltip": "{series}: {value}",
+    "dayReadout": "{date}: balance {balance}. You had put in {moneyIn}, so you were {change}."
+  },
+  "ranges": {
+    "group": "Time range",
+    "1m": {
+      "label": "1M",
+      "name": "Last month"
+    },
+    "3m": {
+      "label": "3M",
+      "name": "Last 3 months"
+    },
+    "all": {
+      "label": "Since March",
+      "name": "Since March"
+    }
+  },
+  "dates": {
+    "months": [
+      "Jan.",
+      "Feb.",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "Aug.",
+      "Sept.",
+      "Oct.",
+      "Nov.",
+      "Dec."
+    ],
+    "days": [
+      "Sun.",
+      "Mon.",
+      "Tue.",
+      "Wed.",
+      "Thu.",
+      "Fri.",
+      "Sat."
+    ]
+  }
+}

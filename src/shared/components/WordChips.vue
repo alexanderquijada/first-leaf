@@ -3,6 +3,7 @@
 // has to hit a small word inside a sentence (P303 brief, touch-target ruling).
 import { computed } from 'vue'
 import { useGlossary } from '../composables/useGlossary'
+import { copy } from '../copy'
 import TermTip from './TermTip.vue'
 
 const props = withDefaults(defineProps<{ ids: string[]; headingLevel?: 2 | 3 }>(), { headingLevel: 2 })
@@ -11,8 +12,8 @@ const terms = computed(() => [...new Set(props.ids)].map((id) => getTerm(id)).fi
 </script>
 
 <template>
-  <section v-if="terms.length" class="chips" aria-label="Words on this screen">
-    <component :is="`h${headingLevel}`" class="chips__title">Words on this screen</component>
+  <section v-if="terms.length" class="chips" :aria-label="copy.wordChips.title">
+    <component :is="`h${headingLevel}`" class="chips__title">{{ copy.wordChips.title }}</component>
     <ul>
       <li v-for="t in terms" :key="t.id"><TermTip :id="t.id">{{ t.term }}</TermTip></li>
     </ul>

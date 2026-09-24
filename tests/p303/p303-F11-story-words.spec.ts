@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures'
+import { test, expect, settle } from '../fixtures'
 
 // F11: the story and Words, fitted to the phone.
 test.use({ viewport: { width: 390, height: 844 } })
@@ -8,6 +8,8 @@ test('the chapter menu is a bottom sheet that takes you to the chapter', async (
   await expect(page.getByRole('navigation', { name: 'Chapters' })).toHaveCount(0)
   await page.getByRole('button', { name: 'Chapters' }).click()
   const sheet = page.getByRole('dialog', { name: 'Chapters' })
+  await expect(sheet).toBeVisible()
+  await settle(page) // a sheet caught mid-slide measures 47.9999px
   for (const h of await sheet.getByRole('link').evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height))) expect(h).toBeGreaterThanOrEqual(48)
   await sheet.getByRole('link', { name: 'What happens if you keep going' }).click()
   await expect(sheet).toBeHidden()

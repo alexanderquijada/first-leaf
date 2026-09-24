@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures'
+import { test, expect, settle } from '../fixtures'
 import { load, money } from '../data'
 
 // F8: activity one-handed. F9: funds as cards and a phone-first fund page.
@@ -11,6 +11,7 @@ test('activity is a compact list; filters live in a 48px bottom sheet; rows open
   await page.getByRole('button', { name: 'Filters' }).click()
   const sheet = page.getByRole('dialog', { name: 'Filters' })
   await expect(sheet).toBeVisible()
+  await settle(page) // a sheet caught mid-slide measures 47.9999px
   for (const b of await sheet.getByRole('button').evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height))) expect(b).toBeGreaterThanOrEqual(48)
   await sheet.getByRole('group', { name: 'Type' }).getByRole('button', { name: 'Dividends' }).click()
   await sheet.getByRole('group', { name: 'Status' }).getByRole('button', { name: 'Returned' }).click()

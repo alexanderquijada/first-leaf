@@ -8,6 +8,8 @@ import { useHandled } from '../composables/useHandled'
 import { useScenario } from '../composables/useScenario'
 import { useSession } from '../composables/useSession'
 import SeverityBadge from './SeverityBadge.vue'
+import { copy, fill } from '../copy'
+const L = copy.alerts
 
 const props = withDefaults(defineProps<{ selectedId?: string; headingLevel?: 2 | 3; showSeen?: boolean }>(), {
   selectedId: undefined,
@@ -27,7 +29,7 @@ const lastUndone = ref('')
 
 function undoOne(a: AttentionFlag) {
   undo(a)
-  lastUndone.value = `${a.title}: moved back to your alerts.`
+  lastUndone.value = fill(L.undone, { title: a.title })
 }
 const h = computed(() => `h${props.headingLevel}`)
 const h2 = computed(() => `h${props.headingLevel + 1}`)
@@ -35,12 +37,12 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 
 <template>
   <div class="fl-alerts">
-    <component :is="h" class="fl-alerts__title">Needs your attention</component>
+    <component :is="h" class="fl-alerts__title">{{ L.title }}</component>
     <p v-if="needs.length" class="fl-alerts__count">
-      {{ needs.length }} {{ needs.length === 1 ? 'alert needs' : 'alerts need' }} a look.
+      {{ needs.length === 1 ? L.countOne : fill(L.countMany, { count: needs.length }) }}
     </p>
-    <p v-else-if="everHadNeeds" class="fl-alerts__calm">You have handled everything for this week.</p>
-    <p v-else class="fl-alerts__calm">Nothing needs you this week.</p>
+    <p v-else-if="everHadNeeds" class="fl-alerts__calm">{{ L.allHandled }}</p>
+    <p v-else class="fl-alerts__calm">{{ L.nothing }}</p>
 
     <ul v-if="needs.length" class="fl-alerts__list">
       <li v-for="a in needs" :key="a.id">
@@ -51,15 +53,15 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
         >
           <SeverityBadge :severity="a.severity" />
           <span class="fl-alerts__text">{{ a.title }}</span>
-          <span v-if="a.newSinceLastReview" class="fl-alerts__new">New</span>
-          <span v-if="showSeen && isSeen(a.id)" class="fl-alerts__seen">Seen</span>
+          <span v-if="a.newSinceLastReview" class="fl-alerts__new">{{ L.new }}</span>
+          <span v-if="showSeen && isSeen(a.id)" class="fl-alerts__seen">{{ L.seen }}</span>
           <span class="mdi mdi-chevron-right fl-alerts__go" aria-hidden="true" />
         </RouterLink>
       </li>
     </ul>
 
     <template v-if="fyi.length">
-      <component :is="h2" class="fl-alerts__sub">Just so you know</component>
+      <component :is="h2" class="fl-alerts__sub">{{ L.fyiTitle }}</component>
       <ul class="fl-alerts__list">
         <li v-for="a in fyi" :key="a.id">
           <RouterLink
@@ -69,8 +71,8 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
           >
             <SeverityBadge :severity="a.severity" />
             <span class="fl-alerts__text">{{ a.title }}</span>
-            <span v-if="a.newSinceLastReview" class="fl-alerts__new">New</span>
-            <span v-if="showSeen && isSeen(a.id)" class="fl-alerts__seen">Seen</span>
+            <span v-if="a.newSinceLastReview" class="fl-alerts__new">{{ L.new }}</span>
+            <span v-if="showSeen && isSeen(a.id)" class="fl-alerts__seen">{{ L.seen }}</span>
             <span class="mdi mdi-chevron-right fl-alerts__go" aria-hidden="true" />
           </RouterLink>
         </li>
@@ -85,13 +87,13 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
         @click="showHandled = !showHandled"
       >
         <span class="mdi" :class="showHandled ? 'mdi-chevron-down' : 'mdi-chevron-right'" aria-hidden="true" />
-        Handled ({{ done.length }})
+        {{ fill(L.handled, { count: done.length }) }}
       </button>
       <ul v-if="showHandled" class="fl-alerts__list">
         <li v-for="a in done" :key="a.id" class="fl-alerts__done">
           <span class="fl-alerts__text">{{ a.title }}</span>
           <button type="button" class="fl-alerts__undo" @click="undoOne(a)">
-            Undo<span class="fl-visually-hidden">: {{ a.title }}</span>
+            {{ L.undo }}<span class="fl-visually-hidden">{{ fill(L.undoWhich, { title: a.title }) }}</span>
           </button>
         </li>
       </ul>

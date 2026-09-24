@@ -3,6 +3,7 @@
 // a left rail from 1024px, top tabs at 600–1023px, a bottom tab bar under 600px.
 // The router puts each feature's page inside <router-view>.
 import AppFooter from './AppFooter.vue'
+import copy from './copy.json'
 import BottomTabBar from './BottomTabBar.vue'
 import DesktopRail from './DesktopRail.vue'
 import PhonePreview from './PhonePreview.vue'
@@ -24,7 +25,7 @@ function skipToContent(e: Event) {
 
 <template>
   <div class="fl-app">
-    <a class="fl-skip" href="#main" @click="skipToContent">Skip to content</a>
+    <a class="fl-skip" href="#main" @click="skipToContent">{{ copy.skip }}</a>
     <DesktopRail />
     <div class="fl-app__column">
       <TopBar>

@@ -3,13 +3,18 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { describeActivity } from '@/shared/activityText'
+import CopyText from '@/shared/components/CopyText.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import WordChips from '@/shared/components/WordChips.vue'
 import { useGlossary } from '@/shared/composables/useGlossary'
 import { useViewport } from '@/shared/composables/useViewport'
 import { getFund } from '@/shared/data'
 import { formatDate, formatMoney } from '@/shared/format'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 import { useActivityRows } from './useActivityRows'
+
+const F = copy.facts
 
 const route = useRoute()
 const { find } = useActivityRows()
@@ -22,28 +27,28 @@ const facts = computed<{ label: string; value: string }[]>(() => {
   const r = item.value
   if (!r) return []
   const base = [
-    { label: 'Amount', value: formatMoney(r.amount) },
-    { label: 'Status', value: describeActivity(r).status },
+    { label: F.amount, value: formatMoney(r.amount) },
+    { label: F.status, value: describeActivity(r).label },
   ]
-  if (r.status === 'pending') return [...base, { label: 'Requested on', value: formatDate(r.date) }]
+  if (r.status === 'pending') return [...base, { label: F.requestedOn, value: formatDate(r.date) }]
   if (r.type === 'deposit')
     return [
       ...base,
-      { label: 'Asked for on', value: formatDate(r.date) },
+      { label: F.askedOn, value: formatDate(r.date) },
       r.status === 'returned' && r.returnedDate
-        ? { label: 'Sent back on', value: formatDate(r.returnedDate) }
-        : { label: 'Arrived on', value: formatDate(r.settledDate) },
+        ? { label: F.sentBackOn, value: formatDate(r.returnedDate) }
+        : { label: F.arrivedOn, value: formatDate(r.settledDate) },
     ]
   if (r.type === 'buy')
     return [
       ...base,
-      { label: 'Fund', value: `${r.ticker}, ${getFund(r.ticker)?.name ?? ''}` },
-      { label: 'Bought on', value: formatDate(r.date) },
-      { label: 'Price', value: formatMoney(r.price) },
-      { label: 'Shares', value: r.shares.toFixed(4) },
-      { label: 'Settled on', value: formatDate(r.settledDate) },
+      { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) },
+      { label: F.boughtOn, value: formatDate(r.date) },
+      { label: F.price, value: formatMoney(r.price) },
+      { label: F.shares, value: r.shares.toFixed(4) },
+      { label: F.settledOn, value: formatDate(r.settledDate) },
     ]
-  return [...base, { label: 'Fund', value: `${r.ticker}, ${getFund(r.ticker)?.name ?? ''}` }, { label: 'Paid on', value: formatDate(r.date) }]
+  return [...base, { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) }, { label: F.paidOn, value: formatDate(r.date) }]
 })
 
 const termIds = computed(() => {
@@ -59,7 +64,7 @@ const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => 
 
 <template>
   <div class="adet">
-    <RouterLink to="/activity" class="adet__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> All activity</RouterLink>
+    <RouterLink to="/activity" class="adet__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ copy.allActivity }}</RouterLink>
     <template v-if="item && d">
       <h1>{{ d.what }}</h1>
       <dl class="adet__facts">
@@ -68,18 +73,18 @@ const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => 
           <dd class="fl-tabular">{{ f.value }}</dd>
         </div>
       </dl>
-      <p v-if="item.status === 'pending'">It should arrive in 1 to 3 business days.</p>
+      <p v-if="item.status === 'pending'">{{ copy.pendingNote }}</p>
       <p v-if="item.status !== 'pending' && item.type === 'deposit' && item.returnReason">{{ item.returnReason }}</p>
-      <p v-if="item.status !== 'pending' && item.type === 'buy'">Auto-invest bought it with your deposit.</p>
-      <h2 class="adet__h">What it means</h2>
+      <p v-if="item.status !== 'pending' && item.type === 'buy'">{{ copy.buyNote }}</p>
+      <h2 class="adet__h">{{ copy.whatItMeans }}</h2>
       <ul class="adet__terms">
-        <li v-for="t in terms" :key="t.id"><TermTip :id="t.id">{{ t.term }}</TermTip>: {{ t.short }}</li>
+        <li v-for="t in terms" :key="t.id"><CopyText :text="copy.termLine" :values="{ short: t.short }"><template #term><TermTip :id="t.id">{{ t.term }}</TermTip></template></CopyText></li>
       </ul>
       <WordChips v-if="isPhone" :ids="termIds" />
     </template>
     <template v-else>
-      <h1>We could not find that item.</h1>
-      <p>It may have been for another account.</p>
+      <h1>{{ copy.notFound }}</h1>
+      <p>{{ copy.notFoundWhy }}</p>
     </template>
   </div>
 </template>

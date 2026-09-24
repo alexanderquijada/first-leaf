@@ -1,0 +1,50 @@
+{
+  "title": "Your funds",
+  "tableLabel": "Your funds",
+  "caption": "All funds, with what you have in each",
+  "col": { "fund": "Fund", "kind": "Kind", "fee": "Yearly fee", "ups": "Ups and downs", "value": "Your value", "change": "Up or down" },
+  "kind": { "stocks": "Stocks", "bonds": "Bonds", "reserve": "Reserve" },
+  "percent": "{value}%",
+  "upsValue": "{value} of 5",
+  "notOwned": "Not owned",
+  "cardValue": "{value} · ",
+  "allFunds": "All funds",
+  "nameLine": "{name} · {kind} · {region}",
+  "whatYouHave": "What you have",
+  "vsPaid": "{change} on the {paid} you paid.",
+  "facts": { "value": "Your value", "paid": "What you paid", "shares": "Shares", "price": "Price" },
+  "notOwnedYet": "You don't own this fund yet.",
+  "priceNow": "Price: {price} a share.",
+  "chart": {
+    "title": "Price over time",
+    "summary": "From {from} to {to}, the price went from {start} to {end}.",
+    "series": "Price",
+    "day": "{date}: {price} a share.",
+    "colDate": "Date",
+    "colPrice": "Price",
+    "range": "Time range",
+    "since": "Since you bought",
+    "1y": "1 year",
+    "5y": "5 years"
+  },
+  "fee": {
+    "heading": "{term}: {value}%",
+    "term": "Yearly fee",
+    "change": "{from}% to {to}% on {date}, up {points} percentage points.",
+    "told": " The fund told owners on {date}.",
+    "steady": "It has been {value}% since {date}."
+  },
+  "ups": {
+    "heading": "{term}: {value} of 5",
+    "term": "Ups and downs",
+    "scale": "1 means its price barely moves. 5 means it moves the most."
+  },
+  "inside": {
+    "heading": "What is inside",
+    "dividendMonthly": "It pays a {dividend} each month.",
+    "dividendQuarterly": "It pays a {dividend} each quarter.",
+    "dividendWord": "dividend",
+    "noDividend": "It does not pay dividends."
+  },
+  "notFound": "We could not find that fund."
+}

@@ -1,13 +1,14 @@
 <script setup lang="ts">
 // Tablet navigation (600–1023px): the rail's six items as top tabs.
 import { useRoute } from 'vue-router'
+import copy from './copy.json'
 import { mainNav } from './nav'
 
 const route = useRoute()
 </script>
 
 <template>
-  <nav class="fl-tabs" aria-label="Main">
+  <nav class="fl-tabs" :aria-label="copy.navLabel">
     <ul>
       <li v-for="item in mainNav" :key="item.to">
         <RouterLink v-slot="{ href, navigate }" :to="item.to" custom>

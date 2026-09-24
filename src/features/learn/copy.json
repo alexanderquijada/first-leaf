@@ -1,0 +1,16 @@
+{
+  "title": "Words to know",
+  "search": "Search words",
+  "countOne": "1 word",
+  "countMany": "{count} words",
+  "none": "No words match “{query}”. Try “fee” or “fund”.",
+  "allWords": "All words",
+  "alsoCalled": "Also called {terms}",
+  "example": "{label} {example}",
+  "exampleLabel": "Example:",
+  "related": "Related words",
+  "source": "Source: {link}",
+  "newTab": " (opens in a new tab)",
+  "notFound": "We could not find that word.",
+  "notFoundWhy": "Try searching for it in Words to know."
+}

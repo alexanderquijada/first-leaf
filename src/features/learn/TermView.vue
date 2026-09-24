@@ -3,7 +3,9 @@
 // explanation, an example, related words (each its own page) and the source.
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import CopyText from '@/shared/components/CopyText.vue'
 import { useGlossary } from '@/shared/composables/useGlossary'
+import copy from './copy.json'
 
 const route = useRoute()
 const { getTerm } = useGlossary()
@@ -13,26 +15,32 @@ const related = computed(() => (term.value?.related ?? []).map((r) => getTerm(r)
 
 <template>
   <div class="term">
-    <RouterLink to="/learn" class="term__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> All words</RouterLink>
+    <RouterLink to="/learn" class="term__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ copy.allWords }}</RouterLink>
     <template v-if="term">
       <h1>{{ term.term }}</h1>
-      <p v-if="term.alsoCalled.length" class="term__also">Also called <em>{{ term.alsoCalled.join(', ') }}</em></p>
+      <p v-if="term.alsoCalled.length" class="term__also"><CopyText :text="copy.alsoCalled"><template #terms><em>{{ term.alsoCalled.join(', ') }}</em></template></CopyText></p>
       <p class="term__short">{{ term.short }}</p>
       <p>{{ term.detail }}</p>
-      <p><strong>Example:</strong> {{ term.example }}</p>
+      <p><CopyText :text="copy.example" :values="{ example: term.example }"><template #label><strong>{{ copy.exampleLabel }}</strong></template></CopyText></p>
       <template v-if="related.length">
-        <h2 class="term__h">Related words</h2>
+        <h2 class="term__h">{{ copy.related }}</h2>
         <ul class="term__related">
           <li v-for="r in related" :key="r.id"><RouterLink :to="`/learn/${r.id}`" class="term__chip">{{ r.term }}</RouterLink></li>
         </ul>
       </template>
       <p v-if="term.source" class="term__source">
-        Source: <a :href="term.source.url" target="_blank" rel="noopener noreferrer">{{ term.source.label }}<span class="fl-visually-hidden"> (opens in a new tab)</span></a>
+        <CopyText :text="copy.source"
+          ><template #link
+            ><a :href="term.source.url" target="_blank" rel="noopener noreferrer"
+              >{{ term.source.label }}<span class="fl-visually-hidden">{{ copy.newTab }}</span></a
+            ></template
+          ></CopyText
+        >
       </p>
     </template>
     <template v-else>
-      <h1>We could not find that word.</h1>
-      <p>Try searching for it in Words to know.</p>
+      <h1>{{ copy.notFound }}</h1>
+      <p>{{ copy.notFoundWhy }}</p>
     </template>
   </div>
 </template>

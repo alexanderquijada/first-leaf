@@ -5,7 +5,11 @@ import { computed, ref } from 'vue'
 import BalanceChart, { type ChartEvent } from '@/shared/charts/BalanceChart.vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import type { Account, RosaStory } from '@/shared/data'
+import { fill } from '@/shared/copy'
 import { formatDate, formatMoney, formatSigned } from '@/shared/format'
+import copy from './copy.json'
+
+const D = copy.dip
 
 const props = defineProps<{ story: RosaStory; account: Account }>()
 const f = computed(() => props.story.facts)
@@ -17,24 +21,24 @@ const points = computed(() => props.account.history.filter((r) => r.date >= from
 const events = computed<ChartEvent[]>(() => {
   const x = f.value
   const list: ChartEvent[] = [
-    { date: x.dip.highDate, label: `${formatDate(x.dip.highDate)}: ${x.dip.ticker} hit its high before the dip.` },
-    { date: x.dip.lowDate, label: `${formatDate(x.dip.lowDate)}: ${x.dip.ticker} hit its low.` },
+    { date: x.dip.highDate, label: fill(D.high, { date: formatDate(x.dip.highDate), ticker: x.dip.ticker }) },
+    { date: x.dip.lowDate, label: fill(D.low, { date: formatDate(x.dip.lowDate), ticker: x.dip.ticker }) },
   ]
-  if (x.pause) list.push({ date: x.pause.date, label: `${formatDate(x.pause.date)}: You paused auto-invest.` })
-  list.push({ date: x.after.backAboveDate, label: `${formatDate(x.after.backAboveDate)}: Your balance was back above what you had put in.` })
+  if (x.pause) list.push({ date: x.pause.date, label: fill(D.paused, { date: formatDate(x.pause.date) }) })
+  list.push({ date: x.after.backAboveDate, label: fill(D.backAbove, { date: formatDate(x.after.backAboveDate) }) })
   for (const d of x.after.deposits)
-    list.push({ date: d.date, label: `${formatDate(d.date)}: Your deposit ${x.after.depositsInvested ? 'bought your mix' : 'stayed as cash'}.` })
+    list.push({ date: d.date, label: fill(x.after.depositsInvested ? D.depositInvested : D.depositCash, { date: formatDate(d.date) }) })
   return list.sort((a, b) => a.date.localeCompare(b.date))
 })
 
 const summary = computed(
-  () => `Your balance from ${formatDate(from.value)} to ${formatDate(f.value.lastClose)}, with the dip and what came after.`,
+  () => fill(D.summary, { from: formatDate(from.value), to: formatDate(f.value.lastClose) }),
 )
 const columns = [
-  { key: 'date', label: 'Date' },
-  { key: 'balance', label: 'Balance', numeric: true },
-  { key: 'moneyIn', label: 'You put in', numeric: true },
-  { key: 'diff', label: 'Up or down', numeric: true },
+  { key: 'date', label: D.colDate },
+  { key: 'balance', label: D.colBalance, numeric: true },
+  { key: 'moneyIn', label: D.colMoneyIn, numeric: true },
+  { key: 'diff', label: D.colDiff, numeric: true },
 ]
 const rows = computed(() =>
   points.value.map((p) => ({ date: formatDate(p.date), balance: formatMoney(p.balance), moneyIn: formatMoney(p.moneyIn), diff: formatSigned(p.balance - p.moneyIn) })),
@@ -43,10 +47,10 @@ const rows = computed(() =>
 
 <template>
   <section id="chapter-3" class="chapter" aria-labelledby="chapter-3-title">
-    <p class="chapter__num">Chapter 3</p>
-    <h2 id="chapter-3-title">The dip in July</h2>
+    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 3 }) }}</p>
+    <h2 id="chapter-3-title">{{ copy.titles['3'] }}</h2>
     <p v-for="c in claims" :key="c.id" class="chapter__claim" :data-claim="c.id">{{ c.text }}</p>
-    <ChartFrame title="The dip and what came after" :level="3" :summary="summary" :columns="columns" :rows="rows">
+    <ChartFrame :title="D.chartTitle" :level="3" :summary="summary" :columns="columns" :rows="rows">
       <button
         type="button"
         class="chapter__toggle"
@@ -54,10 +58,10 @@ const rows = computed(() =>
         @click="showEvents = !showEvents"
       >
         <span class="mdi" :class="showEvents ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'" aria-hidden="true" />
-        Show events on the chart
+        {{ D.showEvents }}
       </button>
-      <BalanceChart :points="points" label="The dip and what came after" :events="showEvents ? events : []" />
-      <ul v-if="showEvents" class="events" aria-label="Events on the chart">
+      <BalanceChart :points="points" :label="D.chartTitle" :events="showEvents ? events : []" />
+      <ul v-if="showEvents" class="events" :aria-label="D.eventsLabel">
         <li v-for="e in events" :key="e.label">{{ e.label }}</li>
       </ul>
     </ChartFrame>

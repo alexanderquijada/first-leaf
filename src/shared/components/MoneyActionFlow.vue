@@ -7,7 +7,9 @@ import type { AttentionFlag } from '../data'
 import { useInertBackground } from '../composables/useInertBackground'
 import { useScenario } from '../composables/useScenario'
 import { useSession } from '../composables/useSession'
-import { DEPOSIT_CONFIRMATION } from '../copy'
+import { DEPOSIT_CONFIRMATION, copy, fill } from '../copy'
+
+const M = copy.moneyFlow
 import { formatDate, formatMoney, formatMoneyShort } from '../format'
 
 const props = defineProps<{ alert: AttentionFlag }>()
@@ -26,9 +28,9 @@ const amountText = ref('')
 const amountError = computed(() => {
   if (kind.value !== 'one-time-deposit') return ''
   const t = amountText.value.trim()
-  if (!/^\d+(\.\d{1,2})?$/.test(t)) return 'Enter an amount from $1 to $10,000, with no more than 2 decimals.'
+  if (!/^\d+(\.\d{1,2})?$/.test(t)) return M.amountError
   const n = Number(t)
-  return n >= 1 && n <= 10000 ? '' : 'Enter an amount from $1 to $10,000, with no more than 2 decimals.'
+  return n >= 1 && n <= 10000 ? '' : M.amountError
 })
 const amount = computed(() => (kind.value === 'one-time-deposit' ? Number(amountText.value) : props.alert.amount))
 
@@ -46,7 +48,7 @@ watch(open, (o) => {
 })
 
 const title = computed(() =>
-  kind.value === 'retry-deposit' ? 'Try your deposit again' : kind.value === 'one-time-deposit' ? 'Add a one-time deposit' : 'Auto-invest',
+  kind.value === 'retry-deposit' ? M.titleRetry : kind.value === 'one-time-deposit' ? M.titleOneTime : M.titleAutoInvest,
 )
 
 const pausedSince = computed(() => account.value.autoInvest.pausedOn)
@@ -73,13 +75,13 @@ function next() {
         <!-- Deposits -->
         <template v-if="isDeposit">
           <template v-if="step === 'review'">
-            <p>Check the amount, then continue.</p>
+            <p>{{ M.checkAmount }}</p>
             <dl class="fl-flow__facts">
               <div>
-                <dt>Amount</dt>
+                <dt>{{ M.amount }}</dt>
                 <dd v-if="kind === 'retry-deposit'" class="fl-tabular">{{ formatMoney(amount) }}</dd>
                 <dd v-else>
-                  <label class="fl-visually-hidden" for="fl-flow-amount">Amount in dollars</label>
+                  <label class="fl-visually-hidden" for="fl-flow-amount">{{ M.amountLabel }}</label>
                   <span class="fl-flow__dollar" aria-hidden="true">$</span>
                   <input
                     id="fl-flow-amount"
@@ -92,35 +94,32 @@ function next() {
                   />
                 </dd>
               </div>
-              <div><dt>From</dt><dd>Your bank account</dd></div>
-              <div><dt>To</dt><dd>Your First Leaf account</dd></div>
+              <div><dt>{{ M.from }}</dt><dd>{{ M.fromValue }}</dd></div>
+              <div><dt>{{ M.to }}</dt><dd>{{ M.toValue }}</dd></div>
             </dl>
             <p id="fl-flow-amount-error" class="fl-flow__error" role="alert">{{ amountError }}</p>
-            <p>It takes 1 to 3 days to arrive, not counting weekends.</p>
+            <p>{{ M.timing }}</p>
           </template>
           <template v-else-if="step === 'confirm'">
-            <p>
-              You are about to ask your bank for a {{ formatMoneyShort(amount) }} deposit. It takes 1 to 3
-              days to arrive, not counting weekends.
-            </p>
+            <p>{{ fill(M.confirmDeposit, { amount: formatMoneyShort(amount) }) }}</p>
           </template>
           <template v-else>
             <p class="fl-flow__done" role="status">
               <span class="mdi mdi-check-circle" aria-hidden="true" />
               {{ DEPOSIT_CONFIRMATION }}
             </p>
-            <p>You can see it as Pending in Activity.</p>
+            <p>{{ M.seeInActivity }}</p>
           </template>
         </template>
 
         <!-- Auto-invest -->
         <template v-else>
           <template v-if="step === 'review'">
-            <p v-if="autoInvestOn">Auto-invest is on. Each deposit buys your mix on the day it arrives.</p>
-            <p v-else-if="pausedSince">Auto-invest is paused. It has been off since {{ formatDate(pausedSince) }}.</p>
-            <p v-else>Auto-invest is off.</p>
+            <p v-if="autoInvestOn">{{ M.autoOnNow }}</p>
+            <p v-else-if="pausedSince">{{ fill(M.autoPausedSince, { date: formatDate(pausedSince) }) }}</p>
+            <p v-else>{{ M.autoOff }}</p>
             <div class="fl-flow__switch">
-              <span id="fl-flow-switch-label" class="fl-flow__switch-label">Auto-invest</span>
+              <span id="fl-flow-switch-label" class="fl-flow__switch-label">{{ M.switchLabel }}</span>
               <button
                 type="button"
                 role="switch"
@@ -130,21 +129,18 @@ function next() {
                 @click="wantOn = !wantOn"
               >
                 <span class="fl-switch__track" aria-hidden="true"><span class="fl-switch__thumb" /></span>
-                <span class="fl-switch__text">{{ wantOn ? 'On' : 'Off' }}</span>
+                <span class="fl-switch__text">{{ wantOn ? M.on : M.off }}</span>
               </button>
             </div>
           </template>
           <template v-else-if="step === 'confirm'">
-            <p v-if="wantOn">
-              Turn on auto-invest? From now on, each deposit will buy your mix on the day it arrives. The
-              {{ formatMoney(account.cash) }} already in cash stays as cash.
-            </p>
-            <p v-else>Pause auto-invest? New deposits will stay as cash until you turn it back on.</p>
+            <p v-if="wantOn">{{ fill(M.confirmOn, { cash: formatMoney(account.cash) }) }}</p>
+            <p v-else>{{ M.confirmOff }}</p>
           </template>
           <template v-else>
             <p class="fl-flow__done" role="status">
               <span class="mdi mdi-check-circle" aria-hidden="true" />
-              {{ autoInvestOn ? 'Auto-invest is on.' : 'Auto-invest is paused.' }}
+              {{ autoInvestOn ? M.doneOn : M.donePaused }}
             </p>
           </template>
         </template>
@@ -152,22 +148,22 @@ function next() {
 
       <div class="fl-flow__actions">
         <template v-if="step === 'review'">
-          <v-btn variant="text" color="ink" @click="open = false">Cancel</v-btn>
+          <v-btn variant="text" color="ink" @click="open = false">{{ M.cancel }}</v-btn>
           <v-btn
             variant="flat"
             color="forest"
             :disabled="isDeposit ? !!amountError : wantOn === autoInvestOn"
             @click="next"
-            >Continue</v-btn
+            >{{ M.continue }}</v-btn
           >
         </template>
         <template v-else-if="step === 'confirm'">
-          <v-btn variant="text" color="ink" @click="step = 'review'">Back</v-btn>
+          <v-btn variant="text" color="ink" @click="step = 'review'">{{ M.back }}</v-btn>
           <v-btn variant="flat" color="forest" @click="next">{{
-            isDeposit ? 'Confirm deposit' : wantOn ? 'Turn on' : 'Pause'
+            isDeposit ? M.confirmDepositButton : wantOn ? M.turnOn : M.pause
           }}</v-btn>
         </template>
-        <v-btn v-else variant="flat" color="forest" @click="open = false">Done</v-btn>
+        <v-btn v-else variant="flat" color="forest" @click="open = false">{{ M.done }}</v-btn>
       </div>
     </v-card>
   </v-dialog>

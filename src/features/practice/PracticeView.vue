@@ -14,6 +14,10 @@ import { formatDate, formatMoney, formatMoneyShort } from '@/shared/format'
 import { colors } from '@/shared/tokens/tokens'
 import OrderForm from './OrderForm.vue'
 import PhoneOrder from './PhoneOrder.vue'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
+
+const TM = copy.timeMachine
 
 const p = usePractice()
 const { isPhone } = useViewport()
@@ -22,7 +26,7 @@ const withYear = (iso: string) => `${formatDate(iso)}, ${iso.slice(0, 4)}`
 const tm = computed(() => p.timeMachine.value)
 const tmSummary = computed(() => {
   const a = tm.value[0], b = tm.value.at(-1)
-  return a && b ? `If you had held this mix since ${withYear(a.date)}, it would be worth ${formatMoney(b.value)} on ${withYear(b.date)}. On ${withYear(a.date)} it would have been worth ${formatMoney(a.value)}.` : ''
+  return a && b ? fill(TM.summary, { from: withYear(a.date), to: withYear(b.date), start: formatMoney(a.value), end: formatMoney(b.value) }) : ''
 })
 
 const confirmOpen = ref(false)
@@ -36,13 +40,13 @@ function startOver() {
 <template>
   <div class="practice">
     <p class="practice__banner" role="note">
-      <span class="mdi mdi-flask-outline" aria-hidden="true" /> Practice money. It isn't real money.
+      <span class="mdi mdi-flask-outline" aria-hidden="true" /> {{ copy.banner }}
     </p>
-    <h1><TermTip id="practice-mode">Practice</TermTip></h1>
+    <h1><TermTip id="practice-mode">{{ copy.title }}</TermTip></h1>
     <dl class="practice__sum">
-      <div><dt>Practice money left</dt><dd class="fl-tabular">{{ formatMoney(p.cash.value) }}</dd></div>
-      <div><dt>In practice funds</dt><dd class="fl-tabular">{{ formatMoney(p.invested.value) }}</dd></div>
-      <div><dt>Total in Practice</dt><dd class="fl-tabular">{{ formatMoney(p.total.value) }}</dd></div>
+      <div><dt>{{ copy.sum.left }}</dt><dd class="fl-tabular">{{ formatMoney(p.cash.value) }}</dd></div>
+      <div><dt>{{ copy.sum.inFunds }}</dt><dd class="fl-tabular">{{ formatMoney(p.invested.value) }}</dd></div>
+      <div><dt>{{ copy.sum.total }}</dt><dd class="fl-tabular">{{ formatMoney(p.total.value) }}</dd></div>
     </dl>
 
     <div class="practice__grid">
@@ -52,13 +56,13 @@ function startOver() {
       </div>
 
       <div class="practice__card">
-        <h2 class="practice__h">What you own in Practice</h2>
-        <p v-if="!p.holdings.value.length">Nothing yet. Buy a fund to start.</p>
-        <div v-else class="practice__wrap" role="region" aria-label="What you own in Practice" tabindex="0">
+        <h2 class="practice__h">{{ copy.ownHeading }}</h2>
+        <p v-if="!p.holdings.value.length">{{ copy.ownEmpty }}</p>
+        <div v-else class="practice__wrap" role="region" :aria-label="copy.ownHeading" tabindex="0">
           <table class="practice__table">
-            <caption class="fl-visually-hidden">What you own in Practice</caption>
+            <caption class="fl-visually-hidden">{{ copy.ownHeading }}</caption>
             <thead>
-              <tr><th scope="col">Fund</th><th scope="col" class="is-num">Shares</th><th scope="col" class="is-num">Value</th><th scope="col" class="is-num">Paid</th><th scope="col" class="is-num">Up or down</th></tr>
+              <tr><th scope="col">{{ copy.col.fund }}</th><th scope="col" class="is-num">{{ copy.col.shares }}</th><th scope="col" class="is-num">{{ copy.col.value }}</th><th scope="col" class="is-num">{{ copy.col.paid }}</th><th scope="col" class="is-num">{{ copy.col.change }}</th></tr>
             </thead>
             <tbody>
               <tr v-for="h in p.holdings.value" :key="h.ticker">
@@ -73,11 +77,11 @@ function startOver() {
         </div>
 
         <template v-if="p.mix.value.length">
-          <h3 class="practice__h3">Your practice mix</h3>
+          <h3 class="practice__h3">{{ copy.mixHeading }}</h3>
           <ul class="practice__mix">
             <li v-for="m in p.mix.value" :key="m.ticker">
               <span class="practice__mix-name">{{ m.ticker }}</span>
-              <span class="fl-tabular">{{ Math.round(m.share * 100) }}%</span>
+              <span class="fl-tabular">{{ fill(copy.percent, { pct: Math.round(m.share * 100) }) }}</span>
               <span class="practice__bar" aria-hidden="true"><span :style="{ width: `${Math.round(m.share * 100)}%` }" /></span>
             </li>
           </ul>
@@ -87,31 +91,31 @@ function startOver() {
 
     <div class="practice__card">
       <ChartFrame
-        title="Time machine"
-        :summary="tm.length ? tmSummary : 'Buy a fund to see how your mix would have moved.'"
-        :columns="[{ key: 'date', label: 'Week of' }, { key: 'value', label: 'Value', numeric: true }]"
+        :title="TM.title"
+        :summary="tm.length ? tmSummary : TM.empty"
+        :columns="[{ key: 'date', label: TM.colWeek }, { key: 'value', label: TM.colValue, numeric: true }]"
         :rows="tm.map((t) => ({ date: withYear(t.date), value: formatMoney(t.value) }))"
       >
         <SeriesChart
           v-if="tm.length"
           :labels="tm.map((t) => withYear(t.date))"
-          :series="[{ label: 'Your practice mix', data: tm.map((t) => t.value), color: colors.forest }]"
-          :describe="(i: number) => `${withYear(tm[i]!.date)}: your practice mix would be worth ${formatMoney(tm[i]!.value)}.`"
-          label="Time machine"
+          :series="[{ label: TM.series, data: tm.map((t) => t.value), color: colors.forest }]"
+          :describe="(i: number) => fill(TM.day, { date: withYear(tm[i]!.date), value: formatMoney(tm[i]!.value) })"
+          :label="TM.title"
           :height="isPhone ? 180 : 240"
         />
         <p class="practice__note">{{ practiceRules.timeMachine.note }}</p>
       </ChartFrame>
     </div>
 
-    <button type="button" class="practice__over" @click="confirmOpen = true">Start over</button>
-    <v-dialog v-model="confirmOpen" max-width="420" aria-label="Start over">
+    <button type="button" class="practice__over" @click="confirmOpen = true">{{ copy.startOver }}</button>
+    <v-dialog v-model="confirmOpen" max-width="420" :aria-label="copy.startOver">
       <v-card color="paper" class="practice__dialog">
-        <h2 class="practice__h">Start over?</h2>
-        <p>This clears your practice funds and sets your practice money back to {{ formatMoneyShort(practiceRules.startingCash) }}.</p>
+        <h2 class="practice__h">{{ copy.startOverTitle }}</h2>
+        <p>{{ fill(copy.startOverBody, { amount: formatMoneyShort(practiceRules.startingCash) }) }}</p>
         <div class="practice__dialog-actions">
-          <v-btn variant="text" color="ink" @click="confirmOpen = false">Cancel</v-btn>
-          <v-btn variant="flat" color="forest" @click="startOver">Start over</v-btn>
+          <v-btn variant="text" color="ink" @click="confirmOpen = false">{{ copy.cancel }}</v-btn>
+          <v-btn variant="flat" color="forest" @click="startOver">{{ copy.startOver }}</v-btn>
         </div>
       </v-card>
     </v-dialog>

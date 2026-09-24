@@ -3,6 +3,7 @@
 // a heading and a 48px close button. The page behind it is inert while it's open.
 import { useId } from 'vue'
 import { useInertBackground } from '../composables/useInertBackground'
+import { copy } from '../copy'
 
 defineProps<{ title: string }>()
 const open = defineModel<boolean>({ default: false })
@@ -15,7 +16,7 @@ const titleId = `fl-sheet-${useId()}`
     <div class="fl-sheet">
       <div class="fl-sheet__head">
         <h2 :id="titleId" class="fl-sheet__title">{{ title }}</h2>
-        <button type="button" class="fl-sheet__close" aria-label="Close" @click="open = false">
+        <button type="button" class="fl-sheet__close" :aria-label="copy.sheet.close" @click="open = false">
           <span class="mdi mdi-close" aria-hidden="true" />
         </button>
       </div>

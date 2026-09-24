@@ -1,11 +1,12 @@
 // Time ranges for balance charts: 1M, 3M and Since March (the whole history).
+import { copy } from '../copy'
 import { meta } from '../data'
 
 export type RangeId = '1m' | '3m' | 'all'
 export const RANGES: { id: RangeId; label: string; name: string }[] = [
-  { id: '1m', label: '1M', name: 'Last month' },
-  { id: '3m', label: '3M', name: 'Last 3 months' },
-  { id: 'all', label: 'Since March', name: 'Since March' },
+  { id: '1m', ...copy.ranges['1m'] },
+  { id: '3m', ...copy.ranges['3m'] },
+  { id: 'all', ...copy.ranges.all },
 ]
 
 function monthsBack(iso: string, n: number) {

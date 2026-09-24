@@ -14,13 +14,17 @@ import { useScenario } from '@/shared/composables/useScenario'
 import { useSession } from '@/shared/composables/useSession'
 import { meta } from '@/shared/data'
 import { formatChange, formatDate, formatMoney, formatSigned } from '@/shared/format'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
 import BalanceOverTime from './BalanceOverTime.vue'
+import copy from './copy.json'
 import WelcomeCard from './WelcomeCard.vue'
 
 const { account, activity } = useScenario()
 const { open } = useHandled()
 const { pendingDeposits, isSeen } = useSession()
 const { glossary } = useGlossary()
+const P = copy.phone
 
 const needsYou = computed(() => open.value.filter((a) => a.severity === 'needs-you'))
 const headsUps = computed(() => open.value.filter((a) => a.severity === 'heads-up'))
@@ -47,33 +51,33 @@ function nextWord() {
 
 <template>
   <div class="phome">
-    <h1 class="fl-visually-hidden">Home</h1>
+    <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
 
     <template v-if="account.history.length">
-      <section class="phome__balance" aria-label="Balance">
-        <p class="phome__label"><TermTip id="balance">Balance</TermTip></p>
+      <section class="phome__balance" :aria-label="copy.balance.label">
+        <p class="phome__label"><TermTip id="balance">{{ copy.balance.label }}</TermTip></p>
         <p class="phome__big fl-tabular"><Money :amount="account.balance" /></p>
-        <p v-if="w" class="phome__week"><Money :amount="w.totalChange" change capitalize /> this week</p>
+        <p v-if="w" class="phome__week"><CopyText :text="P.weekChange"><template #change><Money :amount="w.totalChange" change capitalize /></template></CopyText></p>
       </section>
 
       <section class="fl-panel phome__needs" aria-labelledby="phome-needs">
         <h2 id="phome-needs" class="phome__needs-title">
-          <template v-if="needsYou.length">{{ needsYou.length }} {{ needsYou.length === 1 ? 'thing needs' : 'things need' }} you</template>
-          <template v-else-if="headsUps.length">{{ headsUps.length }} {{ headsUps.length === 1 ? 'heads-up' : 'heads-ups' }}</template>
-          <template v-else>Nothing needs you today.</template>
+          <template v-if="needsYou.length">{{ needsYou.length === 1 ? P.needsOne : fill(P.needsMany, { count: needsYou.length }) }}</template>
+          <template v-else-if="headsUps.length">{{ headsUps.length === 1 ? P.headsUpOne : fill(P.headsUpMany, { count: headsUps.length }) }}</template>
+          <template v-else>{{ P.nothing }}</template>
         </h2>
         <RouterLink v-if="top" :to="`/alerts/${top.id}`" class="phome__top">
           <SeverityBadge :severity="top.severity" />
           <span class="phome__top-text">{{ top.title }}</span>
-          <span v-if="isSeen(top.id)" class="phome__seen">Seen</span>
+          <span v-if="isSeen(top.id)" class="phome__seen">{{ P.seen }}</span>
           <span class="mdi mdi-chevron-right" aria-hidden="true" />
         </RouterLink>
         <RouterLink v-if="top && restHeadsUps" to="/alerts" class="phome__more">
-          See {{ restHeadsUps }} {{ restHeadsUps === 1 ? 'heads-up' : 'heads-ups' }}
+          {{ restHeadsUps === 1 ? P.seeHeadsUpOne : fill(P.seeHeadsUpMany, { count: restHeadsUps }) }}
           <span class="mdi mdi-chevron-right" aria-hidden="true" />
         </RouterLink>
         <template v-if="!top && fyi.length">
-          <h3 class="phome__fyi-title">Just so you know</h3>
+          <h3 class="phome__fyi-title">{{ P.fyiTitle }}</h3>
           <RouterLink v-for="a in fyi" :key="a.id" :to="`/alerts/${a.id}`" class="phome__top">
             <SeverityBadge :severity="a.severity" />
             <span class="phome__top-text">{{ a.title }}</span>
@@ -91,34 +95,34 @@ function nextWord() {
             aria-controls="phome-why-body"
             @click="whyOpen = !whyOpen"
           >
-            <span>Why it moved this week</span>
+            <span>{{ P.whyTitle }}</span>
             <span class="mdi" :class="whyOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'" aria-hidden="true" />
           </button>
         </h2>
         <p class="phome__why-short">
-          The market: {{ formatChange(w.marketChange) }}. Dividends: {{ formatChange(w.dividends) }}.
+          {{ fill(P.whyShort, { market: formatChange(w.marketChange), dividends: formatChange(w.dividends) }) }}
         </p>
         <div v-if="whyOpen" id="phome-why-body">
           <table class="phome__table">
-            <caption class="fl-visually-hidden">How your balance moved this week</caption>
+            <caption class="fl-visually-hidden">{{ copy.week.caption }}</caption>
             <tbody>
-              <tr><th scope="row">{{ formatDate(w.from) }} balance</th><td class="fl-tabular">{{ formatMoney(w.startBalance) }}</td></tr>
+              <tr><th scope="row">{{ fill(copy.week.startBalance, { date: formatDate(w.from) }) }}</th><td class="fl-tabular">{{ formatMoney(w.startBalance) }}</td></tr>
               <tr>
-                <th scope="row">The market</th>
+                <th scope="row">{{ copy.week.market }}</th>
                 <td class="fl-tabular"><span aria-hidden="true">{{ formatSigned(w.marketChange) }}</span><span class="fl-visually-hidden">{{ formatChange(w.marketChange) }}</span></td>
               </tr>
               <tr>
-                <th scope="row">Dividends</th>
+                <th scope="row">{{ copy.week.dividends }}</th>
                 <td class="fl-tabular"><span aria-hidden="true">{{ formatSigned(w.dividends) }}</span><span class="fl-visually-hidden">{{ formatChange(w.dividends) }}</span></td>
               </tr>
               <tr>
-                <th scope="row">Deposits</th>
+                <th scope="row">{{ copy.week.deposits }}</th>
                 <td class="fl-tabular"><span aria-hidden="true">{{ formatSigned(w.deposits) }}</span><span class="fl-visually-hidden">{{ formatChange(w.deposits) }}</span></td>
               </tr>
-              <tr class="is-end"><th scope="row">{{ formatDate(w.to) }} balance</th><td class="fl-tabular">{{ formatMoney(w.endBalance) }}</td></tr>
+              <tr class="is-end"><th scope="row">{{ fill(copy.week.endBalance, { date: formatDate(w.to) }) }}</th><td class="fl-tabular">{{ formatMoney(w.endBalance) }}</td></tr>
             </tbody>
           </table>
-          <h3 class="phome__h3">The market, fund by fund</h3>
+          <h3 class="phome__h3">{{ P.byFundTitle }}</h3>
           <ul class="phome__funds">
             <li v-for="f in w.byFund" :key="f.ticker">
               <button
@@ -133,40 +137,39 @@ function nextWord() {
                 </span>
               </button>
               <p v-if="fundOpen === f.ticker" class="phome__fund-more">
-                {{ f.ticker }} moved {{ formatChange(f.change) }} this week. The whole market change was
-                {{ formatChange(w.marketChange) }}.
+                {{ fill(P.fundMove, { ticker: f.ticker, change: formatChange(f.change), market: formatChange(w.marketChange) }) }}
               </p>
             </li>
           </ul>
-          <p v-if="anyDown" class="phome__note">Some funds went down this week. Ups and downs are normal.</p>
-          <RouterLink to="/funds" class="phome__link">See your funds <span class="mdi mdi-chevron-right" aria-hidden="true" /></RouterLink>
+          <p v-if="anyDown" class="phome__note">{{ P.someDown }}</p>
+          <RouterLink to="/funds" class="phome__link">{{ P.seeFunds }} <span class="mdi mdi-chevron-right" aria-hidden="true" /></RouterLink>
           <WordChips :ids="['the-market', 'dividend', 'deposit', 'ups-and-downs']" :heading-level="3" />
         </div>
       </section>
 
-      <div class="phome__card phome__chart"><BalanceOverTime compact title="Balance since March" /></div>
+      <div class="phome__card phome__chart"><BalanceOverTime compact :title="copy.chart.phoneTitle" /></div>
 
       <section class="phome__card" aria-labelledby="phome-latest">
-        <h2 id="phome-latest" class="phome__h">Latest</h2>
+        <h2 id="phome-latest" class="phome__h">{{ P.latest }}</h2>
         <ul class="phome__latest">
           <li v-for="r in latest" :key="r.id">
             <span class="phome__latest-date">{{ formatDate(r.date) }}</span>
-            <span class="phome__latest-what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="phome__status"> · {{ describeActivity(r).status }}</span></span>
+            <span class="phome__latest-what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="phome__status">{{ fill(P.latestStatus, { status: describeActivity(r).label }) }}</span></span>
             <span class="fl-tabular">{{ formatMoney(r.amount) }}</span>
           </li>
         </ul>
-        <RouterLink to="/activity" class="phome__link">See all activity <span class="mdi mdi-chevron-right" aria-hidden="true" /></RouterLink>
+        <RouterLink to="/activity" class="phome__link">{{ P.seeActivity }} <span class="mdi mdi-chevron-right" aria-hidden="true" /></RouterLink>
       </section>
     </template>
     <div v-else class="phome__card"><WelcomeCard /></div>
 
     <section class="phome__card phome__word" aria-labelledby="phome-word">
-      <h2 id="phome-word" class="phome__h">Word of the day</h2>
+      <h2 id="phome-word" class="phome__h">{{ P.wordOfTheDay }}</h2>
       <p class="phome__word-term">{{ word.term }}</p>
       <p>{{ word.short }}</p>
       <div class="phome__word-actions">
-        <TermTip :id="word.id" :key="word.id">Read more<span class="fl-visually-hidden"> about {{ word.term }}</span></TermTip>
-        <button type="button" class="phome__next" @click="nextWord">Next word</button>
+        <TermTip :id="word.id" :key="word.id">{{ P.readMore }}<span class="fl-visually-hidden">{{ fill(P.readMoreAbout, { term: word.term }) }}</span></TermTip>
+        <button type="button" class="phome__next" @click="nextWord">{{ P.nextWord }}</button>
       </div>
     </section>
   </div>

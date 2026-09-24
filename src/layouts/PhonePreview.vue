@@ -6,7 +6,10 @@
 // the 390px layout inside never changes.
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import copy from './copy.json'
 import { usePhonePreview } from './usePhonePreview'
+
+const P = copy.phoneView
 
 const { frameSrc, setOpen } = usePhonePreview()
 const route = useRoute()
@@ -63,7 +66,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="fl-pp" aria-labelledby="fl-pp-title">
-    <h1 id="fl-pp-title" class="fl-visually-hidden">Phone preview</h1>
+    <h1 id="fl-pp-title" class="fl-visually-hidden">{{ P.heading }}</h1>
     <div
       ref="stageEl"
       class="fl-pp__stage"
@@ -77,7 +80,7 @@ onBeforeUnmount(() => {
           ref="frameEl"
           class="fl-pp__screen"
           :src="frameSrc"
-          title="First Leaf on a phone"
+          :title="P.frameTitle"
           :width="SCREEN_W"
           :height="SCREEN_H"
           @load="onFrameLoad"
@@ -86,9 +89,9 @@ onBeforeUnmount(() => {
     </div>
     <div class="fl-pp__side">
       <button type="button" class="fl-pp__back" @click="close">
-        <span class="mdi mdi-arrow-left" aria-hidden="true" /> Back to full view
+        <span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ P.back }}
       </button>
-      <p v-if="onPractice">Practice here is kept apart from the full view.</p>
+      <p v-if="onPractice">{{ P.practiceNote }}</p>
     </div>
   </section>
 </template>

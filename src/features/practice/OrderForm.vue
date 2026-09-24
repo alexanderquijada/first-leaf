@@ -5,27 +5,31 @@
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
 import { funds } from '@/shared/data'
 import { formatMoney } from '@/shared/format'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 import { useOrder } from './useOrder'
+
+const O = copy.order
 
 const { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
 </script>
 
 <template>
   <section class="order" aria-labelledby="order-title">
-    <h2 id="order-title" class="order__title">Place an order</h2>
+    <h2 id="order-title" class="order__title">{{ O.title }}</h2>
     <template v-if="step === 'enter'">
-      <ToggleGroup v-model="side" label="Buy or sell" :options="[{ id: 'buy', label: 'Buy' }, { id: 'sell', label: 'Sell' }]" />
+      <ToggleGroup v-model="side" :label="O.side" :options="[{ id: 'buy', label: O.buy }, { id: 'sell', label: O.sell }]" />
       <fieldset class="order__funds">
-        <legend>Pick a fund</legend>
+        <legend>{{ O.pickFund }}</legend>
         <label v-for="f in funds" :key="f.ticker" class="order__fund">
           <input v-model="ticker" type="radio" name="practice-fund" :value="f.ticker" />
           <span class="order__fund-name"><strong>{{ f.ticker }}</strong> {{ f.name }}</span>
           <span class="fl-tabular">{{ formatMoney(f.latestPrice) }}</span>
         </label>
       </fieldset>
-      <label class="order__amount-label" for="practice-amount">Amount in dollars</label>
+      <label class="order__amount-label" for="practice-amount">{{ O.amountLabel }}</label>
       <div class="order__amount">
-        <span aria-hidden="true">$</span>
+        <span aria-hidden="true">{{ O.dollar }}</span>
         <input
           id="practice-amount"
           v-model="amount"
@@ -38,29 +42,29 @@ const { side, ticker, amount, touched, step, last, error, shownError, estShares,
         />
       </div>
       <p id="practice-error" class="order__error" role="alert">{{ shownError }}</p>
-      <button type="button" class="order__btn is-primary" :disabled="!!error" @click="review">Review</button>
+      <button type="button" class="order__btn is-primary" :disabled="!!error" @click="review">{{ O.review }}</button>
     </template>
 
     <template v-else-if="step === 'review'">
-      <h3 class="order__h">Check your order</h3>
+      <h3 class="order__h">{{ O.checkOrder }}</h3>
       <p>
-        {{ side === 'buy' ? 'Buy' : 'Sell' }} {{ formatMoney(Number(amount)) }} of {{ ticker }} at {{ formatMoney(practice.priceOf(ticker)) }} a share.
-        That is about {{ estShares.toFixed(4) }} shares.<template v-if="side === 'buy'"> There is no fee.</template>
+        {{ fill(side === 'buy' ? O.reviewBuy : O.reviewSell, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), shares: estShares.toFixed(4) })
+        }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="order__error" role="alert">{{ error }}</p>
       <div class="order__row">
-        <button type="button" class="order__btn" @click="step = 'enter'">Back</button>
-        <button type="button" class="order__btn is-primary" :disabled="!!error" @click="confirm">Confirm</button>
+        <button type="button" class="order__btn" @click="step = 'enter'">{{ O.back }}</button>
+        <button type="button" class="order__btn is-primary" :disabled="!!error" @click="confirm">{{ O.confirm }}</button>
       </div>
     </template>
 
     <template v-else-if="last">
       <p class="order__done" role="status">
         <span class="mdi mdi-check-circle" aria-hidden="true" />
-        <template v-if="last.side === 'buy'">You bought {{ formatMoney(last.amount) }} of {{ last.ticker }} with practice money.</template>
-        <template v-else>You sold {{ formatMoney(last.amount) }} of {{ last.ticker }}. The practice money went back to your practice cash.</template>
+        <template v-if="last.side === 'buy'">{{ fill(O.bought, { amount: formatMoney(last.amount), ticker: last.ticker }) }}</template>
+        <template v-else>{{ fill(O.sold, { amount: formatMoney(last.amount), ticker: last.ticker }) }}</template>
       </p>
-      <button type="button" class="order__btn is-primary" @click="next">New order</button>
+      <button type="button" class="order__btn is-primary" @click="next">{{ O.newOrder }}</button>
     </template>
   </section>
 </template>

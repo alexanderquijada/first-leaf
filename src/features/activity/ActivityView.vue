@@ -7,71 +7,77 @@ import BottomSheet from '@/shared/components/BottomSheet.vue'
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
 import { useViewport } from '@/shared/composables/useViewport'
 import { formatDate, formatMoney } from '@/shared/format'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 import { STATUS_OPTIONS, TYPE_OPTIONS, useActivityRows } from './useActivityRows'
 
 const { all, shown, type, status, reset } = useActivityRows()
 const { isPhone } = useViewport()
 const sheetOpen = ref(false)
 const filterSummary = computed(
-  () => `Type: ${TYPE_OPTIONS.find((o) => o.id === type.value)!.label}. Status: ${STATUS_OPTIONS.find((o) => o.id === status.value)!.label}.`,
+  () =>
+    fill(copy.filterSummary, {
+      type: TYPE_OPTIONS.find((o) => o.id === type.value)!.label,
+      status: STATUS_OPTIONS.find((o) => o.id === status.value)!.label,
+    }),
 )
 </script>
 
 <template>
   <div class="activity">
-    <h1>Activity</h1>
-    <p v-if="!all.length" class="activity__empty">Nothing yet. Your deposits, buys and dividends will show here.</p>
+    <h1>{{ copy.title }}</h1>
+    <p v-if="!all.length" class="activity__empty">{{ copy.empty }}</p>
     <template v-else>
       <template v-if="isPhone">
         <div class="activity__phonebar">
           <p class="activity__summary">{{ filterSummary }}</p>
           <button type="button" class="activity__filterbtn" @click="sheetOpen = true">
-            <span class="mdi mdi-filter-variant" aria-hidden="true" /> Filters
+            <span class="mdi mdi-filter-variant" aria-hidden="true" /> {{ copy.filters }}
           </button>
         </div>
-        <BottomSheet v-model="sheetOpen" title="Filters">
-          <p class="activity__filter-label" aria-hidden="true">Type</p>
-          <ToggleGroup v-model="type" label="Type" :options="TYPE_OPTIONS" />
-          <p class="activity__filter-label activity__filter-label--gap" aria-hidden="true">Status</p>
-          <ToggleGroup v-model="status" label="Status" :options="STATUS_OPTIONS" />
+        <BottomSheet v-model="sheetOpen" :title="copy.filters">
+          <p class="activity__filter-label" aria-hidden="true">{{ copy.type }}</p>
+          <ToggleGroup v-model="type" :label="copy.type" :options="TYPE_OPTIONS" />
+          <p class="activity__filter-label activity__filter-label--gap" aria-hidden="true">{{ copy.status }}</p>
+          <ToggleGroup v-model="status" :label="copy.status" :options="STATUS_OPTIONS" />
           <button type="button" class="activity__show" @click="sheetOpen = false">
-            Show {{ shown.length === 1 ? '1 item' : `${shown.length} items` }}
+            {{ shown.length === 1 ? copy.showOne : fill(copy.showMany, { count: shown.length }) }}
           </button>
         </BottomSheet>
       </template>
       <div v-else class="activity__filters">
         <div class="activity__filter">
-          <p class="activity__filter-label" aria-hidden="true">Type</p>
-          <ToggleGroup v-model="type" label="Type" :options="TYPE_OPTIONS" />
+          <p class="activity__filter-label" aria-hidden="true">{{ copy.type }}</p>
+          <ToggleGroup v-model="type" :label="copy.type" :options="TYPE_OPTIONS" />
         </div>
         <div class="activity__filter">
-          <p class="activity__filter-label" aria-hidden="true">Status</p>
-          <ToggleGroup v-model="status" label="Status" :options="STATUS_OPTIONS" />
+          <p class="activity__filter-label" aria-hidden="true">{{ copy.status }}</p>
+          <ToggleGroup v-model="status" :label="copy.status" :options="STATUS_OPTIONS" />
         </div>
       </div>
-      <p class="activity__count" role="status">Showing {{ shown.length }} of {{ all.length }}.</p>
+      <p class="activity__count" role="status">{{ fill(copy.count, { shown: shown.length, total: all.length }) }}</p>
       <div v-if="!shown.length" class="activity__none">
-        <p>Nothing matches these filters.</p>
-        <button type="button" class="activity__reset" @click="reset">Show everything</button>
+        <p>{{ copy.none }}</p>
+        <button type="button" class="activity__reset" @click="reset">{{ copy.showEverything }}</button>
       </div>
       <ul v-else-if="isPhone" class="activity__list">
         <li v-for="r in shown" :key="r.id">
           <RouterLink :to="`/activity/${r.id}`" class="activity__row" :class="`is-${describeActivity(r).status.toLowerCase()}`">
             <span class="activity__date">{{ formatDate(r.date) }}</span>
-            <span class="activity__what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="activity__status"> · {{ describeActivity(r).status }}</span></span>
+            <span class="activity__what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="activity__status">{{ fill(copy.rowStatus, { status: describeActivity(r).label }) }}</span></span>
             <span class="fl-tabular">{{ formatMoney(r.amount) }}</span>
           </RouterLink>
         </li>
       </ul>
-      <div v-else class="activity__wrap" role="region" aria-label="Activity" tabindex="0">
+      <div v-else class="activity__wrap" role="region" :aria-label="copy.tableLabel" tabindex="0">
         <table class="activity__table">
-          <caption class="fl-visually-hidden">Activity, newest first</caption>
+          <caption class="fl-visually-hidden">{{ copy.caption }}</caption>
           <thead>
             <tr>
-              <th scope="col">Date</th>
-              <th scope="col">What</th>
-              <th scope="col" class="is-num">Amount</th>
-              <th scope="col">Status</th>
+              <th scope="col">{{ copy.col.date }}</th>
+              <th scope="col">{{ copy.col.what }}</th>
+              <th scope="col" class="is-num">{{ copy.col.amount }}</th>
+              <th scope="col">{{ copy.col.status }}</th>
             </tr>
           </thead>
           <tbody>
@@ -79,7 +85,7 @@ const filterSummary = computed(
               <td>{{ formatDate(r.date) }}</td>
               <td><RouterLink :to="`/activity/${r.id}`">{{ describeActivity(r).what }}</RouterLink></td>
               <td class="is-num fl-tabular">{{ formatMoney(r.amount) }}</td>
-              <td>{{ describeActivity(r).status }}</td>
+              <td>{{ describeActivity(r).label }}</td>
             </tr>
           </tbody>
         </table>

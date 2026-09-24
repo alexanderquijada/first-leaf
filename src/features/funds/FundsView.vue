@@ -6,11 +6,13 @@ import Money from '@/shared/components/Money.vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useViewport } from '@/shared/composables/useViewport'
 import { funds } from '@/shared/data'
+import { fill } from '@/shared/copy'
 import { formatMoney } from '@/shared/format'
+import copy from './copy.json'
 
 const { account } = useScenario()
 const { isPhone } = useViewport()
-const KIND = { stocks: 'Stocks', bonds: 'Bonds', reserve: 'Reserve' } as const
+const KIND = copy.kind
 const rows = computed(() =>
   funds.map((f) => {
     const h = account.value.holdings.find((x) => x.ticker === f.ticker)
@@ -22,28 +24,28 @@ const rows = computed(() =>
 
 <template>
   <div class="funds">
-    <h1>Your funds</h1>
+    <h1>{{ copy.title }}</h1>
     <ul v-if="isPhone" class="funds__cards">
       <li v-for="r in rows" :key="r.f.ticker">
         <RouterLink :to="`/funds/${r.f.ticker}`" class="funds__card">
           <span class="funds__ticker">{{ r.f.ticker }}</span>
           <span class="funds__name">{{ r.f.name }}</span>
-          <span v-if="r.h" class="funds__value fl-tabular">{{ formatMoney(r.h.value) }} · <Money :amount="r.h.gainLoss" change /></span>
-          <span v-else class="funds__value is-muted">Not owned</span>
+          <span v-if="r.h" class="funds__value fl-tabular">{{ fill(copy.cardValue, { value: formatMoney(r.h.value) }) }}<Money :amount="r.h.gainLoss" change /></span>
+          <span v-else class="funds__value is-muted">{{ copy.notOwned }}</span>
         </RouterLink>
       </li>
     </ul>
-    <div v-else class="funds__wrap" role="region" aria-label="Your funds" tabindex="0">
+    <div v-else class="funds__wrap" role="region" :aria-label="copy.tableLabel" tabindex="0">
       <table class="funds__table">
-        <caption class="fl-visually-hidden">All funds, with what you have in each</caption>
+        <caption class="fl-visually-hidden">{{ copy.caption }}</caption>
         <thead>
           <tr>
-            <th scope="col">Fund</th>
-            <th scope="col">Kind</th>
-            <th scope="col" class="is-num">Yearly fee</th>
-            <th scope="col" class="is-num">Ups and downs</th>
-            <th scope="col" class="is-num">Your value</th>
-            <th scope="col" class="is-num">Up or down</th>
+            <th scope="col">{{ copy.col.fund }}</th>
+            <th scope="col">{{ copy.col.kind }}</th>
+            <th scope="col" class="is-num">{{ copy.col.fee }}</th>
+            <th scope="col" class="is-num">{{ copy.col.ups }}</th>
+            <th scope="col" class="is-num">{{ copy.col.value }}</th>
+            <th scope="col" class="is-num">{{ copy.col.change }}</th>
           </tr>
         </thead>
         <tbody>
@@ -53,9 +55,9 @@ const rows = computed(() =>
               <span class="funds__name">{{ r.f.name }}</span>
             </td>
             <td>{{ r.kind }}</td>
-            <td class="is-num fl-tabular">{{ r.fee.toFixed(2) }}%</td>
-            <td class="is-num fl-tabular">{{ r.f.upsAndDowns }} of 5</td>
-            <td class="is-num fl-tabular">{{ r.h ? formatMoney(r.h.value) : 'Not owned' }}</td>
+            <td class="is-num fl-tabular">{{ fill(copy.percent, { value: r.fee.toFixed(2) }) }}</td>
+            <td class="is-num fl-tabular">{{ fill(copy.upsValue, { value: r.f.upsAndDowns }) }}</td>
+            <td class="is-num fl-tabular">{{ r.h ? formatMoney(r.h.value) : copy.notOwned }}</td>
             <td class="is-num fl-tabular"><Money v-if="r.h" :amount="r.h.gainLoss" change context="table" /></td>
           </tr>
         </tbody>

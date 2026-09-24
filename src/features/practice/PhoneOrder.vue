@@ -7,7 +7,11 @@ import BottomSheet from '@/shared/components/BottomSheet.vue'
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
 import { funds } from '@/shared/data'
 import { formatMoney } from '@/shared/format'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 import { useOrder } from './useOrder'
+
+const O = copy.order
 
 const { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
 const sheetOpen = ref(false)
@@ -33,51 +37,51 @@ function onSheet(open: boolean) {
 
 <template>
   <section class="porder" aria-labelledby="porder-title">
-    <h2 id="porder-title" class="porder__title">Place an order</h2>
+    <h2 id="porder-title" class="porder__title">{{ O.title }}</h2>
     <template v-if="step !== 'done'">
-      <ToggleGroup v-model="side" label="Buy or sell" :options="[{ id: 'buy', label: 'Buy' }, { id: 'sell', label: 'Sell' }]" />
+      <ToggleGroup v-model="side" :label="O.side" :options="[{ id: 'buy', label: O.buy }, { id: 'sell', label: O.sell }]" />
       <fieldset class="porder__funds">
-        <legend>Pick a fund</legend>
+        <legend>{{ O.pickFund }}</legend>
         <label v-for="f in funds" :key="f.ticker" class="porder__fund">
           <input v-model="ticker" type="radio" name="phone-practice-fund" :value="f.ticker" />
           <span><strong>{{ f.ticker }}</strong></span>
           <span class="fl-tabular">{{ formatMoney(f.latestPrice) }}</span>
         </label>
       </fieldset>
-      <p class="porder__label" id="porder-amount-label">Amount</p>
-      <p class="porder__amount fl-tabular" aria-labelledby="porder-amount-label" role="status">${{ amount || '0' }}</p>
+      <p class="porder__label" id="porder-amount-label">{{ O.phoneAmountLabel }}</p>
+      <p class="porder__amount fl-tabular" aria-labelledby="porder-amount-label" role="status">{{ fill(O.phoneAmount, { amount: amount || '0' }) }}</p>
       <p class="porder__error" role="alert">{{ shownError }}</p>
-      <div class="porder__keys" role="group" aria-label="Number keypad">
+      <div class="porder__keys" role="group" :aria-label="O.keypad">
         <button
           v-for="k in KEYS"
           :key="k"
           type="button"
           class="porder__key"
-          :aria-label="k === 'del' ? 'Delete' : k === '.' ? 'Decimal point' : k"
+          :aria-label="k === 'del' ? O.delete : k === '.' ? O.decimal : k"
           @click="press(k)"
         >
           <span v-if="k === 'del'" class="mdi mdi-backspace-outline" aria-hidden="true" />
           <template v-else>{{ k }}</template>
         </button>
       </div>
-      <button type="button" class="porder__review" :disabled="!!error" @click="openReview">Review</button>
+      <button type="button" class="porder__review" :disabled="!!error" @click="openReview">{{ O.review }}</button>
     </template>
     <template v-else-if="last">
       <p class="porder__done" role="status">
         <span class="mdi mdi-check-circle" aria-hidden="true" />
-        <template v-if="last.side === 'buy'">You bought {{ formatMoney(last.amount) }} of {{ last.ticker }} with practice money.</template>
-        <template v-else>You sold {{ formatMoney(last.amount) }} of {{ last.ticker }}. The practice money went back to your practice cash.</template>
+        <template v-if="last.side === 'buy'">{{ fill(O.bought, { amount: formatMoney(last.amount), ticker: last.ticker }) }}</template>
+        <template v-else>{{ fill(O.sold, { amount: formatMoney(last.amount), ticker: last.ticker }) }}</template>
       </p>
-      <button type="button" class="porder__review" @click="next">New order</button>
+      <button type="button" class="porder__review" @click="next">{{ O.newOrder }}</button>
     </template>
 
-    <BottomSheet v-model="sheetOpen" title="Check your order" @update:model-value="onSheet">
+    <BottomSheet v-model="sheetOpen" :title="O.checkOrder" @update:model-value="onSheet">
       <p class="porder__sheet-text">
-        {{ side === 'buy' ? 'Buy' : 'Sell' }} {{ formatMoney(Number(amount)) }} of {{ ticker }} at {{ formatMoney(practice.priceOf(ticker)) }} a share.
-        That is about {{ estShares.toFixed(4) }} shares.<template v-if="side === 'buy'"> There is no fee.</template>
+        {{ fill(side === 'buy' ? O.reviewBuy : O.reviewSell, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), shares: estShares.toFixed(4) })
+        }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="porder__error" role="alert">{{ error }}</p>
-      <button type="button" class="porder__review" :disabled="!!error" @click="doConfirm">Confirm</button>
+      <button type="button" class="porder__review" :disabled="!!error" @click="doConfirm">{{ O.confirm }}</button>
     </BottomSheet>
   </section>
 </template>

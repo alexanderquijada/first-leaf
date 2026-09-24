@@ -1,21 +1,11 @@
 import AxeBuilder from '@axe-core/playwright'
 import type { Page } from '@playwright/test'
-import { test, expect } from '../fixtures'
+import { test, expect, settle } from '../fixtures'
 
 // axe-core scans against WCAG 2.2 A and AA. Zero serious or critical violations allowed.
 async function seriousViolations(page: Page) {
   // Measure the settled page: a fade-in caught halfway looks like low contrast.
-  // (Only animations that end: an infinite one, such as a spinner, never finishes.
-  // Two frames first, so a transition that starts on the next frame is counted.)
-  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))))
-  await page.evaluate(() =>
-    Promise.all(
-      document
-        .getAnimations()
-        .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
-        .map((a) => a.finished.catch(() => undefined)),
-    ),
-  )
+  await settle(page)
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
     .analyze()

@@ -9,13 +9,14 @@ import GoalCard from './GoalCard.vue'
 import MixCard from './MixCard.vue'
 import ThisWeekCard from './ThisWeekCard.vue'
 import WelcomeCard from './WelcomeCard.vue'
+import copy from './copy.json'
 
 const { account } = useScenario()
 </script>
 
 <template>
   <div class="dhome">
-    <h1 class="fl-visually-hidden">Home</h1>
+    <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
     <template v-if="account.history.length">
       <div class="dhome__card dhome__alerts"><AlertList /></div>
       <BalancePanel class="dhome__balance" />
@@ -27,8 +28,8 @@ const { account } = useScenario()
     <template v-else>
       <div class="dhome__card dhome__welcome"><WelcomeCard /></div>
       <div class="dhome__card dhome__chart">
-        <h2 class="dhome__empty-title">Balance over time</h2>
-        <p class="dhome__empty">Your balance over time will show here after your first deposit arrives.</p>
+        <h2 class="dhome__empty-title">{{ copy.chart.emptyTitle }}</h2>
+        <p class="dhome__empty">{{ copy.chart.empty }}</p>
       </div>
     </template>
   </div>

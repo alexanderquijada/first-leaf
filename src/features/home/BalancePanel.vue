@@ -2,6 +2,9 @@
 // The balance, in the dark data panel: how much, up or down on what she put in,
 // this week, and auto-invest (as it stands this session).
 import { computed } from 'vue'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 import Money from '@/shared/components/Money.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { useScenario } from '@/shared/composables/useScenario'
@@ -11,30 +14,34 @@ import { formatDate, formatMoneyShort } from '@/shared/format'
 const { account } = useScenario()
 const { autoInvestOn, autoInvestChanged } = useSession()
 const pausedOn = computed(() => account.value.autoInvest.pausedOn)
+const B = copy.balance
+void fill
 </script>
 
 <template>
   <section class="fl-panel balance" aria-labelledby="balance-title">
-    <h2 id="balance-title" class="balance__label"><TermTip id="balance">Balance</TermTip></h2>
+    <h2 id="balance-title" class="balance__label"><TermTip id="balance">{{ B.label }}</TermTip></h2>
     <p class="balance__big fl-tabular"><Money :amount="account.balance" /></p>
     <p class="balance__line">
-      <Money :amount="account.gainLoss" change capitalize /> on the
-      {{ formatMoneyShort(account.moneyIn) }} you
-      <TermTip id="money-in">put in</TermTip>.
+      <CopyText :text="B.vsPutIn" :values="{ moneyIn: formatMoneyShort(account.moneyIn) }"
+        ><template #change><Money :amount="account.gainLoss" change capitalize /></template
+        ><template #putIn><TermTip id="money-in">{{ B.putInWord }}</TermTip></template></CopyText
+      >
     </p>
     <p v-if="account.weeklyChange" class="balance__line">
-      This week: <Money :amount="account.weeklyChange.totalChange" change />.
+      <CopyText :text="B.thisWeek"><template #change><Money :amount="account.weeklyChange.totalChange" change /></template></CopyText>
     </p>
     <dl class="balance__parts">
-      <div><dt>In funds</dt><dd class="fl-tabular"><Money :amount="account.investedValue" /></dd></div>
-      <div><dt><TermTip id="cash">Cash</TermTip></dt><dd class="fl-tabular"><Money :amount="account.cash" /></dd></div>
-      <div><dt>You put in</dt><dd class="fl-tabular"><Money :amount="account.moneyIn" /></dd></div>
+      <div><dt>{{ B.inFunds }}</dt><dd class="fl-tabular"><Money :amount="account.investedValue" /></dd></div>
+      <div><dt><TermTip id="cash">{{ B.cash }}</TermTip></dt><dd class="fl-tabular"><Money :amount="account.cash" /></dd></div>
+      <div><dt>{{ B.youPutIn }}</dt><dd class="fl-tabular"><Money :amount="account.moneyIn" /></dd></div>
     </dl>
     <p class="balance__line">
-      <TermTip id="auto-invest">Auto-invest</TermTip>:
-      <template v-if="autoInvestOn">On.</template>
-      <template v-else-if="pausedOn && !autoInvestChanged">Paused since {{ formatDate(pausedOn) }}.</template>
-      <template v-else>Paused.</template>
+      <CopyText
+        :text="autoInvestOn ? B.autoOn : pausedOn && !autoInvestChanged ? B.autoPausedSince : B.autoPaused"
+        :values="{ date: pausedOn ? formatDate(pausedOn) : '' }"
+        ><template #autoInvest><TermTip id="auto-invest">{{ B.autoInvestWord }}</TermTip></template></CopyText
+      >
     </p>
   </section>
 </template>

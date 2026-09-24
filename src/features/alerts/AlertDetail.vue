@@ -10,7 +10,12 @@ import { useHandled } from '@/shared/composables/useHandled'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useSession } from '@/shared/composables/useSession'
 import type { AttentionFlag } from '@/shared/data'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
 import { formatDate, formatMoney } from '@/shared/format'
+import copy from './copy.json'
+
+const F = copy.facts
 
 const props = withDefaults(defineProps<{ alert: AttentionFlag; headingLevel?: 1 | 2 }>(), { headingLevel: 2 })
 
@@ -32,48 +37,48 @@ const facts = computed<{ label: string; value: string }[]>(() => {
     const d = activity.value.find((x) => x.id === a.activityId)
     return d && d.type === 'deposit'
       ? [
-          { label: 'Amount', value: formatMoney(d.amount) },
-          { label: 'Asked for on', value: formatDate(d.date) },
-          { label: 'Sent back on', value: d.returnedDate ? formatDate(d.returnedDate) : '' },
-          { label: 'Status', value: 'Returned' },
+          { label: F.amount, value: formatMoney(d.amount) },
+          { label: F.askedOn, value: formatDate(d.date) },
+          { label: F.sentBackOn, value: d.returnedDate ? formatDate(d.returnedDate) : '' },
+          { label: F.status, value: F.returned },
         ]
       : []
   }
   if (a.id === 'goal-behind' && acc.goal)
     return [
-      { label: 'Your plan by now', value: formatMoney(acc.goal.plannedMoneyInToDate) },
-      { label: 'Put in so far', value: formatMoney(acc.goal.actualMoneyInToDate) },
-      { label: 'Behind by', value: formatMoney(acc.goal.behindBy) },
+      { label: F.planByNow, value: formatMoney(acc.goal.plannedMoneyInToDate) },
+      { label: F.putInSoFar, value: formatMoney(acc.goal.actualMoneyInToDate) },
+      { label: F.behindBy, value: formatMoney(acc.goal.behindBy) },
     ]
   if (a.id === 'cash-sitting')
     return [
-      { label: 'Cash', value: formatMoney(acc.cash) },
-      { label: 'Waiting since', value: acc.cashSince ? formatDate(acc.cashSince) : '' },
-      { label: 'Auto-invest', value: autoInvestOn.value ? 'On' : acc.autoInvest.pausedOn ? `Paused since ${formatDate(acc.autoInvest.pausedOn)}` : 'Off' },
+      { label: F.cash, value: formatMoney(acc.cash) },
+      { label: F.waitingSince, value: acc.cashSince ? formatDate(acc.cashSince) : '' },
+      { label: F.autoInvest, value: autoInvestOn.value ? F.on : acc.autoInvest.pausedOn ? fill(F.pausedSince, { date: formatDate(acc.autoInvest.pausedOn) }) : F.off },
     ]
   if (a.id === 'fee-going-up' && a.feeFrom !== undefined && a.feeTo !== undefined)
     return [
-      { label: 'Yearly fee now', value: `${a.feeFrom.toFixed(2)}%` },
-      { label: `From ${formatDate(a.date)}`, value: `${a.feeTo.toFixed(2)}%` },
-      { label: 'Change', value: `+${(a.feeTo - a.feeFrom).toFixed(2)} percentage points` },
-      { label: 'About', value: `${formatMoney(a.amount)} more a year` },
+      { label: F.feeNow, value: `${a.feeFrom.toFixed(2)}%` },
+      { label: fill(F.feeFrom, { date: formatDate(a.date) }), value: `${a.feeTo.toFixed(2)}%` },
+      { label: F.change, value: fill(F.feeChange, { points: (a.feeTo - a.feeFrom).toFixed(2) }) },
+      { label: F.about, value: fill(F.moreAYear, { amount: formatMoney(a.amount) }) },
     ]
   if (a.id === 'dividend-paid')
     return [
-      { label: 'Amount', value: formatMoney(a.amount) },
-      { label: 'Fund', value: a.ticker ?? '' },
-      { label: 'Paid on', value: formatDate(a.date) },
+      { label: F.amount, value: formatMoney(a.amount) },
+      { label: F.fund, value: a.ticker ?? '' },
+      { label: F.paidOn, value: formatDate(a.date) },
     ]
   return []
 })
 
 function handle() {
   markHandled(props.alert)
-  status.value = 'Marked as handled.'
+  status.value = copy.markedStatus
 }
 function unhandle() {
   undo(props.alert)
-  status.value = 'Moved back to your alerts.'
+  status.value = copy.undoneStatus
 }
 </script>
 
@@ -81,11 +86,11 @@ function unhandle() {
   <article class="adetail" :aria-labelledby="`adetail-${alert.id}`">
     <p class="adetail__badges">
       <SeverityBadge :severity="alert.severity" />
-      <span v-if="alert.newSinceLastReview" class="adetail__new">New</span>
+      <span v-if="alert.newSinceLastReview" class="adetail__new">{{ copy.new }}</span>
     </p>
     <component :is="`h${headingLevel}`" :id="`adetail-${alert.id}`" class="adetail__title">{{ alert.title }}</component>
 
-    <h3 class="adetail__h">What happened</h3>
+    <h3 class="adetail__h">{{ copy.whatHappened }}</h3>
     <p>{{ alert.body }}</p>
     <dl v-if="facts.length" class="adetail__facts">
       <div v-for="f in facts" :key="f.label">
@@ -94,12 +99,12 @@ function unhandle() {
       </div>
     </dl>
 
-    <h3 class="adetail__h">What it means</h3>
+    <h3 class="adetail__h">{{ copy.whatItMeans }}</h3>
     <ul class="adetail__terms">
-      <li v-for="t in terms" :key="t.id"><TermTip :id="t.id">{{ t.term }}</TermTip>: {{ t.short }}</li>
+      <li v-for="t in terms" :key="t.id"><CopyText :text="copy.termLine" :values="{ short: t.short }"><template #term><TermTip :id="t.id">{{ t.term }}</TermTip></template></CopyText></li>
     </ul>
 
-    <h3 class="adetail__h">What you can do</h3>
+    <h3 class="adetail__h">{{ copy.whatYouCanDo }}</h3>
     <p>{{ alert.nextStep }}</p>
     <div class="adetail__actions">
       <template v-if="alert.action">
@@ -113,10 +118,10 @@ function unhandle() {
           {{ alert.action.label }}
         </button>
       </template>
-      <button v-if="!isHandled(alert.id)" type="button" class="adetail__btn" @click="handle">Mark as handled</button>
+      <button v-if="!isHandled(alert.id)" type="button" class="adetail__btn" @click="handle">{{ copy.markHandled }}</button>
       <template v-else>
-        <span class="adetail__handled"><span class="mdi mdi-check" aria-hidden="true" /> Handled</span>
-        <button type="button" class="adetail__btn" @click="unhandle">Undo</button>
+        <span class="adetail__handled"><span class="mdi mdi-check" aria-hidden="true" /> {{ copy.handled }}</span>
+        <button type="button" class="adetail__btn" @click="unhandle">{{ copy.undo }}</button>
       </template>
     </div>
     <p class="fl-visually-hidden" role="status">{{ status }}</p>

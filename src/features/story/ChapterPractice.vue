@@ -1,15 +1,15 @@
 <script setup lang="ts">
 // Chapter 6: try it with pretend money.
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 </script>
 
 <template>
   <section id="chapter-6" class="chapter" aria-labelledby="chapter-6-title">
-    <p class="chapter__num">Chapter 6</p>
-    <h2 id="chapter-6-title">Try it with pretend money</h2>
-    <p class="chapter__claim">
-      Practice lets you try a mix with money that is not real. Nothing you do there touches your account.
-    </p>
-    <RouterLink to="/practice" class="k6__go">Go to Practice <span class="mdi mdi-arrow-right" aria-hidden="true" /></RouterLink>
+    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 6 }) }}</p>
+    <h2 id="chapter-6-title">{{ copy.titles['6'] }}</h2>
+    <p class="chapter__claim">{{ copy.practice.claim }}</p>
+    <RouterLink to="/practice" class="k6__go">{{ copy.practice.go }} <span class="mdi mdi-arrow-right" aria-hidden="true" /></RouterLink>
   </section>
 </template>
 

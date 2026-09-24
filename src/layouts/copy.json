@@ -1,0 +1,51 @@
+{
+  "wordmark": "First Leaf",
+  "greeting": "Good morning, {name}.",
+  "pricesAsOf": "Prices as of {date}",
+  "skip": "Skip to content",
+  "navLabel": "Main",
+  "nav": {
+    "home": {
+      "label": "Home",
+      "short": "Home"
+    },
+    "activity": {
+      "label": "Activity",
+      "short": "Activity"
+    },
+    "funds": {
+      "label": "Funds",
+      "short": "Funds"
+    },
+    "story": {
+      "label": "Your money story",
+      "short": "Story"
+    },
+    "practice": {
+      "label": "Practice",
+      "short": "Practice"
+    },
+    "learn": {
+      "label": "Words",
+      "short": "Words"
+    }
+  },
+  "phoneView": {
+    "toggle": "Phone view",
+    "heading": "Phone preview",
+    "frameTitle": "First Leaf on a phone",
+    "back": "Back to full view",
+    "practiceNote": "Practice here is kept apart from the full view."
+  },
+  "pageTitles": {
+    "home": "Home",
+    "alerts": "Alerts",
+    "activity": "Activity",
+    "funds": "Your funds",
+    "story": "Your money story",
+    "practice": "Practice",
+    "learn": "Words to know",
+    "notFound": "Page not found"
+  },
+  "documentTitle": "{page} · First Leaf"
+}

@@ -1,7 +1,8 @@
 // Date formatting in First Leaf's house style (AP-style abbreviations).
+import { copy, fill } from './copy'
 
-const MONTHS = ['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.']
-const DAYS = ['Sun.', 'Mon.', 'Tue.', 'Wed.', 'Thu.', 'Fri.', 'Sat.']
+const MONTHS = copy.dates.months
+const DAYS = copy.dates.days
 
 /** "2026-09-18" → "Sept. 18" */
 export function formatDate(iso: string): string {
@@ -33,7 +34,7 @@ export function formatMoneyShort(n: number): string {
 /** A change in a sentence: "up $15.57", "down $5.88", "no change" (BRIEF.md §5). */
 export function formatChange(n: number): string {
   const r = Math.round(n * 100) / 100
-  return r > 0 ? `up ${formatMoney(r)}` : r < 0 ? `down ${formatMoney(-r)}` : 'no change'
+  return r > 0 ? fill(copy.change.up, { amount: formatMoney(r) }) : r < 0 ? fill(copy.change.down, { amount: formatMoney(-r) }) : copy.change.none
 }
 
 /** A change in a table or chart label: "+$15.57", "−$5.88", "$0.00". */

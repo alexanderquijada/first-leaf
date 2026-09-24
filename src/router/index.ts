@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import AppLayout from '@/layouts/AppLayout.vue'
 import HomeView from '@/features/home/HomeView.vue'
+import layoutCopy from '@/layouts/copy.json'
+import { fill } from '@/shared/copy'
+
+const PT = layoutCopy.pageTitles
 
 // One app (BRIEF.md §3, §7). The router wires the layout to each feature's pages.
 // The layout and Home load with the first screen; every other page is lazy.
@@ -8,18 +12,18 @@ const app: RouteRecordRaw = {
   path: '/',
   component: AppLayout,
   children: [
-    { path: '', name: 'home', component: HomeView, meta: { title: 'Home' } },
-    { path: 'alerts', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
-    { path: 'alerts/:id', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: 'Alerts' } },
-    { path: 'activity', component: () => import('@/features/activity/ActivityView.vue'), meta: { title: 'Activity' } },
-    { path: 'activity/:id', component: () => import('@/features/activity/ActivityDetail.vue'), meta: { title: 'Activity' } },
-    { path: 'funds', component: () => import('@/features/funds/FundsView.vue'), meta: { title: 'Your funds' } },
-    { path: 'funds/:ticker', component: () => import('@/features/funds/FundView.vue'), meta: { title: 'Your funds' } },
-    { path: 'story', component: () => import('@/features/story/StoryView.vue'), meta: { title: 'Your money story' } },
-    { path: 'practice', component: () => import('@/features/practice/PracticeView.vue'), meta: { title: 'Practice' } },
-    { path: 'learn', component: () => import('@/features/learn/LearnView.vue'), meta: { title: 'Words to know' } },
-    { path: 'learn/:termId', component: () => import('@/features/learn/TermView.vue'), meta: { title: 'Words to know' } },
-    { path: ':pathMatch(.*)*', name: 'not-found', component: () => import('@/features/not-found/NotFoundView.vue'), meta: { title: 'Page not found' } },
+    { path: '', name: 'home', component: HomeView, meta: { title: PT.home } },
+    { path: 'alerts', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: PT.alerts } },
+    { path: 'alerts/:id', component: () => import('@/features/alerts/AlertsView.vue'), meta: { title: PT.alerts } },
+    { path: 'activity', component: () => import('@/features/activity/ActivityView.vue'), meta: { title: PT.activity } },
+    { path: 'activity/:id', component: () => import('@/features/activity/ActivityDetail.vue'), meta: { title: PT.activity } },
+    { path: 'funds', component: () => import('@/features/funds/FundsView.vue'), meta: { title: PT.funds } },
+    { path: 'funds/:ticker', component: () => import('@/features/funds/FundView.vue'), meta: { title: PT.funds } },
+    { path: 'story', component: () => import('@/features/story/StoryView.vue'), meta: { title: PT.story } },
+    { path: 'practice', component: () => import('@/features/practice/PracticeView.vue'), meta: { title: PT.practice } },
+    { path: 'learn', component: () => import('@/features/learn/LearnView.vue'), meta: { title: PT.learn } },
+    { path: 'learn/:termId', component: () => import('@/features/learn/TermView.vue'), meta: { title: PT.learn } },
+    { path: ':pathMatch(.*)*', name: 'not-found', component: () => import('@/features/not-found/NotFoundView.vue'), meta: { title: PT.notFound } },
   ],
 }
 
@@ -64,7 +68,7 @@ router.beforeEach((to, from) => {
 // Each page gets its own title, so tabs and screen readers can tell them apart.
 router.afterEach((to) => {
   const t = to.meta.title as string | undefined
-  document.title = t && t !== 'Home' ? `${t} · First Leaf` : 'First Leaf'
+  document.title = t && t !== PT.home ? fill(layoutCopy.documentTitle, { page: t }) : layoutCopy.wordmark
 })
 
 export default router

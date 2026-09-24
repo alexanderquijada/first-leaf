@@ -1,17 +1,22 @@
 <script setup lang="ts">
 // A brand-new account: no money yet, so no charts, just what happens next.
 import { persona } from '@/shared/data'
+import CopyText from '@/shared/components/CopyText.vue'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 import TermTip from '@/shared/components/TermTip.vue'
+
+const W = copy.welcome
 </script>
 
 <template>
   <section class="welcome" aria-labelledby="welcome-title">
-    <h2 id="welcome-title" class="welcome__title">Welcome, {{ persona.firstName }}.</h2>
-    <p>Your account is open. Here is what happens next.</p>
+    <h2 id="welcome-title" class="welcome__title">{{ fill(W.title, { name: persona.firstName }) }}</h2>
+    <p>{{ W.lede }}</p>
     <ol class="welcome__steps">
-      <li>Add money from your bank. It takes 1 to 3 days to arrive.</li>
-      <li>When it arrives, it waits as <TermTip id="cash">cash</TermTip> in your account.</li>
-      <li>Then you choose what to do with it, such as turning on <TermTip id="auto-invest">auto-invest</TermTip>.</li>
+      <li>{{ W.step1 }}</li>
+      <li><CopyText :text="W.step2"><template #cash><TermTip id="cash">{{ W.cashWord }}</TermTip></template></CopyText></li>
+      <li><CopyText :text="W.step3"><template #autoInvest><TermTip id="auto-invest">{{ W.autoInvestWord }}</TermTip></template></CopyText></li>
     </ol>
   </section>
 </template>

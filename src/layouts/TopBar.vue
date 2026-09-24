@@ -2,15 +2,17 @@
 // The top bar at every size. Phone: the wordmark. Tablet: the wordmark and
 // "Prices as of …". Desktop: the greeting and "Prices as of …" (the wordmark sits in the rail).
 import { meta, persona } from '@/shared/data'
+import { fill } from '@/shared/copy'
 import { formatDayDate } from '@/shared/format'
+import copy from './copy.json'
 </script>
 
 <template>
   <header class="fl-topbar">
-    <RouterLink to="/" class="fl-topbar__wordmark">First Leaf</RouterLink>
+    <RouterLink to="/" class="fl-topbar__wordmark">{{ copy.wordmark }}</RouterLink>
     <div class="fl-topbar__hello">
-      <p class="fl-topbar__greeting">Good morning, {{ persona.firstName }}.</p>
-      <p class="fl-topbar__asof">Prices as of {{ formatDayDate(meta.lastClose) }}</p>
+      <p class="fl-topbar__greeting">{{ fill(copy.greeting, { name: persona.firstName }) }}</p>
+      <p class="fl-topbar__asof">{{ fill(copy.pricesAsOf, { date: formatDayDate(meta.lastClose) }) }}</p>
     </div>
     <div class="fl-topbar__actions">
       <slot name="actions" />

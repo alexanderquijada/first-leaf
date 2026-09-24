@@ -12,6 +12,10 @@ import ChapterPractice from './ChapterPractice.vue'
 import ChapterMix from './ChapterMix.vue'
 import ChapterShare from './ChapterShare.vue'
 import ChapterSinceMarch from './ChapterSinceMarch.vue'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
+
+const T = copy.titles
 
 const { account } = useScenario()
 const { isPhone } = useViewport()
@@ -36,31 +40,31 @@ const pointOfView = computed(() => rosa.value?.pointOfView ?? story.pointOfView)
 const chapters = computed(() =>
   rosa.value
     ? [
-        { n: 1, title: 'Seven months in' },
-        { n: 2, title: 'Most of it is still your money' },
-        { n: 3, title: 'The dip in July' },
-        { n: 4, title: 'Where it is now' },
-        { n: 5, title: 'What happens if you keep going' },
-        { n: 6, title: 'Try it with pretend money' },
+        { n: 1, title: T['1'] },
+        { n: 2, title: T['2'] },
+        { n: 3, title: T['3'] },
+        { n: 4, title: T['4'] },
+        { n: 5, title: T['5'] },
+        { n: 6, title: T['6'] },
       ]
     : [
-        { n: 1, title: 'Your story starts with your first deposit' },
-        { n: 5, title: 'What happens if you keep going' },
-        { n: 6, title: 'Try it with pretend money' },
+        { n: 1, title: T.new },
+        { n: 5, title: T['5'] },
+        { n: 6, title: T['6'] },
       ],
 )
 </script>
 
 <template>
   <div class="story">
-    <h1>Your money story</h1>
+    <h1>{{ copy.title }}</h1>
     <p class="story__pov">{{ pointOfView }}</p>
 
     <template v-if="isPhone">
       <button type="button" class="story__chapters" @click="menuOpen = true">
-        <span class="mdi mdi-format-list-numbered" aria-hidden="true" /> Chapters
+        <span class="mdi mdi-format-list-numbered" aria-hidden="true" /> {{ copy.chapters }}
       </button>
-      <BottomSheet v-model="menuOpen" title="Chapters">
+      <BottomSheet v-model="menuOpen" :title="copy.chapters">
         <ol class="story__sheet-list">
           <li v-for="c in chapters" :key="c.n" :value="c.n">
             <a :href="`#chapter-${c.n}`" class="story__sheet-link" @click.prevent="goTo(c.n)">{{ c.title }}</a>
@@ -68,7 +72,7 @@ const chapters = computed(() =>
         </ol>
       </BottomSheet>
     </template>
-    <nav v-else class="story__menu" aria-label="Chapters">
+    <nav v-else class="story__menu" :aria-label="copy.chapters">
       <ol>
         <li v-for="c in chapters" :key="c.n" :value="c.n">
           <a :href="`#chapter-${c.n}`" class="story__menu-link">{{ c.title }}</a>
@@ -83,9 +87,9 @@ const chapters = computed(() =>
       <ChapterMix :account="account" />
     </template>
     <section v-else id="chapter-1" class="chapter" aria-labelledby="chapter-1-title">
-      <p class="chapter__num">Chapter 1</p>
-      <h2 id="chapter-1-title">Your story starts with your first deposit</h2>
-      <p class="chapter__claim">Once your first deposit arrives, this story will show how your money has moved.</p>
+      <p class="chapter__num">{{ fill(copy.chapterNum, { n: 1 }) }}</p>
+      <h2 id="chapter-1-title">{{ T.new }}</h2>
+      <p class="chapter__claim">{{ copy.newClaim }}</p>
     </section>
 
     <ChapterKeepGoing />

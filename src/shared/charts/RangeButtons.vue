@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { copy } from '../copy'
 import { RANGES, type RangeId } from './ranges'
 
 const range = defineModel<RangeId>({ required: true })
 </script>
 
 <template>
-  <div class="ranges" role="group" aria-label="Time range">
+  <div class="ranges" role="group" :aria-label="copy.ranges.group">
     <button
       v-for="r in RANGES"
       :key="r.id"

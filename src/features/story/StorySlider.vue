@@ -3,6 +3,8 @@
 // At least 48px tall, so it's easy to grab with a thumb. An optional mark shows a
 // point on the track (for example where Theo passes Nia).
 import { computed, useId } from 'vue'
+import CopyText from '@/shared/components/CopyText.vue'
+import copy from './copy.json'
 
 const props = defineProps<{
   label: string
@@ -20,7 +22,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 
 <template>
   <div class="slider">
-    <label :for="id" class="slider__label">{{ label }}: <strong>{{ valueText(value) }}</strong></label>
+    <label :for="id" class="slider__label"><CopyText :text="copy.slider.label" :values="{ label }"><template #value><strong>{{ valueText(value) }}</strong></template></CopyText></label>
     <div class="slider__track">
       <input
         :id="id"

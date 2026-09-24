@@ -12,7 +12,10 @@ const currentOpen = ref<string | null>(null)
 // so screen readers announce it when focus lands there. Nothing is hover-only.
 // Under 600px wide the panel opens as a bottom sheet.
 import { computed, nextTick, onBeforeUnmount, useId, watch } from 'vue'
+import CopyText from './CopyText.vue'
 import { useGlossary } from '../composables/useGlossary'
+import { copy, fill } from '../copy'
+const T = copy.termTip
 
 const props = defineProps<{
   /** Glossary id, e.g. "expense-ratio". */
@@ -202,7 +205,7 @@ onBeforeUnmount(() => close(false))
           class="fl-termtip__back"
           @click="goBack"
         >
-          <span class="mdi mdi-arrow-left" aria-hidden="true" /> Back to {{ previous.term }}
+          <span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ fill(T.back, { term: previous.term }) }}
         </button>
         <div class="fl-termtip__head">
           <h2 :id="`${panelId}-term`" ref="headingEl" class="fl-termtip__term" tabindex="-1">
@@ -211,20 +214,20 @@ onBeforeUnmount(() => close(false))
           <button
             type="button"
             class="fl-termtip__close"
-            aria-label="Close explanation"
+            :aria-label="T.close"
             @click="close(true)"
           >
             <span class="mdi mdi-close" aria-hidden="true" />
           </button>
         </div>
         <p v-if="shown.alsoCalled.length" class="fl-termtip__also">
-          Also called <em>{{ shown.alsoCalled.join(', ') }}</em>
+          <CopyText :text="T.alsoCalled"><template #terms><em>{{ shown.alsoCalled.join(', ') }}</em></template></CopyText>
         </p>
         <p :id="`${panelId}-short`" class="fl-termtip__short">{{ shown.short }}</p>
         <p :id="`${panelId}-detail`" class="fl-termtip__detail">{{ shown.detail }}</p>
-        <p class="fl-termtip__example"><strong>Example:</strong> {{ shown.example }}</p>
+        <p class="fl-termtip__example"><strong>{{ T.example }}</strong> {{ shown.example }}</p>
         <div v-if="relatedEntries.length" class="fl-termtip__related">
-          <span class="fl-termtip__label">Related words:</span>
+          <span class="fl-termtip__label">{{ T.related }}</span>
           <ul>
             <li v-for="r in relatedEntries" :key="r.id">
               <button
@@ -239,8 +242,8 @@ onBeforeUnmount(() => close(false))
           </ul>
         </div>
         <p v-if="shown.source" class="fl-termtip__source">
-          Source:
-          <a :href="shown.source.url" target="_blank" rel="noopener noreferrer">{{ shown.source.label }}<span class="fl-visually-hidden"> (opens in a new tab)</span></a>
+          {{ T.source }}
+          <a :href="shown.source.url" target="_blank" rel="noopener noreferrer">{{ shown.source.label }}<span class="fl-visually-hidden"> {{ T.newTab }}</span></a>
         </p>
       </div>
     </Teleport>

@@ -1,6 +1,9 @@
 import { computed, reactive } from 'vue'
 import { funds, getFund, practiceRules, type Ticker } from '../data'
+import { copy, fill } from '../copy'
 import { formatMoney } from '../format'
+
+const E = copy.practiceErrors
 
 // Practice: pretend money for trying things. Module scope, so a half-finished
 // session survives navigation; reloading starts over. It reads fund prices and
@@ -28,16 +31,16 @@ const valueOf = (t: Ticker) => r2((state.lots[t]?.shares ?? 0) * priceOf(t))
 /** The error for an order, or '' when it can go ahead. Checked in a fixed order. */
 export function orderError(side: Side, ticker: Ticker, text: string): string {
   const t = text.trim().replace(/^\$/, '').replace(/,/g, '')
-  if (t === '') return 'Enter an amount of $1 or more.'
-  if (!/^\d*\.?\d*$/.test(t) || t === '.') return 'Enter a number, like 25 or 25.50.'
-  if (/\.\d{3,}$/.test(t)) return `Use no more than ${practiceRules.maxDecimals} decimals, like 25.50.`
+  if (t === '') return E.min
+  if (!/^\d*\.?\d*$/.test(t) || t === '.') return E.notNumber
+  if (/\.\d{3,}$/.test(t)) return fill(E.decimals, { decimals: practiceRules.maxDecimals })
   const n = Number(t)
-  if (!(n >= practiceRules.minOrder)) return 'Enter an amount of $1 or more.'
-  if (side === 'buy' && n > state.cash + 1e-9) return `You have ${formatMoney(state.cash)} in practice money. Enter that much or less.`
+  if (!(n >= practiceRules.minOrder)) return E.min
+  if (side === 'buy' && n > state.cash + 1e-9) return fill(E.notEnough, { cash: formatMoney(state.cash) })
   if (side === 'sell') {
     const v = valueOf(ticker)
-    if (v <= 0) return `You do not own any ${ticker} in Practice.`
-    if (n > v + 1e-9) return `You own ${formatMoney(v)} of ${ticker} in Practice. Enter that much or less.`
+    if (v <= 0) return fill(E.noneOwned, { ticker })
+    if (n > v + 1e-9) return fill(E.tooMuch, { value: formatMoney(v), ticker })
   }
   return ''
 }

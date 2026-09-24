@@ -2,21 +2,22 @@ import { computed, ref } from 'vue'
 import { describeActivity, type Row } from '@/shared/activityText'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useSession } from '@/shared/composables/useSession'
+import copy from './copy.json'
 
 export type TypeFilter = 'all' | 'deposit' | 'buy' | 'dividend'
 export type StatusFilter = 'all' | 'completed' | 'pending' | 'returned'
 
 export const TYPE_OPTIONS: { id: TypeFilter; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'deposit', label: 'Deposits' },
-  { id: 'buy', label: 'Buys' },
-  { id: 'dividend', label: 'Dividends' },
+  { id: 'all', label: copy.types.all },
+  { id: 'deposit', label: copy.types.deposit },
+  { id: 'buy', label: copy.types.buy },
+  { id: 'dividend', label: copy.types.dividend },
 ]
 export const STATUS_OPTIONS: { id: StatusFilter; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'completed', label: 'Completed' },
-  { id: 'pending', label: 'Pending' },
-  { id: 'returned', label: 'Returned' },
+  { id: 'all', label: copy.statuses.all },
+  { id: 'completed', label: copy.statuses.completed },
+  { id: 'pending', label: copy.statuses.pending },
+  { id: 'returned', label: copy.statuses.returned },
 ]
 
 // Filters live at module scope, so they survive opening an item and coming back.

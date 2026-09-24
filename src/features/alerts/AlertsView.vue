@@ -8,6 +8,7 @@ import WordChips from '@/shared/components/WordChips.vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useViewport } from '@/shared/composables/useViewport'
 import AlertDetail from './AlertDetail.vue'
+import copy from './copy.json'
 
 const route = useRoute()
 const { attention } = useScenario()
@@ -20,31 +21,31 @@ const alert = computed(() => attention.value.find((a) => a.id === id.value))
 <template>
   <div class="alerts" :class="{ 'is-two': isDesktop }">
     <template v-if="isDesktop">
-      <h1 class="fl-visually-hidden">Alerts</h1>
+      <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
       <div class="alerts__list"><AlertList :selected-id="id" /></div>
       <div class="alerts__detail">
         <AlertDetail v-if="alert" :key="alert.id" :alert="alert" />
         <div v-else-if="id" class="alerts__missing">
-          <h2>We could not find that alert.</h2>
-          <p>It may have been for another account, or it no longer applies.</p>
+          <h2>{{ copy.notFound }}</h2>
+          <p>{{ copy.notFoundWhy }}</p>
         </div>
-        <p v-else class="alerts__choose">Choose an alert to read it here.</p>
+        <p v-else class="alerts__choose">{{ copy.choose }}</p>
       </div>
     </template>
     <template v-else>
       <template v-if="id">
-        <RouterLink to="/alerts" class="alerts__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> All alerts</RouterLink>
+        <RouterLink to="/alerts" class="alerts__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ copy.allAlerts }}</RouterLink>
         <AlertDetail v-if="alert" :key="alert.id" :alert="alert" :heading-level="1">
           <!-- On a phone, every word on the page is also a 48px chip (P303 brief). -->
           <template v-if="isPhone" #after><WordChips :ids="alert.terms" /></template>
         </AlertDetail>
         <div v-else class="alerts__missing">
-          <h1>We could not find that alert.</h1>
-          <p>It may have been for another account, or it no longer applies.</p>
+          <h1>{{ copy.notFound }}</h1>
+          <p>{{ copy.notFoundWhy }}</p>
         </div>
       </template>
       <template v-else>
-        <h1 class="fl-visually-hidden">Alerts</h1>
+        <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
         <AlertList show-seen />
       </template>
     </template>

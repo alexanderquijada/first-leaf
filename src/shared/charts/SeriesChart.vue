@@ -6,6 +6,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ActiveDataPoint, ChartDataset } from 'chart.js'
 import { Chart } from './register'
 import { formatMoney } from '../format'
+import { copy, fill } from '../copy'
 
 export interface Series {
   label: string
@@ -35,7 +36,7 @@ const active = ref<number | null>(null)
 let chart: Chart | null = null
 
 const readout = computed(() =>
-  active.value === null ? 'Move across the chart, tap it, or use the arrow keys to read it.' : props.describe(active.value),
+  active.value === null ? copy.chart.readHintSeries : props.describe(active.value),
 )
 
 function datasets(): ChartDataset<'line'>[] {
@@ -90,7 +91,7 @@ function build() {
         legend: { display: false },
         tooltip: {
           filter: (item) => item.dataset.label !== 'Marks',
-          callbacks: { label: (item) => `${item.dataset.label}: ${formatMoney(Number(item.raw))}` },
+          callbacks: { label: (item) => fill(copy.chart.tooltip, { series: item.dataset.label ?? '', value: formatMoney(Number(item.raw)) }) },
         },
       },
       scales: {
@@ -128,7 +129,7 @@ onBeforeUnmount(() => chart?.destroy())
       :style="{ height: `${height}px` }"
       tabindex="0"
       role="group"
-      :aria-label="`${label}. Use the left and right arrow keys to read it.`"
+      :aria-label="fill(copy.chart.keyboardSeries, { label })"
       :data-series="JSON.stringify(series.map((s) => s.data))"
       @keydown="onKeydown"
       @mouseleave="active = null"
@@ -136,7 +137,7 @@ onBeforeUnmount(() => chart?.destroy())
       <canvas ref="canvasEl" role="img" :aria-label="label" />
     </div>
     <p class="fl-series__readout" aria-live="polite">{{ readout }}</p>
-    <ul class="fl-series__key" aria-label="Chart key">
+    <ul class="fl-series__key" :aria-label="copy.chart.key">
       <li v-for="s in series" :key="s.label">
         <span class="fl-series__swatch" :style="{ borderTopColor: s.color, borderTopStyle: s.dash ? 'dashed' : 'solid' }" aria-hidden="true" />{{ s.label }}
       </li>

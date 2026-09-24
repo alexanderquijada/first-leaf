@@ -16,21 +16,23 @@ export interface NavItem {
   matchesOnPhone: (path: string) => boolean
 }
 
+import copy from './copy.json'
+
+const N = copy.nav
 const under = (base: string) => (p: string) => p === base || p.startsWith(base + '/')
 
 export const mainNav: NavItem[] = [
   {
     to: '/',
-    label: 'Home',
-    short: 'Home',
+    ...N.home,
     icon: 'mdi-home-outline',
     onPhone: true,
     matches: (p) => p === '/' || under('/alerts')(p),
     matchesOnPhone: (p) => p === '/' || under('/alerts')(p) || under('/funds')(p),
   },
-  { to: '/activity', label: 'Activity', short: 'Activity', icon: 'mdi-format-list-bulleted', onPhone: true, matches: under('/activity'), matchesOnPhone: under('/activity') },
-  { to: '/funds', label: 'Funds', short: 'Funds', icon: 'mdi-chart-donut', onPhone: false, matches: under('/funds'), matchesOnPhone: () => false },
-  { to: '/story', label: 'Your money story', short: 'Story', icon: 'mdi-book-open-page-variant-outline', onPhone: true, matches: under('/story'), matchesOnPhone: under('/story') },
-  { to: '/practice', label: 'Practice', short: 'Practice', icon: 'mdi-flask-outline', onPhone: true, matches: under('/practice'), matchesOnPhone: under('/practice') },
-  { to: '/learn', label: 'Words', short: 'Words', icon: 'mdi-alphabetical-variant', onPhone: true, matches: under('/learn'), matchesOnPhone: under('/learn') },
+  { to: '/activity', ...N.activity, icon: 'mdi-format-list-bulleted', onPhone: true, matches: under('/activity'), matchesOnPhone: under('/activity') },
+  { to: '/funds', ...N.funds, icon: 'mdi-chart-donut', onPhone: false, matches: under('/funds'), matchesOnPhone: () => false },
+  { to: '/story', ...N.story, icon: 'mdi-book-open-page-variant-outline', onPhone: true, matches: under('/story'), matchesOnPhone: under('/story') },
+  { to: '/practice', ...N.practice, icon: 'mdi-flask-outline', onPhone: true, matches: under('/practice'), matchesOnPhone: under('/practice') },
+  { to: '/learn', ...N.learn, icon: 'mdi-alphabetical-variant', onPhone: true, matches: under('/learn'), matchesOnPhone: under('/learn') },
 ]

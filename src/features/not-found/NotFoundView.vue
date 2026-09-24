@@ -1,12 +1,13 @@
 <script setup lang="ts">
 // A friendly 404, inside the app's layout, so all the navigation still works.
+import copy from './copy.json'
 </script>
 
 <template>
   <div class="nf">
-    <h1>We couldn't find that page.</h1>
-    <p>The link may be old or mistyped.</p>
-    <RouterLink to="/" class="nf__home">Go to Home</RouterLink>
+    <h1>{{ copy.title }}</h1>
+    <p>{{ copy.why }}</p>
+    <RouterLink to="/" class="nf__home">{{ copy.home }}</RouterLink>
   </div>
 </template>
 

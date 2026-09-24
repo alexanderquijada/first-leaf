@@ -2,6 +2,7 @@
 // Every chart sits in a frame: a heading, a plain-sentence summary above it, the
 // chart, and "Show as table". The table rows come from the same series as the chart.
 import { ref, useId } from 'vue'
+import { copy, fill } from '../copy'
 
 export interface TableColumn {
   key: string
@@ -41,14 +42,14 @@ const showTable = ref(false)
       :aria-controls="tableId"
       @click="showTable = !showTable"
     >
-      {{ showTable ? 'Hide table' : 'Show as table' }}
+      {{ showTable ? copy.chart.hideTable : copy.chart.showTable }}
     </button>
     <div
       v-if="showTable"
       :id="tableId"
       class="fl-chart__table-wrap"
       role="region"
-      :aria-label="`${title}, as a table`"
+      :aria-label="fill(copy.chart.asTable, { title })"
       tabindex="0"
     >
       <table class="fl-chart__table">

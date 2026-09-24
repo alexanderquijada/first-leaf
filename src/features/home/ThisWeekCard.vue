@@ -1,48 +1,51 @@
 <script setup lang="ts">
 // This week: start → the market → dividends → deposits → end. Adds up to the cent (A10).
 import { computed } from 'vue'
+import { fill } from '@/shared/copy'
 import TermTip from '@/shared/components/TermTip.vue'
+import copy from './copy.json'
 import { useScenario } from '@/shared/composables/useScenario'
 import { formatChange, formatDate, formatMoney, formatSigned } from '@/shared/format'
 
 const { account } = useScenario()
 const w = computed(() => account.value.weeklyChange)
+const W = copy.week
 </script>
 
 <template>
   <section v-if="w" class="week" aria-labelledby="week-title">
-    <h2 id="week-title" class="week__title">This week</h2>
-    <p class="week__line">Your balance went {{ formatChange(w.totalChange) }} this week.</p>
+    <h2 id="week-title" class="week__title">{{ W.title }}</h2>
+    <p class="week__line">{{ fill(W.line, { change: formatChange(w.totalChange) }) }}</p>
     <table class="week__table">
-      <caption class="fl-visually-hidden">How your balance moved this week</caption>
+      <caption class="fl-visually-hidden">{{ W.caption }}</caption>
       <tbody>
         <tr>
-          <th scope="row">{{ formatDate(w.from) }} balance</th>
+          <th scope="row">{{ fill(W.startBalance, { date: formatDate(w.from) }) }}</th>
           <td class="fl-tabular">{{ formatMoney(w.startBalance) }}</td>
         </tr>
         <tr>
-          <th scope="row"><TermTip id="the-market">The market</TermTip></th>
+          <th scope="row"><TermTip id="the-market">{{ W.market }}</TermTip></th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.marketChange) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.marketChange) }}</span>
           </td>
         </tr>
         <tr>
-          <th scope="row"><TermTip id="dividend">Dividends</TermTip></th>
+          <th scope="row"><TermTip id="dividend">{{ W.dividends }}</TermTip></th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.dividends) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.dividends) }}</span>
           </td>
         </tr>
         <tr>
-          <th scope="row"><TermTip id="deposit">Deposits</TermTip></th>
+          <th scope="row"><TermTip id="deposit">{{ W.deposits }}</TermTip></th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.deposits) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.deposits) }}</span>
           </td>
         </tr>
         <tr class="week__end">
-          <th scope="row">{{ formatDate(w.to) }} balance</th>
+          <th scope="row">{{ fill(W.endBalance, { date: formatDate(w.to) }) }}</th>
           <td class="fl-tabular">{{ formatMoney(w.endBalance) }}</td>
         </tr>
       </tbody>

@@ -3,7 +3,12 @@
 // she set. Cash is shown separately; it isn't part of the mix.
 import { computed } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
+import CopyText from '@/shared/components/CopyText.vue'
 import TermTip from '@/shared/components/TermTip.vue'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
+
+const X = copy.mix
 import { useScenario } from '@/shared/composables/useScenario'
 import { getFund } from '@/shared/data'
 import { formatMoney } from '@/shared/format'
@@ -21,31 +26,31 @@ const rowsRaw = computed(() => {
 const summary = computed(() => {
   const gap = [...rowsRaw.value].sort((x, y) => Math.abs(y.now - y.set) - Math.abs(x.now - x.set))[0]
   if (!gap) return ''
-  if (gap.now === gap.set) return 'Each fund is at the share you set.'
-  return `The biggest difference is ${gap.ticker}: ${gap.now}% now and ${gap.set}% in the mix you set.`
+  if (gap.now === gap.set) return X.even
+  return fill(X.biggestGap, { ticker: gap.ticker, now: gap.now, set: gap.set })
 })
 const columns = [
-  { key: 'fund', label: 'Fund' },
-  { key: 'now', label: 'Now', numeric: true },
-  { key: 'set', label: 'You set', numeric: true },
+  { key: 'fund', label: X.colFund },
+  { key: 'now', label: X.colNow, numeric: true },
+  { key: 'set', label: X.colSet, numeric: true },
 ]
 const rows = computed(() => rowsRaw.value.map((r) => ({ fund: r.ticker, now: `${r.now}%`, set: `${r.set}%` })))
 </script>
 
 <template>
-  <ChartFrame title="Your mix" :summary="summary" :columns="columns" :rows="rows">
-    <p class="mix__lede">Your <TermTip id="your-mix">mix</TermTip> now, next to the mix you set.</p>
-    <ul class="mix" aria-label="Your mix now and the mix you set">
+  <ChartFrame :title="X.title" :summary="summary" :columns="columns" :rows="rows">
+    <p class="mix__lede"><CopyText :text="X.lede"><template #mix><TermTip id="your-mix">{{ X.mixWord }}</TermTip></template></CopyText></p>
+    <ul class="mix" :aria-label="X.listLabel">
       <li v-for="r in rowsRaw" :key="r.ticker" class="mix__row">
         <span class="mix__name">{{ r.ticker }}</span>
         <span class="mix__bars" aria-hidden="true">
           <span class="mix__bar is-now" :style="{ width: `${r.now}%` }" />
           <span class="mix__bar is-set" :style="{ width: `${r.set}%` }" />
         </span>
-        <span class="mix__nums fl-tabular">{{ r.now }}% now<span class="mix__set"> · {{ r.set }}% set</span></span>
+        <span class="mix__nums fl-tabular">{{ fill(X.now, { now: r.now }) }}<span class="mix__set">{{ fill(X.set, { set: r.set }) }}</span></span>
       </li>
     </ul>
-    <p v-if="account.cash > 0" class="mix__cash">{{ formatMoney(account.cash) }} in cash is not part of your mix.</p>
+    <p v-if="account.cash > 0" class="mix__cash">{{ fill(X.cash, { cash: formatMoney(account.cash) }) }}</p>
   </ChartFrame>
 </template>
 

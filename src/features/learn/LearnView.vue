@@ -2,6 +2,8 @@
 // Words: every explanation in the app, searchable. Each opens its own page.
 import { computed, ref } from 'vue'
 import { useGlossary } from '@/shared/composables/useGlossary'
+import { fill } from '@/shared/copy'
+import copy from './copy.json'
 
 const { glossary } = useGlossary()
 const q = ref('')
@@ -14,13 +16,13 @@ const results = computed(() => {
 
 <template>
   <div class="learn">
-    <h1>Words to know</h1>
-    <label for="learn-search" class="learn__label">Search words</label>
+    <h1>{{ copy.title }}</h1>
+    <label for="learn-search" class="learn__label">{{ copy.search }}</label>
     <input id="learn-search" v-model="q" type="search" class="learn__search" autocomplete="off" aria-describedby="learn-count" />
     <p id="learn-count" class="learn__count" role="status">
-      {{ results.length === 1 ? '1 word' : `${results.length} words` }}
+      {{ results.length === 1 ? copy.countOne : fill(copy.countMany, { count: results.length }) }}
     </p>
-    <p v-if="!results.length" class="learn__none">No words match “{{ q.trim() }}”. Try “fee” or “fund”.</p>
+    <p v-if="!results.length" class="learn__none">{{ fill(copy.none, { query: q.trim() }) }}</p>
     <ul v-else class="learn__list">
       <li v-for="g in results" :key="g.id">
         <RouterLink :to="`/learn/${g.id}`" class="learn__row">

@@ -3,6 +3,7 @@
 // Five tabs, each at least 48 × 48px, with an icon and a word. Funds and Alerts
 // are reached from Home (P303 brief).
 import { useRoute } from 'vue-router'
+import copy from './copy.json'
 import { mainNav } from './nav'
 
 const route = useRoute()
@@ -10,7 +11,7 @@ const tabs = mainNav.filter((i) => i.onPhone)
 </script>
 
 <template>
-  <nav class="fl-bottombar" aria-label="Main">
+  <nav class="fl-bottombar" :aria-label="copy.navLabel">
     <ul>
       <li v-for="item in tabs" :key="item.to">
         <RouterLink v-slot="{ href, navigate }" :to="item.to" custom>
