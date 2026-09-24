@@ -12,7 +12,7 @@ const titleId = `fl-sheet-${useId()}`
 
 <template>
   <v-bottom-sheet v-model="open" :aria-labelledby="titleId">
-    <div class="fl-sheet" role="dialog" :aria-labelledby="titleId">
+    <div class="fl-sheet">
       <div class="fl-sheet__head">
         <h2 :id="titleId" class="fl-sheet__title">{{ title }}</h2>
         <button type="button" class="fl-sheet__close" aria-label="Close" @click="open = false">
