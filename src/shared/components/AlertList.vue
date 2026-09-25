@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // The current account's alerts, most urgent first: what needs a look, then
-// "Just so you know" (FYI), then a collapsed "Handled" group with Undo.
+// "Good to know" (FYI), then a collapsed "Handled" group with Undo.
 // Used by Home (laptop) and the Alerts page.
 import { computed, ref } from 'vue'
 import type { AttentionFlag } from '../data'
@@ -23,7 +23,7 @@ const { isSeen } = useSession()
 
 const needs = computed(() => open.value.filter((a) => a.severity !== 'fyi'))
 // "N things need you" counts only what Rosa must act on (ruling 8, Sept. 25): needs-you items.
-// Heads-ups are listed but not counted; FYIs sit under "Just so you know".
+// Heads-ups are listed but not counted; FYIs sit under "Good to know".
 const mustAct = computed(() => open.value.filter((a) => a.severity === 'needs-you'))
 const fyi = computed(() => open.value.filter((a) => a.severity === 'fyi'))
 const everHadNeeds = computed(() => attention.value.some((a) => a.severity !== 'fyi'))

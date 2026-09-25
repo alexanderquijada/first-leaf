@@ -109,11 +109,11 @@ test('an alert that does not exist, or not in this account, says so', async ({ p
   await expect(page.getByRole('heading', { name: 'We could not find that alert.' })).toBeVisible()
 })
 
-test('the SIPC notice is an FYI with its word explained, and no fee alert exists any more', async ({ page }) => {
+test('the SIPC notice is a "Good to know" notice with its word explained, and no fee alert exists any more', async ({ page }) => {
   await page.goto('/alerts/sipc-crypto')
   const detail = page.locator('.adetail')
   await expect(detail.getByRole('heading', { name: "SIPC protection doesn't cover crypto" })).toBeVisible()
-  await expect(detail).toContainText('FYI')
+  await expect(detail).toContainText('Good to know')
   await expect(detail.getByRole('button', { name: 'SIPC protection' }).first()).toBeVisible()
   await page.goto('/alerts/fee-going-up')
   await expect(page.getByRole('heading', { name: 'We could not find that alert.' })).toBeVisible()

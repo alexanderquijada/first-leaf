@@ -1,4 +1,4 @@
-# Copy review · Phase 3
+# Copy review · Phase 4
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (`docs/copy/approved.json`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
@@ -16,20 +16,13 @@
 
 At most ten, most important first. Each one links to its row below.
 
-1. Approve the group-bar sentence: "Your balance by kind: Stocks 61%, Crypto 17%, Cash 22%." (**E20**).
-2. Approve the crypto wording from ruling 5: the review sentence in coins (**P54**), the "Owned" column (**P15**), "You paid" on buys (**V52**) and the unowned-crypto price line (**F50**).
-3. Approve the one-sentence-per-piece "Why it moved" on the phone (**H70**).
-4. Approve the ten corrected "What it is" descriptions (**F52** and the nine rows after it).
-5. Approve the SIPC word's new short line and example (**W108**).
-6. Decide one name for FYIs: "Just so you know" (ruling 8) or "Good to know" (rewrite 9) (**L3**).
+1. Optional, carried from Phase 2: the below-what-you-put-in chart sentence (**H16**) and "you set" on the mix card (**H31**).
 
 ## Consistency pass
 
-**What changed since the sign-off.** The rulings replaced some approved text word for word: the stock data note, the SIPC fact, "Amount" for crypto, and the Nia and Theo "not a plan or advice" line, which is removed. Those rows are marked with the ruling. New sentences added to carry the rulings, and the rewritten descriptions, are DRAFT.
+**One name for one idea.** FYIs are "Good to know" as a badge and as a section, on the laptop and the phone. Everything else checked in Phases 2 and 3 still passes.
 
-**SIPC.** Only the general fact appears, in three places: the account notice, the glossary word and the crypto investment pages. G6 and the site crawl block "Member SIPC", "SIPC member", "protected by SIPC", "SIPC-protected" and "FDIC", as well as any "not … advice" wording.
-
-**One name for one idea.** "FYI" (the badge) and "Just so you know" (its section) are still two names; see the decision above. Everything else checked in Phase 2 still passes.
+**SIPC.** Only the general fact appears, in three places: the account notice, the glossary word and the crypto investment pages. G6 and the site crawl block membership and protection claims, "FDIC" and any "not … advice" wording.
 
 ## Screen by screen
 
@@ -139,12 +132,12 @@ At most ten, most important first. Each one links to its row below.
 | H64<br>APPROVED | Home (phone)<br><sub>`home:phone.nothing`</sub> | Nothing needs you right now. *(only in the Nothing needs you account)* | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
 | H65<br>APPROVED | Home<br><sub>`home:phone.seeHeadsUpOne`</sub> | See 1 heads-up *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | H66<br>APPROVED | Home (phone)<br><sub>`home:phone.seeHeadsUpMany`</sub> | See 2 heads-ups | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| H67<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`home:phone.fyiTitle`</sub> | Just so you know | -2.2 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| H67<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`home:phone.fyiTitle`</sub> | Good to know | label | Nothing needs you: same<br>Brand-new: not shown | — | Approved rewrite 9 (ruled Sept. 25): the phone uses the same name as the laptop. |
 | H68<br>APPROVED | Home<br><sub>`home:phone.seen`</sub> | Seen *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | H69<br>APPROVED | Home (phone)<br><sub>`home:phone.whyTitle`</sub> | Why it moved this week | -1.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| H70<br>DRAFT | Home (phone)<br><sub>`home:phone.whyMarket`</sub> | The market: down $1.67. | label | Nothing needs you: “The market: down $1.44.”<br>Brand-new: not shown | Approve as shown | New (ruling 6): "Why it moved" on the phone is one sentence per piece, and a $0.00 piece is left out. This week: "The market: down $1.67." |
-| H71<br>DRAFT | Home<br><sub>`home:phone.whyDividends`</sub> | Dividends: {dividends}. *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| H72<br>DRAFT | Home<br><sub>`home:phone.whyDeposits`</sub> | Deposits: {deposits}. *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| H70<br>APPROVED | Home (phone)<br><sub>`home:phone.whyMarket`</sub> | The market: down $1.67. | label | Nothing needs you: “The market: down $1.44.”<br>Brand-new: not shown | — |  |
+| H71<br>APPROVED | Home<br><sub>`home:phone.whyDividends`</sub> | Dividends: {dividends}. *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| H72<br>APPROVED | Home<br><sub>`home:phone.whyDeposits`</sub> | Deposits: {deposits}. *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
 | H73<br>APPROVED | Home (phone)<br><sub>`home:phone.byFundTitle`</sub> | Each investment's part | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H74<br>APPROVED | Home<br><sub>`home:phone.fundMoveUp`</sub> | AAPL moved down $10.99 this week. Price changes across everything you own added up to a $150 rise. *(not on a captured screen; example values)* | 3.7 | Not on a captured screen; the values change with the account | — |  |
 | H75<br>APPROVED | Home<br><sub>`home:phone.fundMoveDown`</sub> | AAPL moved down $10.99 this week. Price changes across everything you own added up to a $150 drop. *(not on a captured screen; example values)* | 3.7 | Not on a captured screen; the values change with the account | — |  |
@@ -164,13 +157,13 @@ At most ten, most important first. Each one links to its row below.
 |---|---|---|---|---|---|---|
 | L1<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Try-again dialog; and 2 more screens<br><sub>`shared:severity.needs-you`</sub> | Needs you | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | L2<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:severity.heads-up`</sub> | Heads-up | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| L3<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:severity.fyi`</sub> | FYI | label | Nothing needs you: same<br>Brand-new: not shown | Needs a decision | Approved rewrite 9 made the badge and its section "Good to know", but ruling 8 names the section "Just so you know", and the rulings win. Both are left as they were; pick one name for both. |
+| L3<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:severity.fyi`</sub> | Good to know | label | Nothing needs you: same<br>Brand-new: not shown | — | Approved rewrite 9 (ruled Sept. 25): the badge and its section share one name, "Good to know". |
 | L4<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:alerts.title`</sub> | Needs your attention | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | L5<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:alerts.countOne`</sub> | 1 thing needs you. | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | L6<br>APPROVED | Alerts<br><sub>`shared:alerts.countMany`</sub> | 2 things need you. *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
 | L7<br>APPROVED | Alerts<br><sub>`shared:alerts.allHandled`</sub> | You have handled everything for this week. *(not on a captured screen; example values)* | 4.0 | Same words wherever it shows | — |  |
 | L8<br>APPROVED | Home (phone)<br><sub>`shared:alerts.nothing`</sub> | Nothing needs you right now. *(only in the Nothing needs you account)* | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
-| L9<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:alerts.fyiTitle`</sub> | Just so you know | -2.2 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| L9<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`shared:alerts.fyiTitle`</sub> | Good to know | label | Nothing needs you: same<br>Brand-new: not shown | — | Approved rewrite 9 (ruled Sept. 25): "Good to know" everywhere, replacing "Just so you know". |
 | L10<br>APPROVED | Alerts<br><sub>`shared:alerts.new`</sub> | New *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | L11<br>APPROVED | Alerts<br><sub>`shared:alerts.seen`</sub> | Seen *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | L12<br>APPROVED | Alerts<br><sub>`shared:alerts.handled`</sub> | Handled (2) *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
@@ -227,8 +220,8 @@ At most ten, most important first. Each one links to its row below.
 | L63<br>APPROVED | Alerts (laptop, phone); Auto-invest dialog<br><sub>`data:attention.cash-sitting.body`</sub> | Auto-invest has been paused since June 8, so deposits since then stay as cash. Cash does not go up or down with the market. | 4.3 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | L64<br>APPROVED | Alerts (laptop, phone); Auto-invest dialog<br><sub>`data:attention.cash-sitting.nextStep`</sub> | It is your choice. You can turn auto-invest back on, or leave it paused. | 1.5 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | L65<br>APPROVED | Alerts (laptop, phone); Auto-invest dialog<br><sub>`data:attention.cash-sitting.action.label`</sub> | See auto-invest settings | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| L66<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`data:attention.sipc-crypto.title`</sub> | SIPC protection doesn't cover crypto | 7.6 | Nothing needs you: same<br>Brand-new: not shown | — | Changed by ruling 2 (Sept. 25). The general fact only; never implies First Leaf is a member. |
-| L67<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone)<br><sub>`data:attention.sipc-crypto.body`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 6.0 | Nothing needs you: same<br>Brand-new: not shown | — | Changed by ruling 2 (Sept. 25). Alex's wording, verified against sipc.org. |
+| L66<br>APPROVED | Alerts (laptop, phone); Home (laptop); Try-again dialog; and 2 more screens<br><sub>`data:attention.sipc-crypto.title`</sub> | SIPC protection doesn't cover crypto | 7.6 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| L67<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone)<br><sub>`data:attention.sipc-crypto.body`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 6.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | L68<br>APPROVED | Alerts (laptop, phone)<br><sub>`data:attention.sipc-crypto.nextStep`</sub> | Nothing to do. This is just so you know. | -0.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 
 ### Money actions (deposit and auto-invest)
@@ -311,7 +304,7 @@ At most ten, most important first. Each one links to its row below.
 | V37<br>APPROVED | Activity (laptop, phone)<br><sub>`activity:allActivity`</sub> | All activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | V38<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Investments (laptop, phone); and 3 more screens<br><sub>`activity:facts.amount`</sub> | Amount | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | V39<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog<br><sub>`activity:facts.status`</sub> | Status | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| V40<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog<br><sub>`activity:facts.requestedOn`</sub> | Asked for on | label | Nothing needs you: not shown<br>Brand-new: not shown | — | Approved rewrite 10 (Phase 2.5 review). |
+| V40<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog<br><sub>`activity:facts.requestedOn`</sub> | Asked for on | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V41<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog<br><sub>`activity:facts.askedOn`</sub> | Asked for on | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V42<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog<br><sub>`activity:facts.sentBackOn`</sub> | Sent back on | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V43<br>APPROVED | Activity<br><sub>`activity:facts.arrivedOn`</sub> | Arrived on *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
@@ -323,7 +316,7 @@ At most ten, most important first. Each one links to its row below.
 | V49<br>APPROVED | Activity (laptop, phone)<br><sub>`activity:facts.settledOn`</sub> | Settled on | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V50<br>APPROVED | Activity (laptop, phone)<br><sub>`activity:facts.paidOn`</sub> | Paid on | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V51<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Investments (laptop, phone); and 3 more screens<br><sub>`activity:facts.amountCoin`</sub> | Amount | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| V52<br>DRAFT | Activity (laptop, phone)<br><sub>`activity:facts.paid`</sub> | You paid | label | Nothing needs you: not shown<br>Brand-new: not shown | Approve as shown | New (ruling 5): a buy's dollar row is "You paid", so a crypto buy doesn't show two "Amount" rows. |
+| V52<br>APPROVED | Activity (laptop, phone)<br><sub>`activity:facts.paid`</sub> | You paid | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V53<br>APPROVED | Home (phone); Try-again dialog<br><sub>`activity:pendingNote`</sub> | It should arrive in 1 to 3 business days. | 6.3 | Nothing needs you: not shown<br>Brand-new: same | — |  |
 | V54<br>APPROVED | Activity (laptop, phone)<br><sub>`activity:buyNote`</sub> | Auto-invest used your deposit to buy it. | 7.4 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | V55<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog; Auto-invest dialog<br><sub>`activity:whatItMeans`</sub> | What it means | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -356,7 +349,7 @@ At most ten, most important first. Each one links to its row below.
 | F19<br>APPROVED | Investments (laptop, phone); Words (laptop, phone)<br><sub>`funds:facts.paid`</sub> | What you paid | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F20<br>APPROVED | Activity (laptop, phone); Investments (laptop, phone)<br><sub>`funds:facts.shares`</sub> | Shares | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | F21<br>APPROVED | Activity (laptop, phone); Investments (laptop, phone)<br><sub>`funds:facts.price`</sub> | Price | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F22<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Investments (laptop, phone); and 3 more screens<br><sub>`funds:facts.amount`</sub> | Amount | label | Nothing needs you: same<br>Brand-new: same | — | Changed by ruling 5 (Sept. 25). Crypto shows "Amount" with its unit ("0.00161928 BTC"). |
+| F22<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Investments (laptop, phone); and 3 more screens<br><sub>`funds:facts.amount`</sub> | Amount | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F23<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:notOwnedYet`</sub> | You don't own any yet. | -1.8 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F24<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:priceNow`</sub> | Price: $253.71 a share. *(and 1 more like it)* | label | Nothing needs you: same<br>Brand-new: “Price: $336.13 a share.” | — |  |
 | F25<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:chart.title`</sub> | Price over time | label | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -382,29 +375,29 @@ At most ten, most important first. Each one links to its row below.
 | F45<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:dividends.none`</sub> | It does not pay dividends. | 2.9 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F46<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:sipc.heading`</sub> | Not covered by SIPC protection | 5.2 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F47<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone); Words (laptop, phone)<br><sub>`funds:sipc.termWord`</sub> | SIPC protection | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F48<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone)<br><sub>`funds:sipc.body`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 6.0 | Nothing needs you: same<br>Brand-new: same | — | Changed by ruling 2 (Sept. 25). Alex's wording. |
+| F48<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone)<br><sub>`funds:sipc.body`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 6.0 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F49<br>APPROVED | Investments<br><sub>`funds:notFound`</sub> | We could not find that investment. *(not on a captured screen; example values)* | 2.5 | Same words wherever it shows | — |  |
-| F50<br>DRAFT | Investments (laptop, phone)<br><sub>`funds:priceNowCrypto`</sub> | Price: $112.70 for one SOL. | label | Nothing needs you: same<br>Brand-new: “Price: $80,873.58 for one BTC.” | Approve as shown | New (ruling 5): a crypto you don't own shows "Price: $80,873.58 for one BTC." instead of "a share". |
+| F50<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:priceNowCrypto`</sub> | Price: $112.70 for one SOL. | label | Nothing needs you: same<br>Brand-new: “Price: $80,873.58 for one BTC.” | — |  |
 | F51<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.AAPL.name`</sub> | Apple | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F52<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.AAPL.about`</sub> | Apple makes the iPhone, the Mac and the iPad. It also sells services like app downloads and music. | 4.3 | Nothing needs you: same<br>Brand-new: same | Approve all ten | Corrected in Phase 3 (ruling 9): each checked against its 10-K or project site (docs/research/DESCRIPTIONS.md); judgment words removed. |
+| F52<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.AAPL.about`</sub> | Apple makes the iPhone, the Mac and the iPad. It also sells services like app downloads and music. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F53<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.MSFT.name`</sub> | Microsoft | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F54<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.MSFT.about`</sub> | Microsoft makes Windows and Office. It also runs a cloud service, where people and businesses pay to use its computers over the internet. | 7.9 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F54<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.MSFT.about`</sub> | Microsoft makes Windows and Office. It also runs a cloud service, where people and businesses pay to use its computers over the internet. | 7.9 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F55<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.NVDA.name`</sub> | NVIDIA | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F56<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.NVDA.about`</sub> | NVIDIA designs computer chips. People use them for video games and to build AI. | 4.0 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F56<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.NVDA.about`</sub> | NVIDIA designs computer chips. People use them for video games and to build AI. | 4.0 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F57<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.COST.name`</sub> | Costco | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F58<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.COST.about`</sub> | Costco runs warehouse stores and websites. Shoppers pay a yearly fee to be members. | 4.8 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F58<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.COST.about`</sub> | Costco runs warehouse stores and websites. Shoppers pay a yearly fee to be members. | 4.8 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F59<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.NKE.name`</sub> | Nike | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F60<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.NKE.about`</sub> | Nike designs and sells sports shoes, clothes and gear. Other companies make most of it. | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F60<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.NKE.about`</sub> | Nike designs and sells sports shoes, clothes and gear. Other companies make most of it. | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F61<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.AMZN.name`</sub> | Amazon | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F62<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.AMZN.about`</sub> | Amazon runs stores online and in person. It also rents out its computers over the internet. | 6.7 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F62<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.AMZN.about`</sub> | Amazon runs stores online and in person. It also rents out its computers over the internet. | 6.7 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F63<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.TSLA.name`</sub> | Tesla | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F64<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.TSLA.about`</sub> | Tesla makes electric cars. It also makes batteries that store power for homes and businesses. | 6.2 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F64<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.TSLA.about`</sub> | Tesla makes electric cars. It also makes batteries that store power for homes and businesses. | 6.2 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F65<br>APPROVED | Investments (laptop, phone); Words (laptop, phone)<br><sub>`data:funds.BTC.name`</sub> | Bitcoin | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F66<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.BTC.about`</sub> | Bitcoin is a digital currency. No company or bank runs it. | 5.9 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F66<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.BTC.about`</sub> | Bitcoin is a digital currency. No company or bank runs it. | 5.9 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F67<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.ETH.name`</sub> | Ethereum | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F68<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.ETH.about`</sub> | Ethereum is a computer network. It has its own digital currency, called ether. People also run programs on it. | 6.8 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F68<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.ETH.about`</sub> | Ethereum is a computer network. It has its own digital currency, called ether. People also run programs on it. | 6.8 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F69<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.SOL.name`</sub> | Solana | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F70<br>DRAFT | Investments (laptop, phone)<br><sub>`data:funds.SOL.about`</sub> | Solana is a computer network. It has its own digital currency, called SOL. People also run programs on it. | 6.1 | Nothing needs you: same<br>Brand-new: same | — |  |
+| F70<br>APPROVED | Investments (laptop, phone)<br><sub>`data:funds.SOL.about`</sub> | Solana is a computer network. It has its own digital currency, called SOL. People also run programs on it. | 6.1 | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Your money story
 
@@ -529,7 +522,7 @@ At most ten, most important first. Each one links to its row below.
 | S117<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.pointOfView`</sub> | Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment. | 6.3 | Nothing needs you: same<br>Brand-new: “Growth needs years. Starting early and staying steady matter more than picking the perfect moment.” | — |  |
 | S118<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.since-march`</sub> | You opened your account on March 2 with $500. Since then you have put in $1,250. On Sept. 18 your balance was $1,358.50. | 3.3 | Nothing needs you: “You opened your account on March 2 with $500. Since then you have put in $1,400. On Sept. 18 your balance was $1,536.68.”<br>Brand-new: not shown (short story) | — |  |
 | S119<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.deposits-share`</sub> | About 92% of your balance is money you put in. The other $108.50 is what it earned. | 3.7 | Nothing needs you: “About 91% of your balance is money you put in. The other $136.68 is what it earned.”<br>Brand-new: not shown (short story) | — |  |
-| S120<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.dip`</sub> | From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%. | 3.6 | Nothing needs you: same<br>Brand-new: not shown (short story) | — | Changed by ruling 3 (Sept. 25). Seed 10: May 21 to June 5, 9.5%. |
+| S120<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.dip`</sub> | From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%. | 3.6 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
 | S121<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.at-low`</sub> | On June 5, your balance was $915.77. That was $34.23 below the $950 you had put in. | 3.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
 | S122<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.pause`</sub> | You paused auto-invest the next trading day, June 8. | 6.3 | Nothing needs you: not shown<br>Brand-new: not shown (short story) | — |  |
 | S123<br>APPROVED | Your money story (laptop, phone)<br><sub>`data:rosaStory.back-above`</sub> | By June 15, your balance was back above what you had put in. | 4.0 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
@@ -562,7 +555,7 @@ At most ten, most important first. Each one links to its row below.
 | P12<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:ownHeading`</sub> | What you own in Practice | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
 | P13<br>APPROVED | Practice (laptop, phone); Practice (error)<br><sub>`practice:ownEmpty`</sub> | Nothing yet. Buy a stock or crypto to start. | 0.6 | Nothing needs you: same<br>Brand-new: same | — |  |
 | P14<br>APPROVED | Activity (laptop, phone); Home (laptop); Investments (laptop); Practice (after buying)<br><sub>`practice:col.fund`</sub> | Investment | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P15<br>DRAFT | Practice (after buying)<br><sub>`practice:col.shares`</sub> | Owned | label | Nothing needs you: not shown<br>Brand-new: not shown | Approve as shown | New (ruling 5): the Practice column is "Owned", with "0.5950 shares" or "0.00247299 BTC" in each row, because one column holds both. |
+| P15<br>APPROVED | Practice (after buying)<br><sub>`practice:col.shares`</sub> | Owned | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | P16<br>APPROVED | Practice (laptop, phone); Words (laptop, phone); Word explanation; Practice (after buying)<br><sub>`practice:col.value`</sub> | Value | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P17<br>APPROVED | Practice (after buying)<br><sub>`practice:col.paid`</sub> | Paid | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | P18<br>APPROVED | Your money story (laptop, phone); Words (laptop, phone); Investments (laptop); Practice (after buying)<br><sub>`practice:col.change`</sub> | Up or down | label | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -593,17 +586,17 @@ At most ten, most important first. Each one links to its row below.
 | P43<br>APPROVED | Practice (phone)<br><sub>`practice:order.decimal`</sub> | Decimal point | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P44<br>APPROVED | Practice (laptop, phone); Practice (error)<br><sub>`practice:order.review`</sub> | Review | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P45<br>APPROVED | Practice<br><sub>`practice:order.checkOrder`</sub> | Check your order *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| P46<br>DRAFT | Practice<br><sub>`practice:order.reviewBuy`</sub> | Buy $150 of AAPL at $336.13 a share. That is about {quantity} shares. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
-| P47<br>DRAFT | Practice<br><sub>`practice:order.reviewSell`</sub> | Sell $150 of AAPL at $336.13 a share. That is about {quantity} shares. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
+| P46<br>APPROVED | Practice<br><sub>`practice:order.reviewBuy`</sub> | Buy $150 of AAPL at $336.13 a share. That is about {quantity} shares. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
+| P47<br>APPROVED | Practice<br><sub>`practice:order.reviewSell`</sub> | Sell $150 of AAPL at $336.13 a share. That is about {quantity} shares. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
 | P48<br>APPROVED | Practice<br><sub>`practice:order.noFee`</sub> |  There is no fee. *(not on a captured screen; example values)* | -2.2 | Same words wherever it shows | — |  |
 | P49<br>APPROVED | Practice<br><sub>`practice:order.back`</sub> | Back *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | P50<br>APPROVED | Practice<br><sub>`practice:order.confirm`</sub> | Confirm *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | P51<br>APPROVED | Practice (after buying)<br><sub>`practice:order.bought`</sub> | You bought $100.00 of AAPL with practice money. | 3.8 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | P52<br>APPROVED | Practice<br><sub>`practice:order.sold`</sub> | You sold $150 of AAPL. That money is back in your practice money. *(not on a captured screen; example values)* | 2.4 | Not on a captured screen; the values change with the account | — |  |
 | P53<br>APPROVED | Practice (after buying)<br><sub>`practice:order.newOrder`</sub> | New order | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| P54<br>DRAFT | Practice<br><sub>`practice:order.reviewBuyCrypto`</sub> | Buy $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | Approve as shown | New (ruling 5): crypto is reviewed in coins: "Buy $100.00 of BTC at $80,873.58 for one BTC. That is about 0.00123649 BTC." Same for sell. |
-| P55<br>DRAFT | Practice<br><sub>`practice:order.reviewSellCrypto`</sub> | Sell $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
-| P56<br>DRAFT | Words (laptop, phone); Practice (after buying)<br><sub>`practice:ownedShares`</sub> | 0.2975 shares *(and 4 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P54<br>APPROVED | Practice<br><sub>`practice:order.reviewBuyCrypto`</sub> | Buy $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
+| P55<br>APPROVED | Practice<br><sub>`practice:order.reviewSellCrypto`</sub> | Sell $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
+| P56<br>APPROVED | Words (laptop, phone); Practice (after buying)<br><sub>`practice:ownedShares`</sub> | 0.2975 shares *(and 4 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P57<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`data:practice.timeMachine.note`</sub> | This uses past prices to show how a mix could have moved. The past does not tell you what will happen next. | 1.0 | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Words
@@ -717,9 +710,9 @@ At most ten, most important first. Each one links to its row below.
 | W105<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.bitcoin.example`</sub> | $18 can buy a small part of one Bitcoin. *(not on a captured screen; example values)* | 2.3 | Same in every scenario | — |  |
 | W106<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone); Words (laptop, phone)<br><sub>`data:glossary.sipc-protection.term`</sub> | SIPC protection | label | Same in every scenario | — |  |
 | W107<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.sipc-protection.alsoCalled`</sub> | SIPC coverage *(not on a captured screen; example values)* | label | Same in every scenario | — |  |
-| W108<br>DRAFT | Alerts (laptop, phone); Words (laptop, phone)<br><sub>`data:glossary.sipc-protection.short`</sub> | Protection for stocks and cash at a member brokerage that fails. | 5.9 | Same in every scenario | Approve as shown | Rewritten with ruling 2: "Protection for stocks and cash at a member brokerage that fails." The example is rewritten too. |
-| W109<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone)<br><sub>`data:glossary.sipc-protection.detail`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 6.0 | Same in every scenario | — | Changed by ruling 2 (Sept. 25). Alex's wording. |
-| W110<br>DRAFT | Words, and every explanation of this word<br><sub>`data:glossary.sipc-protection.example`</sub> | If a member brokerage closed and shares went missing, SIPC would work to get them back to their owners. *(not on a captured screen; example values)* | 6.7 | Same in every scenario | — |  |
+| W108<br>APPROVED | Alerts (laptop, phone); Words (laptop, phone)<br><sub>`data:glossary.sipc-protection.short`</sub> | Protection for stocks and cash at a member brokerage that fails. | 5.9 | Same in every scenario | — |  |
+| W109<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone)<br><sub>`data:glossary.sipc-protection.detail`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 6.0 | Same in every scenario | — |  |
+| W110<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.sipc-protection.example`</sub> | If a member brokerage closed and shares went missing, SIPC would work to get them back to their owners. *(not on a captured screen; example values)* | 6.7 | Same in every scenario | — |  |
 | W111<br>APPROVED | Words (laptop, phone); Home (laptop); Word explanation<br><sub>`data:glossary.your-mix.term`</sub> | Your mix | label | Same in every scenario | — |  |
 | W112<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.your-mix.alsoCalled`</sub> | asset allocation *(not on a captured screen; example values)* | label | Same in every scenario | — |  |
 | W113<br>APPROVED | Words (laptop, phone)<br><sub>`data:glossary.your-mix.short`</sub> | How your money is split between stocks, crypto and cash. | 3.7 | Same in every scenario | — |  |
@@ -801,16 +794,16 @@ At most ten, most important first. Each one links to its row below.
 | E8<br>APPROVED | Investments (laptop, phone); Words (laptop, phone)<br><sub>`shared:termTip.newTab`</sub> | (opens in a new tab) | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
 | E9<br>APPROVED | Word explanation<br><sub>`shared:termTip.close`</sub> | Close explanation | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | E10<br>APPROVED | Phone view<br><sub>`shared:termTip.back`</sub> | Back to full view | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| E11<br>APPROVED | Investments (laptop, phone); Practice (after buying)<br><sub>`shared:dataNotes.stock`</sub> | Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled. | 4.8 | Nothing needs you: same<br>Brand-new: same | — | Changed by ruling 1 (Sept. 25). Alex's wording; grade 4.8, no exemption. |
+| E11<br>APPROVED | Investments (laptop, phone); Practice (after buying)<br><sub>`shared:dataNotes.stock`</sub> | Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled. | 4.8 | Nothing needs you: same<br>Brand-new: same | — |  |
 | E12<br>APPROVED | Investments (laptop, phone)<br><sub>`shared:dataNotes.crypto`</sub> | Powered by CoinGecko API | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | E13<br>APPROVED | Word explanations and sheets (every screen)<br><sub>`shared:dataNotes.cryptoLink`</sub> | CoinGecko API *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | E14<br>APPROVED | Word explanations and sheets (every screen)<br><sub>`shared:dataNotes.cryptoUrl`</sub> | https://www.coingecko.com/en/api/ *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | E15<br>APPROVED | Investments (laptop, phone); Words (laptop, phone)<br><sub>`shared:dataNotes.newTab`</sub> | (opens in a new tab) | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
-| E16<br>DRAFT | Your money story (laptop, phone); Home (laptop); Word explanation; Practice (after buying)<br><sub>`shared:mixGroups.stocks`</sub> | Stocks | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| E17<br>DRAFT | Alerts (laptop, phone); Investments (laptop, phone); Your money story (laptop, phone); and 3 more screens<br><sub>`shared:mixGroups.crypto`</sub> | Crypto | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| E18<br>DRAFT | Alerts (laptop, phone); Your money story (laptop, phone); Home (laptop); and 3 more screens<br><sub>`shared:mixGroups.cash`</sub> | Cash | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| E19<br>DRAFT | Word explanations and sheets (every screen)<br><sub>`shared:mixGroups.part`</sub> | Rosa 52% *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| E20<br>DRAFT | Your money story (laptop, phone); Home (laptop); Word explanation; Practice (after buying)<br><sub>`shared:mixGroups.summary`</sub> | Your balance by kind: Stocks 61%, Crypto 17%, Cash 22%. *(and 1 more like it)* | 6.0 | Nothing needs you: “Your balance by kind: Stocks 78%, Crypto 22%, Cash 0%.”<br>Brand-new: not shown | Approve as shown | New: the sentence above the stocks / crypto / cash bar ("Your balance by kind: Stocks 61%, Crypto 17%, Cash 22%."). |
+| E16<br>APPROVED | Your money story (laptop, phone); Home (laptop); Word explanation; Practice (after buying)<br><sub>`shared:mixGroups.stocks`</sub> | Stocks | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| E17<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone); Your money story (laptop, phone); and 3 more screens<br><sub>`shared:mixGroups.crypto`</sub> | Crypto | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| E18<br>APPROVED | Alerts (laptop, phone); Your money story (laptop, phone); Home (laptop); and 3 more screens<br><sub>`shared:mixGroups.cash`</sub> | Cash | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| E19<br>APPROVED | Word explanations and sheets (every screen)<br><sub>`shared:mixGroups.part`</sub> | Rosa 52% *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| E20<br>APPROVED | Your money story (laptop, phone); Home (laptop); Word explanation; Practice (after buying)<br><sub>`shared:mixGroups.summary`</sub> | Your balance by kind: Stocks 61%, Crypto 17%, Cash 22%. *(and 1 more like it)* | 6.0 | Nothing needs you: “Your balance by kind: Stocks 78%, Crypto 22%, Cash 0%.”<br>Brand-new: not shown | — |  |
 
 ### Numbers and dates (every screen)
 

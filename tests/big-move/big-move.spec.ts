@@ -18,7 +18,7 @@ test('a 7%+ week raises a big-move heads-up, with its facts', async ({ page }) =
   const alerts = page.locator('.fl-alerts')
   await expect(alerts).toContainText('NVDA moved up 9.0% this week')
   // Ruling 8: only must-act items are counted (the returned deposit); the heads-ups, including
-  // the big move, are listed but not counted, and the SIPC FYI sits under "Just so you know".
+  // the big move, are listed but not counted, and the SIPC FYI sits under "Good to know".
   await expect(alerts).toContainText('1 thing needs you.')
   await alerts.getByRole('link', { name: /NVDA moved up/ }).click()
   await expect(page).toHaveURL(/\/alerts\/big-move-NVDA$/)

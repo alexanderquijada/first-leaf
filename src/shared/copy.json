@@ -31,7 +31,7 @@
   "severity": {
     "needs-you": "Needs you",
     "heads-up": "Heads-up",
-    "fyi": "FYI"
+    "fyi": "Good to know"
   },
   "placeholder": {
     "soon": "Coming soon."
@@ -57,7 +57,7 @@
     "countMany": "{count} things need you.",
     "allHandled": "You have handled everything for this week.",
     "nothing": "Nothing needs you right now.",
-    "fyiTitle": "Just so you know",
+    "fyiTitle": "Good to know",
     "new": "New",
     "seen": "Seen",
     "handled": "Handled ({count})",
