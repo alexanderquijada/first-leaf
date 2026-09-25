@@ -138,7 +138,7 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 | **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus an explanation that ups and downs are normal (on the investment's page and in This week). |
 | **All alerts handled** | "You've handled everything for this week." Undo stays available. |
 | **An alert address that doesn't exist** (`/alerts/nope`) | A friendly "We couldn't find that alert" with a link back to Alerts |
-| **An action already taken** | Once an alert's action is done (*Try the deposit again*, *Add a one-time deposit*, turning auto-invest on), the alert shows that result in place of "What you can do" and its action, and moves to Handled (with Undo). So it is never offered twice, and "needs you" no longer counts it. |
+| **An action already taken** | Once an alert's action is done (*Try the deposit again*, *Add a one-time deposit*, turning auto-invest on), the alert shows that result under "What you can do", in place of the next step and its action, and "What happened" tells the past as past ("Auto-invest was paused from June 8 until today."), and moves to Handled (with Undo). So it is never offered twice, and "needs you" no longer counts it. |
 | **No alerts at all** (brand-new) | The Alerts page shows only the calm list; there is no "Choose an alert" pane for alerts that don't exist. |
 | **Long text, 200% zoom, keyboard only, reduced motion** | Nothing overlaps or gets cut off; the Investments table stacks into labeled rows; focus follows reading order; no motion is needed to understand anything |
 

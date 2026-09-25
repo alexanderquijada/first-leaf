@@ -28,7 +28,7 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P301-BRIEF.md](docs/briefs/P301-BRIEF.md)
 - **Code:** `src/features/home/`, `alerts/`, `activity/`, `funds/` · **History:** commits starting `[P301]`
 - **Try these:**
-  1. On Home, look at **Needs your attention**. Click *"Your $150 deposit from Sept. 1 was sent back."* Read the alert, open a dotted-underlined word, try **Try the deposit again**, then **Mark as handled**.
+  1. On Home, look at **Needs your attention**. Click *"Your $150 deposit from Sept. 1 was sent back"*. Read the alert, open a dotted-underlined word, then use **Try the deposit again** through to its confirmation. The alert moves to **Handled** by itself, with **Undo**. Then open *"Your goal is $150 behind your plan"* and use **Mark as handled**.
   2. On the balance chart, switch **1 month / 3 months / Since March**, then click **Show as table**.
   3. In the rail, go to **Investments → AAPL**, then **BTC**. Compare the data notes under each price chart, and find the SIPC notice on the crypto page.
   4. Go to **Activity**. Filter to *Deposits* and find the returned one. Then choose *Dividends* + *Returned* to see the empty state.
