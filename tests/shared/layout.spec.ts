@@ -123,3 +123,24 @@ test('the story states its point of view, and only the part that is true', async
   await expect(page.getByText('Growth needs years. Starting early')).toBeVisible()
   await expect(page.getByText('Right now, almost all')).toHaveCount(0)
 })
+
+// Phase 3: nothing makes the page scroll sideways on a phone (tables scroll inside their own box).
+test('no page is wider than a 390px phone, including Practice with a holding', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const wide: string[] = []
+  for (const path of ['/', '/alerts', '/alerts/sipc-crypto', '/activity', '/funds', '/funds/AAPL', '/funds/BTC', '/story', '/learn', '/learn/sipc-protection', '/nope', '/?scenario=brand-new']) {
+    await page.goto(path)
+    await page.locator('main').waitFor()
+    const w = await page.evaluate(() => document.documentElement.scrollWidth)
+    if (w > 390) wide.push(`${path}: ${w}px`)
+  }
+  await page.goto('/practice')
+  await page.getByRole('radio', { name: /AAPL/ }).check()
+  for (const k of ['2', '0', '0']) await page.getByRole('button', { name: k, exact: true }).click()
+  await page.getByRole('button', { name: 'Review' }).click()
+  await page.getByRole('dialog').getByRole('button', { name: 'Confirm' }).click()
+  await expect(page.locator('.practice__table')).toBeVisible()
+  const w = await page.evaluate(() => document.documentElement.scrollWidth)
+  if (w > 390) wide.push(`/practice with a holding: ${w}px`)
+  expect(wide).toEqual([])
+})
