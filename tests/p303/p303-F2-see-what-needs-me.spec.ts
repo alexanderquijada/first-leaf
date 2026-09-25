@@ -1,4 +1,5 @@
 import { test, expect } from '../fixtures'
+import { load } from '../data'
 
 // F2: see what needs me. The alert opens as its own phone page with its words as
 // 48px chips; going back shows it as Seen.
@@ -43,14 +44,15 @@ test('Mark as handled on the phone updates the needs-you card', async ({ page })
   await page.getByRole('button', { name: 'Mark as handled' }).click()
   await page.getByRole('link', { name: 'All alerts' }).click()
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Home' }).click()
-  await expect(page.locator('.phome__needs-title')).toHaveText('3 heads-ups')
+  const headsUps = load('attention')['rosa-starter'].filter((f: { severity: string }) => f.severity === 'heads-up').length
+  await expect(page.locator('.phome__needs-title')).toHaveText(headsUps === 1 ? '1 heads-up' : `${headsUps} heads-ups`)
 })
 
 // Every standalone control on the phone is at least 48 × 48px (inline words in
 // sentences use WCAG 2.5.8's inline exception and are listed as chips).
 test('every standalone control on the phone pages is at least 48px tall', async ({ page }) => {
   const small: string[] = []
-  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/story', '/activity', '/activity/rosa-starter-034', '/funds', '/funds/FL-GREEN', '/practice', '/learn', '/learn/expense-ratio']) {
+  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/story', '/activity', '/activity/rosa-starter-035', '/funds', '/funds/AAPL', '/funds/BTC', '/practice', '/learn', '/learn/ups-and-downs']) {
     await page.goto(path)
     const show = page.getByRole('button', { name: 'Show as table' })
     if (await show.count()) await show.first().click()

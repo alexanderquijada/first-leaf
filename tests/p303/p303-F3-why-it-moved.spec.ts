@@ -27,9 +27,11 @@ test('why it moved opens in place and adds up to the cent', async ({ page }) => 
   // Fund by fund: the pieces add up to the market change.
   const fundCents = (await body.locator('.phome__fund .fl-tabular [aria-hidden="true"]').allInnerTexts()).map((t) => Math.round(Number(t.replace(/[$,+]/g, '').replace('−', '-')) * 100))
   expect(fundCents.reduce((x, y) => x + y, 0)).toBe(Math.round(w.marketChange * 100))
-  // A fund that went down says so in words, and the note explains it.
-  await body.getByRole('button', { name: /FL-WORLD/ }).click()
-  await expect(body).toContainText('FL-WORLD moved down')
+  // An investment that went down says so in words, and the note explains it.
+  const down = w.byFund.find((x: { change: number }) => x.change < 0)
+  await body.getByRole('button', { name: new RegExp(down.ticker) }).click()
+  await expect(body).toContainText(`${down.ticker} moved down ${money(down.change)} this week.`)
+  await expect(body).toContainText(`Price changes across everything you own added up to a ${money(w.marketChange)} ${w.marketChange < 0 ? 'drop' : 'rise'}.`)
   await expect(body).toContainText('Ups and downs are normal.')
   // Its words, as 48px chips.
   const chips = body.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')

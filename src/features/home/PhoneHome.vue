@@ -137,7 +137,7 @@ function nextWord() {
                 </span>
               </button>
               <p v-if="fundOpen === f.ticker" class="phome__fund-more">
-                {{ fill(P.fundMove, { ticker: f.ticker, change: formatChange(f.change), market: formatChange(w.marketChange) }) }}
+                {{ fill(w.marketChange >= 0 ? P.fundMoveUp : P.fundMoveDown, { ticker: f.ticker, change: formatChange(f.change), amount: formatMoney(Math.abs(w.marketChange)) }) }}
               </p>
             </li>
           </ul>

@@ -31,7 +31,7 @@ for (const s of SCENARIOS) {
     const title = page.locator('.phome__needs-title')
     if (needs.length) await expect(title).toHaveText(`${needs.length} thing needs you`)
     else if (flags.some((f: { severity: string }) => f.severity === 'heads-up')) await expect(title).toContainText('heads-up')
-    else await expect(title).toHaveText('Nothing needs you today.')
+    else await expect(title).toHaveText('Nothing needs you right now.')
     // The latest three transactions are the newest three in the data.
     const acts = load('activity')[a.id].slice(-3).reverse()
     const rows = page.locator('.phome__latest li')
