@@ -101,7 +101,7 @@ test.describe('at 1280px', () => {
 
   test('arriving at /p303 directly, Back to full view goes to laptop Home', async ({ page }) => {
     await page.goto('/p303/story?scenario=brand-new')
-    await expect(page.frameLocator(FRAME).getByText('Growth needs years. Starting early')).toBeVisible()
+    await expect(page.frameLocator(FRAME).locator('.story__pov', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
     await page.getByRole('button', { name: 'Back to full view' }).click()
     await expect(page).toHaveURL(/\/\?scenario=brand-new$/)
     await expect(page.locator('.fl-rail')).toBeVisible()

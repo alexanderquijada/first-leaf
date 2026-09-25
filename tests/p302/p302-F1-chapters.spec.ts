@@ -43,7 +43,7 @@ test('chapter 1: the layers toggle and the time range change the chart; the tabl
 
   const series = async () => JSON.parse((await ch1.locator('[data-series]').getAttribute('data-series'))!) as number[]
   expect(await series()).toEqual(acc.history.map((r: { balance: number }) => r.balance))
-  await ch1.getByRole('button', { name: 'Last month' }).click()
+  await ch1.getByRole('button', { name: '1 month' }).click()
   const month = await series()
   expect(month.length).toBeLessThan(acc.history.length)
   expect(month.at(-1)).toBe(acc.balance)

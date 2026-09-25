@@ -32,8 +32,9 @@ const events = computed<ChartEvent[]>(() => {
   return list.sort((a, b) => a.date.localeCompare(b.date))
 })
 
+// The summary also says what the events toggle now shows.
 const summary = computed(
-  () => fill(D.summary, { from: formatDate(from.value), to: formatDate(f.value.lastClose) }),
+  () => `${fill(D.summary, { from: formatDate(from.value), to: formatDate(f.value.lastClose) })} ${showEvents.value ? D.eventsOn : D.eventsOff}`,
 )
 const columns = [
   { key: 'date', label: D.colDate },
@@ -47,7 +48,7 @@ const rows = computed(() =>
 </script>
 
 <template>
-  <section id="chapter-3" class="chapter" aria-labelledby="chapter-3-title">
+  <section id="chapter-3" class="chapter story-pin" aria-labelledby="chapter-3-title">
     <ChapterMark :n="3" />
     <h2 id="chapter-3-title">{{ fill(copy.titles['3'], { month: f.dip.month }) }}</h2>
     <p v-for="c in claims" :key="c.id" class="chapter__claim" :data-claim="c.id">{{ c.text }}</p>

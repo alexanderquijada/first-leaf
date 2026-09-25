@@ -16,6 +16,7 @@ function proj(startAge: number, monthly: number) {
 test('the guess is optional, and the reply depends on it', async ({ page }) => {
   await page.goto('/story#chapter-5')
   const ch = page.locator('#chapter-5')
+  await ch.getByRole('button', { name: 'Show the answer' }).click()
   await expect(ch).toContainText(`Here is how it turns out. At 65, Nia has ${whole(nia.final.value)}. Theo has ${whole(theo.final.value)}.`)
   await ch.getByRole('group', { name: 'Your guess' }).getByRole('button', { name: 'Theo' }).click()
   await expect(ch).toContainText('Theo puts in more each month, so he seems like the better guess.')

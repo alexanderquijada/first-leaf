@@ -117,16 +117,13 @@
   "ranges": {
     "group": "Time range",
     "1m": {
-      "label": "1 month",
-      "name": "Last month"
+      "label": "1 month"
     },
     "3m": {
-      "label": "3 months",
-      "name": "Last 3 months"
+      "label": "3 months"
     },
     "all": {
-      "label": "Since March",
-      "name": "Since March"
+      "label": "Since March"
     }
   },
   "dates": {

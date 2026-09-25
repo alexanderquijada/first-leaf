@@ -117,7 +117,7 @@ test('the story states its point of view, and only the part that is true', async
   await page.goto('/story')
   await expect(page.getByText('Right now, almost all of your balance is money you put in.')).toBeVisible()
   await page.goto('/story?scenario=brand-new')
-  await expect(page.getByText('Growth needs years. Starting early')).toBeVisible()
+  await expect(page.locator('.story__pov', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
   await expect(page.getByText('Right now, almost all')).toHaveCount(0)
 })
 
@@ -136,7 +136,7 @@ test('no page is wider than a 390px phone, including Practice with a holding', a
   for (const k of ['2', '0', '0']) await page.getByRole('button', { name: k, exact: true }).click()
   await page.getByRole('button', { name: 'Review' }).click()
   await page.getByRole('dialog').getByRole('button', { name: 'Confirm' }).click()
-  await expect(page.locator('.practice__table')).toBeVisible()
+  await expect(page.locator('.practice__table:visible, .practice__stack:visible')).toBeVisible()
   const w = await page.evaluate(() => document.documentElement.scrollWidth)
   if (w > 390) wide.push(`/practice with a holding: ${w}px`)
   expect(wide).toEqual([])

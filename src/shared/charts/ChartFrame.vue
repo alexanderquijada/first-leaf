@@ -13,7 +13,7 @@ export interface TableColumn {
 withDefaults(
   defineProps<{
     title: string
-    level?: 2 | 3
+    level?: 2 | 3 | 4
     summary: string
     columns: TableColumn[]
     rows: Record<string, string>[]
@@ -79,7 +79,11 @@ const showTable = ref(false)
 }
 
 .fl-chart__title {
+  margin: 0;
+  font-family: var(--font-display);
   font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.15;
 }
 
 .fl-chart__summary {

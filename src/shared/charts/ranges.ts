@@ -3,7 +3,8 @@ import { copy } from '../copy'
 import { meta } from '../data'
 
 export type RangeId = '1m' | '3m' | 'all'
-export const RANGES: { id: RangeId; label: string; name: string }[] = [
+// Each button is named by its visible label (WCAG 2.5.3: a voice command can say "1 month").
+export const RANGES: { id: RangeId; label: string }[] = [
   { id: '1m', ...copy.ranges['1m'] },
   { id: '3m', ...copy.ranges['3m'] },
   { id: 'all', ...copy.ranges.all },

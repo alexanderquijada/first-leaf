@@ -37,7 +37,7 @@ const rows = computed(() => [
 </script>
 
 <template>
-  <section id="chapter-2" class="chapter" aria-labelledby="chapter-2-title">
+  <section id="chapter-2" class="chapter story-pin" aria-labelledby="chapter-2-title">
     <ChapterMark :n="2" />
     <h2 id="chapter-2-title">{{ copy.titles['2'] }}</h2>
     <p class="chapter__claim">{{ claim }}</p>

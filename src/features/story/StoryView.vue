@@ -13,6 +13,8 @@ import ChapterPractice from './ChapterPractice.vue'
 import ChapterMix from './ChapterMix.vue'
 import ChapterShare from './ChapterShare.vue'
 import ChapterSinceMarch from './ChapterSinceMarch.vue'
+import PriceSourceNote from '@/shared/components/PriceSourceNote.vue'
+import WordChips from '@/shared/components/WordChips.vue'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 
@@ -37,6 +39,9 @@ async function goTo(n: number) {
 }
 const rosa = computed(() => story.rosaStory[account.value.id] ?? null)
 const pointOfView = computed(() => rosa.value?.pointOfView ?? story.pointOfView)
+// The closing takeaway: the point of view and two of chapter 5's checked claims.
+const claim = (id: string) => story.claims.find((c) => c.id === id)?.text ?? ''
+const takeaway = computed(() => [story.pointOfView, claim('early-ends-ahead'), claim('early-ahead-when-bumpy')])
 
 const chapters = computed(() =>
   rosa.value
@@ -95,12 +100,75 @@ const chapters = computed(() =>
 
     <ChapterKeepGoing />
     <ChapterPractice />
+
+    <section class="story__closing" aria-labelledby="story-closing-title">
+      <h2 id="story-closing-title">{{ copy.closing.title }}</h2>
+      <p v-for="line in takeaway" :key="line" class="chapter__claim">{{ line }}</p>
+      <WordChips :ids="['compound-growth', 'return', 'the-market']" :heading-level="3" />
+      <h3 class="story__sources-title">{{ copy.closing.sources }}</h3>
+      <p class="story__source">{{ story.assumptions.note }}</p>
+      <PriceSourceNote :kinds="['stock', 'crypto']" />
+    </section>
   </div>
 </template>
 
 <style scoped>
 .story {
   max-width: 820px;
+}
+
+/* From 1024px each chapter's chart sits beside its text and stays pinned while you scroll
+   through that chapter (P302 brief). Below that, charts sit inline after the text. */
+@media (min-width: 1024px) {
+  .story {
+    max-width: 1180px;
+  }
+
+  .story :deep(.story-pin) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    column-gap: 40px;
+    align-items: start;
+  }
+
+  .story :deep(.story-pin > *) {
+    grid-column: 1;
+  }
+
+  .story :deep(.story-pin > .fl-chart),
+  .story :deep(.story-pin > .k5__card) {
+    grid-column: 2;
+    grid-row: 1 / span 12;
+    position: sticky;
+    top: 140px;
+    margin-top: 0;
+  }
+
+  .story :deep(.story-pin + .story-pin) {
+    margin-top: 32px;
+  }
+}
+
+.story__closing {
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-ink-muted);
+}
+
+.story__closing h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.story__sources-title {
+  margin-top: 24px;
+  font-size: 1.25rem;
+}
+
+.story__source {
+  margin: 8px 0 0;
+  color: var(--color-ink-muted);
+  font-size: var(--type-small);
+  line-height: var(--fl-body-leading);
 }
 
 .story h1 {

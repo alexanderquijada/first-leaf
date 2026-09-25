@@ -51,7 +51,7 @@ test('review in a bottom sheet, confirm, and the banner is always visible', asyn
   await expect(page.getByText('You bought $200.00 of COST with practice money.')).toBeVisible()
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
   await expect(page.getByRole('note').filter({ hasText: 'Practice money. Nothing here touches your account.' })).toBeInViewport()
-  await expect(page.locator('.practice__table tbody tr')).toHaveCount(1)
+  await expect(page.locator('.practice__table tbody tr:visible, .practice__stack > li:visible')).toHaveCount(1)
 })
 
 test('a half-entered order survives leaving and coming back', async ({ page }) => {

@@ -19,7 +19,11 @@
     "colDate": "Date",
     "colBalance": "Balance",
     "colMoneyIn": "You put in",
-    "colEarned": "It earned"
+    "colEarned": "It earned",
+    "chartTitle1m": "Your balance in the last month",
+    "chartTitle3m": "Your balance in the last 3 months",
+    "layersOn": "The flat layer is what you put in, and the grainy layer above it is what it earned.",
+    "layersOff": "The chart shows your balance as one line."
   },
   "share": {
     "readIn": "{amount} of your balance is money you put in. That is {pct}%.",
@@ -49,7 +53,9 @@
     "colDiff": "Up or down",
     "chartTitle": "The dip and what came after",
     "showEvents": "Show events on the chart",
-    "eventsLabel": "Events on the chart"
+    "eventsLabel": "Events on the chart",
+    "eventsOn": "A diamond marks each event, and the list below the chart names them.",
+    "eventsOff": "The chart shows your balance without the events."
   },
   "mix": {
     "filters": {
@@ -124,7 +130,20 @@
     "shapeSummary": "{note} Nia ends with {nia}. Theo ends with {theo}.",
     "yourTurn": "Your turn",
     "eachMonth": "Each month",
-    "yourResult": "Start at {age} with {monthly} a month. At {endAge} you would have {value}."
+    "yourResult": "Start at {age} with {monthly} a month. At {endAge} you would have {value}.",
+    "showAnswer": "Show the answer",
+    "splitTitle": "What Nia put in, and what it grew into",
+    "niaMoney": "Nia's money",
+    "niaPutIn": "What Nia put in",
+    "daySplit": "Age {age}: Nia has {value}. She put in {putIn}.",
+    "colMoney": "Money",
+    "colPutIn": "Put in",
+    "oneTitle": "One saver at {monthly} a month, from {age} to {endAge}",
+    "saver": "The saver",
+    "dayOne": "Age {age}: {value}.",
+    "yourTitle": "Your money from {age} to {endAge}",
+    "you": "You",
+    "catchTitle": "Nia, and Theo at {monthly} a month"
   },
   "practice": {
     "claim": "Practice lets you try a mix with practice money. Nothing you do there touches your account.",
@@ -132,5 +151,9 @@
   },
   "slider": {
     "label": "{label}: {setting}"
+  },
+  "closing": {
+    "title": "What to take away",
+    "sources": "Where the numbers come from"
   }
 }

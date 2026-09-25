@@ -43,6 +43,11 @@ test('with no guess made, the reply is neutral', async ({ page }) => {
   await page.goto('/story#chapter-5')
   const ch = page.locator('#chapter-5')
   await expect(ch.getByRole('group', { name: 'Your guess' }).getByRole('button', { pressed: true })).toHaveCount(0)
+  // The answer stays hidden until a guess or "Show the answer" (5a).
+  await expect(ch).not.toContainText(`At 65, Nia has ${whole(nia.final.value)}.`)
+  await expect(ch.getByRole('heading', { name: 'Nia and Theo from 22 to 65' })).toHaveCount(0)
+  await ch.getByRole('button', { name: 'Show the answer' }).click()
+  await expect(ch.getByRole('button', { name: 'Show the answer' })).toHaveCount(0)
   await expect(ch).toContainText(`Here is how it turns out. At 65, Nia has ${whole(nia.final.value)}.`)
   await expect(ch).not.toContainText('You got it.')
   await expect(ch).not.toContainText('better guess')
@@ -114,4 +119,28 @@ test.describe('phone in landscape (844×390)', () => {
     })
     expect(overlaps).toEqual([])
   })
+})
+
+test('at 1280, nothing in what you own in Practice is cut off, and every value is labeled', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/practice')
+  for (const [t, amt] of [['BTC', '200'], ['AAPL', '150']] as const) {
+    await page.getByRole('radio', { name: new RegExp(t) }).check()
+    await page.getByLabel('Amount in dollars').fill(amt)
+    await page.getByRole('button', { name: 'Review' }).click()
+    await page.getByRole('button', { name: 'Confirm' }).click()
+    await page.getByRole('button', { name: 'New order' }).click()
+  }
+  const cut = await page.evaluate(() => {
+    const out: string[] = []
+    for (const el of document.querySelectorAll<HTMLElement>('.practice__own *')) {
+      if (el.closest('.fl-visually-hidden') || !el.offsetParent) continue
+      if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX !== 'visible') out.push(`${el.className} scrolls sideways`)
+    }
+    return out
+  })
+  expect(cut).toEqual([])
+  const rows = page.locator('.practice__table tbody tr:visible, .practice__stack > li:visible')
+  await expect(rows).toHaveCount(2)
+  for (const label of ['Owned', 'Value', 'Paid', 'Up or down']) await expect(rows.first()).toContainText(label)
 })

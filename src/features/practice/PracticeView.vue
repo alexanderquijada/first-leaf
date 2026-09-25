@@ -60,10 +60,23 @@ function startOver() {
         <OrderForm v-else />
       </div>
 
-      <div class="practice__card">
+      <div class="practice__card practice__own">
         <h2 class="practice__h">{{ copy.ownHeading }}</h2>
         <div v-if="!p.holdings.value.length" class="practice__empty"><SceneArt scene="empty" :size="110" /><p>{{ copy.ownEmpty }}</p></div>
-        <div v-else class="practice__wrap" role="region" :aria-label="copy.ownHeading" tabindex="0">
+        <!-- When this card is narrow (under 540px, as beside the order form at 1280), each holding is a
+             stacked row with every value labeled by its column name, so no column is ever cut off. -->
+        <ul v-if="p.holdings.value.length" class="practice__stack" :aria-label="copy.ownHeading">
+          <li v-for="h in p.holdings.value" :key="h.ticker">
+            <p class="practice__stack-head">{{ h.ticker }}</p>
+            <dl class="practice__stack-facts">
+              <div><dt>{{ copy.col.shares }}</dt><dd class="fl-tabular">{{ getFund(h.ticker)!.kind === 'crypto' ? formatQuantity(h.shares, 'crypto', h.ticker) : fill(copy.ownedShares, { quantity: formatQuantity(h.shares, 'stock', h.ticker) }) }}</dd></div>
+              <div><dt>{{ copy.col.value }}</dt><dd class="fl-tabular">{{ formatMoney(h.value) }}</dd></div>
+              <div><dt>{{ copy.col.paid }}</dt><dd class="fl-tabular">{{ formatMoney(h.paid) }}</dd></div>
+              <div><dt>{{ copy.col.change }}</dt><dd class="fl-tabular"><Money :amount="h.gainLoss" change context="table" /></dd></div>
+            </dl>
+          </li>
+        </ul>
+        <div v-if="p.holdings.value.length" class="practice__wrap" role="region" :aria-label="copy.ownHeading" tabindex="0">
           <table class="practice__table">
             <caption class="fl-visually-hidden">{{ copy.ownHeading }}</caption>
             <thead>
@@ -187,6 +200,58 @@ function startOver() {
   margin: 0;
   font-size: 1.375rem;
   font-weight: 600;
+}
+
+.practice__own {
+  container-type: inline-size;
+}
+
+.practice__stack {
+  display: none;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.practice__stack > li {
+  padding: 8px 0 10px;
+  border-bottom: 1px solid var(--color-mint);
+}
+
+.practice__stack-head {
+  margin: 0;
+  font-weight: 700;
+}
+
+.practice__stack-facts {
+  display: grid;
+  gap: 2px;
+  margin: 4px 0 0;
+}
+
+.practice__stack-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.practice__stack-facts dt {
+  color: var(--color-ink-muted);
+}
+
+.practice__stack-facts dd {
+  margin: 0;
+  text-align: right;
+}
+
+@container (max-width: 539px) {
+  .practice__stack {
+    display: block;
+  }
+
+  .practice__wrap {
+    display: none;
+  }
 }
 
 .practice__grid {

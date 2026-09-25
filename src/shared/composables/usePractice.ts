@@ -57,6 +57,14 @@ export function usePractice() {
   const total = computed(() => r2(invested.value + state.cash))
   const mix = computed(() => holdings.value.map((h) => ({ ticker: h.ticker, share: invested.value ? h.value / invested.value : 0 })))
 
+  /** The shares (or coins) an order of `amount` dollars gets, worked out exactly as place()
+   * does, so the review sheet's estimate matches what she then owns. */
+  function sharesFor(side: Side, ticker: Ticker, amount: number): number {
+    const price = priceOf(ticker)
+    if (side === 'sell' && amount >= valueOf(ticker) - 0.005) return state.lots[ticker]?.shares ?? 0
+    return side === 'buy' ? floorTo(amount / price, ticker) : roundTo(amount / price, ticker)
+  }
+
   /** Buy or sell by dollar amount at the latest price, in parts of a share, with no fee. */
   function place(side: Side, ticker: Ticker, text: string): { shares: number; amount: number } | null {
     if (orderError(side, ticker, text)) return null
@@ -110,6 +118,7 @@ export function usePractice() {
     total,
     mix,
     place,
+    sharesFor,
     startOver,
     timeMachine,
     priceOf,

@@ -52,7 +52,7 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
 </script>
 
 <template>
-  <section id="chapter-4" class="chapter" aria-labelledby="chapter-4-title">
+  <section id="chapter-4" class="chapter story-pin" aria-labelledby="chapter-4-title">
     <ChapterMark :n="4" />
     <h2 id="chapter-4-title">{{ copy.titles['4'] }}</h2>
     <p class="chapter__claim">{{ M.claim }}</p>

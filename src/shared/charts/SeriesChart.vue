@@ -14,6 +14,9 @@ export interface Series {
   color: string
   width?: number
   dash?: number[]
+  /** Fill under this line: to the axis ('origin') or to the next series ('+1'). */
+  fill?: 'origin' | '+1'
+  background?: string
 }
 
 const props = withDefaults(
@@ -49,7 +52,8 @@ function datasets(): ChartDataset<'line'>[] {
     // A lone point has no line to draw, so it shows as a dot.
     pointRadius: s.data.filter((v) => v !== null).length === 1 ? 5 : 0,
     pointHoverRadius: 5,
-    fill: false,
+    fill: s.fill ?? false,
+    backgroundColor: s.background,
     spanGaps: true,
   }))
   if (props.marks.length) {

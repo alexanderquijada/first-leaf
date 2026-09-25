@@ -95,6 +95,8 @@ function datasets(): ChartDataset<'line'>[] {
       pointBackgroundColor: colors.mustard,
       pointBorderColor: colors.ink,
       borderColor: colors.ink,
+      // Drawn last, on top of the filled areas, so a marker below the line is never hidden.
+      order: -1,
     })
   }
   return sets

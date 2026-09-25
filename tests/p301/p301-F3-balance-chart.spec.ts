@@ -8,7 +8,7 @@ test('ranges change the chart, and the table shows the same series', async ({ pa
   const a = load('account')
   await page.goto('/')
   const frame = page.locator('.fl-chart').filter({ hasText: 'Balance over time' })
-  for (const [name, days] of [['Last month', 1], ['Last 3 months', 3], ['Since March', 0]] as const) {
+  for (const [name, days] of [['1 month', 1], ['3 months', 3], ['Since March', 0]] as const) {
     await frame.getByRole('button', { name }).click()
     await expect(frame.getByRole('button', { name })).toHaveAttribute('aria-pressed', 'true')
     const series: number[] = JSON.parse((await frame.locator('[data-series]').getAttribute('data-series'))!)

@@ -22,6 +22,6 @@ test.describe('with the phone view open', () => {
     await page.goto('/p303/story?scenario=brand-new')
     const frame = page.locator('iframe[title="First Leaf on a phone"]')
     expect(await frame.getAttribute('src')).toContain('scenario=brand-new')
-    await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').getByText('Growth needs years. Starting early')).toBeVisible()
+    await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').locator('.story__pov', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
   })
 })

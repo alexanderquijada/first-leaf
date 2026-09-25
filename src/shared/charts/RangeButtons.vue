@@ -13,7 +13,6 @@ const range = defineModel<RangeId>({ required: true })
       type="button"
       class="ranges__btn"
       :aria-pressed="range === r.id ? 'true' : 'false'"
-      :aria-label="r.name"
       @click="range = r.id"
     >
       {{ r.label }}

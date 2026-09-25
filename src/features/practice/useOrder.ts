@@ -16,7 +16,7 @@ export function useOrder() {
   const error = computed(() => p.orderError(side.value, ticker.value, amount.value))
   const shownError = computed(() => (touched.value ? error.value : ''))
   const amountNumber = computed(() => Number(amount.value.replace(/^\$/, '').replace(/,/g, '')))
-  const estShares = computed(() => (error.value ? 0 : amountNumber.value / p.priceOf(ticker.value)))
+  const estShares = computed(() => (error.value ? 0 : p.sharesFor(side.value, ticker.value, amountNumber.value)))
 
   function review() {
     touched.value = true

@@ -1,0 +1,68 @@
+import { test, expect } from '../fixtures'
+import { load } from '../data'
+
+// Phase 5: what the P302 reviewer found missing, each now a test.
+const story = load('story-p302')
+const claim = (id: string) => story.claims.find((c: { id: string }) => c.id === id).text
+
+test.describe('at 1280px', () => {
+  test.use({ viewport: { width: 1280, height: 800 } })
+
+  test('each chapter chart sits beside its text and stays pinned while the chapter scrolls', async ({ page }) => {
+    await page.goto('/story')
+    for (const n of [1, 2, 3, 4]) {
+      const ch = page.locator(`#chapter-${n}`)
+      const text = (await ch.locator('h2').boundingBox())!
+      const chart = (await ch.locator('> .fl-chart').boundingBox())!
+      expect(chart.x, `chapter ${n}`).toBeGreaterThan(text.x + text.width / 2)
+      expect(await ch.locator('> .fl-chart').evaluate((e) => getComputedStyle(e).position)).toBe('sticky')
+    }
+    // Chapter 5 pairs each step with its own chart, beside it.
+    const steps = page.locator('#chapter-5 .k5__step')
+    await expect(steps).toHaveCount(6)
+  })
+
+  test('the time range sets the chart title, and each toggle says what the chart now shows', async ({ page }) => {
+    await page.goto('/story')
+    const ch1 = page.locator('#chapter-1')
+    await expect(ch1.getByRole('heading', { level: 3 })).toHaveText('Your balance since March')
+    await ch1.getByRole('button', { name: '1 month' }).click()
+    await expect(ch1.getByRole('heading', { level: 3 })).toHaveText('Your balance in the last month')
+    await expect(ch1.locator('.fl-chart__summary')).toContainText('The flat layer is what you put in')
+    await ch1.getByRole('button', { name: 'Show what you put in and what it earned' }).click()
+    await expect(ch1.locator('.fl-chart__summary')).toContainText('The chart shows your balance as one line.')
+    const ch3 = page.locator('#chapter-3')
+    await expect(ch3.locator('.fl-chart__summary')).toContainText('A diamond marks each event')
+    await ch3.getByRole('button', { name: 'Show events on the chart' }).click()
+    await expect(ch3.locator('.fl-chart__summary')).toContainText('The chart shows your balance without the events.')
+  })
+})
+
+test('chapter 5 has a chart for every step, and the sliders move their lines', async ({ page }) => {
+  await page.goto('/story#chapter-5')
+  const ch = page.locator('#chapter-5')
+  await ch.getByRole('group', { name: 'Your guess' }).getByRole('button', { name: 'Nia' }).click()
+  for (const t of ['Nia and Theo from 22 to 65', 'What Nia put in, and what it grew into', 'One saver at $100 a month, from 22 to 65', 'Smooth years', 'Your money from 26 to 65'])
+    await expect(ch.getByRole('heading', { name: t })).toBeVisible()
+  // 5d: the one saver's line starts at the slider's age.
+  const age = ch.getByRole('slider', { name: /^Start age/ }).first()
+  await age.focus()
+  await page.keyboard.press('End')
+  await expect(ch.getByRole('heading', { name: 'One saver at $100 a month, from 45 to 65' })).toBeVisible()
+  // 5e: Theo's line on the catch-up chart rises with his amount.
+  const catchChart = ch.locator('.k5__step', { has: page.getByRole('slider', { name: /^Theo each month/ }) }).locator('[data-series]')
+  const before = JSON.parse((await catchChart.getAttribute('data-series'))!)[1].at(-1)
+  await ch.getByRole('slider', { name: /^Theo each month/ }).focus()
+  await page.keyboard.press('End')
+  await expect.poll(async () => JSON.parse((await catchChart.getAttribute('data-series'))!)[1].at(-1)).toBeGreaterThan(before)
+})
+
+test('the story closes with a takeaway, its words as chips, and the sources', async ({ page }) => {
+  await page.goto('/story')
+  const end = page.locator('.story__closing')
+  await expect(end.getByRole('heading', { level: 2 })).toHaveText('What to take away')
+  for (const line of [story.pointOfView, claim('early-ends-ahead'), claim('early-ahead-when-bumpy')]) await expect(end).toContainText(line)
+  await expect(end.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')).toHaveText(['Growth on growth', 'Return', 'The market'])
+  await expect(end).toContainText(story.assumptions.note)
+  await expect(end).toContainText('Powered by CoinGecko API')
+})
