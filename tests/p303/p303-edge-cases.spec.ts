@@ -136,6 +136,7 @@ test('no phone text is under 14px on any page', async ({ page }) => {
   // After an alert is seen, and with chapter 5 open.
   await page.goto('/')
   await page.locator('.phome__needs .phome__top').first().click()
+  await expect(page.locator('.adetail')).toBeVisible() // the alert page marks it seen when it opens
   await page.locator('.fl-bottombar').getByRole('link', { name: 'Home' }).click()
   await expect(page.locator('.phome__seen')).toBeVisible()
   await scan('/ (seen)')
@@ -149,6 +150,7 @@ test('with "Seen", the needs-you row keeps its chevron on the right, on one row'
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
   await page.locator('.phome__needs .phome__top').first().click()
+  await expect(page.locator('.adetail')).toBeVisible() // the alert page marks it seen when it opens
   await page.locator('.fl-bottombar').getByRole('link', { name: 'Home' }).click()
   const row = page.locator('.phome__needs .phome__top').first()
   await expect(row.locator('.phome__seen')).toBeVisible()
