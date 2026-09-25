@@ -107,7 +107,9 @@ const groups = computed(() => [
 }
 
 .mix__bar.is-set {
-  background: var(--color-mustard);
+  /* Stripes as well as color: forest vs. mustard is only ΔE 12.3 under protanopia. */
+  background: repeating-linear-gradient(135deg, var(--color-mustard) 0 3px, var(--color-paper) 3px 5px);
+  border: 1px solid var(--color-mustard);
 }
 
 .mix__nums {
