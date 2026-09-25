@@ -49,7 +49,7 @@ const pct = computed(() => (goal.value ? Math.round(goal.value.progress * 100) :
 
 .goal__line {
   margin: 8px 0 0;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .goal__bar {

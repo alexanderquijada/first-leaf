@@ -71,6 +71,7 @@ const rows = computed(() =>
 }
 
 .funds__wrap {
+  position: relative; /* keeps screen-reader-only text inside the scrolling box */
   margin-top: 16px;
   overflow-x: auto;
   border: 1px solid var(--color-ink-muted);

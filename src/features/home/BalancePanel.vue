@@ -73,7 +73,7 @@ void fill
 
 .balance__line {
   margin: 8px 0 0;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .balance__parts {

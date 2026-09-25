@@ -149,6 +149,7 @@ const filterSummary = computed(
 }
 
 .activity__wrap {
+  position: relative; /* keeps screen-reader-only text inside the scrolling box */
   margin-top: 8px;
   overflow-x: auto;
   border: 1px solid var(--color-ink-muted);
