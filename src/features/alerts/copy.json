@@ -37,6 +37,8 @@
     "moveValue": "{direction} {pct}%",
     "up": "up",
     "down": "down",
-    "yourChange": "What you own in it"
+    "yourChange": "What you own in it",
+    "triedAgain": "Tried again",
+    "pendingSince": "Pending since {date}"
   }
 }

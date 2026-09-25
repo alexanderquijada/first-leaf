@@ -11,7 +11,7 @@ import { useScenario } from '@/shared/composables/useScenario'
 import { useSession } from '@/shared/composables/useSession'
 import { getFund, type AttentionFlag } from '@/shared/data'
 import CopyText from '@/shared/components/CopyText.vue'
-import { fill } from '@/shared/copy'
+import { copy as shared, fill } from '@/shared/copy'
 import { formatChange, formatDate, formatMoney } from '@/shared/format'
 import copy from './copy.json'
 
@@ -22,7 +22,13 @@ const props = withDefaults(defineProps<{ alert: AttentionFlag; headingLevel?: 1 
 const { account, activity } = useScenario()
 const { getTerm } = useGlossary()
 const { isHandled, markHandled, undo } = useHandled()
-const { markSeen, autoInvestOn } = useSession()
+const { markSeen, autoInvestOn, autoInvestChanged, pendingDeposits } = useSession()
+
+// An action already taken this session isn't offered again (P301 brief, edge cases): after
+// "Try the deposit again" the alert shows the new deposit as pending, and after auto-invest
+// is turned on, the cash alert says it is on now.
+const retry = computed(() => (props.alert.id === 'deposit-returned' ? pendingDeposits.value.find((p) => p.kind === 'retry') : undefined))
+const autoTurnedOn = computed(() => props.alert.id === 'cash-sitting' && autoInvestChanged.value && autoInvestOn.value)
 
 watch(() => props.alert.id, (id) => markSeen(id), { immediate: true })
 
@@ -41,6 +47,7 @@ const facts = computed<{ label: string; value: string }[]>(() => {
           { label: F.askedOn, value: formatDate(d.date) },
           { label: F.sentBackOn, value: d.returnedDate ? formatDate(d.returnedDate) : '' },
           { label: F.status, value: F.returned },
+          ...(retry.value ? [{ label: F.triedAgain, value: fill(F.pendingSince, { date: formatDate(retry.value.date) }) }] : []),
         ]
       : []
   }
@@ -95,6 +102,8 @@ function unhandle() {
 
     <h3 class="adetail__h">{{ copy.whatHappened }}</h3>
     <p>{{ alert.body }}</p>
+    <p v-if="retry" class="adetail__now">{{ shared.deposit.confirmation }}</p>
+    <p v-if="autoTurnedOn" class="adetail__now">{{ shared.moneyFlow.autoOnNow }}</p>
     <dl v-if="facts.length" class="adetail__facts">
       <div v-for="f in facts" :key="f.label">
         <dt>{{ f.label }}</dt>
@@ -110,7 +119,7 @@ function unhandle() {
     <h3 class="adetail__h">{{ copy.whatYouCanDo }}</h3>
     <p>{{ alert.nextStep }}</p>
     <div class="adetail__actions">
-      <template v-if="alert.action">
+      <template v-if="alert.action && !retry">
         <RouterLink
           v-if="alert.action.kind === 'open-fund' && alert.ticker"
           :to="`/funds/${alert.ticker}`"
@@ -159,6 +168,12 @@ function unhandle() {
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
+.adetail__now {
+  margin: 8px 0 0;
+  font-weight: 600;
+  color: var(--color-forest);
+}
+
 .adetail__h {
   margin-top: 24px;
   font-family: var(--font-ui);
@@ -175,6 +190,7 @@ function unhandle() {
 
 .adetail__facts > div {
   display: flex;
+  flex-wrap: wrap; /* with large text a long value moves under its label */
   justify-content: space-between;
   gap: 24px;
   padding: 8px 0;
@@ -186,7 +202,8 @@ function unhandle() {
 }
 
 .adetail__facts dd {
-  margin: 0;
+  margin: 0 0 0 auto;
+  overflow-wrap: anywhere;
   font-weight: 600;
   text-align: right;
 }

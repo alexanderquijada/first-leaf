@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "First Leaf: a made-up investing app for first-time investors. Protogen case studies P301, P302, P303. Everything is fictional; not financial advice.",
+  "description": "First Leaf: an investing app for first-time investors, reviewed as Protogen case studies P301, P302 and P303. Rosa and her accounts are invented; README.md says what is real. Not investment advice.",
   "license": "MIT",
   "engines": {
     "node": "^22.18.0 || >=24.12.0"

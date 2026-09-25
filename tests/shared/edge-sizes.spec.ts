@@ -106,7 +106,7 @@ for (const width of [390, 320]) {
         await page.goto(path)
         await page.locator('main').waitFor()
         await page.evaluate(() => (document.documentElement.style.fontSize = '200%'))
-        await page.waitForTimeout(100)
+        await page.waitForTimeout(1000) // let charts and fonts settle at the new size
         const w = await page.evaluate(() => document.documentElement.scrollWidth)
         if (w > width) wide.push(`${path}: ${w}px`)
       }

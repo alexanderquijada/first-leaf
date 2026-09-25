@@ -123,6 +123,7 @@ const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => 
 
 .adet__facts > div {
   display: flex;
+  flex-wrap: wrap; /* with large text a long value moves under its label */
   justify-content: space-between;
   gap: 24px;
   min-height: 48px;
@@ -135,7 +136,8 @@ const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => 
 }
 
 .adet__facts dd {
-  margin: 0;
+  margin: 0 0 0 auto;
+  overflow-wrap: anywhere;
   font-weight: 600;
   text-align: right;
 }

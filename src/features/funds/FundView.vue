@@ -219,6 +219,7 @@ const words = computed(() => [
 
 .fund__facts > div {
   display: flex;
+  flex-wrap: wrap; /* with large text a long amount moves under its label */
   justify-content: space-between;
   gap: 24px;
   min-height: 44px;
@@ -231,7 +232,8 @@ const words = computed(() => [
 }
 
 .fund__facts dd {
-  margin: 0;
+  margin: 0 0 0 auto;
+  overflow-wrap: anywhere;
   font-weight: 600;
 }
 </style>

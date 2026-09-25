@@ -36,7 +36,7 @@ const { account } = useScenario()
 </template>
 
 <style scoped>
-/* Tablet: two columns. Alerts, then balance; the chart and "This week" full width. */
+/* Tablet: two columns. Alerts, then balance; the chart and the mix full width. */
 .dhome {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -51,8 +51,9 @@ const { account } = useScenario()
   background: var(--color-paper);
 }
 
+/* The mix card is the tallest, so it takes a full row: no card beside it ends in a big gap. */
 .dhome__chart,
-.dhome__week,
+.dhome__mix,
 .dhome__welcome {
   grid-column: 1 / -1;
 }
@@ -67,7 +68,7 @@ const { account } = useScenario()
   color: var(--color-ink-muted);
 }
 
-/* Laptop: 12 columns. Alerts 7, balance 5, chart 12, then mix, goal, this week at 4 each. */
+/* Laptop: 12 columns. Alerts 7, balance 5, chart 12, mix 12, then goal and this week at 6 each. */
 @media (min-width: 1024px) {
   .dhome {
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -83,14 +84,14 @@ const { account } = useScenario()
   }
 
   .dhome__chart,
+  .dhome__mix,
   .dhome__welcome {
     grid-column: 1 / -1;
   }
 
-  .dhome__mix,
   .dhome__goal,
   .dhome__week {
-    grid-column: span 4;
+    grid-column: span 6;
   }
 }
 </style>

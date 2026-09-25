@@ -31,6 +31,10 @@ const terms = computed(() => [...new Set(props.ids)].map((id) => getTerm(id)).fi
   font-weight: 700;
 }
 
+.chips li {
+  max-width: 100%;
+}
+
 .chips ul {
   display: flex;
   flex-wrap: wrap;
@@ -47,8 +51,11 @@ const terms = computed(() => [...new Set(props.ids)].map((id) => getTerm(id)).fi
   min-width: 48px;
   padding: 0 16px;
   border: 1px solid var(--color-forest);
+  max-width: 100%;
   border-radius: 24px;
   background: var(--color-paper);
+  text-align: left;
+  overflow-wrap: anywhere; /* with very large text a long word wraps inside its chip */
   color: var(--color-forest);
   font-weight: 600;
   text-decoration: none;

@@ -93,3 +93,62 @@ test('on a laptop at full size, Investments is still a table', async ({ page }) 
   await expect(page.getByRole('table')).toBeVisible()
   await expect(page.locator('.funds__stack')).toBeHidden()
 })
+
+// Phase 5: what the P301 reviewer found.
+test('nothing to act on shows a calm illustration, not an empty card', async ({ page }) => {
+  await page.goto('/?scenario=all-clear')
+  await expect(page.locator('.fl-alerts .fl-scene')).toBeVisible()
+  await page.goto('/')
+  await expect(page.locator('.fl-alerts .fl-scene')).toHaveCount(0)
+})
+
+test('a brand-new account has no "Choose an alert" pane, and a missing alert links back to Alerts', async ({ page }) => {
+  await page.goto('/alerts?scenario=brand-new')
+  await expect(page.locator('.alerts__list')).toContainText('Nothing needs you right now.')
+  await expect(page.getByText('Choose an alert to read it here.')).toHaveCount(0)
+  await page.goto('/alerts/nope')
+  await page.locator('.alerts__missing').getByRole('link', { name: 'All alerts' }).click()
+  await expect(page).toHaveURL(/\/alerts$/)
+})
+
+test('a returned deposit is tried again once: then it shows as pending, with no second try', async ({ page }) => {
+  await page.goto('/alerts/deposit-returned')
+  await page.getByRole('button', { name: 'Try the deposit again' }).click()
+  const dialog = page.getByRole('dialog')
+  await dialog.getByRole('button', { name: 'Continue' }).click()
+  await dialog.getByRole('button', { name: 'Confirm deposit' }).click()
+  await dialog.getByRole('button', { name: 'Done' }).click()
+  const d = page.locator('.adetail')
+  await expect(d.getByRole('button', { name: 'Try the deposit again' })).toHaveCount(0)
+  await expect(d).toContainText('Your deposit is on its way. It should arrive in 1 to 3 business days.')
+  await expect(d).toContainText('Tried againPending since Sept. 20')
+})
+
+test('after auto-invest is turned on, the cash alert says so', async ({ page }) => {
+  await page.goto('/alerts/cash-sitting')
+  const d = page.locator('.adetail')
+  await expect(d).not.toContainText('Auto-invest is on. Each deposit buys your mix on the day it arrives.')
+  await page.getByRole('button', { name: 'See auto-invest settings' }).click()
+  const dialog = page.getByRole('dialog')
+  await dialog.getByRole('switch').click()
+  await dialog.getByRole('button', { name: 'Continue' }).click()
+  await dialog.getByRole('button', { name: 'Turn on' }).click()
+  await dialog.getByRole('button', { name: 'Done' }).click()
+  await expect(d).toContainText('Auto-invest is on. Each deposit buys your mix on the day it arrives.')
+})
+
+test('no Home card ends in a big empty gap (the tall mix card takes its own row)', async ({ page }) => {
+  for (const width of [1280, 1024, 768]) {
+    await page.setViewportSize({ width, height: 800 })
+    await page.goto('/')
+    await expect(page.locator('.dhome__week')).toBeVisible()
+    const gaps = await page.evaluate(() =>
+      [...document.querySelectorAll<HTMLElement>('.dhome__card')].map((card) => {
+        const kids = [...card.querySelectorAll<HTMLElement>('*')].filter((e) => e.offsetParent && !e.closest('.fl-visually-hidden'))
+        const bottom = Math.max(...kids.map((e) => e.getBoundingClientRect().bottom))
+        return { card: card.className, gap: Math.round(card.getBoundingClientRect().bottom - bottom) }
+      }),
+    )
+    for (const g of gaps) expect(g.gap, `${g.card} at ${width}`).toBeLessThanOrEqual(80)
+  }
+})

@@ -28,8 +28,10 @@ const alert = computed(() => attention.value.find((a) => a.id === id.value))
         <div v-else-if="id" class="alerts__missing">
           <h2>{{ copy.notFound }}</h2>
           <p>{{ copy.notFoundWhy }}</p>
+          <RouterLink to="/alerts" class="alerts__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ copy.allAlerts }}</RouterLink>
         </div>
-        <p v-else class="alerts__choose">{{ copy.choose }}</p>
+        <!-- With no alerts at all (brand-new), there is nothing to choose. -->
+        <p v-else-if="attention.length" class="alerts__choose">{{ copy.choose }}</p>
       </div>
     </template>
     <template v-else>

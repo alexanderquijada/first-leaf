@@ -74,6 +74,7 @@ const groups = computed(() => [
   margin: 0;
   padding: 0;
   list-style: none;
+  container-type: inline-size;
 }
 
 .mix__row {
@@ -124,5 +125,16 @@ const groups = computed(() => [
 .mix__cash {
   margin: 8px 0 0;
   color: var(--color-ink-muted);
+}
+/* On a full-width card, each holding is one line: name, its bars, its numbers. */
+@container (min-width: 640px) {
+  .mix__row {
+    grid-template-columns: 5em minmax(0, 1fr) auto;
+  }
+
+  .mix__bars {
+    grid-column: 2;
+    grid-row: 1;
+  }
 }
 </style>

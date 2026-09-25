@@ -8,6 +8,7 @@ import { useHandled } from '../composables/useHandled'
 import { useScenario } from '../composables/useScenario'
 import { useSession } from '../composables/useSession'
 import SeverityBadge from './SeverityBadge.vue'
+import SceneArt from '../illustrations/SceneArt.vue'
 import { copy, fill } from '../copy'
 const L = copy.alerts
 
@@ -47,6 +48,8 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
     <p v-else-if="needs.length" class="fl-alerts__calm">{{ L.nothing }}</p>
     <p v-else-if="everHadNeeds" class="fl-alerts__calm">{{ L.allHandled }}</p>
     <p v-else class="fl-alerts__calm">{{ L.nothing }}</p>
+    <!-- Nothing to act on: a calm illustration (P301 brief), not an empty card. -->
+    <SceneArt v-if="!mustAct.length" scene="calm" :size="110" class="fl-alerts__art" />
 
     <ul v-if="needs.length" class="fl-alerts__list">
       <li v-for="a in needs" :key="a.id">
@@ -225,5 +228,8 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+}
+.fl-alerts__art {
+  margin: 12px 0 4px;
 }
 </style>
