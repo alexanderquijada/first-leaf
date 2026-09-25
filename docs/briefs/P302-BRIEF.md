@@ -115,8 +115,8 @@ The story says what happened and stops there. It never says pausing was right or
 
 | Step | What it says | Chart state | Interaction |
 |---|---|---|---|
-| 5a Make a guess | Who has more at 65? | Hidden until a guess, or until **Show the answer** | **Tap Nia or Theo.** The guess is optional: **Show the answer** skips it, and the reply is then neutral. |
-| 5b The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's glows | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the better guess." |
+| 5a Make a guess | Who has more at 65? | Hidden until a guess, or until **Show the answer**; so are steps 5b to 5g, which would give the answer away | **Tap Nia or Theo.** The guess is optional: **Show the answer** skips it, and the reply is then neutral. |
+| 5b The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's is the thicker solid line (only the balance line glows, BRIEF.md §6) | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the better guess." |
 | 5c Why | Nia put in *less*. Most of her money is growth on growth. | Nia's area splits into "put in" and grainy "growth" | Hover or tap any age to read both layers |
 | 5d Every year counts | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
 | 5e Can Theo catch up? | Yes, with about $196 a month, nearly twice Nia's. | Theo's line rises with the amount | **Theo's monthly slider, $150–$300, step $1**, with a marker where he passes Nia |
@@ -159,7 +159,7 @@ Closing: a three-line takeaway (the point of view and two of chapter 5's checked
 | Slider at extremes (start at 45; Theo at $300) | Copy stays true: "Starting at 45 still helps. It just has fewer years to grow." |
 | Reader jumps straight to a chapter | Each chapter's text stands alone; no chapter depends on an earlier interaction |
 | No guess made | Step 5b uses neutral copy |
-| Time range shorter than a chapter's events (1 month with the dip's events on) | The sentence says the events are outside this range, and offers "Since March" |
+| Chart axes | Every chart's axis ends on its last label (65 for chapter 5), and stacked "put in" / "earned" areas start at $0, so the layers aren't exaggerated |
 | Practice errors: not enough practice money, selling more than you own, nothing to sell, $0 or blank, letters, more than 2 decimals | An inline message in plain words; Confirm stays disabled until the order is valid |
 | Phone in landscape; 200% zoom; reduced motion | Charts reflow; text never sits on top of a chart; nothing required moves |
 

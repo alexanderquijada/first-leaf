@@ -76,7 +76,7 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 
 - **"N things need you" counts only what Rosa must act on** (needs-you alerts; ratified Sept. 25). Heads-ups are listed but not counted. FYIs sit under "Good to know" and are never counted. The same on the phone.
 - Every alert can be **marked handled** (remembered for the session, with "Undo").
-- Alerts raised since last Sunday's review (Sept. 13) show a **New** badge.
+- Alerts raised since last Sunday's review (Sept. 13) show a **New** badge. In the shipped data every alert was raised before Sept. 13, so no badge shows; data rule N1 checks that each flag's "New" matches its date.
 - **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "Good to know" (forest, info icon; approved rewrite 9, Sept. 25). Inside the "Good to know" section, items carry no badge, because the heading already says it (ruling, Sept. 25); the badge shows wherever an FYI appears outside that section, such as its own page. Color never works alone.
 - **Every money action is a realistic flow:** review → confirm → confirmation, and it changes what the app shows for the rest of the session (a Pending deposit in Activity, "Auto-invest: On"). Reloading resets it; the data files never change.
   - *Try the deposit again* ends with "Your deposit is on its way. It should arrive in 1 to 3 business days." and a Pending deposit in Activity. (The line lives in one place in the code and is used everywhere.)
@@ -101,10 +101,13 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 │              ││ ┌─ Balance over time ─────────────── 1 month · 3 months · Since March ┐│
 │              ││ │   glowing balance line over a grainy "earned" layer               ││
 │              ││ └───────────────────────────────────────────────────────────────────┘│
-│              ││ ┌─ Your mix (4) ─┐┌─ Goal: first $2,000 (4) ┐┌─ This week (4) ──────┐│
-│              ││ │ now vs. the    ││ $1,250 of $2,000 put in ││ start → market →     ││
-│              ││ │ mix you set    ││ $150 behind plan        ││ dividends → end      ││
-│              ││ └────────────────┘└─────────────────────────┘└──────────────────────┘│
+│              ││ ┌─ Your mix (12): stocks / crypto / cash, then one line per holding ┐│
+│              ││ │ AAPL ▬▬▬▬▬ now vs. ▨▨▨▨ the mix you set          27% now · 25% set ││
+│              ││ └───────────────────────────────────────────────────────────────────┘│
+│              ││ ┌─ Goal: first $2,000 (6) ──────┐┌─ This week (6) ─────────────────┐│
+│              ││ │ $1,250 of $2,000 put in       ││ start → market → dividends → end││
+│              ││ │ $150 behind plan              ││ (ups and downs are normal)      ││
+│              ││ └───────────────────────────────┘└─────────────────────────────────┘│
 └──────────────┘└──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -132,10 +135,10 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 |---|---|
 | **Nothing needs you** (calm account: every deposit went through, auto-invest on) | "Nothing needs you right now." A calm illustration. Any FYI (the SIPC notice, a dividend) still shows under "Good to know", without a badge. The list keeps its space, so the layout doesn't jump. |
 | **Brand-new account** ($0) | A welcome state with a mid-century illustration explaining what will appear once she adds money. Charts show a labeled empty frame with one sentence, not a broken axis. |
-| **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus an explanation that ups and downs are normal. |
+| **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus an explanation that ups and downs are normal (on the investment's page and in This week). |
 | **All alerts handled** | "You've handled everything for this week." Undo stays available. |
 | **An alert address that doesn't exist** (`/alerts/nope`) | A friendly "We couldn't find that alert" with a link back to Alerts |
-| **An action already taken** | After *Try the deposit again*, the alert says the new deposit is pending and doesn't offer a second try. After auto-invest is turned on, the cash alert says it is on now. |
+| **An action already taken** | Once an alert's action is done (*Try the deposit again*, *Add a one-time deposit*, turning auto-invest on), the alert shows that result in place of "What you can do" and its action, and moves to Handled (with Undo). So it is never offered twice, and "needs you" no longer counts it. |
 | **No alerts at all** (brand-new) | The Alerts page shows only the calm list; there is no "Choose an alert" pane for alerts that don't exist. |
 | **Long text, 200% zoom, keyboard only, reduced motion** | Nothing overlaps or gets cut off; the Investments table stacks into labeled rows; focus follows reading order; no motion is needed to understand anything |
 
