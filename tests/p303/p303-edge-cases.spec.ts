@@ -52,6 +52,8 @@ test('nothing needs you: the SIPC notice sits under "Good to know" on the phone'
   await expect(card.getByRole('heading', { level: 2 })).toHaveText('Nothing needs you right now.')
   await expect(card.getByRole('heading', { name: 'Good to know' })).toBeVisible()
   await expect(card).toContainText("SIPC protection doesn't cover crypto")
+  // Ruling (Sept. 25): no badge inside "Good to know" on the phone either.
+  await expect(card.locator('.fl-severity')).toHaveCount(0)
 })
 
 test('a down week says "down" in words, and says ups and downs are normal', async ({ page }) => {

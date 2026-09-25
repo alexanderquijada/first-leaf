@@ -34,6 +34,11 @@ test('the calm account: nothing needs you, and the SIPC notice sits under "Good 
   await expect(alerts).toContainText('Good to know')
   await expect(alerts).not.toContainText('Just so you know')
   await expect(alerts).not.toContainText('FYI')
+  // Ruling (Sept. 25): no badge inside "Good to know"; the heading already says it.
+  await expect(alerts.locator('.fl-alerts__row', { hasText: "SIPC protection doesn't cover crypto" }).locator('.fl-severity')).toHaveCount(0)
+  // Outside the section, on its own page, the badge stays.
+  await alerts.getByRole('link', { name: "SIPC protection doesn't cover crypto" }).click()
+  await expect(page.locator('.adetail .fl-severity')).toHaveText('Good to know')
 })
 
 test('down, not up: losses say "down" in sentences and carry "down" in table labels', async ({ page }) => {

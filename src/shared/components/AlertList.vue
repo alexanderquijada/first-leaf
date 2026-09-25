@@ -73,7 +73,7 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
             class="fl-alerts__row"
             :aria-current="a.id === selectedId ? 'page' : undefined"
           >
-            <SeverityBadge :severity="a.severity" />
+            <!-- No badge here: the section heading already says "Good to know" (ruling, Sept. 25). -->
             <span class="fl-alerts__text">{{ a.title }}</span>
             <span v-if="a.newSinceLastReview" class="fl-alerts__new">{{ L.new }}</span>
             <span v-if="showSeen && isSeen(a.id)" class="fl-alerts__seen">{{ L.seen }}</span>

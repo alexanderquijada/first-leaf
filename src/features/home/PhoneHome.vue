@@ -89,8 +89,8 @@ function nextWord() {
         </RouterLink>
         <template v-if="!top && fyi.length">
           <h3 class="phome__fyi-title">{{ P.fyiTitle }}</h3>
+          <!-- No badge here: the heading already says "Good to know" (ruling, Sept. 25). -->
           <RouterLink v-for="a in fyi" :key="a.id" :to="`/alerts/${a.id}`" class="phome__top">
-            <SeverityBadge :severity="a.severity" />
             <span class="phome__top-text">{{ a.title }}</span>
             <span class="mdi mdi-chevron-right" aria-hidden="true" />
           </RouterLink>
