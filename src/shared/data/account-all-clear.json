@@ -6,14 +6,14 @@
   "openedOn": "2026-03-02",
   "asOf": "2026-09-20",
   "lastClose": "2026-09-18",
-  "balance": 1486.94,
-  "investedValue": 1481.82,
-  "cash": 5.12,
+  "balance": 1519.67,
+  "investedValue": 1517.2,
+  "cash": 2.47,
   "cashSince": null,
   "moneyIn": 1400,
-  "gainLoss": 86.94,
-  "gainLossPercent": 0.0621,
-  "dividendsTotal": 5.12,
+  "gainLoss": 119.67,
+  "gainLossPercent": 0.0855,
+  "dividendsTotal": 2.47,
   "recurringDeposit": {
     "amount": 150,
     "dayOfMonth": 1,
@@ -25,37 +25,84 @@
     "pausedOn": null
   },
   "targetMix": {
-    "FL-BROAD": 0.65,
-    "FL-WORLD": 0.2,
-    "FL-BOND": 0.15
+    "AAPL": 0.25,
+    "MSFT": 0.2,
+    "NVDA": 0.1,
+    "COST": 0.15,
+    "NKE": 0.1,
+    "BTC": 0.12,
+    "ETH": 0.08
   },
   "holdings": [
     {
-      "ticker": "FL-BROAD",
-      "shares": 9.8687,
-      "price": 96.35,
-      "value": 950.85,
-      "costBasis": 910,
-      "gainLoss": 40.85,
-      "targetShare": 0.65
+      "ticker": "AAPL",
+      "kind": "stock",
+      "shares": 1.1925,
+      "price": 336.13,
+      "value": 400.84,
+      "costBasis": 350,
+      "gainLoss": 50.84,
+      "targetShare": 0.25
     },
     {
-      "ticker": "FL-WORLD",
-      "shares": 4.6483,
-      "price": 68.29,
-      "value": 317.43,
+      "ticker": "MSFT",
+      "kind": "stock",
+      "shares": 0.652,
+      "price": 493.78,
+      "value": 321.94,
       "costBasis": 280,
-      "gainLoss": 37.43,
+      "gainLoss": 41.94,
       "targetShare": 0.2
     },
     {
-      "ticker": "FL-BOND",
-      "shares": 8.2415,
-      "price": 25.91,
-      "value": 213.54,
+      "ticker": "NVDA",
+      "kind": "stock",
+      "shares": 0.7104,
+      "price": 222.27,
+      "value": 157.9,
+      "costBasis": 140,
+      "gainLoss": 17.9,
+      "targetShare": 0.1
+    },
+    {
+      "ticker": "COST",
+      "kind": "stock",
+      "shares": 0.2203,
+      "price": 895.31,
+      "value": 197.24,
       "costBasis": 210,
-      "gainLoss": 3.54,
+      "gainLoss": -12.76,
       "targetShare": 0.15
+    },
+    {
+      "ticker": "NKE",
+      "kind": "stock",
+      "shares": 2.7461,
+      "price": 35.51,
+      "value": 97.51,
+      "costBasis": 140,
+      "gainLoss": -42.49,
+      "targetShare": 0.1
+    },
+    {
+      "ticker": "BTC",
+      "kind": "crypto",
+      "shares": 0.00243555,
+      "price": 80873.58,
+      "value": 196.97,
+      "costBasis": 168,
+      "gainLoss": 28.97,
+      "targetShare": 0.12
+    },
+    {
+      "ticker": "ETH",
+      "kind": "crypto",
+      "shares": 0.05544414,
+      "price": 2611.56,
+      "value": 144.8,
+      "costBasis": 112,
+      "gainLoss": 32.8,
+      "targetShare": 0.08
     }
   ],
   "goal": {
@@ -77,868 +124,884 @@
   "weeklyChange": {
     "from": "2026-09-11",
     "to": "2026-09-18",
-    "startBalance": 1466.49,
+    "startBalance": 1537.69,
     "deposits": 0,
     "withdrawals": 0,
-    "dividends": 0.64,
-    "marketChange": 19.81,
-    "endBalance": 1486.94,
-    "totalChange": 20.45,
+    "dividends": 0,
+    "marketChange": -18.02,
+    "endBalance": 1519.67,
+    "totalChange": -18.02,
     "byFund": [
       {
-        "ticker": "FL-BROAD",
-        "change": 28.13
+        "ticker": "AAPL",
+        "change": -2.95
       },
       {
-        "ticker": "FL-WORLD",
-        "change": -7.25
+        "ticker": "MSFT",
+        "change": -16.23
       },
       {
-        "ticker": "FL-BOND",
-        "change": -1.07
+        "ticker": "NVDA",
+        "change": -3.05
+      },
+      {
+        "ticker": "COST",
+        "change": -7.23
+      },
+      {
+        "ticker": "NKE",
+        "change": -2.86
+      },
+      {
+        "ticker": "BTC",
+        "change": 8.94
+      },
+      {
+        "ticker": "ETH",
+        "change": 5.36
       }
     ]
   },
   "history": [
     {
       "date": "2026-03-02",
-      "balance": 500,
+      "balance": 499.88,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-03",
-      "balance": 497.31,
+      "balance": 497.73,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-04",
-      "balance": 496.16,
+      "balance": 500.55,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-05",
-      "balance": 495.73,
+      "balance": 497.63,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-06",
-      "balance": 493.96,
+      "balance": 493.05,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-09",
-      "balance": 495.77,
+      "balance": 495.46,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-10",
-      "balance": 496.09,
+      "balance": 497.95,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-11",
-      "balance": 496.5,
+      "balance": 495.17,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-12",
-      "balance": 495.34,
+      "balance": 501.58,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-13",
-      "balance": 501.82,
+      "balance": 503.07,
       "moneyIn": 500,
       "cash": 0
     },
     {
       "date": "2026-03-16",
-      "balance": 497.88,
+      "balance": 518.38,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-17",
-      "balance": 500.74,
+      "balance": 515.9,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-18",
-      "balance": 501.67,
+      "balance": 514.68,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-19",
-      "balance": 499.99,
+      "balance": 518.86,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-20",
-      "balance": 499.28,
+      "balance": 512.61,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-23",
-      "balance": 497.2,
+      "balance": 514.3,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-24",
-      "balance": 495.09,
+      "balance": 510.13,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-25",
-      "balance": 493.81,
+      "balance": 512.21,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-26",
-      "balance": 495.35,
+      "balance": 513.62,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-27",
-      "balance": 495.15,
+      "balance": 512.58,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-30",
-      "balance": 492.66,
+      "balance": 512.82,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-03-31",
-      "balance": 495.14,
+      "balance": 509.61,
       "moneyIn": 500,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-01",
-      "balance": 642.72,
+      "balance": 663.46,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-02",
-      "balance": 644.77,
+      "balance": 661.44,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-06",
-      "balance": 642.98,
+      "balance": 671.01,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-07",
-      "balance": 641.76,
+      "balance": 687.58,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-08",
-      "balance": 645.87,
+      "balance": 683.78,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-09",
-      "balance": 651.27,
+      "balance": 690.87,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-10",
-      "balance": 653.08,
+      "balance": 697.11,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-13",
-      "balance": 656.56,
+      "balance": 690.67,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-14",
-      "balance": 657.54,
+      "balance": 691.66,
       "moneyIn": 650,
-      "cash": 0.23
+      "cash": 0
     },
     {
       "date": "2026-04-15",
-      "balance": 655.63,
+      "balance": 684.93,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-16",
-      "balance": 650.79,
+      "balance": 674.31,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-17",
-      "balance": 650.27,
+      "balance": 681.47,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-20",
-      "balance": 655.71,
+      "balance": 680.11,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-21",
-      "balance": 655.02,
+      "balance": 686.19,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-22",
-      "balance": 662.4,
+      "balance": 687.56,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-23",
-      "balance": 660.56,
+      "balance": 684.28,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-24",
-      "balance": 650.66,
+      "balance": 682.31,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-27",
-      "balance": 647.22,
+      "balance": 683.01,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-28",
-      "balance": 653.38,
+      "balance": 674.27,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-29",
-      "balance": 661.12,
+      "balance": 668.75,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-04-30",
-      "balance": 666.85,
+      "balance": 667.68,
       "moneyIn": 650,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-01",
-      "balance": 817.53,
+      "balance": 822.76,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-04",
-      "balance": 809.66,
+      "balance": 819.01,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-05",
-      "balance": 807.5,
+      "balance": 818.76,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-06",
-      "balance": 811.46,
+      "balance": 825.94,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-07",
-      "balance": 807.37,
+      "balance": 829.22,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-08",
-      "balance": 795.25,
+      "balance": 833.76,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-11",
-      "balance": 796.12,
+      "balance": 833.81,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-12",
-      "balance": 793.86,
+      "balance": 828.33,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-13",
-      "balance": 804.88,
+      "balance": 826.65,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0
     },
     {
       "date": "2026-05-14",
-      "balance": 803.62,
+      "balance": 829.88,
       "moneyIn": 800,
-      "cash": 0.53
+      "cash": 0.2
     },
     {
       "date": "2026-05-15",
-      "balance": 798.52,
+      "balance": 817.3,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-18",
-      "balance": 807.03,
+      "balance": 812.65,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-19",
-      "balance": 812.38,
+      "balance": 813.77,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-20",
-      "balance": 814.1,
+      "balance": 812.63,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-21",
-      "balance": 806.57,
+      "balance": 806.17,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-22",
-      "balance": 809.33,
+      "balance": 800.07,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-26",
-      "balance": 808.61,
+      "balance": 799.26,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-27",
-      "balance": 808.97,
+      "balance": 800.53,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-28",
-      "balance": 809.61,
+      "balance": 800.8,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-05-29",
-      "balance": 804.96,
+      "balance": 807.26,
       "moneyIn": 800,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-01",
-      "balance": 955.67,
+      "balance": 964.36,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-02",
-      "balance": 958.12,
+      "balance": 948.28,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-03",
-      "balance": 949.26,
+      "balance": 945.49,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-04",
-      "balance": 941.28,
+      "balance": 946.45,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-05",
-      "balance": 933.21,
+      "balance": 933.32,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-08",
-      "balance": 938.26,
+      "balance": 939.08,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-09",
-      "balance": 940.85,
+      "balance": 935.62,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-10",
-      "balance": 933.11,
+      "balance": 927.43,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.34
     },
     {
       "date": "2026-06-11",
-      "balance": 939.18,
+      "balance": 944.69,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.7
     },
     {
       "date": "2026-06-12",
-      "balance": 934.77,
+      "balance": 939.65,
       "moneyIn": 950,
-      "cash": 0.9
+      "cash": 0.7
     },
     {
       "date": "2026-06-15",
-      "balance": 937.97,
+      "balance": 956.11,
       "moneyIn": 950,
-      "cash": 1.34
+      "cash": 0.7
     },
     {
       "date": "2026-06-16",
-      "balance": 933.83,
+      "balance": 961.86,
       "moneyIn": 950,
-      "cash": 1.34
+      "cash": 0.7
     },
     {
       "date": "2026-06-17",
-      "balance": 937.63,
+      "balance": 970.29,
       "moneyIn": 950,
-      "cash": 1.34
+      "cash": 0.7
     },
     {
       "date": "2026-06-18",
-      "balance": 948.72,
+      "balance": 959.61,
       "moneyIn": 950,
-      "cash": 1.34
+      "cash": 0.7
     },
     {
       "date": "2026-06-22",
-      "balance": 945.72,
+      "balance": 964.11,
       "moneyIn": 950,
-      "cash": 1.34
+      "cash": 0.7
     },
     {
       "date": "2026-06-23",
-      "balance": 950.76,
+      "balance": 966.49,
       "moneyIn": 950,
-      "cash": 1.34
+      "cash": 0.7
     },
     {
       "date": "2026-06-24",
-      "balance": 951.07,
+      "balance": 946.15,
       "moneyIn": 950,
-      "cash": 3.4
+      "cash": 0.7
     },
     {
       "date": "2026-06-25",
-      "balance": 953.46,
+      "balance": 931.89,
       "moneyIn": 950,
-      "cash": 3.4
+      "cash": 0.7
     },
     {
       "date": "2026-06-26",
-      "balance": 959.09,
+      "balance": 929.3,
       "moneyIn": 950,
-      "cash": 3.4
+      "cash": 0.82
     },
     {
       "date": "2026-06-29",
-      "balance": 953.75,
+      "balance": 938.92,
       "moneyIn": 950,
-      "cash": 3.4
+      "cash": 0.82
     },
     {
       "date": "2026-06-30",
-      "balance": 948.56,
+      "balance": 936.17,
       "moneyIn": 950,
-      "cash": 3.4
+      "cash": 0.82
     },
     {
       "date": "2026-07-01",
-      "balance": 1102.01,
+      "balance": 1089.86,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-02",
-      "balance": 1105.69,
+      "balance": 1094.21,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-06",
-      "balance": 1094.49,
+      "balance": 1113.24,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-07",
-      "balance": 1085.78,
+      "balance": 1096.99,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-08",
-      "balance": 1083.14,
+      "balance": 1078.01,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-09",
-      "balance": 1076.88,
+      "balance": 1089.48,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-10",
-      "balance": 1077.49,
+      "balance": 1103.24,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-13",
-      "balance": 1064.27,
+      "balance": 1105.36,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-14",
-      "balance": 1071.71,
+      "balance": 1130,
       "moneyIn": 1100,
-      "cash": 3.4
+      "cash": 1.39
     },
     {
       "date": "2026-07-15",
-      "balance": 1082.81,
+      "balance": 1132.11,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-16",
-      "balance": 1086.12,
+      "balance": 1134.74,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-17",
-      "balance": 1097.3,
+      "balance": 1135.97,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-20",
-      "balance": 1102.71,
+      "balance": 1144.95,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-21",
-      "balance": 1098.18,
+      "balance": 1155.13,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-22",
-      "balance": 1103.91,
+      "balance": 1159.56,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-23",
-      "balance": 1103.76,
+      "balance": 1164.05,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-24",
-      "balance": 1120.82,
+      "balance": 1187.23,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-27",
-      "balance": 1113.24,
+      "balance": 1186.62,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-28",
-      "balance": 1109.23,
+      "balance": 1192.08,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-29",
-      "balance": 1110.41,
+      "balance": 1172.68,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-30",
-      "balance": 1117.91,
+      "balance": 1170.45,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-07-31",
-      "balance": 1121.36,
+      "balance": 1169.02,
       "moneyIn": 1100,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-08-03",
-      "balance": 1266.69,
+      "balance": 1334.16,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-08-04",
-      "balance": 1276.61,
+      "balance": 1359.4,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-08-05",
-      "balance": 1270.35,
+      "balance": 1351.81,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-08-06",
-      "balance": 1277.15,
+      "balance": 1351.09,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.39
     },
     {
       "date": "2026-08-07",
-      "balance": 1283.99,
+      "balance": 1348.41,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.64
     },
     {
       "date": "2026-08-10",
-      "balance": 1283.3,
+      "balance": 1328.11,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.64
     },
     {
       "date": "2026-08-11",
-      "balance": 1270.87,
+      "balance": 1338.4,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.64
     },
     {
       "date": "2026-08-12",
-      "balance": 1286.21,
+      "balance": 1323.29,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.64
     },
     {
       "date": "2026-08-13",
-      "balance": 1290.84,
+      "balance": 1333.45,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.93
     },
     {
       "date": "2026-08-14",
-      "balance": 1291.63,
+      "balance": 1319.3,
       "moneyIn": 1250,
-      "cash": 3.91
+      "cash": 1.93
     },
     {
       "date": "2026-08-17",
-      "balance": 1299.68,
+      "balance": 1325.84,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-18",
-      "balance": 1287.88,
+      "balance": 1317.22,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-19",
-      "balance": 1280.65,
+      "balance": 1349.93,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-20",
-      "balance": 1277.79,
+      "balance": 1369.96,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-21",
-      "balance": 1289.21,
+      "balance": 1405.87,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-24",
-      "balance": 1288.63,
+      "balance": 1424.01,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-25",
-      "balance": 1290.46,
+      "balance": 1422.18,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-26",
-      "balance": 1286.37,
+      "balance": 1410.73,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-27",
-      "balance": 1290.83,
+      "balance": 1405.81,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-28",
-      "balance": 1281.49,
+      "balance": 1390.82,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-08-31",
-      "balance": 1278.49,
+      "balance": 1384.22,
       "moneyIn": 1250,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-01",
-      "balance": 1426.1,
+      "balance": 1542.25,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-02",
-      "balance": 1427.79,
+      "balance": 1542.38,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-03",
-      "balance": 1452.03,
+      "balance": 1562.8,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-04",
-      "balance": 1466.23,
+      "balance": 1560.42,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-08",
-      "balance": 1465.08,
+      "balance": 1562.52,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-09",
-      "balance": 1447.36,
+      "balance": 1535.41,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 1.93
     },
     {
       "date": "2026-09-10",
-      "balance": 1460.6,
+      "balance": 1541.17,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 2.47
     },
     {
       "date": "2026-09-11",
-      "balance": 1466.49,
+      "balance": 1537.69,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 2.47
     },
     {
       "date": "2026-09-14",
-      "balance": 1471.46,
+      "balance": 1526.43,
       "moneyIn": 1400,
-      "cash": 4.48
+      "cash": 2.47
     },
     {
       "date": "2026-09-15",
-      "balance": 1482.58,
+      "balance": 1513.25,
       "moneyIn": 1400,
-      "cash": 5.12
+      "cash": 2.47
     },
     {
       "date": "2026-09-16",
-      "balance": 1488.17,
+      "balance": 1498.26,
       "moneyIn": 1400,
-      "cash": 5.12
+      "cash": 2.47
     },
     {
       "date": "2026-09-17",
-      "balance": 1483.98,
+      "balance": 1494.83,
       "moneyIn": 1400,
-      "cash": 5.12
+      "cash": 2.47
     },
     {
       "date": "2026-09-18",
-      "balance": 1486.94,
+      "balance": 1519.67,
       "moneyIn": 1400,
-      "cash": 5.12
+      "cash": 2.47
     }
   ]
 }

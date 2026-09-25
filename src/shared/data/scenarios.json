@@ -1,14 +1,14 @@
 [
   {
     "id": "normal",
-    "label": "Rosa, 7 months in",
-    "description": "Seven months in. Her account has a few things worth a look.",
+    "label": "Rosa, six months in",
+    "description": "Six months in. Her account has a few things worth a look.",
     "accountId": "rosa-starter"
   },
   {
     "id": "all-clear",
     "label": "Nothing needs you",
-    "description": "A calmer version of Rosa. Every deposit went through, auto-invest is on, and she skipped the clean energy fund.",
+    "description": "A calmer version of Rosa. Every deposit went through and auto-invest stayed on.",
     "accountId": "rosa-all-clear"
   },
   {

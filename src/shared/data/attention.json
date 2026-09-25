@@ -6,14 +6,14 @@
       "date": "2026-09-03",
       "raisedOn": "2026-09-03",
       "title": "Your $150 deposit from Sept. 1 was sent back",
-      "body": "Your bank sent it back on Sept. 3, so the money never reached First Leaf. Your funds were not touched.",
+      "body": "Your bank sent it back on Sept. 3, so the money never reached First Leaf. Your investments were not touched.",
       "nextStep": "Check your bank account first. Then you can try the deposit again.",
       "action": {
         "kind": "retry-deposit",
         "label": "Try the deposit again"
       },
       "amount": 150,
-      "activityId": "rosa-starter-034",
+      "activityId": "rosa-starter-035",
       "terms": [
         "returned-deposit",
         "recurring-deposit"
@@ -46,16 +46,16 @@
     {
       "id": "cash-sitting",
       "severity": "heads-up",
-      "date": "2026-08-03",
-      "raisedOn": "2026-08-03",
-      "title": "$154.76 is waiting in cash",
-      "body": "Auto-invest has been paused since July 14, so deposits since then stay as cash. Cash does not go up or down with the market.",
+      "date": "2026-06-01",
+      "raisedOn": "2026-06-01",
+      "title": "$452.11 is waiting in cash",
+      "body": "Auto-invest has been paused since May 27, so deposits since then stay as cash. Cash does not go up or down with the market.",
       "nextStep": "It is your choice. You can turn auto-invest back on, or leave it paused.",
       "action": {
         "kind": "auto-invest",
         "label": "See auto-invest settings"
       },
-      "amount": 154.76,
+      "amount": 452.11,
       "terms": [
         "cash",
         "auto-invest"
@@ -64,66 +64,40 @@
       "newSinceLastReview": false
     },
     {
-      "id": "fee-going-up",
-      "severity": "heads-up",
-      "date": "2026-10-01",
-      "raisedOn": "2026-09-15",
-      "title": "FL-GREEN is raising its yearly fee on Oct. 1",
-      "body": "The fee goes from 0.45% to 0.75%. On the $48.63 you have in it, that is about $0.15 more a year.",
-      "nextStep": "Nothing changes in your account unless you choose to. The fund page shows its fee over time.",
-      "action": {
-        "kind": "open-fund",
-        "label": "Open FL-GREEN"
-      },
-      "ticker": "FL-GREEN",
-      "feeFrom": 0.45,
-      "feeTo": 0.75,
-      "amount": 0.15,
-      "terms": [
-        "expense-ratio"
-      ],
-      "route": "fund",
-      "newSinceLastReview": true
-    },
-    {
-      "id": "dividend-paid",
+      "id": "sipc-crypto",
       "severity": "fyi",
-      "date": "2026-09-15",
-      "raisedOn": "2026-09-15",
-      "title": "FL-BOND paid you $0.50",
-      "body": "Some funds make small payments to the people who own them. It went into your cash.",
+      "date": "2026-03-02",
+      "raisedOn": "2026-03-02",
+      "title": "Crypto is not covered by SIPC protection",
+      "body": "SIPC protection helps get back the stocks and cash in a brokerage account if the firm fails. It does not cover crypto, like your Bitcoin and Ethereum.",
       "nextStep": "Nothing to do. This is just so you know.",
       "action": null,
-      "ticker": "FL-BOND",
-      "amount": 0.5,
-      "activityId": "rosa-starter-035",
+      "amount": 0,
       "terms": [
-        "dividend",
-        "cash"
+        "sipc-protection",
+        "crypto"
       ],
-      "route": "activity",
-      "newSinceLastReview": true
+      "route": "glossary",
+      "newSinceLastReview": false
     }
   ],
   "rosa-all-clear": [
     {
-      "id": "dividend-paid",
+      "id": "sipc-crypto",
       "severity": "fyi",
-      "date": "2026-09-15",
-      "raisedOn": "2026-09-15",
-      "title": "FL-BOND paid you $0.64",
-      "body": "Some funds make small payments to the people who own them. It went into your cash.",
+      "date": "2026-03-02",
+      "raisedOn": "2026-03-02",
+      "title": "Crypto is not covered by SIPC protection",
+      "body": "SIPC protection helps get back the stocks and cash in a brokerage account if the firm fails. It does not cover crypto, like your Bitcoin and Ethereum.",
       "nextStep": "Nothing to do. This is just so you know.",
       "action": null,
-      "ticker": "FL-BOND",
-      "amount": 0.64,
-      "activityId": "rosa-all-clear-036",
+      "amount": 0,
       "terms": [
-        "dividend",
-        "cash"
+        "sipc-protection",
+        "crypto"
       ],
-      "route": "activity",
-      "newSinceLastReview": true
+      "route": "glossary",
+      "newSinceLastReview": false
     }
   ],
   "rosa-new": []

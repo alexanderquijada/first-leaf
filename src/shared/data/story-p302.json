@@ -854,85 +854,95 @@
         "openedOn": "2026-03-02",
         "firstDeposit": 500,
         "moneyIn": 1250,
-        "balance": 1313.72,
-        "earned": 63.72,
-        "depositsShare": 0.9515,
+        "balance": 1336.8,
+        "earned": 86.8,
+        "depositsShare": 0.9351,
         "lastClose": "2026-09-18",
         "dip": {
-          "ticker": "FL-BROAD",
           "window": {
-            "from": "2026-06-14",
-            "to": "2026-07-14"
+            "from": "2026-04-15",
+            "to": "2026-08-15"
           },
-          "highDate": "2026-06-26",
-          "high": 90.46,
-          "lowDate": "2026-07-13",
-          "low": 84.45,
-          "drop": -0.0664
+          "tradingDays": 10,
+          "highDate": "2026-05-11",
+          "highBalance": 833.81,
+          "lowDate": "2026-05-26",
+          "lowBalance": 799.26,
+          "fall": 34.89,
+          "drop": -0.0418,
+          "month": "May"
         },
         "atLow": {
-          "date": "2026-07-13",
-          "balance": 1065,
-          "moneyIn": 1100,
-          "below": 35
+          "date": "2026-05-26",
+          "balance": 799.26,
+          "moneyIn": 800,
+          "below": 0.74
         },
         "pause": {
-          "date": "2026-07-14"
+          "date": "2026-05-27"
         },
         "after": {
-          "backAboveDate": "2026-07-20",
-          "backAboveBalance": 1100.61,
-          "backAboveMoneyIn": 1100,
+          "backAboveDate": "2026-05-28",
+          "backAboveBalance": 800.8,
+          "backAboveMoneyIn": 800,
           "deposits": [
+            {
+              "date": "2026-06-01",
+              "amount": 150
+            },
+            {
+              "date": "2026-07-01",
+              "amount": 150
+            },
             {
               "date": "2026-08-03",
               "amount": 150
             }
           ],
           "depositsInvested": false,
-          "upNow": 63.72
+          "upNow": 86.8
         }
       },
       "claims": [
         {
           "id": "since-march",
           "chapter": 1,
-          "text": "You opened your account on March 2 with $500. Since then you have put in $1,250. On Sept. 18 your balance was $1,313.72."
+          "text": "You opened your account on March 2 with $500. Since then you have put in $1,250. On Sept. 18 your balance was $1,336.80."
         },
         {
           "id": "deposits-share",
           "chapter": 2,
-          "text": "About 95% of your balance is money you put in. The other $63.72 is what it earned."
+          "text": "About 94% of your balance is money you put in. The other $86.80 is what it earned."
         },
         {
           "id": "dip",
           "chapter": 3,
-          "text": "From June 26 to July 13, FL-BROAD fell from $90.46 to $84.45. That is a drop of 6.6%."
+          "text": "From May 11 to May 26, falling prices took $34.89 off your balance. That is a drop of 4.2%."
         },
         {
           "id": "at-low",
           "chapter": 3,
-          "text": "On July 13, your balance was $1,065.00. That was $35.00 below the $1,100 you had put in."
+          "text": "On May 26, your balance was $799.26. That was $0.74 below the $800 you had put in."
         },
         {
           "id": "pause",
           "chapter": 3,
-          "text": "You paused auto-invest the next day, July 14."
+          "text": "You paused auto-invest the next trading day, May 27."
         },
         {
           "id": "back-above",
           "chapter": 3,
-          "text": "By July 20, your balance was back above what you had put in."
+          "text": "By May 28, your balance was back above what you had put in."
         },
         {
           "id": "cash-after",
           "chapter": 3,
-          "text": "After that, your Aug. 3 deposit stayed as cash."
+          "text": "After that, your June 1, July 1 and Aug. 3 deposits stayed as cash."
         },
         {
           "id": "up-now",
           "chapter": 3,
-          "text": "On Sept. 18, you were up $63.72."
+          "text": "On Sept. 18, you were up $86.80."
         }
       ]
     },
@@ -943,34 +953,44 @@
         "openedOn": "2026-03-02",
         "firstDeposit": 500,
         "moneyIn": 1400,
-        "balance": 1486.94,
-        "earned": 86.94,
-        "depositsShare": 0.9415,
+        "balance": 1519.67,
+        "earned": 119.67,
+        "depositsShare": 0.9213,
         "lastClose": "2026-09-18",
         "dip": {
-          "ticker": "FL-BROAD",
           "window": {
-            "from": "2026-06-14",
-            "to": "2026-07-14"
+            "from": "2026-04-15",
+            "to": "2026-08-15"
           },
-          "highDate": "2026-06-26",
-          "high": 90.46,
-          "lowDate": "2026-07-13",
-          "low": 84.45,
-          "drop": -0.0664
+          "tradingDays": 10,
+          "highDate": "2026-05-11",
+          "highBalance": 833.81,
+          "lowDate": "2026-05-26",
+          "lowBalance": 799.26,
+          "fall": 34.89,
+          "drop": -0.0418,
+          "month": "May"
         },
         "atLow": {
-          "date": "2026-07-13",
-          "balance": 1064.27,
-          "moneyIn": 1100,
-          "below": 35.73
+          "date": "2026-05-26",
+          "balance": 799.26,
+          "moneyIn": 800,
+          "below": 0.74
         },
         "pause": null,
         "after": {
-          "backAboveDate": "2026-07-20",
-          "backAboveBalance": 1102.71,
-          "backAboveMoneyIn": 1100,
+          "backAboveDate": "2026-05-27",
+          "backAboveBalance": 800.53,
+          "backAboveMoneyIn": 800,
           "deposits": [
+            {
+              "date": "2026-06-01",
+              "amount": 150
+            },
+            {
+              "date": "2026-07-01",
+              "amount": 150
+            },
             {
               "date": "2026-08-03",
               "amount": 150
@@ -981,44 +1001,44 @@
             }
           ],
           "depositsInvested": true,
-          "upNow": 86.94
+          "upNow": 119.67
         }
       },
       "claims": [
         {
           "id": "since-march",
           "chapter": 1,
-          "text": "You opened your account on March 2 with $500. Since then you have put in $1,400. On Sept. 18 your balance was $1,486.94."
+          "text": "You opened your account on March 2 with $500. Since then you have put in $1,400. On Sept. 18 your balance was $1,519.67."
         },
         {
           "id": "deposits-share",
           "chapter": 2,
-          "text": "About 94% of your balance is money you put in. The other $86.94 is what it earned."
+          "text": "About 92% of your balance is money you put in. The other $119.67 is what it earned."
         },
         {
           "id": "dip",
           "chapter": 3,
-          "text": "From June 26 to July 13, FL-BROAD fell from $90.46 to $84.45. That is a drop of 6.6%."
+          "text": "From May 11 to May 26, falling prices took $34.89 off your balance. That is a drop of 4.2%."
         },
         {
           "id": "at-low",
           "chapter": 3,
-          "text": "On July 13, your balance was $1,064.27. That was $35.73 below the $1,100 you had put in."
+          "text": "On May 26, your balance was $799.26. That was $0.74 below the $800 you had put in."
         },
         {
           "id": "back-above",
           "chapter": 3,
-          "text": "By July 20, your balance was back above what you had put in."
+          "text": "By May 27, your balance was back above what you had put in."
         },
         {
           "id": "kept-buying",
           "chapter": 3,
-          "text": "Auto-invest stayed on. Your Aug. 3 and Sept. 1 deposits bought your mix the day they arrived."
+          "text": "Auto-invest stayed on. Your June 1, July 1, Aug. 3 and Sept. 1 deposits bought your mix the day they arrived."
         },
         {
           "id": "up-now",
           "chapter": 3,
-          "text": "On Sept. 18, you were up $86.94."
+          "text": "On Sept. 18, you were up $119.67."
         }
       ]
     },

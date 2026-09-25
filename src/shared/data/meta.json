@@ -5,9 +5,9 @@
   "lastClose": "2026-09-18",
   "lastReview": "2026-09-13",
   "cashWaitingThreshold": 25,
-  "wordOfTheDay": "expense-ratio",
+  "bigMoveThreshold": 0.07,
+  "wordOfTheDay": "ups-and-downs",
   "currency": "USD",
   "fictional": true,
-  "dataVersion": 2,
-  "disclaimer": "Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice."
+  "dataVersion": 3
 }

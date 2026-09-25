@@ -7,14 +7,19 @@
   "tradeFee": 0,
   "priceDate": "2026-09-18",
   "funds": [
-    "FL-BROAD",
-    "FL-WORLD",
-    "FL-BOND",
-    "FL-GREEN",
-    "FL-CALM"
+    "AAPL",
+    "MSFT",
+    "NVDA",
+    "COST",
+    "NKE",
+    "AMZN",
+    "TSLA",
+    "BTC",
+    "ETH",
+    "SOL"
   ],
   "timeMachine": {
-    "from": "2021-09-24",
+    "from": "2025-09-26",
     "to": "2026-09-18",
     "series": "weekly",
     "note": "This uses past prices to show how a mix could have moved. The past does not tell you what will happen next."

@@ -6,8 +6,8 @@
       "account value"
     ],
     "short": "The total value of everything in your account right now.",
-    "detail": "It adds up what your funds are worth today and any cash you have. It changes on days the market is open.",
-    "example": "If your funds are worth $900 and you have $100 in cash, your balance is $1,000.",
+    "detail": "It adds up what your investments are worth today and any cash you have. It changes on days the market is open.",
+    "example": "If your investments are worth $900 and you have $100 in cash, your balance is $1,000.",
     "related": [
       "market-value",
       "cash"
@@ -20,7 +20,7 @@
     "alsoCalled": [],
     "short": "Money you move from your bank into your investing account.",
     "detail": "A deposit lands as cash first. If auto-invest is on, it then buys your chosen mix for you.",
-    "example": "Rosa moves $150 from her bank on the first of each month.",
+    "example": "You move $150 from your bank on the first of each month.",
     "related": [
       "recurring-deposit",
       "cash"
@@ -79,9 +79,9 @@
     "alsoCalled": [
       "uninvested cash"
     ],
-    "short": "Money in your account that is not in a fund yet.",
+    "short": "Money in your account that is not invested yet.",
     "detail": "Cash does not go down when the market drops. It also does not grow when the market goes up.",
-    "example": "A new deposit waits as cash until it is used to buy a fund.",
+    "example": "A new deposit waits as cash until it is used to buy a stock or crypto.",
     "related": [
       "deposit",
       "balance"
@@ -89,52 +89,17 @@
     "source": null
   },
   {
-    "id": "fund",
-    "term": "Fund",
-    "alsoCalled": [
-      "mutual fund",
-      "ETF"
-    ],
-    "short": "A basket that holds many investments at once.",
-    "detail": "When you buy a share of a fund, you own a tiny piece of everything in the basket. This is an easy way to own a lot of companies with a little money.",
-    "example": "One fund might hold small pieces of 3,000 companies.",
-    "related": [
-      "index-fund",
-      "share",
-      "spreading-out"
-    ],
-    "source": {
-      "label": "Investor.gov glossary (U.S. SEC)",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
-    }
-  },
-  {
-    "id": "index-fund",
-    "term": "Index fund",
-    "alsoCalled": [],
-    "short": "A fund that copies a set list of companies instead of picking them by hand.",
-    "detail": "Nobody has to choose which companies to buy, so the yearly fee is often low. The fund goes up and down with the whole list.",
-    "example": "A fund that owns every company on a list of the biggest ones.",
-    "related": [
-      "fund",
-      "expense-ratio"
-    ],
-    "source": {
-      "label": "Investor.gov glossary (U.S. SEC)",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
-    }
-  },
-  {
     "id": "ticker",
     "term": "Ticker",
     "alsoCalled": [
       "symbol"
     ],
-    "short": "A short nickname for a fund, a bit like a username.",
-    "detail": "Real tickers are a few letters long. First Leaf funds all start with FL-.",
-    "example": "FL-BROAD is the ticker for the Broad U.S. Market Index Fund.",
+    "short": "A short code for a stock or a crypto, a bit like a username.",
+    "detail": "Tickers are a few letters long. Stocks and crypto each have their own.",
+    "example": "AAPL is the ticker for Apple. BTC is the ticker for Bitcoin.",
     "related": [
-      "fund"
+      "stock",
+      "crypto"
     ],
     "source": {
       "label": "Investor.gov glossary (U.S. SEC)",
@@ -145,7 +110,7 @@
     "id": "share",
     "term": "Share",
     "alsoCalled": [],
-    "short": "One unit of a fund that you can buy or sell.",
+    "short": "One unit of a stock or a crypto that you can buy or sell.",
     "detail": "Each share has a price. When the price goes up, every share you own is worth more.",
     "example": "If one share costs $50 and you own 2 shares, you have $100.",
     "related": [
@@ -165,7 +130,7 @@
     ],
     "short": "A piece of one share, so you can invest a small amount.",
     "detail": "You do not need to buy a whole share. If a share costs $100, you can still invest $10 and own one tenth of a share.",
-    "example": "$10 buys 0.1 of a $100 share.",
+    "example": "$10 buys 0.1 of a $100 share. With crypto, $12 can buy a tiny part of one Bitcoin.",
     "related": [
       "share",
       "price"
@@ -182,7 +147,7 @@
       "price"
     ],
     "short": "What one share costs at the latest price.",
-    "detail": "The price changes on each day the market is open. On weekends and holidays, you see the last price from when the market was open.",
+    "detail": "Stock prices change on each day the market is open. On weekends and holidays, you see the last price from when it was open. Crypto trades every day.",
     "example": "A share might cost $95 on Monday and $97 on Friday.",
     "related": [
       "share",
@@ -200,7 +165,7 @@
       "market value"
     ],
     "short": "What your shares are worth at the latest price.",
-    "detail": "It is the number of shares you own times the latest price. It moves each day the market is open.",
+    "detail": "It is the number of shares you own times the latest price. It moves each time the price moves.",
     "example": "3 shares at $20 each have a value of $60.",
     "related": [
       "share",
@@ -234,9 +199,9 @@
     "alsoCalled": [
       "cost basis"
     ],
-    "short": "The total amount you spent to buy a fund.",
-    "detail": "Compare it with the fund's value today. If the value is higher, you are up. If it is lower, you are down.",
-    "example": "You spent $60 on a fund that is now worth $66. You are up $6.",
+    "short": "The total amount you spent to buy an investment.",
+    "detail": "Compare it with the investment's value today. If the value is higher, you are up. If it is lower, you are down.",
+    "example": "You spent $60 on a stock that is now worth $66. You are up $6.",
     "related": [
       "gain-loss",
       "market-value"
@@ -281,12 +246,12 @@
     "id": "dividend",
     "term": "Dividend",
     "alsoCalled": [],
-    "short": "A small payment some funds make to the people who own them.",
-    "detail": "Stock funds pass on part of what companies earn. Bond funds pass on the interest from their loans. In First Leaf, the payment lands in your cash.",
-    "example": "A bond fund pays you 50 cents on the 15th of the month.",
+    "short": "A small payment some companies make to the people who own their stock.",
+    "detail": "A company can share part of what it earns with its owners. It pays a set amount for each share you owned before a certain date. In First Leaf, the payment lands in your cash.",
+    "example": "A company pays 27 cents a share. If you own 2 shares, you get 54 cents.",
     "related": [
       "cash",
-      "fund"
+      "stock"
     ],
     "source": {
       "label": "Investor.gov glossary (U.S. SEC)",
@@ -294,55 +259,80 @@
     }
   },
   {
-    "id": "expense-ratio",
-    "term": "Yearly fee",
+    "id": "stock",
+    "term": "Stock",
     "alsoCalled": [
-      "expense ratio"
+      "shares of a company",
+      "equity"
     ],
-    "short": "What a fund charges each year to run, shown as a percent.",
-    "detail": "A 0.10% fee costs about $1 a year for every $1,000 you have in the fund. The fee comes out of the fund's value, so you never get a bill. That is why it is easy to miss.",
-    "example": "With $1,000 in a fund, a 0.04% fee is 40 cents a year. A 0.75% fee is $7.50 a year.",
+    "short": "A small piece of a company that you can own.",
+    "detail": "When the company does well, its stock can grow. It can also drop fast. That is why stocks have ups and downs.",
+    "example": "Owning one share of Apple means you own a tiny piece of Apple.",
     "related": [
-      "index-fund",
-      "fund"
+      "share",
+      "ups-and-downs",
+      "crypto"
     ],
     "source": {
-      "label": "Investor.gov: Expense ratio (U.S. SEC)",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/expense-ratio"
+      "label": "Investor.gov glossary (U.S. SEC)",
+      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
     }
   },
   {
-    "id": "stocks",
-    "term": "Stocks",
+    "id": "crypto",
+    "term": "Crypto",
     "alsoCalled": [
-      "shares of companies"
+      "cryptocurrency",
+      "digital asset"
     ],
-    "short": "Small pieces of companies that you can own.",
-    "detail": "Stocks can grow a lot over many years. They can also drop fast. That is why they have more ups and downs.",
-    "example": "A stock fund owns small pieces of many companies.",
+    "short": "Digital money that no government or bank runs.",
+    "detail": "Crypto lives on a network of computers. Its price can swing a lot in a single day. It trades every day, even on weekends.",
+    "example": "Bitcoin and Ethereum are two kinds of crypto.",
     "related": [
-      "bonds",
-      "ups-and-downs"
+      "bitcoin",
+      "ups-and-downs",
+      "sipc-protection"
     ],
     "source": {
-      "label": "Investor.gov glossary (U.S. SEC)",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
+      "label": "Investor.gov: Crypto assets (U.S. SEC)",
+      "url": "https://www.investor.gov/additional-resources/spotlight/crypto-assets"
     }
   },
   {
-    "id": "bonds",
-    "term": "Bonds",
-    "alsoCalled": [],
-    "short": "Loans you make to a government or a company.",
-    "detail": "They pay you back over time with a little extra. Bonds usually move up and down less than stocks, but they also tend to grow less.",
-    "example": "A bond fund owns thousands of small loans.",
+    "id": "bitcoin",
+    "term": "Bitcoin",
+    "alsoCalled": [
+      "BTC"
+    ],
+    "short": "The first and best-known crypto.",
+    "detail": "Bitcoin started in 2009. No company runs it. You can own a tiny part of one Bitcoin.",
+    "example": "$18 can buy a small part of one Bitcoin.",
     "related": [
-      "stocks",
-      "ups-and-downs"
+      "crypto",
+      "fractional-share"
     ],
     "source": {
-      "label": "Investor.gov glossary (U.S. SEC)",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
+      "label": "Investor.gov: Crypto assets (U.S. SEC)",
+      "url": "https://www.investor.gov/additional-resources/spotlight/crypto-assets"
+    }
+  },
+  {
+    "id": "sipc-protection",
+    "term": "SIPC protection",
+    "alsoCalled": [
+      "SIPC coverage"
+    ],
+    "short": "Help getting your stocks and cash back if your brokerage firm fails.",
+    "detail": "If a brokerage firm that is a SIPC member fails, SIPC works to give back your stocks and cash, up to $500,000. That includes up to $250,000 in cash. It does not cover a drop in prices. It does not cover crypto like Bitcoin or Ethereum.",
+    "example": "If your firm closed and your shares went missing, SIPC would work to get them back to you.",
+    "related": [
+      "stock",
+      "crypto",
+      "cash"
+    ],
+    "source": {
+      "label": "SIPC: What SIPC protects",
+      "url": "https://www.sipc.org/for-investors/what-sipc-protects"
     }
   },
   {
@@ -351,13 +341,13 @@
     "alsoCalled": [
       "asset allocation"
     ],
-    "short": "How your money is split between kinds of funds, like stocks and bonds.",
-    "detail": "More stocks means more ups and downs. More bonds means a calmer ride. You pick the split that feels right for you.",
-    "example": "A mix of 85% stocks and 15% bonds.",
+    "short": "How your money is split between stocks, crypto and cash.",
+    "detail": "Each part moves in its own way. Crypto usually jumps around more than stocks. Cash does not move with the market. You pick the split.",
+    "example": "A mix of 80% stocks and 20% crypto.",
     "related": [
-      "stocks",
-      "bonds",
-      "rebalancing"
+      "stock",
+      "crypto",
+      "spreading-out"
     ],
     "source": {
       "label": "Investor.gov glossary (U.S. SEC)",
@@ -371,26 +361,11 @@
       "diversification"
     ],
     "short": "Owning many different things so one bad one hurts you less.",
-    "detail": "If one company has a bad year, the others can help balance it out. Funds do a lot of this for you.",
-    "example": "Owning 3,000 companies instead of just one.",
+    "detail": "If one company has a bad year, the others can help balance it out.",
+    "example": "Owning five companies instead of just one.",
     "related": [
-      "fund",
-      "your-mix"
-    ],
-    "source": {
-      "label": "Investor.gov glossary (U.S. SEC)",
-      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
-    }
-  },
-  {
-    "id": "rebalancing",
-    "term": "Rebalancing",
-    "alsoCalled": [],
-    "short": "Moving money around so your mix goes back to the split you picked.",
-    "detail": "Some funds grow faster than others, so your mix slowly drifts. Rebalancing puts it back. Some people do it once or twice a year.",
-    "example": "You picked 85% stocks, but now you have 90%. Rebalancing brings it back to 85%.",
-    "related": [
-      "your-mix"
+      "your-mix",
+      "stock"
     ],
     "source": {
       "label": "Investor.gov glossary (U.S. SEC)",
@@ -404,12 +379,12 @@
       "risk level",
       "volatility"
     ],
-    "short": "How much a fund's price tends to jump around.",
-    "detail": "We rate each fund from 1, calm, to 5, bumpy. Bumpy funds can grow more over time, but they can also fall more on a bad day.",
-    "example": "The Calm Reserve Fund is a 1. The Clean Energy Theme Fund is a 5.",
+    "short": "How much an investment's price tends to jump around.",
+    "detail": "We rate each one from 1, calm, to 5, bumpy, using how much its price moved each day over the past year. Bumpy ones can grow more over time, but they can also fall more on a bad day.",
+    "example": "Costco is a 1. Solana is a 5.",
     "related": [
-      "stocks",
-      "bonds"
+      "stock",
+      "crypto"
     ],
     "source": {
       "label": "Investor.gov glossary (U.S. SEC)",
@@ -474,11 +449,12 @@
       "practice mode",
       "pretend money"
     ],
-    "short": "Pretend money for trying things before you do them for real.",
-    "detail": "You start with $1,000 that is not real. Nothing you do here touches your real account, and you can start over at any time.",
-    "example": "Buy a fund with pretend money and see how it would have moved.",
+    "short": "Practice money for trying things before you do them for real.",
+    "detail": "You start with $1,000 in practice money. Nothing you do here touches your account, and you can start over at any time.",
+    "example": "Buy a stock with practice money and see how it would have moved.",
     "related": [
-      "fund"
+      "stock",
+      "crypto"
     ],
     "source": null
   },
@@ -489,7 +465,7 @@
       "stock market"
     ],
     "short": "All the people buying and selling investments.",
-    "detail": "When more people want to buy, prices go up. When more people want to sell, prices go down. It is open on weekdays, but not on some holidays.",
+    "detail": "When more people want to buy, prices go up. When more people want to sell, prices go down. The stock market is open on weekdays, but not on some holidays. Crypto trades every day.",
     "example": "Prices can change every minute while the market is open.",
     "related": [
       "price",

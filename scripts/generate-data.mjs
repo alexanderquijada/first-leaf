@@ -1,15 +1,17 @@
 #!/usr/bin/env node
-// First Leaf: fictional data generator.
-// Produces the JSON files in src/shared/data/ from one seeded source, so the
-// numbers in P301, P302 and P303 always agree. Re-running gives identical output.
-// Rules the data must obey live in BRIEF.md §4 and are enforced independently
-// by scripts/validate-data.mjs. Never hand-edit the generated JSON: change this
-// file, run `npm run data:generate`, then `npm run validate`.
-// (glossary.json is hand-written copy and is NOT produced here.)
+// First Leaf: data generator.
+// Produces the JSON files in src/shared/data/ from one seeded source, so the numbers in
+// P301, P302 and P303 always agree. Re-running gives identical output. Rules the data must
+// obey live in BRIEF.md §4 and are enforced independently by scripts/validate-data.mjs.
+// Never hand-edit the generated JSON: change this file, run `npm run data:generate`, then
+// `npm run validate`. (glossary.json is hand-written copy and is NOT produced here.)
 //
-// EVERYTHING HERE IS INVENTED. No real funds, tickers, prices, people or accounts.
+// What is real (ruling B, Phase 2.5): the stock and crypto names and tickers; crypto prices
+// (CoinGecko, saved by scripts/fetch-crypto.mjs); the stock anchor closes and dividends in
+// docs/research/PRICE-ANCHORS.md. What is invented: Rosa, her accounts, and each stock's
+// daily path between its anchors. This script never uses the network.
 
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -20,7 +22,8 @@ mkdirSync(OUT, { recursive: true });
 // ---------- helpers ----------
 const r2 = (n) => Math.round(n * 100) / 100;
 const r4 = (n) => Math.round(n * 10000) / 10000;
-const floor4 = (n) => Math.floor(n * 10000 + 1e-9) / 10000;
+const roundN = (n, d) => Math.round(n * 10 ** d) / 10 ** d;
+const floorN = (n, d) => Math.floor(n * 10 ** d + 1e-9) / 10 ** d;
 function mulberry32(seed) {
   return function () {
     let t = (seed += 0x6d2b79f5);
@@ -40,29 +43,45 @@ const addDays = (s, n) => { const d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d
 const dow = (s) => new Date(s + 'T00:00:00Z').getUTCDay();
 const daysBetween = (a, b) => Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 864e5);
 
-// Invented market calendar: weekdays minus the 2026 U.S. market holidays.
-const HOLIDAYS_2026 = ['2026-01-01','2026-01-19','2026-02-16','2026-04-03','2026-05-25','2026-06-19','2026-07-03','2026-09-07','2026-11-26','2026-12-25'];
-const isTradingDay = (s) => dow(s) !== 0 && dow(s) !== 6 && !HOLIDAYS_2026.includes(s);
+// U.S. stock market calendar: weekdays minus market holidays. Crypto trades every day.
+const HOLIDAYS = ['2025-11-27', '2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16', '2026-04-03', '2026-05-25', '2026-06-19', '2026-07-03', '2026-09-07', '2026-11-26', '2026-12-25'];
+const isTradingDay = (s) => dow(s) !== 0 && dow(s) !== 6 && !HOLIDAYS.includes(s);
 const nextTradingDay = (s) => { let d = s; while (!isTradingDay(d)) d = addDays(d, 1); return d; };
+const prevTradingDay = (s) => { let d = addDays(s, -1); while (!isTradingDay(d)) d = addDays(d, -1); return d; };
 
 // Money in copy: whole dollars without cents ("$150"), otherwise two decimals ("$154.76").
 const fmt = (n) => (Number.isInteger(r2(n))
   ? `$${r2(n).toLocaleString('en-US')}`
   : `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
 const AP_MONTHS = ['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const fmtCents = (n) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 const apDate = (s) => `${AP_MONTHS[Number(s.slice(5, 7)) - 1]} ${Number(s.slice(8, 10))}`;
+const pct1 = (x) => (Math.round(x * 1000) / 10).toFixed(1);
+
+// ---------- sources: saved crypto prices and the verified stock facts ----------
+const ANCHOR_DOC = readFileSync(join(ROOT, 'docs', 'research', 'PRICE-ANCHORS.md'), 'utf8');
+const block = (name) => JSON.parse(ANCHOR_DOC.match(new RegExp('```json ' + name + '\\n([\\s\\S]*?)```'))[1]);
+const ANCHORS = block('price-anchors');
+const STOCK_VOL = block('stock-volatility');
+const DIVIDENDS = block('dividends');
+const coingecko = (id) => JSON.parse(readFileSync(join(OUT, 'raw', `coingecko-${id}.json`), 'utf8'));
 
 // ---------- fixed facts ----------
 const AS_OF = '2026-09-20';            // Sunday: the day of Rosa's weekly review
 const LAST_CLOSE = '2026-09-18';       // Friday: latest prices in the data
 const LAST_REVIEW = '2026-09-13';      // the Sunday before
-const HISTORY_START = '2021-09-20';    // 5 years of made-up history
+const STOCK_START = '2025-09-19';      // the first stock anchor: 12 months of history
 const ACCOUNT_OPENED = '2026-03-02';
 const WEEK_START_CLOSE = '2026-09-11'; // "this week" = close Sept. 11 -> close Sept. 18
-const WORD_OF_THE_DAY = 'expense-ratio';
-const PAUSED_ON = '2026-07-14';        // Rosa paused auto-invest after the July dip
-const CASH_WAITING = 25;         // dollars of cash before we call it "waiting"
+const WORD_OF_THE_DAY = 'ups-and-downs';
+const CASH_WAITING = 25;               // dollars of cash before we call it "waiting"
+const BIG_MOVE = 0.07;                 // a holding moving this much in a week gets a heads-up
+// The dip (ruling B, Phase 2.5): the largest 10-trading-day fall in Rosa's portfolio value
+// between April 15 and Aug. 15, 2026, measured as the market change in her balance (deposits
+// and dividends taken out). She pauses auto-invest on the next trading day after the low.
+const DIP_WINDOW = { from: '2026-04-15', to: '2026-08-15', tradingDays: 10 };
+const DIP_MIN = 0.04;                  // a "clear" dip: at least a 4% fall
 
 const meta = {
   product: 'First Leaf',
@@ -71,13 +90,11 @@ const meta = {
   lastClose: LAST_CLOSE,
   lastReview: LAST_REVIEW,
   cashWaitingThreshold: CASH_WAITING,
+  bigMoveThreshold: BIG_MOVE,
   wordOfTheDay: WORD_OF_THE_DAY,
   currency: 'USD',
   fictional: true,
-  dataVersion: 2,
-  // The on-screen footer disclosure (real-app ruling, Sept. 24). The README carries the full statement.
-  disclaimer:
-    'Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice.',
+  dataVersion: 3,
 };
 
 const persona = {
@@ -88,10 +105,10 @@ const persona = {
   job: 'Dental hygienist',
   fictional: true,
   story:
-    'Rosa opened her first investing account in March 2026. She had never bought a fund before. She puts in $150 each month. In July, a dip in prices made her nervous, so she paused auto-invest. She wants to understand what her money is doing without feeling lost.',
+    'Rosa opened her first investing account in March 2026. She had never bought a stock before. She puts in $150 each month. This summer, a dip in prices made her nervous, so she paused auto-invest. She wants to understand what her money is doing without feeling lost.',
   worries: [
     'Losing money without knowing why',
-    'Words like "expense ratio" that nobody explains',
+    'Words like "volatility" that nobody explains',
     'Doing something wrong and not being able to undo it',
   ],
   devices: { phone: 'iPhone, one hand, between other things', laptop: 'Laptop on Sunday mornings' },
@@ -102,69 +119,78 @@ const persona = {
   },
 };
 
-// ---------- funds ----------
-// The order of this list fixes the random price paths. Don't reorder it.
-const FUND_DEFS = [
-  { ticker: 'FL-BROAD', name: 'Broad U.S. Market Index Fund', kind: 'stocks', region: 'United States', upsAndDowns: 4,
-    expenseRatio: [{ effective: '2021-01-01', value: 0.04 }], mu: 0.085, sigma: 0.17, start: 62.4,
-    dividend: { frequency: 'quarterly', annualRate: 0.014 },
-    inside: 'It owns bits of about 3,000 U.S. companies, big and small.' },
-  { ticker: 'FL-WORLD', name: 'World Markets Index Fund', kind: 'stocks', region: 'Outside the U.S.', upsAndDowns: 4,
-    expenseRatio: [{ effective: '2021-01-01', value: 0.08 }], mu: 0.06, sigma: 0.18, start: 41.1,
-    dividend: null,
-    inside: 'It owns bits of about 7,000 companies. They are in other countries.' },
-  { ticker: 'FL-BOND', name: 'Steady Bond Index Fund', kind: 'bonds', region: 'United States', upsAndDowns: 2,
-    expenseRatio: [{ effective: '2021-01-01', value: 0.05 }], mu: 0.025, sigma: 0.05, start: 24.8,
-    dividend: { frequency: 'monthly', annualRate: 0.036 },
-    inside: 'It lends to thousands of governments and big companies.' },
-  { ticker: 'FL-GREEN', name: 'Clean Energy Theme Fund', kind: 'stocks', region: 'Worldwide', upsAndDowns: 5,
-    expenseRatio: [{ effective: '2021-01-01', value: 0.45 }, { effective: '2026-10-01', value: 0.75, announcedOn: '2026-09-15' }], mu: 0.07, sigma: 0.32, start: 18.3,
-    dividend: null,
-    inside: 'It owns bits of about 80 companies. They make solar panels, wind power and batteries.' },
-  { ticker: 'FL-CALM', name: 'Calm Reserve Fund', kind: 'reserve', region: 'United States', upsAndDowns: 1,
-    expenseRatio: [{ effective: '2021-01-01', value: 0.1 }], mu: 0, sigma: 0, start: 1.0,
-    dividend: { frequency: 'monthly', annualRate: 0.035 },
-    inside: 'It makes very short loans. Its price is meant to stay at $1.00. It pays a little each month.' },
+// ---------- the lineup (ruling B) ----------
+// The order of this list fixes the random stock paths. Don't reorder it.
+const ASSET_DEFS = [
+  { ticker: 'AAPL', name: 'Apple', kind: 'stock', about: 'Apple makes the iPhone, the Mac and the iPad. It also sells apps, music and other services.' },
+  { ticker: 'MSFT', name: 'Microsoft', kind: 'stock', about: 'Microsoft makes Windows and Office. It also runs a big cloud, where people rent its computers.' },
+  { ticker: 'NVDA', name: 'NVIDIA', kind: 'stock', about: 'NVIDIA designs computer chips. They run video games and AI.' },
+  { ticker: 'COST', name: 'Costco', kind: 'stock', about: 'Costco runs big warehouse stores. Members pay a yearly fee to shop there and buy in bulk.' },
+  { ticker: 'NKE', name: 'Nike', kind: 'stock', about: 'Nike makes and sells sports shoes, clothes and gear.' },
+  { ticker: 'AMZN', name: 'Amazon', kind: 'stock', about: 'Amazon runs a huge online store. It also rents out computer power over the internet.' },
+  { ticker: 'TSLA', name: 'Tesla', kind: 'stock', about: 'Tesla makes electric cars. It also makes big batteries for homes.' },
+  { ticker: 'BTC', name: 'Bitcoin', kind: 'crypto', coin: 'bitcoin', about: 'Bitcoin is a digital currency. No company or bank runs it.' },
+  { ticker: 'ETH', name: 'Ethereum', kind: 'crypto', coin: 'ethereum', about: 'Ethereum is a digital currency. It also runs small programs on its own network.' },
+  { ticker: 'SOL', name: 'Solana', kind: 'crypto', coin: 'solana', about: 'Solana is a digital currency. It also runs small programs on its own network.' },
 ];
+const DECIMALS = { stock: 4, crypto: 8 };  // parts of a share: 4 places for stocks, 8 for crypto
+const MIX = { AAPL: 0.25, MSFT: 0.2, NVDA: 0.1, COST: 0.15, NKE: 0.1, BTC: 0.12, ETH: 0.08 };
 
-const days = [];
-for (let d = HISTORY_START; d <= LAST_CLOSE; d = addDays(d, 1)) if (isTradingDay(d)) days.push(d);
-
-const rand = mulberry32(Number(process.env.FL_SEED || 11));
-const priceByFund = {};
-for (const f of FUND_DEFS) {
-  const series = {};
-  let p = f.start;
-  for (const d of days) {
-    if (f.kind !== 'reserve') {
-      const ret = f.mu / 252 + (f.sigma / Math.sqrt(252)) * gauss(rand);
-      p = Math.max(1, p * Math.exp(ret));
-    }
-    series[d] = r2(p);
-  }
-  priceByFund[f.ticker] = series;
-}
-const priceOn = (ticker, date) => {
-  const p = priceByFund[ticker][date];
-  if (p === undefined) throw new Error(`no price for ${ticker} on ${date}`);
-  return p;
+// "Ups and downs" (1-5) from the 12-month volatility of daily log returns (BRIEF.md §4).
+const UPS_BANDS = [0.2, 0.3, 0.45, 0.65];
+const yearlyVol = (closes, perYear) => {
+  const r = []; for (let i = 1; i < closes.length; i++) r.push(Math.log(closes[i] / closes[i - 1]));
+  const m = r.reduce((a, b) => a + b, 0) / r.length;
+  return Math.sqrt(r.reduce((a, b) => a + (b - m) ** 2, 0) / (r.length - 1)) * Math.sqrt(perYear);
 };
-const weeklyDates = [];
-for (let i = 0; i < days.length; i++) {
-  const d = days[i], n = days[i + 1];
-  if (!n || dow(n) <= dow(d) || daysBetween(d, n) > 3) weeklyDates.push(d);
+const upsAndDowns = (v) => 1 + UPS_BANDS.filter((b) => v >= b).length;
+
+const stockDays = [];
+for (let d = STOCK_START; d <= LAST_CLOSE; d = addDays(d, 1)) if (isTradingDay(d)) stockDays.push(d);
+const accountDays = stockDays.filter((d) => d >= ACCOUNT_OPENED);
+// Weekly closes: the last trading day of each week.
+const weeklyDates = stockDays.filter((d, i) => { const n = stockDays[i + 1]; return !n || dow(n) <= dow(d) || daysBetween(d, n) > 3; });
+
+// A Brownian bridge in log price, forced through every anchor close exactly.
+function stockPath(ticker, rand) {
+  const sd = STOCK_VOL[ticker], anchors = ANCHORS[ticker];
+  const marks = Object.keys(anchors).sort().map((d) => { const i = stockDays.indexOf(d); if (i < 0) throw new Error(`${ticker} anchor ${d} is not a trading day`); return i; });
+  if (marks[0] !== 0 || marks.at(-1) !== stockDays.length - 1) throw new Error(`${ticker} anchors must start and end the history`);
+  const w = [0]; for (let i = 1; i < stockDays.length; i++) w.push(w[i - 1] + sd * gauss(rand));
+  const lp = new Array(stockDays.length);
+  for (let k = 0; k + 1 < marks.length; k++) {
+    const a = marks[k], b = marks[k + 1], la = Math.log(anchors[stockDays[a]]), lb = Math.log(anchors[stockDays[b]]);
+    for (let t = a; t <= b; t++) lp[t] = la + (w[t] - w[a]) - ((t - a) / (b - a)) * ((w[b] - w[a]) - (lb - la));
+  }
+  const series = {};
+  stockDays.forEach((d, i) => { series[d] = anchors[d] ?? r2(Math.exp(lp[i])); });
+  return series;
 }
-const accountDays = days.filter((d) => d >= ACCOUNT_OPENED);
-const funds = FUND_DEFS.map((f) => ({
-  ticker: f.ticker, name: f.name, fictional: true, kind: f.kind, region: f.region, upsAndDowns: f.upsAndDowns,
-  expenseRatioHistory: f.expenseRatio, dividend: f.dividend, inside: f.inside,
-  latestPrice: priceOn(f.ticker, LAST_CLOSE),
-  history: {
-    weekly: weeklyDates.map((d) => ({ date: d, close: priceOn(f.ticker, d) })),
-    daily: accountDays.map((d) => ({ date: d, close: priceOn(f.ticker, d) })),
-  },
-}));
-const expenseRatioOn = (ticker, date) => FUND_DEFS.find((f) => f.ticker === ticker).expenseRatio.filter((e) => e.effective <= date).at(-1).value;
+
+function buildAssets(seed) {
+  const rand = mulberry32(seed);
+  const priceBy = {};
+  for (const a of ASSET_DEFS) {
+    if (a.kind === 'stock') priceBy[a.ticker] = stockPath(a.ticker, rand);
+    else priceBy[a.ticker] = Object.fromEntries(coingecko(a.coin).daily.map((x) => [x.date, x.close]));
+  }
+  const assets = ASSET_DEFS.map((a) => {
+    const series = priceBy[a.ticker];
+    const daily = Object.keys(series).sort().map((d) => ({ date: d, close: series[d] }));
+    const vol = yearlyVol(daily.map((x) => x.close), a.kind === 'stock' ? 252 : 365);
+    return {
+      ticker: a.ticker, name: a.name, kind: a.kind, about: a.about,
+      priceSource: a.kind === 'stock' ? 'modeled' : 'coingecko',
+      volatility: r4(vol), upsAndDowns: upsAndDowns(vol),
+      dividends: DIVIDENDS.filter((x) => x.ticker === a.ticker).map(({ perShare, exDate, payDate }) => ({ perShare, exDate, payDate })),
+      latestPrice: series[LAST_CLOSE],
+      history: { weekly: weeklyDates.filter((d) => series[d] !== undefined).map((d) => ({ date: d, close: series[d] })), daily },
+    };
+  });
+  const priceOn = (ticker, date) => { const p = priceBy[ticker][date]; if (p === undefined) throw new Error(`no price for ${ticker} on ${date}`); return p; };
+  return { assets, priceOn };
+}
+const kindOf = (t) => ASSET_DEFS.find((a) => a.ticker === t).kind;
 
 // ---------- accounts ----------
 // One simulator, three accounts: the main demo, a calm "all clear" version, and a brand-new one.
@@ -179,21 +205,33 @@ const planDeposits = (upTo) => {
   return out;
 };
 
-function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} }) {
+function findDip(history, activity) {
+  const rows = history.filter((r) => r.date >= DIP_WINDOW.from && r.date <= DIP_WINDOW.to);
+  const divIn = (a, b) => r2(activity.filter((x) => x.type === 'dividend' && x.date > a && x.date <= b).reduce((s, x) => s + x.amount, 0));
+  let best = null;
+  for (let i = 0; i + DIP_WINDOW.tradingDays < rows.length; i++) {
+    const a = rows[i], b = rows[i + DIP_WINDOW.tradingDays];
+    const change = r2(b.balance - a.balance - (b.moneyIn - a.moneyIn) - divIn(a.date, b.date));
+    const pct = change / a.balance;
+    if (!best || pct < best.pct) best = { a, b, change, pct };
+  }
+  return {
+    window: { from: DIP_WINDOW.from, to: DIP_WINDOW.to }, tradingDays: DIP_WINDOW.tradingDays,
+    highDate: best.a.date, highBalance: best.a.balance, lowDate: best.b.date, lowBalance: best.b.balance,
+    fall: r2(-best.change), drop: r4(best.pct), month: FULL_MONTHS[Number(best.b.date.slice(5, 7)) - 1],
+  };
+}
+
+function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposits = {} }) {
   const shares = Object.fromEntries(Object.keys(mix).map((t) => [t, 0]));
   const costBasis = Object.fromEntries(Object.keys(mix).map((t) => [t, 0]));
   let cash = 0, moneyIn = 0, n = 1;
-  const activity = []; const history = [];
+  const activity = []; const history = []; const sharesAtClose = {};
   const nextId = () => `${id}-${String(n++).padStart(3, '0')}`;
   const deposits = planDeposits(AS_OF);
-  const events = [];
-  for (const dep of deposits) {
-    events.push({ date: nextTradingDay(dep.date), type: 'deposit', dep });
-  }
-  for (const m of ['03','04','05','06','07','08','09']) events.push({ date: nextTradingDay(`2026-${m}-15`), type: 'dividend', ticker: 'FL-BOND' });
-  events.push({ date: nextTradingDay('2026-06-24'), type: 'dividend', ticker: 'FL-BROAD' });
-  events.sort((a, b) => a.date.localeCompare(b.date) || (a.type === 'deposit' ? -1 : 1));
-  const byDate = {}; for (const e of events) (byDate[e.date] ||= []).push(e);
+  const byDate = {};
+  for (const dep of deposits) (byDate[nextTradingDay(dep.date)] ||= []).push({ type: 'deposit', dep });
+  for (const dv of DIVIDENDS) if (mix[dv.ticker] !== undefined && dv.payDate <= LAST_CLOSE && dv.exDate > ACCOUNT_OPENED) (byDate[nextTradingDay(dv.payDate)] ||= []).push({ type: 'dividend', dv });
 
   for (const d of accountDays) {
     for (const e of byDate[d] || []) {
@@ -206,23 +244,28 @@ function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} })
         cash = r2(cash + e.dep.amount); moneyIn = r2(moneyIn + e.dep.amount);
         const autoOn = !autoInvestPausedOn || d < autoInvestPausedOn;
         if (autoOn) for (const [t, w] of Object.entries(mix)) {
-          const amt = r2(e.dep.amount * w), px = priceOn(t, d), sh = floor4(amt / px);
-          shares[t] = r4(shares[t] + sh); costBasis[t] = r2(costBasis[t] + amt); cash = r2(cash - amt);
-          activity.push({ id: nextId(), date: d, settledDate: nextTradingDay(addDays(d, 1)), type: 'buy', ticker: t, amount: amt, shares: sh, price: px, status: 'completed', via: 'auto-invest' });
+          const dec = DECIMALS[kindOf(t)];
+          const amt = r2(e.dep.amount * w), px = priceOn(t, d), sh = floorN(amt / px, dec);
+          shares[t] = roundN(shares[t] + sh, dec); costBasis[t] = r2(costBasis[t] + amt); cash = r2(cash - amt);
+          // Stocks settle one business day later (T+1); crypto settles the same day.
+          const settledDate = kindOf(t) === 'stock' ? nextTradingDay(addDays(d, 1)) : d;
+          activity.push({ id: nextId(), date: d, settledDate, type: 'buy', ticker: t, amount: amt, shares: sh, price: px, status: 'completed', via: 'auto-invest' });
         }
-      } else if (e.type === 'dividend' && shares[e.ticker] > 0) {
-        const f = FUND_DEFS.find((x) => x.ticker === e.ticker);
-        const amt = r2(shares[e.ticker] * priceOn(e.ticker, d) * f.dividend.annualRate / (f.dividend.frequency === 'monthly' ? 12 : 4));
-        if (amt > 0) { cash = r2(cash + amt); activity.push({ id: nextId(), date: d, settledDate: d, type: 'dividend', ticker: e.ticker, amount: amt, status: 'completed' }); }
+      } else {
+        // Paid on the shares held at the close of the trading day before the ex-dividend date.
+        const held = sharesAtClose[prevTradingDay(e.dv.exDate)]?.[e.dv.ticker] ?? 0;
+        const amt = r2(held * e.dv.perShare);
+        if (amt > 0) { cash = r2(cash + amt); activity.push({ id: nextId(), date: d, settledDate: d, type: 'dividend', ticker: e.dv.ticker, amount: amt, perShare: e.dv.perShare, sharesOnExDate: held, exDate: e.dv.exDate, status: 'completed' }); }
       }
     }
+    sharesAtClose[d] = { ...shares };
     const invested = r2(Object.keys(shares).reduce((s, t) => s + r2(shares[t] * priceOn(t, d)), 0));
     history.push({ date: d, balance: r2(invested + cash), moneyIn, cash });
   }
 
   const holdings = Object.keys(shares).map((t) => {
     const value = r2(shares[t] * priceOn(t, LAST_CLOSE));
-    return { ticker: t, shares: shares[t], price: priceOn(t, LAST_CLOSE), value, costBasis: costBasis[t], gainLoss: r2(value - costBasis[t]), targetShare: mix[t] };
+    return { ticker: t, kind: kindOf(t), shares: shares[t], price: priceOn(t, LAST_CLOSE), value, costBasis: costBasis[t], gainLoss: r2(value - costBasis[t]), targetShare: mix[t] };
   });
   const investedValue = r2(holdings.reduce((s, h) => s + h.value, 0));
   const balance = r2(investedValue + cash);
@@ -242,7 +285,7 @@ function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} })
     totalChange: r2(end.balance - start.balance),
     byFund: Object.keys(shares).map((t) => ({ ticker: t, change: r2(shares[t] * (priceOn(t, LAST_CLOSE) - priceOn(t, WEEK_START_CLOSE))) })),
   };
-  // Per-fund pieces must add up to the market change to the cent (P303 shows both).
+  // Per-holding pieces must add up to the market change to the cent (P303 shows both).
   const diff = r2(weeklyChange.marketChange - weeklyChange.byFund.reduce((s, x) => s + x.change, 0));
   if (diff !== 0) { const big = weeklyChange.byFund.reduce((a, b) => (Math.abs(b.change) > Math.abs(a.change) ? b : a)); big.change = r2(big.change + diff); }
 
@@ -260,12 +303,12 @@ function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} })
     targetMix: mix, holdings, goal, weeklyChange, history,
   };
 
-  // ----- attention flags: generated from rules, so they are true for THIS account -----
+  // ----- alerts: generated from rules, so they are true for THIS account -----
   const flags = [];
   const ret = activity.filter((a) => a.status === 'returned' && daysBetween(a.returnedDate, AS_OF) <= 30).at(-1);
   if (ret) flags.push({ id: 'deposit-returned', severity: 'needs-you', date: ret.returnedDate, raisedOn: ret.returnedDate,
     title: `Your ${fmt(ret.amount)} deposit from ${apDate(ret.date)} was sent back`,
-    body: `Your bank sent it back on ${apDate(ret.returnedDate)}, so the money never reached First Leaf. Your funds were not touched.`,
+    body: `Your bank sent it back on ${apDate(ret.returnedDate)}, so the money never reached First Leaf. Your investments were not touched.`,
     nextStep: 'Check your bank account first. Then you can try the deposit again.',
     action: { kind: 'retry-deposit', label: 'Try the deposit again' },
     amount: ret.amount, activityId: ret.id, terms: ['returned-deposit', 'recurring-deposit'], route: 'activity' });
@@ -284,21 +327,30 @@ function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} })
     action: { kind: 'auto-invest', label: 'See auto-invest settings' },
     amount: cash, terms: ['cash', 'auto-invest'], route: 'overview' });
   for (const h of holdings) {
-    const f = FUND_DEFS.find((x) => x.ticker === h.ticker);
-    const up = f.expenseRatio.find((e) => e.effective > AS_OF && daysBetween(AS_OF, e.effective) <= 30);
-    if (!up) continue;
-    const from = expenseRatioOn(h.ticker, AS_OF), extra = r2(h.value * (up.value - from) / 100);
-    flags.push({ id: 'fee-going-up', severity: 'heads-up', date: up.effective, raisedOn: up.announcedOn,
-      title: `${h.ticker} is raising its yearly fee on ${apDate(up.effective)}`,
-      body: `The fee goes from ${from.toFixed(2)}% to ${up.value.toFixed(2)}%. On the ${fmt(h.value)} you have in it, that is about ${fmt(extra)} more a year.`,
-      nextStep: 'Nothing changes in your account unless you choose to. The fund page shows its fee over time.',
+    const p0 = priceOn(h.ticker, WEEK_START_CLOSE), p1 = h.price, move = p1 / p0 - 1;
+    if (Math.abs(move) < BIG_MOVE || h.shares <= 0) continue;
+    const change = weeklyChange.byFund.find((x) => x.ticker === h.ticker).change;
+    flags.push({ id: `big-move-${h.ticker}`, severity: 'heads-up', date: LAST_CLOSE, raisedOn: LAST_CLOSE,
+      title: `${h.ticker} moved ${move > 0 ? 'up' : 'down'} ${pct1(Math.abs(move))}% this week`,
+      body: `Its price went from ${fmtCents(p0)} on ${apDate(WEEK_START_CLOSE)} to ${fmtCents(p1)} on ${apDate(LAST_CLOSE)}. What you own in it went ${change >= 0 ? 'up' : 'down'} ${fmtCents(Math.abs(change))}.`,
+      nextStep: 'Prices go up and down. Nothing changes in your account unless you choose to.',
       action: { kind: 'open-fund', label: `Open ${h.ticker}` },
-      ticker: h.ticker, feeFrom: from, feeTo: up.value, amount: extra, terms: ['expense-ratio'], route: 'fund' });
+      ticker: h.ticker, movePercent: r4(move), amount: Math.abs(change), terms: ['ups-and-downs', 'price'], route: 'fund' });
   }
   const div = activity.filter((a) => a.type === 'dividend' && daysBetween(a.date, AS_OF) <= 7).at(-1);
+  const cryptoHeld = holdings.filter((h) => h.kind === 'crypto' && h.shares > 0);
+  if (cryptoHeld.length) {
+    const firstBuy = activity.find((a) => a.type === 'buy' && kindOf(a.ticker) === 'crypto');
+    const names = cryptoHeld.map((h) => ASSET_DEFS.find((x) => x.ticker === h.ticker).name);
+    flags.push({ id: 'sipc-crypto', severity: 'fyi', date: firstBuy.date, raisedOn: firstBuy.date,
+      title: 'Crypto is not covered by SIPC protection',
+      body: `SIPC protection helps get back the stocks and cash in a brokerage account if the firm fails. It does not cover crypto, like your ${names.join(' and ')}.`,
+      nextStep: 'Nothing to do. This is just so you know.',
+      action: null, amount: 0, terms: ['sipc-protection', 'crypto'], route: 'glossary' });
+  }
   if (div) flags.push({ id: 'dividend-paid', severity: 'fyi', date: div.date, raisedOn: div.date,
     title: `${div.ticker} paid you ${fmt(div.amount)}`,
-    body: 'Some funds make small payments to the people who own them. It went into your cash.',
+    body: 'Some companies make small payments to the people who own their stock. It went into your cash.',
     nextStep: 'Nothing to do. This is just so you know.',
     action: null,
     ticker: div.ticker, amount: div.amount, activityId: div.id, terms: ['dividend', 'cash'], route: 'activity' });
@@ -306,9 +358,26 @@ function simulate({ id, mix, autoInvestPausedOn = null, returnedDeposits = {} })
   return { account, activity, flags };
 }
 
-const main = simulate({ id: 'rosa-starter', mix: { 'FL-BROAD': 0.6, 'FL-WORLD': 0.2, 'FL-BOND': 0.15, 'FL-GREEN': 0.05 },
-  autoInvestPausedOn: PAUSED_ON, returnedDeposits: { '2026-09-01': '2026-09-03' } });
-const calm = simulate({ id: 'rosa-all-clear', mix: { 'FL-BROAD': 0.65, 'FL-WORLD': 0.2, 'FL-BOND': 0.15 } });
+// ---------- choose the seed ----------
+// Every anchor is hit by construction. The seed is the first one where Rosa is up overall,
+// the dip is clear (a fall of at least 4%), the dip found in her own (paused) history is the
+// same one that made her pause, and the calm account has nothing that needs her.
+let SEED, assets, priceOn, main, calm, dip;
+for (let seed = Number(process.env.FL_SEED || 1); ; seed++) {
+  if (seed > 5000) throw new Error('no seed meets the data rules');
+  ({ assets, priceOn } = buildAssets(seed));
+  calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn });
+  const d0 = findDip(calm.account.history, calm.activity);
+  if (-d0.drop < DIP_MIN) continue;
+  main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, autoInvestPausedOn: nextTradingDay(addDays(d0.lowDate, 1)), returnedDeposits: { '2026-09-01': '2026-09-03' } });
+  const d1 = findDip(main.account.history, main.activity);
+  if (d1.highDate !== d0.highDate || d1.lowDate !== d0.lowDate) continue;
+  if (!(main.account.gainLoss > 0 && calm.account.gainLoss > 0)) continue;
+  if (calm.flags.some((f) => f.severity !== 'fyi')) continue;
+  SEED = seed; dip = d1; break;
+}
+const funds = assets;
+const PAUSED_ON = main.account.autoInvest.pausedOn;
 const emptyAccount = {
   id: 'rosa-new', ownerId: 'rosa', name: 'Starter account', fictional: true, openedOn: LAST_CLOSE, asOf: AS_OF, lastClose: LAST_CLOSE,
   balance: 0, investedValue: 0, cash: 0, cashSince: null, moneyIn: 0, gainLoss: 0, gainLossPercent: 0, dividendsTotal: 0,
@@ -316,16 +385,18 @@ const emptyAccount = {
 };
 
 const scenarios = [
-  { id: 'normal', label: 'Rosa, 7 months in', description: 'Seven months in. Her account has a few things worth a look.', accountId: 'rosa-starter' },
-  { id: 'all-clear', label: 'Nothing needs you', description: 'A calmer version of Rosa. Every deposit went through, auto-invest is on, and she skipped the clean energy fund.', accountId: 'rosa-all-clear' },
+  { id: 'normal', label: 'Rosa, six months in', description: 'Six months in. Her account has a few things worth a look.', accountId: 'rosa-starter' },
+  { id: 'all-clear', label: 'Nothing needs you', description: 'A calmer version of Rosa. Every deposit went through and auto-invest stayed on.', accountId: 'rosa-all-clear' },
   { id: 'brand-new', label: 'Brand-new account', description: 'Rosa just opened her account and has not added money yet.', accountId: 'rosa-new' },
 ];
 
-// ---------- practice mode ----------
+// ---------- practice ----------
+// The time machine starts on the first weekly close where every investment has a price.
+const tmFrom = weeklyDates.find((d) => funds.every((f) => f.history.daily.some((x) => x.date === d)));
 const practice = {
   startingCash: 1000, fictional: true, minOrder: 1, maxDecimals: 2, fractionalShares: true, tradeFee: 0,
-  priceDate: LAST_CLOSE, funds: FUND_DEFS.map((f) => f.ticker),
-  timeMachine: { from: weeklyDates[0], to: LAST_CLOSE, series: 'weekly',
+  priceDate: LAST_CLOSE, funds: funds.map((f) => f.ticker),
+  timeMachine: { from: tmFrom, to: LAST_CLOSE, series: 'weekly',
     note: 'This uses past prices to show how a mix could have moved. The past does not tell you what will happen next.' },
 };
 
@@ -408,37 +479,21 @@ const story = {
 
 // ---------- Your money story: Rosa's own facts and claims, per account (rules R1-R4) ----------
 // Every number the story states about Rosa comes from here, and the validator recomputes
-// each one from the price and balance history.
-// "The dip in July" (ruling, Sept. 24): the largest high-to-low drop in FL-BROAD in the 30
-// calendar days before Rosa paused auto-invest. Tied to her action, not a hand-picked window.
-// The market is the same for every account, so the calm account uses the same window.
-const DIP = { ticker: 'FL-BROAD', from: addDays(PAUSED_ON, -30), to: PAUSED_ON };
-const pct1 = (x) => (Math.round(x * 1000) / 10).toFixed(1);
-function findDip() {
-  const rows = funds.find((f) => f.ticker === DIP.ticker).history.daily.filter((d) => d.date >= DIP.from && d.date <= DIP.to);
-  let peak = rows[0], best = { high: rows[0], low: rows[0], drop: 0 };
-  for (const r of rows) {
-    if (r.close > peak.close) peak = r;
-    const drop = r.close / peak.close - 1;
-    if (drop < best.drop) best = { high: peak, low: r, drop };
-  }
-  return { ticker: DIP.ticker, window: { from: DIP.from, to: DIP.to }, highDate: best.high.date, high: best.high.close,
-    lowDate: best.low.date, low: best.low.close, drop: r4(best.low.close / best.high.close - 1) };
-}
+// each one from the balance history. Each account's dip is found in its own history.
 function rosaStoryFor({ account, activity }) {
-  const a = account, h = a.history, dip = findDip();
-  const at = h.find((r) => r.date === dip.lowDate);
-  const atLow = { date: dip.lowDate, balance: at.balance, moneyIn: at.moneyIn, below: r2(at.moneyIn - at.balance) };
+  const a = account, h = a.history, dp = findDip(h, activity);
+  const at = h.find((r) => r.date === dp.lowDate);
+  const atLow = { date: dp.lowDate, balance: at.balance, moneyIn: at.moneyIn, below: r2(at.moneyIn - at.balance) };
   const share = r4(a.moneyIn / a.balance);
   const paused = a.autoInvest.pausedOn;
-  const since = paused || dip.lowDate;
+  const since = paused || dp.lowDate;
   const backAbove = h.find((r) => r.date > since && r.balance > r.moneyIn);
   const depositsAfter = activity.filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > since)
     .map((x) => ({ date: x.settledDate, amount: x.amount }));
   const first = activity.find((x) => x.type === 'deposit' && x.kind === 'first');
   const facts = {
     openedOn: a.openedOn, firstDeposit: first.amount, moneyIn: a.moneyIn, balance: a.balance, earned: a.gainLoss,
-    depositsShare: share, lastClose: LAST_CLOSE, dip, atLow,
+    depositsShare: share, lastClose: LAST_CLOSE, dip: dp, atLow,
     pause: paused ? { date: paused } : null,
     after: { backAboveDate: backAbove.date, backAboveBalance: backAbove.balance, backAboveMoneyIn: backAbove.moneyIn,
       deposits: depositsAfter, depositsInvested: !paused, upNow: a.gainLoss },
@@ -449,12 +504,12 @@ function rosaStoryFor({ account, activity }) {
     { id: 'deposits-share', chapter: 2, text: a.gainLoss >= 0
       ? `About ${Math.round(share * 100)}% of your balance is money you put in. The other ${fmtCents(a.gainLoss)} is what it earned.`
       : `Your balance is ${fmtCents(-a.gainLoss)} below the ${fmt(a.moneyIn)} you put in.` },
-    { id: 'dip', chapter: 3, text: `From ${apDate(dip.highDate)} to ${apDate(dip.lowDate)}, ${dip.ticker} fell from ${fmtCents(dip.high)} to ${fmtCents(dip.low)}. That is a drop of ${pct1(-dip.drop)}%.` },
+    { id: 'dip', chapter: 3, text: `From ${apDate(dp.highDate)} to ${apDate(dp.lowDate)}, falling prices took ${fmtCents(dp.fall)} off your balance. That is a drop of ${pct1(-dp.drop)}%.` },
     ...(atLow.below > 0 ? [{ id: 'at-low', chapter: 3, text: `On ${apDate(atLow.date)}, your balance was ${fmtCents(atLow.balance)}. That was ${fmtCents(atLow.below)} below the ${fmt(atLow.moneyIn)} you had put in.` }] : []),
     ...(paused
-      ? [{ id: 'pause', chapter: 3, text: `You paused auto-invest the next day, ${apDate(paused)}.` },
+      ? [{ id: 'pause', chapter: 3, text: `You paused auto-invest the next trading day, ${apDate(paused)}.` },
          { id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
-         { id: 'cash-after', chapter: 3, text: `After that, your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} stayed as cash.` }]
+         ...(depositsAfter.length ? [{ id: 'cash-after', chapter: 3, text: `After that, your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} stayed as cash.` }] : [])]
       : [{ id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
          { id: 'kept-buying', chapter: 3, text: `Auto-invest stayed on. Your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} bought your mix the day ${depositsAfter.length > 1 ? 'they' : 'it'} arrived.` }]),
     { id: 'up-now', chapter: 3, text: a.gainLoss >= 0 ? `On ${apDate(LAST_CLOSE)}, you were up ${fmtCents(a.gainLoss)}.` : `On ${apDate(LAST_CLOSE)}, you were down ${fmtCents(-a.gainLoss)}.` },
@@ -477,6 +532,8 @@ write('attention.json', { 'rosa-starter': main.flags, 'rosa-all-clear': calm.fla
 write('scenarios.json', scenarios);
 write('practice.json', practice);
 write('story-p302.json', story);
-console.log(`Wrote data to ${OUT}`);
-for (const { account: a, flags } of [main, calm]) console.log(a.id, { balance: a.balance, cash: a.cash, moneyIn: a.moneyIn, gainLoss: a.gainLoss, week: a.weeklyChange.totalChange, goal: [a.goal.behindBy, a.goal.progress, a.goal.plannedMoneyInByTarget], flags: flags.map((f) => `${f.id}${f.newSinceLastReview ? '*' : ''}`) });
+console.log(`Wrote data to ${OUT} (seed ${SEED})`);
+console.log('dip', dip, 'paused', PAUSED_ON);
+for (const { account: a, flags } of [main, calm]) console.log(a.id, { balance: a.balance, cash: a.cash, moneyIn: a.moneyIn, gainLoss: a.gainLoss, week: a.weeklyChange.totalChange, goal: [a.goal.behindBy, a.goal.progress], flags: flags.map((f) => `${f.id}${f.newSinceLastReview ? '*' : ''}`) });
+console.log(funds.map((f) => `${f.ticker} ${f.latestPrice} vol ${f.volatility} ups ${f.upsAndDowns}`).join(' | '));
 console.log({ niaFinal: nia.final, theoFinal: theo.final, monthlyNeeded, bumpySeed, bumpy: [bNia.at(-1).value, bTheo.at(-1).value], minYear: Math.min(...yearlyReturns) });
