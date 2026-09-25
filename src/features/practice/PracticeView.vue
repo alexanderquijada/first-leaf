@@ -302,7 +302,7 @@ function startOver() {
 
 .practice__dialog p {
   margin: 8px 0 0;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .practice__dialog-actions {

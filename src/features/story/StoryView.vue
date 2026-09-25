@@ -111,7 +111,7 @@ const chapters = computed(() =>
   margin: 16px 0 0;
   font-family: var(--font-text);
   font-size: 1.375rem;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .story__menu {
