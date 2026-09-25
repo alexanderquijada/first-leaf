@@ -110,7 +110,9 @@ function unhandle() {
     <component :is="`h${headingLevel}`" :id="`adetail-${alert.id}`" class="adetail__title">{{ alert.title }}</component>
 
     <h3 class="adetail__h">{{ copy.whatHappened }}</h3>
-    <p>{{ alert.body }}</p>
+    <!-- After auto-invest is turned on, "has been paused" would be false: tell the past as past. -->
+    <p v-if="autoTurnedOn && account.autoInvest.pausedOn">{{ fill(copy.pausedUntilToday, { date: formatDate(account.autoInvest.pausedOn) }) }}</p>
+    <p v-else>{{ alert.body }}</p>
     <dl v-if="facts.length" class="adetail__facts">
       <div v-for="f in facts" :key="f.label">
         <dt>{{ f.label }}</dt>

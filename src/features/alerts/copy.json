@@ -40,5 +40,6 @@
     "yourChange": "What you own in it",
     "triedAgain": "Tried again",
     "pendingSince": "Pending since {date}"
-  }
+  },
+  "pausedUntilToday": "Auto-invest was paused from {date} until today. Deposits in that time stayed as cash."
 }

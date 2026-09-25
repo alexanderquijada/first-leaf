@@ -51,8 +51,9 @@
   },
   "dividends": {
     "heading": "Dividends",
-    "intro": "{name} pays a {dividend} for each share you own before its ex-dividend date.",
+    "intro": "{name} pays a {dividend} for each share you own before its {exDate}.",
     "dividendWord": "dividend",
+    "exDateWord": "ex-dividend date",
     "paid": "{amount} a share, paid {date}",
     "upcoming": "{amount} a share, to be paid {date}",
     "yours": "You got {amount} in dividends from it.",

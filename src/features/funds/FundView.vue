@@ -71,7 +71,7 @@ const received = computed(() =>
 // Crypto is owned as an amount of coins, not shares, so its page doesn't list "Share".
 const words = computed(() => [
   'ups-and-downs', ...(fund.value?.kind === 'crypto' ? [] : ['share']), 'price',
-  ...(fund.value?.dividends.length ? ['dividend'] : []),
+  ...(fund.value?.dividends.length ? ['dividend', 'ex-dividend-date'] : []),
   ...(fund.value?.kind === 'crypto' ? ['crypto', 'sipc-protection'] : ['stock']),
 ])
 </script>
@@ -123,7 +123,7 @@ const words = computed(() => [
       <section v-if="fund.kind === 'stock'" class="fund__card" aria-labelledby="fund-div">
         <h2 id="fund-div" class="fund__h">{{ D.heading }}</h2>
         <template v-if="fund.dividends.length">
-          <p class="fund__line"><CopyText :text="D.intro" :values="{ name: fund.name }"><template #dividend><TermTip id="dividend">{{ D.dividendWord }}</TermTip></template></CopyText></p>
+          <p class="fund__line"><CopyText :text="D.intro" :values="{ name: fund.name }"><template #dividend><TermTip id="dividend">{{ D.dividendWord }}</TermTip></template><template #exDate><TermTip id="ex-dividend-date">{{ D.exDateWord }}</TermTip></template></CopyText></p>
           <ul class="fund__divs">
             <li v-for="d in fund.dividends" :key="d.exDate" class="fl-tabular">
               {{ fill(d.payDate <= meta.lastClose ? D.paid : D.upcoming, { amount: formatMoney(d.perShare), date: withYear(d.payDate) }) }}

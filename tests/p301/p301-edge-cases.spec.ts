@@ -135,6 +135,15 @@ test('after auto-invest is turned on, the cash alert says so', async ({ page }) 
   await dialog.getByRole('button', { name: 'Turn on' }).click()
   await dialog.getByRole('button', { name: 'Done' }).click()
   await expect(d).toContainText('Auto-invest is on. Each deposit buys your mix on the day it arrives.')
+  // "What happened" no longer says it "has been paused": it tells the past as past.
+  await expect(d).not.toContainText('has been paused')
+  await expect(d).toContainText('Auto-invest was paused from June 8 until today. Deposits in that time stayed as cash.')
+})
+
+test('"ex-dividend date" is explained where it appears', async ({ page }) => {
+  await page.goto('/funds/AAPL')
+  await page.getByRole('button', { name: 'ex-dividend date' }).click()
+  await expect(page.getByRole('dialog')).toContainText('The date that decides who gets the next dividend.')
 })
 
 test('no Home card ends in a big empty gap (the tall mix card takes its own row)', async ({ page }) => {

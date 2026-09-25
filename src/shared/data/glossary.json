@@ -259,6 +259,22 @@
     }
   },
   {
+    "id": "ex-dividend-date",
+    "term": "Ex-dividend date",
+    "alsoCalled": [],
+    "short": "The date that decides who gets the next dividend.",
+    "detail": "A company sets this date for each dividend it pays. If you own a share before that date, you get the payment. If you buy on or after it, you wait for the next one.",
+    "example": "Say the date is Nov. 10. You must own the share by Nov. 9 to get that payment.",
+    "related": [
+      "dividend",
+      "share"
+    ],
+    "source": {
+      "label": "Investor.gov glossary (U.S. SEC)",
+      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary"
+    }
+  },
+  {
     "id": "stock",
     "term": "Stock",
     "alsoCalled": [
