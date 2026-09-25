@@ -5,7 +5,7 @@ import { formatMoney } from '../format'
 
 const E = copy.practiceErrors
 
-// Practice: pretend money for trying things. Module scope, so a half-finished
+// Practice: practice money for trying things. Module scope, so a half-finished
 // session survives navigation; reloading starts over. It reads fund prices and
 // practice rules only: it has no way to reach Rosa's account (and the account
 // data is frozen, so any write would throw).

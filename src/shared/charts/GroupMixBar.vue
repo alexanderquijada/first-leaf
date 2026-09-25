@@ -17,7 +17,7 @@ const shown = computed(() =>
   (['stocks', 'crypto', 'cash'] as Group[])
     .map((g) => ({ group: g, value: props.parts.filter((p) => p.group === g).reduce((s, p) => s + p.value, 0) }))
     .filter((p) => p.value > 0)
-    .map((p) => ({ ...p, pct: total.value ? Math.round((p.value / total.value) * 100) : 0 })),
+    .map((p) => ({ ...p, pct: total.value ? pctOf(p.value / total.value) : 0 })),
 )
 // Bar segments in percent of the width, with a 1% gap between them.
 const segs = computed(() => {
@@ -30,6 +30,11 @@ const segs = computed(() => {
     return s
   })
 })
+// A small non-zero share reads as a decimal ("0.2%"), never as "0%".
+function pctOf(share: number) {
+  const p = share * 100
+  return p > 0 && p < 1 ? Math.round(p * 10) / 10 : Math.round(p)
+}
 const summary = computed(() => fill(G.summary, { list: shown.value.map((p) => fill(G.part, { name: G[p.group], pct: p.pct })).join(', ') }))
 const fillOf = (g: Group) => `url(#${id}-${g})`
 </script>

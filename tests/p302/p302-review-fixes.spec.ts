@@ -97,4 +97,23 @@ test('a small cash share is never shown as 0%', async ({ page }) => {
   const ch4 = page.locator('#chapter-4')
   await ch4.getByRole('group', { name: 'Show' }).getByRole('button', { name: 'Cash' }).click()
   await expect(ch4).toContainText('Cash is $2.48 of your balance, or 0.2%.')
+  await expect(ch4.locator('.fl-gm')).not.toContainText(/(^|[^.\d])0% ·/)
+})
+
+test('an amount typed with "$" or a comma reviews as money, never "$NaN"', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/practice')
+  for (const [typed, shown] of [['$200', '$200.00'], ['1,000', '$1,000.00']] as const) {
+    await page.getByLabel('Amount in dollars').fill(typed)
+    await page.getByRole('button', { name: 'Review' }).click()
+    await expect(page.getByText(`Buy ${shown} of AAPL`)).toBeVisible()
+    await expect(page.locator('main')).not.toContainText('NaN')
+    await page.getByRole('button', { name: /Change|Back|Edit/ }).first().click()
+  }
+})
+
+test('balance charts end their axis on the last date', async ({ page }) => {
+  await page.goto('/story#chapter-1')
+  await expect(page.locator('#chapter-1 canvas')).toHaveAttribute('data-x-last', 'Sept. 18')
+  await expect(page.locator('#chapter-3 canvas')).toHaveAttribute('data-x-last', 'Sept. 18')
 })

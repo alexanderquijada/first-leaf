@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ChapterMark from './ChapterMark.vue'
-// Chapter 1: Seven months in. Her balance since March, drawn in (shown whole
+// Chapter 1: Six months in. Her balance since March, drawn in (shown whole
 // under reduced motion), with a toggle for "What you put in / What it earned".
 import { computed, ref } from 'vue'
 import BalanceChart from '@/shared/charts/BalanceChart.vue'

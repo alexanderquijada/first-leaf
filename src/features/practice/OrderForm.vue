@@ -12,7 +12,7 @@ import { useOrder } from './useOrder'
 
 const O = copy.order
 
-const { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
+const { side, ticker, amount, amountNumber, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
 // Crypto is reviewed in coins, not shares (ruling 5, Sept. 25).
 const reviewText = computed(() => {
   const c = getFund(ticker.value)?.kind === 'crypto'
@@ -54,7 +54,7 @@ const reviewText = computed(() => {
     <template v-else-if="step === 'review'">
       <h3 class="order__h">{{ O.checkOrder }}</h3>
       <p>
-        {{ fill(reviewText, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
+        {{ fill(reviewText, { amount: formatMoney(amountNumber), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="order__error" role="alert">{{ error }}</p>

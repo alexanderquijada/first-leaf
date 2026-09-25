@@ -35,5 +35,5 @@ export function useOrder() {
     touched.value = false
     step.value = 'enter'
   }
-  return { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice: p }
+  return { side, ticker, amount, amountNumber, touched, step, last, error, shownError, estShares, review, confirm, next, practice: p }
 }

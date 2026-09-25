@@ -124,6 +124,12 @@ function setActive(i: number | null) {
   chart.update('none')
 }
 
+function showTick(i: number) {
+  const last = props.points.length - 1
+  const step = Math.max(1, Math.ceil(last / 5))
+  return i === last || (i % step === 0 && last - i >= step / 2)
+}
+
 function build() {
   chart?.destroy()
   if (!canvasEl.value || !props.points.length) return
@@ -143,7 +149,8 @@ function build() {
         },
       },
       scales: {
-        x: { display: !props.compact, grid: { display: false }, ticks: { maxTicksLimit: 6, maxRotation: 0 } },
+        // About 6 labels, always ending on the last date, so the axis ends where the data does.
+        x: { display: !props.compact, grid: { display: false }, ticks: { autoSkip: false, maxRotation: 0, callback: (_v, i) => (showTick(i) ? formatDate(props.points[i]!.date) : '') } },
         y: {
           display: !props.compact,
           // Stacked areas ("put in" under "earned") start at zero, or the layers mislead;
@@ -162,7 +169,11 @@ function build() {
     },
   })
   requestAnimationFrame(() => {
-    if (canvasEl.value && chart) canvasEl.value.dataset.yMin = String(chart.scales.y?.min ?? '')
+    if (canvasEl.value && chart) {
+      canvasEl.value.dataset.yMin = String(chart.scales.y?.min ?? '')
+      const last = [...(chart.scales.x?.ticks ?? [])].reverse().find((t) => t.label !== '')
+      canvasEl.value.dataset.xLast = String(last?.label ?? '')
+    }
   })
 }
 

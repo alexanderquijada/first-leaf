@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ChapterMark from './ChapterMark.vue'
-// Chapter 6: try it with pretend money.
+// Chapter 6: try it with practice money.
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 </script>

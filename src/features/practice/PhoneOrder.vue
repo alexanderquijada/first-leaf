@@ -13,7 +13,7 @@ import { useOrder } from './useOrder'
 
 const O = copy.order
 
-const { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
+const { side, ticker, amount, amountNumber, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
 // Crypto is reviewed in coins, not shares (ruling 5, Sept. 25).
 const reviewText = computed(() => {
   const c = getFund(ticker.value)?.kind === 'crypto'
@@ -90,7 +90,7 @@ function onSheet(open: boolean) {
 
     <BottomSheet v-model="sheetOpen" :title="O.checkOrder" @update:model-value="onSheet">
       <p class="porder__sheet-text">
-        {{ fill(reviewText, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
+        {{ fill(reviewText, { amount: formatMoney(amountNumber), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="porder__error" role="alert">{{ error }}</p>

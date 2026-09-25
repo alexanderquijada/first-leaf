@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Practice: pretend money for trying things. It never touches Rosa's account.
+// Practice: practice money for trying things. It never touches Rosa's account.
 // A banner stays on screen the whole time.
 import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
