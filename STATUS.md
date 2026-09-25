@@ -2,16 +2,16 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 25, 2026 (Phase 3 · Visual design and the Phase 2.5 rulings; waiting on Alex's review)
+**Last updated:** Sept. 25, 2026 (Phase 4 · Edge cases, screen sizes and the phone-only view; waiting on Alex's review)
 
 ## NEXT STEP
 
-Alex reviews Phase 3:
-1. **The live site at three widths.** Home (and `?scenario=all-clear`, `?scenario=brand-new`), `/funds/BTC`, `/story` (chapter 3, "The dip in June"; chapter 4's group bar) and Practice.
-2. **`docs/copy/COPY-REVIEW.md`.** 28 DRAFT rows (the rest are APPROVED). The six recommended items are at the top, including one decision: a single name for FYIs.
-3. **The Phase 3 deviations** in the decision log.
+Alex reviews Phase 4:
+1. **Phone view** at https://first-leaf.vercel.app/p303 on a laptop, at full size and in a short window: only the phone shows, and "Back to full view" returns to where you were.
+2. **A 320px phone** (or a narrow window): Home in all three scenarios, an investment page, and a Practice error.
+3. **The Phase 4 deviations** in the decision log, especially the "Good to know" badge inside the "Good to know" section.
 
-Then the planning chat issues Phase 4 (edge cases and screen sizes).
+Then the planning chat issues Phase 5 (verification).
 
 ## Live links
 
@@ -21,14 +21,14 @@ Then the planning chat issues Phase 4 (edge cases and screen sizes).
 | Live site | https://first-leaf.vercel.app |
 | P301 (Home on a laptop) | https://first-leaf.vercel.app |
 | P302 (Your money story) | https://first-leaf.vercel.app/story |
-| P303 (Phone preview) | https://first-leaf.vercel.app/?view=phone (or the site on a phone) |
+| P303 (Phone view) | https://first-leaf.vercel.app/p303 (or the site on a phone) |
 
 ## Decisions already made (do not relitigate)
 
 | Decision | Choice | Why |
 |---|---|---|
 | Project shape | **One app, three case-study lenses** (Sept. 24). The site opens straight into Rosa's app; no landing page. P301 = Home on a laptop + Alerts, Activity, Funds; P302 = Your money story + Practice, Words; P303 = the app under 600px | Alex's ruling: three doors read as three projects, not one product |
-| Phone preview | A top-bar toggle at 600px+ shows the real app in a 390 × 844 phone frame (an iframe); `?view=phone` opens it | Alex's ruling (Sept. 24): a P303 reviewer may never open the site on a phone |
+| Phone view | At 600px+, "Phone view" in the top bar opens `/p303/…`: only the real app in a 390 × 844 phone frame (an iframe), its own layout, "Back to full view" top left | Alex's rulings (Sept. 24, and phone-only Sept. 25): a P303 reviewer may never open the site on a phone |
 | Product | **First Leaf**, a made-up beginner investing app by made-up *First Leaf Investing* | No clash with any finance brand found in a web check (Sept. 23) |
 | Person | **Rosa**, 26, dental hygienist, Tucson (fictional), 7 months into her first account | One person, three moments; see BRIEF.md §2 |
 | P301 user | **Rosa's own dashboard**: the person who runs the account is its owner | Alex's call. It's operational because it surfaces what's off first and lets her act |
@@ -60,8 +60,8 @@ Then the planning chat issues Phase 4 (edge cases and screen sizes).
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language (Sept. 24) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ✅ Approved rewrites applied in 2.5 | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24; waiting on copy approval) | ✅ Lineup, real crypto prices, anchored stocks, validator (P1, P2, 49 rules, 114 cases), approved rewrites, no disclaimer, data notes, grouped chart colors, `npm run copy:review` | ✅ Investments, big-move and SIPC alerts | ✅ Story chapters 1, 3, 4 and Practice for the lineup | ✅ Phone screens for the lineup |
-| 3 · Visual design + Phase 2.5 rulings (Sept. 25; waiting on review) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
-| 4 · Edge cases + sizes | ⬜ | ⬜ Scenarios, errors, 390/768/1280 | ⬜ Extremes, deep links, 390/768/1280 | ⬜ Scenarios, errors, 320–1280 |
+| 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
+| 4 · Edge cases + sizes (Sept. 25; waiting on review) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification | ⬜ README final | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD |
 
 ## Environment
@@ -77,6 +77,34 @@ Then the planning chat issues Phase 4 (edge cases and screen sizes).
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 25, 2026: Phase 4 · Edge cases, screen sizes and the phone-only view (built; waiting on review)
+
+**What changed**
+- **"Good to know"** replaces "Just so you know" and the "FYI" badge, on the laptop and the phone (approved rewrite 9). The 28 Phase 3 DRAFT rows and these 3 are recorded in `docs/copy/approved.json`; the copy review now shows 730 rows, all APPROVED.
+- **Phone view shows only the phone.** `/p303/…` has its own layout at 600px and wider: a cream window, the 390 × 844 phone centered and scaled to the window height, and "Back to full view" top left. No rail, no top bar. The page never scrolls (measured 0px at 1280×800, 1440×900, 1280×720 and 768×1024). Back returns to the page the visitor came from, or Home. Focus starts inside the phone. The window title and the address follow the phone's page. Under 600px `/p303/…` opens the page itself. "Phone view" in the top bar is now a link; `?view=phone` links redirect to `/p303`.
+- **Edge cases fixed:**
+  - the phone Home and investment pages scrolled sideways at 320px (grid columns that couldn't shrink);
+  - Investments and Activity scrolled 2px sideways at 200% zoom (screen-reader text escaping the table's scroll box);
+  - term buttons in labels and headings were 18 to 21px tall (now at least 24px), and so was the CoinGecko link;
+  - chart summaries, readouts, notes, alert rows and errors used 1.5 leading on the phone (now 1.6);
+  - at 320 × 640 the sticky Practice banner covered a new error (it now scrolls just enough, only when an error appears);
+  - at 320px an alert title squeezed into a narrow column beside its badge (it now moves under the badge).
+- **A one-point chart can't happen:** new data rule F5 proves every range the app draws has at least two points. If one ever did, the chart draws the point as a dot.
+- **New tests:** `tests/shared/edge-sizes.spec.ts` (every page and scenario at 320, 390, 768, 1280, a landscape phone, and 200% zoom on 1280 and 768: no sideways scroll, 48px or 24px targets, a focus ring at every keyboard stop), and edge-case specs for P301, P302 and P303. The new size, target, leading and phone-view checks fail on the Phase 3 build (24 failures) and pass now.
+
+**Deviations, for Alex to rule on**
+- **The badge is renamed too.** Rewrite 9 renamed the badge and its section, so the "Good to know" section now lists items with a "Good to know" badge. The repetition is visible in the calm account. Options: keep it, go back to "FYI" for the badge only, or drop the badge inside that section.
+- **There was no "centered 480px column" row** in the P303 brief. The Phone view section, F6, F7, DoD 1 and BRIEF.md §2 and §10 were rewritten instead.
+- **The story has six chapters.** `#chapter-7` and `#chapter-8` open the story at its top; a test covers it.
+- **"Phone view" is a link now,** with the same look (it navigates, so it's no longer a toggle with `aria-pressed`). Esc no longer closes phone view; "Back to full view" does.
+- **Removed:** the Practice note beside the frame ("Practice here is kept apart from the full view.") and the hidden "Phone preview" heading, because only "Back to full view" may sit outside the phone.
+- **The address follows the phone.** Moving inside the phone updates `/p303/…`, so a reload or a shared link opens the same phone page.
+- **Two extra commits:** a [shared] commit for the all-sizes test, which needs every lens's fixes, and a [P303] test fix (a race in the new frame-contrast test, 1 failure in 235 runs).
+
+**What we got wrong (and fixed)**
+- My first run of the phone-view commit hit that race: 1 test failed in the pre-commit check, so the commit was refused. Repeating the new specs 5 times found it; the test now waits for the frame (120 of 120 repeats pass).
+- Several new tests were wrong on their first run (a button label, a reload that reset session state, a case-sensitive match). Each time the screen was right and the test was fixed.
 
 ### Sept. 25, 2026: Phase 3 rulings (and the brief for Phase 4)
 
@@ -653,7 +681,11 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - ~~Demo menu semantics~~ **Fixed Sept. 24:** a labelled menu of `menuitemradio` items, locked by an aria snapshot. A pass with a real screen reader (VoiceOver) is still worth doing.
 - **The pre-commit hook checks the working tree, not only what's staged**, so an unstaged broken file can block an unrelated commit (and a staged-only problem is still caught). Acceptable for now.
 - **Money has no loss on the dark panel yet in the data** (Rosa is up in every scenario). Coral on the panel is 7.1:1 by the token table, but not yet measured rendered.
-- **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario is carried through the URL. A scenario picked inside the frame doesn't change the full view.
+- **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario is carried through the URL. In phone view, the browser's Back button steps back inside the phone.
+- **In a short laptop window the phone is small:** at 1280×720 it is scaled to 0.77, so 16px text inside reads at about 12px. The layout inside is still the real 390px one.
+- **At 200% zoom (640px) the Investments table scrolls inside its box,** and its last column is cut at the edge with no hint that it scrolls.
+- **A one-point chart is proven impossible by rule F5,** not shown on screen: no scenario can produce one.
+- **`npm run copy:review -- --approve` writes COPY-REVIEW.md before approved.json,** so run `npm run copy:review` once more afterwards to see the new status.
 - **The rail's paper background is 100vh tall and sticky.** Full-page screenshots show it ending at one screen height; a real window always shows it full height.
 - **Related-word links in the explanation panel are about 27px tall** (71×27 measured). On desktop that's above the 24px minimum. On P303's bottom sheet, the amended rule may count them as standalone controls that need 48px. Needs a ruling before P303's Phase 1 screens.
 - **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
@@ -664,12 +696,26 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **`.claude/settings.local.json` and global git ignores:** tracked since `c9ae855`. If it ever shows as untracked again, a global ignore is the cause.
 - ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
-- **Copy:** Phase 2's sign-off is closed (Sept. 25). `docs/copy/COPY-REVIEW.md` has 28 DRAFT rows (new or changed since), listed at its top; the rest are APPROVED against `docs/copy/approved.json`.
+- **Copy:** `docs/copy/COPY-REVIEW.md` has 730 rows, all APPROVED against `docs/copy/approved.json` (Phase 4 added no new sentences). Two optional suggestions carried from Phase 2 remain.
 - ~~The big-move alert is untested on screen~~ **Fixed Sept. 25:** a TEST-ONLY week (`tests/fixtures/big-move/`) drives a Playwright test; `check:fixtures` proves it never ships.
 - ~~The dip is small~~ **Fixed Sept. 25:** seed 10 gives a 9.5% dip (May 21 to June 5).
 - **The copy review is built by `npm run copy:review`** from the copy files, the data and rendered snapshots (390 and 1280). 177 rows use example values because their text isn't on a captured screen: errors, dialog steps, empty states, bare values in table cells. Tablet (768) wasn't captured separately; it uses the same strings.
 - ~~Phase 0 UI copy is DRAFT~~ **APPROVED Sept. 24** with two edits (see the rulings entry). The list as it stood: (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
 
+
+## Measured values, Phase 4 (rendered in Chromium, Sept. 25, 2026)
+
+| What | Measured |
+|---|---|
+| Phone view, page scroll (x, y) at 1280×800, 1440×900, 1280×720, 768×1024 | 0, 0 at all four |
+| Phone view, phone size (scale) | 359×752 (0.87) · 406×852 (0.98) · 321×672 (0.77) · 414×868 (1.00) |
+| Phone frame edge (ink) on cream | 16.33:1 (needs 3:1) |
+| "Back to full view" | 177×48px, 16px text, 7.79:1 (paper on forest) |
+| Term buttons on /funds/BTC at 1280 (were 21px tall) | Price 36×24, Ups and downs 123×24, SIPC protection 127×24 |
+| CoinGecko credit link at 1280 (was 18px tall) | 93×24 |
+| 320px phone: bottom tabs; page width | five tabs of 64×56; 320px (no sideways scroll) |
+| Phone body text leading (chart notes, alert rows, errors) | 1.6 (was 1.5, and 1.4 for alert rows and errors) |
+| Keyboard focus ring | 3px solid outline at every stop checked (7 pages × 40 stops, 390 and 1280) |
 
 ## Measured values, Phase 3 (rendered in Chromium, Sept. 25, 2026)
 
