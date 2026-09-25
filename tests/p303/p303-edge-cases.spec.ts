@@ -158,3 +158,13 @@ test('with "Seen", the needs-you row keeps its chevron on the right, on one row'
   expect(go.x + go.width).toBeGreaterThan(r.x + r.width - 40)
   expect(go.y).toBeLessThan(r.y + r.height / 2 + 12)
 })
+
+test('chapter 4 lists its words as 48px chips on a phone, not as small inline buttons', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/story#chapter-4')
+  const ch4 = page.locator('#chapter-4')
+  const chips = ch4.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')
+  await expect(chips).toHaveText(['Stock', 'Crypto', 'Cash in your account'])
+  for (const b of await chips.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()))) expect(b.height).toBeGreaterThanOrEqual(48)
+  await expect(ch4.getByText('Words: stocks, crypto, cash.')).toHaveCount(0)
+})

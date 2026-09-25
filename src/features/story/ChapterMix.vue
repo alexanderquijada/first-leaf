@@ -9,7 +9,11 @@ import { getFund, type Account } from '@/shared/data'
 import CopyText from '@/shared/components/CopyText.vue'
 import { fill } from '@/shared/copy'
 import { formatMoney } from '@/shared/format'
+import WordChips from '@/shared/components/WordChips.vue'
+import { useViewport } from '@/shared/composables/useViewport'
 import copy from './copy.json'
+
+const { isPhone } = useViewport()
 
 const M = copy.mix
 
@@ -85,7 +89,9 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
           <span class="where__bar" aria-hidden="true"><span :style="{ width: `${pct(p.value)}%` }" /></span>
         </li>
       </ul>
-      <p class="where__terms">
+      <!-- On a phone these words would be small standalone buttons, so they are 48px chips (P303). -->
+      <WordChips v-if="isPhone" :ids="['stock', 'crypto', 'cash']" :heading-level="3" />
+      <p v-else class="where__terms">
         <CopyText :text="M.words"
           ><template #stocks><TermTip id="stock">{{ M.stocksWord }}</TermTip></template
           ><template #crypto><TermTip id="crypto">{{ M.cryptoWord }}</TermTip></template
