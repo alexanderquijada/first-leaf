@@ -36,7 +36,7 @@
   "facts": {
     "amount": "Amount",
     "status": "Status",
-    "requestedOn": "Requested on",
+    "requestedOn": "Asked for on",
     "askedOn": "Asked for on",
     "sentBackOn": "Sent back on",
     "arrivedOn": "Arrived on",

@@ -6,7 +6,7 @@ import { load, money } from '../data'
 test.use({ viewport: { width: 1280, height: 900 } })
 const funds = load('funds')
 const account = load('account')
-const STOCK_NOTE = 'Daily stock prices are modeled between real closes on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026.'
+const STOCK_NOTE = 'Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled.'
 
 test('the investments list shows all ten, with what she has in each', async ({ page }) => {
   await page.goto('/funds')

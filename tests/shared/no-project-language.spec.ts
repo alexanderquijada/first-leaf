@@ -35,7 +35,7 @@ for (const width of [390, 1280]) {
 // The crawl must let the two allowed notes through, and must still catch the banned words.
 const ALLOWED = [
   'Practice money. Nothing here touches your account.',
-  'Daily stock prices are modeled between real closes on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026.',
+  'Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled.',
   'Powered by CoinGecko API',
 ]
 test('the banned words are caught, and the Practice banner and data notes are not', () => {

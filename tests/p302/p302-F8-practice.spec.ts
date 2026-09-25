@@ -63,7 +63,7 @@ test('buy, see it, sell part, sell too much, time machine, start over', async ({
   const tmFrom = load('practice').timeMachine.from
   expect(series.length).toBe(funds[0].history.weekly.filter((w: { date: string }) => w.date >= tmFrom).length)
   // Its prices' sources are credited: a stock in the mix, so the stock data note.
-  await expect(page.getByText(/Daily stock prices are modeled between real closes/)).toBeVisible()
+  await expect(page.getByText(/Prices on the days between are modeled\./)).toBeVisible()
   await frame.getByRole('button', { name: 'Show as table' }).click()
   expect(await frame.locator('tbody td:nth-child(2)').allInnerTexts()).toEqual(series.map(money))
   await expect(frame).toContainText('The past does not tell you what will happen next.')

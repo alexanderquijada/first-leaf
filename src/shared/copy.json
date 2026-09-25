@@ -155,7 +155,7 @@
     ]
   },
   "dataNotes": {
-    "stock": "Daily stock prices are modeled between real closes on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026.",
+    "stock": "Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled.",
     "crypto": "Powered by {link}",
     "cryptoLink": "CoinGecko API",
     "cryptoUrl": "https://www.coingecko.com/en/api/",

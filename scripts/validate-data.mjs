@@ -136,10 +136,10 @@ export const LABELED_ELSEWHERE = {
   'src/features/practice/copy.json:percent': 'a row in the list headed "Your practice mix"',
   'src/features/practice/copy.json:order.phoneAmount': 'the amount being typed, shown under and labeled by "Amount"',
 };
-// Data-source credits keep the exact wording set by Alex's ruling B (the stock data note) or
-// by the provider's attribution guide (CoinGecko). They are checked for everything except
-// the reading level, which their fixed wording can't meet.
-export const FIXED_WORDING = { 'src/shared/copy.json:dataNotes.stock': "ruling B's exact wording", 'src/shared/copy.json:dataNotes.crypto': "CoinGecko's attribution guide" };
+// CoinGecko's credit keeps the exact wording its attribution guide sets, so it is checked for
+// everything except the reading level. (The stock data note lost this exemption on Sept. 25;
+// it must pass on its own.)
+export const FIXED_WORDING = { 'src/shared/copy.json:dataNotes.crypto': "CoinGecko's attribution guide" };
 export function loadCopy(root = ROOT) {
   const out = {};
   const add = (rel) => { const p = join(root, rel); if (existsSync(p)) out[rel] = JSON.parse(readFileSync(p, 'utf8')); };

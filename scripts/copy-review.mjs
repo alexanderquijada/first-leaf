@@ -4,6 +4,12 @@
 // scenarios' versions, and the suggested rewrites in docs/copy/copy-review-suggestions.mjs.
 //
 //   npm run copy:review
+//   npm run copy:review -- --approve [--except <id-prefix> ...]
+//
+// Each row is APPROVED while its text matches docs/copy/approved.json (the text Alex signed
+// off) and DRAFT otherwise, so any new or changed copy shows up as DRAFT. --approve records
+// the current text of every row as approved (except the listed id prefixes); run it only
+// when Alex has approved the table.
 //
 // It builds the site, serves it on a spare port, captures the text and accessibility tree
 // of every page in every scenario at phone and laptop widths (plus opened dialogs and
@@ -17,9 +23,14 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 import { fkGrade } from './validate-data.mjs';
 import { SUGGEST, TOP, CONSISTENCY, INTRO, CHANGED } from '../docs/copy/copy-review-suggestions.mjs';
+import { existsSync } from 'node:fs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
+const APPROVED_FILE = join(ROOT, 'docs', 'copy', 'approved.json');
+const approved = existsSync(APPROVED_FILE) ? JSON.parse(readFileSync(APPROVED_FILE, 'utf8')) : {};
+const APPROVE = process.argv.includes('--approve');
+const EXCEPT = process.argv.flatMap((a, i, all) => (all[i - 1] === '--except' ? [a] : []));
 
 // ---------- capture ----------
 const PORT = 4179, B = `http://localhost:${PORT}`;
@@ -150,7 +161,7 @@ function addRow(section, id, t, fallbackWhere, example) {
   const places = f && f.where.size ? [...f.where].map(([s, ws]) => (ws.size ? `${s} (${[...ws].sort().join(', ')})` : s)) : [];
   const whereText = places.length > 4 ? `${places.slice(0, 3).join('; ')}; and ${places.length - 3} more screens` : places.length ? places.join('; ') : fallbackWhere;
   const sug = SUGGEST[id] ?? (CHANGED[id] ? { rewrite: '—', why: CHANGED[id] } : {});
-  rows[section].push({ id, where: `${whereText}<br><sub>\`${id}\`</sub>`, shown: `${shown}${note}`, grade: normal[0] ? gradeTemplate(t, shown, lastGroups.get(shown)) : grade(shown.replace(/\{\w+\}/g, 'Name')), other, rewrite: sug.rewrite ?? '—', why: sug.why ?? '' });
+  rows[section].push({ id, t, where: `${whereText}<br><sub>\`${id}\`</sub>`, shown: `${shown}${note}`, grade: normal[0] ? gradeTemplate(t, shown, lastGroups.get(shown)) : grade(shown.replace(/\{\w+\}/g, 'Name')), other, rewrite: sug.rewrite ?? '—', why: sug.why ?? '' });
 }
 
 // copy files
@@ -217,13 +228,18 @@ out.push('## Screen by screen', '');
 for (const s of SECTIONS) {
   if (!rows[s].length) continue;
   out.push(`### ${s}`, '', '| # | Where it appears | Text as shown (normal scenario) | Grade | Other scenario versions | Suggested rewrite | Why |', '|---|---|---|---|---|---|---|');
-  rows[s].forEach((r, i) => { n++; out.push(`| ${LETTER[s]}${i + 1}<br>DRAFT | ${cell(r.where)} | ${cell(r.shown)} | ${r.grade} | ${cell(r.other)} | ${cell(r.rewrite)} | ${cell(r.why)} |`); r.num = `${LETTER[s]}${i + 1}`; });
+  rows[s].forEach((r, i) => { n++; out.push(`| ${LETTER[s]}${i + 1}<br>${approved[r.id] === r.t ? 'APPROVED' : 'DRAFT'} | ${cell(r.where)} | ${cell(r.shown)} | ${r.grade} | ${cell(r.other)} | ${cell(r.rewrite)} | ${cell(r.why)} |`); r.num = `${LETTER[s]}${i + 1}`; });
   out.push('');
 }
 mkdirSync(join(ROOT, 'docs', 'copy'), { recursive: true });
 let md = out.join('\n');
 // Link "[[id]]" references in TOP / CONSISTENCY to row numbers.
 const numOf = Object.fromEntries(Object.values(rows).flat().map((r) => [r.id, r.num]));
+if (APPROVE) {
+  const snap = Object.fromEntries(Object.values(rows).flat().filter((r) => !EXCEPT.some((x) => r.id.startsWith(x))).map((r) => [r.id, r.t]));
+  writeFileSync(APPROVED_FILE, JSON.stringify(snap, null, 2) + '\n');
+  console.log(`recorded ${Object.keys(snap).length} approved rows (${EXCEPT.length ? `except ${EXCEPT.join(', ')}` : 'all'})`);
+}
 md = md.replace(/\[\[([^\]]+)\]\]/g, (m, id) => { if (!numOf[id]) throw new Error(`unknown row ${id}`); return `**${numOf[id]}**`; });
 const missing = Object.keys(SUGGEST).filter((k) => !numOf[k]); if (missing.length) throw new Error(`suggestions for unknown rows: ${missing.join(', ')}`);
 writeFileSync(join(ROOT, 'docs', 'copy', 'COPY-REVIEW.md'), md + '\n');
