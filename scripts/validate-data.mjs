@@ -366,6 +366,16 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   });
 
   // ----- P: price sources (ruling B, Phase 2.5) -----
+  // Phase 4 edge case: a chart with one point draws nothing a reader can see. Every range the
+  // app draws (each fund "Since you bought", each balance chart's 1 month) has at least 2 points.
+  rule('F5', 'Every chart range the app draws has at least two points', (fail) => forEachFunded((acc, list, p) => {
+    const monthAgo = (() => { const d = new Date(meta.lastClose + 'T00:00:00Z'); d.setUTCMonth(d.getUTCMonth() - 1); return d.toISOString().slice(0, 10); })();
+    if (acc.history.filter((h) => h.date >= monthAgo).length < 2) fail(`${p}the 1-month balance chart has fewer than 2 points`);
+    for (const f of funds) {
+      const first = list.find((a) => a.type === 'buy' && a.ticker === f.ticker)?.date;
+      if (first && f.history.daily.filter((d) => d.date >= first).length < 2) fail(`${p}${f.ticker} "Since you bought" (${first}) has fewer than 2 points`);
+    }
+  }));
   rule('P1', 'Each stock hits its three real anchor closes in PRICE-ANCHORS.md exactly', (fail) => {
     const anchors = sources?.anchors;
     if (!anchors) { fail('no price-anchors block was loaded from docs/research/PRICE-ANCHORS.md'); return; }

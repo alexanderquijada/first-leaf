@@ -76,7 +76,8 @@ function datasets(): ChartDataset<'line'>[] {
     backgroundColor: 'rgba(39, 107, 67, 0.28)',
     // "What it earned" is grain over the flat "what you put in"; below it (a loss) stays a flat tint.
     fill: props.layers ? { target: '-1', above: earnedFill(), below: 'rgba(168, 67, 30, 0.22)' } : false,
-    pointRadius: 0,
+    // A lone point has no line to draw, so it shows as a dot.
+    pointRadius: balance.length === 1 ? 5 : 0,
     pointHoverRadius: 5,
     // The one line to read first glows (BRIEF.md §6).
     glow: 'rgba(198, 243, 107, 0.95)',
@@ -209,7 +210,7 @@ onBeforeUnmount(() => chart?.destroy())
   min-height: 3em;
   margin: 8px 0 0;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
   color: var(--color-ink);
 }
 

@@ -253,6 +253,8 @@ onBeforeUnmount(() => close(false))
 
 <style scoped>
 .fl-termtip__button {
+  /* At least 24px tall, even in a small label or heading (WCAG 2.5.8). */
+  min-height: 24px;
   font: inherit;
   color: inherit;
   background: none;
@@ -284,7 +286,7 @@ onBeforeUnmount(() => close(false))
   box-shadow: 0 12px 32px rgb(21 19 15 / 0.18);
   font-family: var(--font-text);
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .fl-termtip__panel--sheet {

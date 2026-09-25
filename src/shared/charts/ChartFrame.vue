@@ -85,7 +85,7 @@ const showTable = ref(false)
 .fl-chart__summary {
   margin: 8px 0 12px;
   max-width: 70ch;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .fl-chart__toggle {

@@ -77,7 +77,7 @@ const fillOf = (g: Group) => `url(#${id}-${g})`
   margin: 0 0 10px;
   color: var(--color-paper);
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .fl-gm__bar {

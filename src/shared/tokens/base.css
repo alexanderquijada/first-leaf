@@ -14,6 +14,14 @@
   --radius-card: 16px;
   --radius-pill: 999px;
   --motion-quick: 150ms ease-out;
+  /* Body text leading: 1.5, and at least 1.6 on a phone (P303). */
+  --fl-body-leading: 1.5;
+}
+
+@media (max-width: 599px) {
+  :root {
+    --fl-body-leading: 1.6;
+  }
 }
 
 html {

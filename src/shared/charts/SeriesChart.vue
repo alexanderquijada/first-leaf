@@ -46,7 +46,8 @@ function datasets(): ChartDataset<'line'>[] {
     borderColor: s.color,
     borderWidth: s.width ?? 2.5,
     borderDash: s.dash,
-    pointRadius: 0,
+    // A lone point has no line to draw, so it shows as a dot.
+    pointRadius: s.data.filter((v) => v !== null).length === 1 ? 5 : 0,
     pointHoverRadius: 5,
     fill: false,
     spanGaps: true,
@@ -154,7 +155,7 @@ onBeforeUnmount(() => chart?.destroy())
   min-height: 3em;
   margin: 8px 0 0;
   font-size: 0.9375rem;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .fl-series__key {

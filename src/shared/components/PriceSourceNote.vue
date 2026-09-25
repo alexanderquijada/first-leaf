@@ -34,10 +34,12 @@ const N = copy.dataNotes
   color: var(--color-ink-muted);
   font-family: var(--font-ui);
   font-size: 0.875rem;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .fl-source__line a {
+  display: inline-block;
+  min-height: 24px;
   color: var(--color-forest);
 }
 

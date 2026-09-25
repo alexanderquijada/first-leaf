@@ -181,7 +181,7 @@ function next() {
 
 .fl-flow p {
   margin: 8px 0 0;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .fl-flow__facts {
