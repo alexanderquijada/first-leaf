@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import AppLayout from '@/layouts/AppLayout.vue'
 import HomeView from '@/features/home/HomeView.vue'
 import layoutCopy from '@/layouts/copy.json'
+import { isEmbedded, isWide, phoneViewPath, type PhoneRouteMessage } from '@/layouts/usePhonePreview'
 import { fill } from '@/shared/copy'
 
 const PT = layoutCopy.pageTitles
@@ -46,7 +47,21 @@ const routes: RouteRecordRaw[] = [
   { path: '/about', redirect: (to) => ({ path: '/', query: to.query }) },
   { path: '/p301/:rest(.*)*', redirect: (to) => ({ path: oldPath(to.params.rest), query: to.query, hash: to.hash }) },
   { path: '/p302/:rest(.*)*', redirect: (to) => ({ path: '/story', query: to.query, hash: to.hash }) },
-  { path: '/p303/:rest(.*)*', redirect: (to) => ({ path: oldPath(to.params.rest), query: to.query, hash: to.hash }) },
+  // Phone view (P303 brief): only the phone, in its own layout, at 600px and wider.
+  // On a phone there is no frame, so /p303/… opens the page itself.
+  {
+    path: '/p303/:rest(.*)*',
+    component: () => import('@/layouts/PhoneOnlyLayout.vue'),
+    // The window title follows the page inside the phone (PhoneOnlyLayout sets it).
+    meta: { phoneView: true },
+    beforeEnter: (to) => {
+      const rest = ([] as string[]).concat(to.params.rest ?? []).filter(Boolean)
+      // Phase 0 phone addresses (/p303/attention, /p303/why) map to today's pages.
+      const inner = rest[0] === 'attention' || rest[0] === 'why' ? oldPath(rest) : '/' + rest.join('/')
+      if (!isWide() || isEmbedded) return { path: inner, query: to.query, hash: to.hash }
+      return inner === '/' + rest.join('/') ? true : { path: phoneViewPath(inner), query: to.query, hash: to.hash }
+    },
+  },
   app,
 ]
 
@@ -59,6 +74,12 @@ const router = createRouter({
 
 // Scenarios are reached by URL only, so ?scenario= rides along on every in-app link.
 router.beforeEach((to, from) => {
+  // Phase 1–3 links to the phone preview (?view=phone) open phone view.
+  if (to.query.view === 'phone') {
+    const query = { ...to.query }
+    delete query.view
+    return { path: phoneViewPath(to.path), query, hash: to.hash }
+  }
   if (from.query.scenario !== undefined && to.query.scenario === undefined) {
     return { path: to.path, query: { ...to.query, scenario: from.query.scenario }, hash: to.hash }
   }
@@ -67,8 +88,16 @@ router.beforeEach((to, from) => {
 
 // Each page gets its own title, so tabs and screen readers can tell them apart.
 router.afterEach((to) => {
+  if (to.meta.phoneView) return
   const t = to.meta.title as string | undefined
   document.title = t && t !== PT.home ? fill(layoutCopy.documentTitle, { page: t }) : layoutCopy.wordmark
+  // Inside phone view's frame, tell the page around it where the phone is now.
+  if (isEmbedded && window.parent !== window) {
+    const query: Record<string, string> = {}
+    for (const [k, v] of Object.entries(to.query)) if (k !== 'embed' && typeof v === 'string') query[k] = v
+    const msg: PhoneRouteMessage = { type: 'fl-phone-route', path: to.path, query, hash: to.hash, title: document.title }
+    window.parent.postMessage(msg, window.location.origin)
+  }
 })
 
 export default router

@@ -1,72 +1,45 @@
-import { computed, nextTick, ref } from 'vue'
-import { useRoute, useRouter, type LocationQueryRaw, type Router } from 'vue-router'
-import { useScenario } from '@/shared/composables/useScenario'
+import { computed, ref } from 'vue'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-// Phone preview (P303 brief): at 600px and wider, the real app can be shown
-// inside a 390 × 844 phone frame (an iframe of the same app). ?view=phone opens it.
+// Phone view (P303 brief): at 600px and wider, /p303/… shows only the real app inside a
+// 390 × 844 phone frame (an iframe of the same app), with its own layout.
 
 // Captured once, at startup: the app inside the frame keeps knowing it is
-// embedded even after it navigates and the query is gone. It never nests a preview.
+// embedded even after it navigates and the query is gone. It never nests a phone view.
 export const isEmbedded =
   typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('embed') === 'phone'
 
-const WIDE = '(min-width: 600px)'
-const wideEnough = ref(typeof window !== 'undefined' && window.matchMedia(WIDE).matches)
+export const WIDE = '(min-width: 600px)'
+export const isWide = () => typeof window !== 'undefined' && window.matchMedia(WIDE).matches
+const wideEnough = ref(isWide())
 if (typeof window !== 'undefined') {
   window.matchMedia(WIDE).addEventListener('change', (e) => (wideEnough.value = e.matches))
 }
+export const phoneViewAvailable = computed(() => !isEmbedded && wideEnough.value)
 
-// The toggle registers itself so focus can return to it when the preview closes.
-export const toggleEl = ref<HTMLButtonElement | null>(null)
+/** The page a visitor was on before phone view, kept in the browser's history entry. */
+export const FROM_KEY = 'flPhoneViewFrom'
 
-// While the preview is open, moving around the full view keeps it open, so
-// the phone follows along. Closing it on purpose lets the next navigation drop it.
-let guardInstalled = false
-let closing = false
-function installGuard(router: Router) {
-  if (guardInstalled) return
-  guardInstalled = true
-  router.beforeEach((to, from) => {
-    if (closing) {
-      closing = false
-      return true
-    }
-    if (!isEmbedded && from.query.view === 'phone' && to.query.view === undefined) {
-      return { path: to.path, query: { ...to.query, view: 'phone' }, hash: to.hash }
-    }
-    return true
-  })
+/** Where phone view shows the page at `path` ("/" → "/p303", "/story" → "/p303/story"). */
+export function phoneViewPath(path: string) {
+  return '/p303' + (path === '/' ? '' : path)
 }
 
-export function usePhonePreview() {
-  const route = useRoute()
-  const router = useRouter()
-  const { scenarioId } = useScenario()
-  installGuard(router)
-
-  const available = computed(() => !isEmbedded && wideEnough.value)
-  const open = computed(() => available.value && route.query.view === 'phone')
-
-  // The frame shows the current page and scenario, embedded.
-  const frameSrc = computed(() => {
-    const query: LocationQueryRaw = { ...route.query, embed: 'phone', scenario: scenarioId.value }
-    delete query.view
-    return router.resolve({ path: route.path, query, hash: route.hash }).href
-  })
-
-  async function setOpen(on: boolean) {
-    const query = { ...route.query }
-    if (on) query.view = 'phone'
-    else {
-      delete query.view
-      closing = true
-    }
-    await router.replace({ query })
-    if (!on) {
-      await nextTick()
-      toggleEl.value?.focus()
-    }
+/** The phone view address for the current full-view page, keeping its query and hash. */
+export function phoneViewLocation(route: RouteLocationNormalizedLoaded) {
+  return {
+    path: phoneViewPath(route.path),
+    query: route.query,
+    hash: route.hash,
+    state: { [FROM_KEY]: route.fullPath },
   }
+}
 
-  return { available, open, frameSrc, setOpen }
+/** Message the app inside the frame sends its parent after every navigation. */
+export interface PhoneRouteMessage {
+  type: 'fl-phone-route'
+  path: string
+  query: Record<string, string>
+  hash: string
+  title: string
 }

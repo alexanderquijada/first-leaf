@@ -97,15 +97,15 @@ for (const size of WIDTHS) {
     })
 
     test('with the phone view open on Practice', async ({ page }) => {
-      test.skip(size.width < 600, 'Phone view is hidden under 600px')
-      await page.goto('/practice?view=phone')
+      test.skip(size.width < 600, 'Phone view has no frame under 600px')
+      await page.goto('/p303/practice')
       await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').locator('.porder__keys')).toBeVisible()
       expect(await seriousViolations(page)).toEqual([])
     })
 
-    test('with the phone preview open', async ({ page }) => {
-      test.skip(size.width < 600, 'Phone preview is hidden under 600px')
-      await page.goto('/?view=phone')
+    test('in phone view (/p303)', async ({ page }) => {
+      test.skip(size.width < 600, 'Phone view has no frame under 600px')
+      await page.goto('/p303')
       await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').locator('.fl-bottombar')).toBeVisible()
       expect(await seriousViolations(page)).toEqual([])
     })

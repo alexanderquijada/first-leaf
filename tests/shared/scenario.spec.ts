@@ -19,7 +19,7 @@ test.describe('with the phone view open', () => {
   test.use({ viewport: { width: 1280, height: 800 } })
 
   test('?scenario= carries into the phone view', async ({ page }) => {
-    await page.goto('/story?scenario=brand-new&view=phone')
+    await page.goto('/p303/story?scenario=brand-new')
     const frame = page.locator('iframe[title="First Leaf on a phone"]')
     expect(await frame.getAttribute('src')).toContain('scenario=brand-new')
     await expect(page.frameLocator('iframe[title="First Leaf on a phone"]').getByText('Growth needs years. Starting early')).toBeVisible()

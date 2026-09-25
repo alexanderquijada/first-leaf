@@ -32,10 +32,8 @@
   },
   "phoneView": {
     "toggle": "Phone view",
-    "heading": "Phone preview",
     "frameTitle": "First Leaf on a phone",
-    "back": "Back to full view",
-    "practiceNote": "Practice here is kept apart from the full view."
+    "back": "Back to full view"
   },
   "pageTitles": {
     "home": "Home",

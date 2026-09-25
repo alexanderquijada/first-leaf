@@ -50,17 +50,17 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
 
 ### P303 · Mobile experience
 
-- **Open:** https://first-leaf.vercel.app/?view=phone on a laptop (the real app inside a phone frame), or open https://first-leaf.vercel.app on your phone
+- **Open:** https://first-leaf.vercel.app/p303 on a laptop (only the real app, inside a phone frame), or open https://first-leaf.vercel.app on your phone
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P303-BRIEF.md](docs/briefs/P303-BRIEF.md)
 - **Code:** `src/layouts/` (the phone shell and bottom tab bar) and the phone parts of each feature · **History:** commits starting `[P303]`
 - **Try these:**
-  1. Click **Phone view** in the top bar, or use the link above.
+  1. Click **Phone view** in the top bar, or use the link above. **Back to full view** (top left) returns to the page you came from.
   2. Without scrolling: does anything need Rosa, and how much did her balance move this week?
   3. Tap the "needs you" card, read the alert and its **Words on this screen**, then go back. It now shows as *Seen*.
   4. Tap **Why it moved**, then tap an investment to see its share of the change.
   5. Open **Word of the day**, then **Next word**.
   6. Use the bottom tab bar to reach **Practice** and buy an investment with practice money.
-  7. Check every scenario in the phone view: https://first-leaf.vercel.app/?scenario=normal&view=phone · https://first-leaf.vercel.app/?scenario=all-clear&view=phone · https://first-leaf.vercel.app/?scenario=brand-new&view=phone
+  7. Check every scenario in the phone view: https://first-leaf.vercel.app/p303?scenario=normal · https://first-leaf.vercel.app/p303?scenario=all-clear · https://first-leaf.vercel.app/p303?scenario=brand-new
 
 ---
 

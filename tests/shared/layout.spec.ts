@@ -73,10 +73,7 @@ test('old case-study addresses redirect and keep the scenario', async ({ page })
   const cases = [
     ['/p301', '/'],
     ['/p302', '/story'],
-    ['/p303', '/'],
     ['/p301/funds/AAPL', '/funds/AAPL'],
-    ['/p303/learn/ups-and-downs', '/learn/ups-and-downs'],
-    ['/p303/attention', '/alerts'],
     ['/about', '/'],
   ]
   for (const [from, to] of cases) {

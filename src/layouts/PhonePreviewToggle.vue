@@ -1,34 +1,34 @@
 <script setup lang="ts">
-// The top-bar toggle for Phone preview. Hidden under 600px and inside the frame.
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+// The top-bar "Phone view" link: opens the current page in phone view (/p303/…).
+// Hidden under 600px and inside the frame.
+import { useRoute, useRouter } from 'vue-router'
 import copy from './copy.json'
-import { isEmbedded, toggleEl, usePhonePreview } from './usePhonePreview'
+import { phoneViewAvailable, phoneViewLocation } from './usePhonePreview'
 
-const { open, setOpen } = usePhonePreview()
-const el = ref<HTMLButtonElement | null>(null)
-onMounted(() => (toggleEl.value = el.value))
-onBeforeUnmount(() => {
-  if (toggleEl.value === el.value) toggleEl.value = null
-})
+const route = useRoute()
+const router = useRouter()
+function open(e: MouseEvent) {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+  e.preventDefault()
+  router.push(phoneViewLocation(route))
+}
 </script>
 
 <template>
-  <button
-    v-if="!isEmbedded"
-    ref="el"
-    type="button"
+  <a
+    v-if="phoneViewAvailable"
     class="fl-pp-toggle"
-    :aria-pressed="open ? 'true' : 'false'"
-    @click="setOpen(!open)"
+    :href="router.resolve(phoneViewLocation(route)).href"
+    @click="open"
   >
     <span class="mdi mdi-cellphone" aria-hidden="true" />
     {{ copy.phoneView.toggle }}
-  </button>
+  </a>
 </template>
 
 <style scoped>
 .fl-pp-toggle {
-  display: none;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 48px;
@@ -41,6 +41,7 @@ onBeforeUnmount(() => {
   font-size: 0.875rem;
   font-weight: 500;
   white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -51,17 +52,5 @@ onBeforeUnmount(() => {
 
 .fl-pp-toggle:hover {
   background: var(--color-mint);
-}
-
-.fl-pp-toggle[aria-pressed='true'] {
-  background: var(--color-forest);
-  border-color: var(--color-forest);
-  color: var(--color-paper);
-}
-
-@media (min-width: 600px) {
-  .fl-pp-toggle {
-    display: inline-flex;
-  }
 }
 </style>

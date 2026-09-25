@@ -2,7 +2,7 @@
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (`docs/copy/approved.json`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
-**What this covers:** all 732 pieces of text a person can read or hear in First Leaf: every string in the copy files and the text that comes from the data (alerts, the ten investments, the story's sentences, the glossary). Built by `npm run copy:review` from the live pages.
+**What this covers:** all 730 pieces of text a person can read or hear in First Leaf: every string in the copy files and the text that comes from the data (alerts, the ten investments, the story's sentences, the glossary). Built by `npm run copy:review` from the live pages.
 
 **How to read a row**
 
@@ -30,43 +30,41 @@ At most ten, most important first. Each one links to its row below.
 
 | # | Where it appears | Text as shown (normal scenario) | Grade | Other scenario versions | Suggested rewrite | Why |
 |---|---|---|---|---|---|---|
-| A1<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:wordmark`</sub> | First Leaf | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A2<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 12 more screens<br><sub>`layouts:greeting`</sub> | Good morning, Rosa. | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A3<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 12 more screens<br><sub>`layouts:pricesAsOf`</sub> | Prices as of Fri., Sept. 18 | -0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
-| A4<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:skip`</sub> | Skip to content | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A5<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:navLabel`</sub> | Main | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A6<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.home.label`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A7<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.home.short`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A8<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.activity.label`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A9<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.activity.short`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A10<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 12 more screens<br><sub>`layouts:nav.funds.label`</sub> | Investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A11<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 12 more screens<br><sub>`layouts:nav.funds.short`</sub> | Investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A12<br>APPROVED | Your money story (laptop, phone); Home (laptop); Alerts (laptop); and 12 more screens<br><sub>`layouts:nav.story.label`</sub> | Your money story | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A1<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:wordmark`</sub> | First Leaf | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A2<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 11 more screens<br><sub>`layouts:greeting`</sub> | Good morning, Rosa. | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A3<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 11 more screens<br><sub>`layouts:pricesAsOf`</sub> | Prices as of Fri., Sept. 18 | -0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
+| A4<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:skip`</sub> | Skip to content | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A5<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:navLabel`</sub> | Main | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A6<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.home.label`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A7<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.home.short`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A8<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.activity.label`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A9<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.activity.short`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A10<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 11 more screens<br><sub>`layouts:nav.funds.label`</sub> | Investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A11<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 11 more screens<br><sub>`layouts:nav.funds.short`</sub> | Investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A12<br>APPROVED | Your money story (laptop, phone); Home (laptop); Alerts (laptop); and 11 more screens<br><sub>`layouts:nav.story.label`</sub> | Your money story | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | A13<br>APPROVED | Home (phone); Alerts (phone); Activity (phone); and 5 more screens<br><sub>`layouts:nav.story.short`</sub> | Story | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A14<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.practice.label`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A15<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.practice.short`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A16<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.learn.label`</sub> | Words | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A17<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:nav.learn.short`</sub> | Words | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A18<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 12 more screens<br><sub>`layouts:phoneView.toggle`</sub> | Phone view | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A19<br>APPROVED | Phone view<br><sub>`layouts:phoneView.heading`</sub> | Phone preview | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| A20<br>APPROVED | App frame (every screen)<br><sub>`layouts:phoneView.frameTitle`</sub> | First Leaf on a phone *(not on a captured screen; example values)* | -1.8 | Same words wherever it shows | — |  |
-| A21<br>APPROVED | Phone view<br><sub>`layouts:phoneView.back`</sub> | Back to full view | -2.2 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| A22<br>APPROVED | App frame (every screen)<br><sub>`layouts:phoneView.practiceNote`</sub> | Practice here is kept apart from the full view. *(not on a captured screen; example values)* | 2.3 | Same words wherever it shows | — |  |
-| A23<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:pageTitles.home`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A24<br>APPROVED | Alerts (laptop, phone); Try-again dialog; Auto-invest dialog<br><sub>`layouts:pageTitles.alerts`</sub> | Alerts | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A25<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:pageTitles.activity`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A26<br>APPROVED | Investments (laptop, phone)<br><sub>`layouts:pageTitles.funds`</sub> | Your investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A27<br>APPROVED | Your money story (laptop, phone); Home (laptop); Alerts (laptop); and 12 more screens<br><sub>`layouts:pageTitles.story`</sub> | Your money story | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A28<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`layouts:pageTitles.practice`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A29<br>APPROVED | Words (laptop, phone); Words (no match)<br><sub>`layouts:pageTitles.learn`</sub> | Words to know | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| A30<br>APPROVED | App frame (every screen)<br><sub>`layouts:pageTitles.notFound`</sub> | Page not found *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| A31<br>APPROVED | App frame (every screen)<br><sub>`layouts:documentTitle`</sub> | Activity · First Leaf *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| A14<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.practice.label`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A15<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.practice.short`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A16<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.learn.label`</sub> | Words | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A17<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:nav.learn.short`</sub> | Words | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A18<br>APPROVED | Home (laptop); Alerts (laptop); Activity (laptop); and 11 more screens<br><sub>`layouts:phoneView.toggle`</sub> | Phone view | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A19<br>APPROVED | App frame (every screen)<br><sub>`layouts:phoneView.frameTitle`</sub> | First Leaf on a phone *(not on a captured screen; example values)* | -1.8 | Same words wherever it shows | — |  |
+| A20<br>APPROVED | Phone view<br><sub>`layouts:phoneView.back`</sub> | Back to full view | -2.2 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| A21<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:pageTitles.home`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A22<br>APPROVED | Alerts (laptop, phone); Try-again dialog; Auto-invest dialog<br><sub>`layouts:pageTitles.alerts`</sub> | Alerts | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A23<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:pageTitles.activity`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A24<br>APPROVED | Investments (laptop, phone)<br><sub>`layouts:pageTitles.funds`</sub> | Your investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A25<br>APPROVED | Your money story (laptop, phone); Home (laptop); Alerts (laptop); and 11 more screens<br><sub>`layouts:pageTitles.story`</sub> | Your money story | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A26<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`layouts:pageTitles.practice`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A27<br>APPROVED | Words (laptop, phone); Words (no match)<br><sub>`layouts:pageTitles.learn`</sub> | Words to know | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| A28<br>APPROVED | App frame (every screen)<br><sub>`layouts:pageTitles.notFound`</sub> | Page not found *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| A29<br>APPROVED | App frame (every screen)<br><sub>`layouts:documentTitle`</sub> | Activity · First Leaf *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
 
 ### Home
 
 | # | Where it appears | Text as shown (normal scenario) | Grade | Other scenario versions | Suggested rewrite | Why |
 |---|---|---|---|---|---|---|
-| H1<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`home:title`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| H1<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`home:title`</sub> | Home | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | H2<br>APPROVED | Home (laptop, phone); Your money story (laptop, phone); Words (laptop, phone); Word explanation<br><sub>`home:balance.label`</sub> | Balance | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | H3<br>APPROVED | Home (laptop); Word explanation<br><sub>`home:balance.vsPutIn`</sub> | Up $108.50 on the $1,250 you put in. | 2.3 | Nothing needs you: “Up $136.68 on the $1,400 you put in.”<br>Brand-new: not shown | — |  |
 | H4<br>APPROVED | Home (laptop); Word explanation<br><sub>`home:balance.putInWord`</sub> | put in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -104,7 +102,7 @@ At most ten, most important first. Each one links to its row below.
 | H36<br>APPROVED | Home (laptop); Word explanation<br><sub>`home:goal.title`</sub> | Goal: Put in my first $2,000 | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H37<br>APPROVED | Home (laptop); Word explanation<br><sub>`home:goal.progress`</sub> | $1,250 of $2,000 put in, with a target of Feb. 1, 2027. | 5.8 | Nothing needs you: “$1,400 of $2,000 put in, with a target of Feb. 1, 2027.”<br>Brand-new: not shown | — |  |
 | H38<br>APPROVED | Home (laptop); Word explanation<br><sub>`home:goal.barLabel`</sub> | Money put in toward your goal | 2.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| H39<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`home:goal.barValue`</sub> | Word of the day *(and 76 more like it)* | -2.2 | Nothing needs you: “Word of the day”<br>Brand-new: “Word of the day” | — |  |
+| H39<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`home:goal.barValue`</sub> | Word of the day *(and 76 more like it)* | -2.2 | Nothing needs you: “Word of the day”<br>Brand-new: “Word of the day” | — |  |
 | H40<br>APPROVED | Home (laptop); Word explanation<br><sub>`home:goal.behind`</sub> | Your plan had $1,400 put in by now, so you are $150 behind. | 4.0 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | H41<br>APPROVED | Home (laptop)<br><sub>`home:goal.onPace`</sub> | You are on pace with your plan. *(only in the Nothing needs you account)* | -1.1 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H42<br>APPROVED | Home (laptop)<br><sub>`home:goal.paceWord`</sub> | pace *(only in the Nothing needs you account)* | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -274,7 +272,7 @@ At most ten, most important first. Each one links to its row below.
 | V7<br>APPROVED | Activity (laptop, phone)<br><sub>`shared:activity.status.completed`</sub> | Completed | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | V8<br>APPROVED | Alerts (laptop, phone); Activity (laptop, phone); Try-again dialog<br><sub>`shared:activity.status.returned`</sub> | Returned | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | V9<br>APPROVED | Activity (laptop)<br><sub>`shared:activity.status.pending`</sub> | Pending | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| V10<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`activity:title`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| V10<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`activity:title`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | V11<br>APPROVED | Activity<br><sub>`activity:detailTitle`</sub> | Activity item *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | V12<br>APPROVED | Activity (phone)<br><sub>`activity:empty`</sub> | Nothing yet. Your deposits, buys and dividends will show here. *(only in the brand-new account)* | 4.1 | Nothing needs you: not shown<br>Brand-new: same | — |  |
 | V13<br>APPROVED | Activity (phone)<br><sub>`activity:filterSummary`</sub> | Type: All. Status: All. | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -287,7 +285,7 @@ At most ten, most important first. Each one links to its row below.
 | V20<br>APPROVED | Activity<br><sub>`activity:none`</sub> | Nothing matches these filters. *(not on a captured screen; example values)* | 3.7 | Same words wherever it shows | — |  |
 | V21<br>APPROVED | Activity<br><sub>`activity:showEverything`</sub> | Show everything *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
 | V22<br>APPROVED | Activity<br><sub>`activity:rowStatus`</sub> |  · Pending *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| V23<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`activity:tableLabel`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| V23<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`activity:tableLabel`</sub> | Activity | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | V24<br>APPROVED | Activity (laptop)<br><sub>`activity:caption`</sub> | Activity, newest first | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | V25<br>APPROVED | Home (laptop, phone); Investments (laptop, phone); Your money story (laptop, phone); Activity (laptop)<br><sub>`activity:col.date`</sub> | Date | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | V26<br>APPROVED | Activity (laptop)<br><sub>`activity:col.what`</sub> | What | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -403,7 +401,7 @@ At most ten, most important first. Each one links to its row below.
 
 | # | Where it appears | Text as shown (normal scenario) | Grade | Other scenario versions | Suggested rewrite | Why |
 |---|---|---|---|---|---|---|
-| S1<br>APPROVED | Your money story (laptop, phone); Home (laptop); Alerts (laptop); and 12 more screens<br><sub>`story:title`</sub> | Your money story | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S1<br>APPROVED | Your money story (laptop, phone); Home (laptop); Alerts (laptop); and 11 more screens<br><sub>`story:title`</sub> | Your money story | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | S2<br>APPROVED | Your money story (laptop, phone)<br><sub>`story:chapters`</sub> | Chapters | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | S3<br>APPROVED | Your money story (laptop, phone)<br><sub>`story:chapterNum`</sub> | Chapter 1 *(and 5 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | S4<br>APPROVED | Your money story (laptop, phone)<br><sub>`story:titles.1`</sub> | Six months in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -547,7 +545,7 @@ At most ten, most important first. Each one links to its row below.
 | P4<br>APPROVED | Practice<br><sub>`shared:practiceErrors.notEnough`</sub> | You have $452.11 in practice money. Enter that much or less. *(not on a captured screen; example values)* | 2.6 | Not on a captured screen; the values change with the account | — |  |
 | P5<br>APPROVED | Practice<br><sub>`shared:practiceErrors.noneOwned`</sub> | You do not own any AAPL in Practice, so there is nothing to sell. Pick one you own. *(not on a captured screen; example values)* | 1.0 | Not on a captured screen; the values change with the account | — |  |
 | P6<br>APPROVED | Practice<br><sub>`shared:practiceErrors.tooMuch`</sub> | You own $246.92 of AAPL in Practice. Enter that much or less. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
-| P7<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`practice:title`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P7<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`practice:title`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P8<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:banner`</sub> | Practice money. Nothing here touches your account. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
 | P9<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.left`</sub> | Practice money left | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P10<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.inFunds`</sub> | In practice investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -743,7 +741,7 @@ At most ten, most important first. Each one links to its row below.
 | W138<br>APPROVED | Alerts (laptop, phone); Words (laptop, phone)<br><sub>`data:glossary.goal-pace.short`</sub> | Whether your deposits are keeping up with your plan. | 5.0 | Same in every scenario | — |  |
 | W139<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.goal-pace.detail`</sub> | It only looks at the money you put in. It does not change when the market goes up or down. *(not on a captured screen; example values)* | 1.9 | Same in every scenario | — |  |
 | W140<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.goal-pace.example`</sub> | You planned to put in $1,400 by now and put in $1,250. You are $150 behind. *(not on a captured screen; example values)* | 2.3 | Same in every scenario | — |  |
-| W141<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 12 more screens<br><sub>`data:glossary.practice-mode.term`</sub> | Practice | label | Same in every scenario | — |  |
+| W141<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 11 more screens<br><sub>`data:glossary.practice-mode.term`</sub> | Practice | label | Same in every scenario | — |  |
 | W142<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.practice-mode.alsoCalled`</sub> | practice mode, pretend money *(not on a captured screen; example values)* | 6.6 | Same in every scenario | — |  |
 | W143<br>APPROVED | Words (laptop, phone)<br><sub>`data:glossary.practice-mode.short`</sub> | Practice money for trying things before you do them for real. | 3.7 | Same in every scenario | — |  |
 | W144<br>APPROVED | Words, and every explanation of this word<br><sub>`data:glossary.practice-mode.detail`</sub> | You start with $1,000 in practice money. Nothing you do here touches your account, and you can start over at any time. *(not on a captured screen; example values)* | 3.7 | Same in every scenario | — |  |

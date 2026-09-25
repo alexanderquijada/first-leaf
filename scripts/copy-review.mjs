@@ -60,7 +60,7 @@ try {
     'practice error': async (pg) => { await pg.goto(B + '/practice'); await pg.getByLabel('Amount in dollars').fill('1.234'); },
     'practice bought': async (pg) => { await pg.goto(B + '/practice'); await pg.getByLabel('Amount in dollars').fill('100'); await pg.getByRole('button', { name: 'Review' }).click(); await pg.getByRole('button', { name: 'Confirm' }).click(); },
     'learn none': async (pg) => { await pg.goto(B + '/learn'); await pg.getByLabel('Search words').fill('zebra'); },
-    'phone view': async (pg) => { await pg.goto(B + '/?view=phone'); await pg.waitForTimeout(600); },
+    'phone view': async (pg) => { await pg.goto(B + '/p303'); await pg.waitForTimeout(600); },
   };
   for (const [k, fn] of Object.entries(states)) { const page = await browser.newPage({ viewport: { width: 1280, height: 900 } }); await fn(page); SNAP['state ' + k] = { text: await page.evaluate(() => document.body.innerText), aria: await page.locator('body').ariaSnapshot() }; await page.close(); }
 } finally { await browser.close(); server.kill(); }
