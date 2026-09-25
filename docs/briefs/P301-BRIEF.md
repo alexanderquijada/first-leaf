@@ -122,7 +122,7 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 | F1 | **Act on an alert** | Home → click an alert → its detail shows *what happened*, *what it means* (with term explanations) and *what you can do* → use its action → **Mark as handled** | Every alert opens at its own address. Money actions run review → confirm → confirmation and change the session (a Pending deposit, auto-invest on). Handled alerts move to a collapsed "Handled" group with Undo; handled and session state survive navigation and reset on reload. |
 | F2 | **Understand any word** | Click or tab to any dotted-underlined term → the explanation opens → follow a related word → **Back to** the first word | Works by mouse, keyboard and screen reader on every page |
 | F3 | **Read the balance chart** | Switch 1 month / 3 months / Since March → move across the chart → **Show as table** | Values are read out in words; the table matches the chart |
-| F4 | **Look at an investment** | Investments → AAPL, then BTC → ticker badge, price chart (Since you bought / 6 months / 1 year) with its data note (the stock data note, or "Crypto prices by CoinGecko"), "Ups and downs: X of 5", dividends (for stocks that pay them), the SIPC notice on crypto pages, what you paid vs. its value | Every investment page works, including AMZN, TSLA and SOL, which Rosa doesn't own |
+| F4 | **Look at an investment** | Investments → AAPL, then BTC → ticker badge, price chart (Since you bought / 6 months / 1 year) with its data note (the stock data note, or "Powered by CoinGecko API"), "Ups and downs: X of 5", dividends (for stocks that pay them), the SIPC notice on crypto pages, what you paid vs. its value | Every investment page works, including AMZN, TSLA and SOL, which Rosa doesn't own |
 | F5 | **Check activity** | Activity → filter by type (Deposits / Buys / Dividends) and status (Completed / Returned) → open the returned deposit | Filters combine; a combination with no results (e.g. Dividends + Returned) shows a friendly empty state |
 | F6 | **Check every scenario** | Open `/?scenario=all-clear`, then `/?scenario=brand-new` (scenarios are reached by URL only; the README lists the links) | Each scenario shows its own account, and every sentence on every card stays true |
 
@@ -135,6 +135,8 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 | **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus an explanation that ups and downs are normal. |
 | **All alerts handled** | "You've handled everything for this week." Undo stays available. |
 | **An alert address that doesn't exist** (`/alerts/nope`) | A friendly "We couldn't find that alert" with a link back to Alerts |
+| **An action already taken** | After *Try the deposit again*, the alert says the new deposit is pending and doesn't offer a second try. After auto-invest is turned on, the cash alert says it is on now. |
+| **No alerts at all** (brand-new) | The Alerts page shows only the calm list; there is no "Choose an alert" pane for alerts that don't exist. |
 | **Long text, 200% zoom, keyboard only, reduced motion** | Nothing overlaps or gets cut off; the Investments table stacks into labeled rows; focus follows reading order; no motion is needed to understand anything |
 
 ## Nice to haves (only after the Definition of Done passes)

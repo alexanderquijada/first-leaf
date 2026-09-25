@@ -4,7 +4,7 @@ An invented investing app for people who have never invested before. It is **one
 
 > **For reviewers:** First Leaf is an invented company for a design case study. Rosa, her accounts and every person are invented. The stock and crypto **names and tickers are real** (Apple, Microsoft, NVIDIA, Costco, Nike, Amazon, Tesla, Bitcoin, Ethereum, Solana). **Crypto prices are real**, from CoinGecko. **Stock prices are modeled**: each stock's daily path is random but forced through its real closing price on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 (sources in [docs/research/PRICE-ANCHORS.md](docs/research/PRICE-ANCHORS.md)), because free stock-data licenses don't allow public display. Dividends are the companies' real per-share amounts and dates. This is for learning only. It is not financial advice.
 >
-> Inside the site, First Leaf is designed to read like a real investing app, so it carries no disclaimer and never says "demo" or "case study" on screen. The only data notes are the ones a real finance app shows: "Crypto prices by CoinGecko" next to crypto prices (their attribution guide requires it), and a note on stock charts that daily stock prices are modeled between those real closes. Everything a reviewer needs to know about the project is on this page.
+> Inside the site, First Leaf is designed to read like a real investing app, so it carries no disclaimer and never says "demo" or "case study" on screen. The only data notes are the ones a real finance app shows: "Powered by CoinGecko API" next to crypto prices (their attribution guide requires it), and a note on stock charts that daily stock prices are modeled between those real closes. Everything a reviewer needs to know about the project is on this page.
 
 **Live site:** https://first-leaf.vercel.app · **Plan:** [BRIEF.md](BRIEF.md) · **Progress:** [STATUS.md](STATUS.md)
 
@@ -40,11 +40,11 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
 - **Read:** [BRIEF.md](BRIEF.md) §1–3 and §6, then [docs/briefs/P302-BRIEF.md](docs/briefs/P302-BRIEF.md)
 - **Code:** `src/features/story/`, `practice/`, `learn/` · **History:** commits starting `[P302]`
 - **Try these:**
-  1. In chapter 1, switch **What you put in vs. what it earned**, then change the time range to **1M**.
+  1. In chapter 1, turn **Show what you put in and what it earned** off and on, then change the time range to **1 month**.
   2. In chapter 3, **show and hide the dip's events** on the chart.
   3. In chapter 4, filter the mix to **crypto**.
   4. In chapter 5, **make a guess**, move the **start-age slider** with your arrow keys, raise Theo's amount until he catches up, and switch **Smooth / Bumpy**.
-  5. In chapter 6, follow the link into **Practice**. Buy $200 of any investment with practice money, sell part of it, try the **Time machine**, then **Start over**.
+  5. In chapter 6, follow the link into **Practice**. Buy $200 of any investment with practice money, choose **New order** and sell part of it, try the **Time machine**, then **Start over**.
   6. Go to **Words**, search for "crypto" and open **Crypto**.
   7. Check every scenario: https://first-leaf.vercel.app/story?scenario=normal · https://first-leaf.vercel.app/story?scenario=all-clear · https://first-leaf.vercel.app/story?scenario=brand-new
 
@@ -56,9 +56,9 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
 - **Try these:**
   1. Click **Phone view** in the top bar, or use the link above. **Back to full view** (top left) returns to the page you came from.
   2. Without scrolling: does anything need Rosa, and how much did her balance move this week?
-  3. Tap the "needs you" card, read the alert and its **Words on this screen**, then go back. It now shows as *Seen*.
-  4. Tap **Why it moved**, then tap an investment to see its share of the change.
-  5. Open **Word of the day**, then **Next word**.
+  3. Tap the "needs you" card, read the alert and its **Words on this screen**, then go back to Home (the browser's Back button, or the **Home** tab). The card now shows *Seen*.
+  4. Tap **Why it moved**, then tap an investment to see its piece of the change.
+  5. On **Word of the day**, tap **Read more**, close it, then tap **Next word**.
   6. Use the bottom tab bar to reach **Practice** and buy an investment with practice money.
   7. Check every scenario in the phone view: https://first-leaf.vercel.app/p303?scenario=normal · https://first-leaf.vercel.app/p303?scenario=all-clear · https://first-leaf.vercel.app/p303?scenario=brand-new
 

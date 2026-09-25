@@ -95,12 +95,12 @@ The story says what happened and stops there. It never says pausing was right or
 **The bumpy version is honest by rule (T3):** the same *overall* growth as the smooth line (6% a year, compounded; the simple average of the years is higher, so we never say "average"). No year is worse than −20%, no staged late crash (Nia's balance never falls more than 25% from a peak), and both endings land within 15% of the smooth ones, so bumpiness never looks like a bonus or a disaster.
 
 **Every scenario gets a true story (R4).** The story reads the current scenario's account through `useScenario`. Rosa's facts and the sentences that state them are generated per account into `story-p302.json` (`rosaStory`), and R1–R4 recompute every number from the price and balance history, so the screen only ever shows checked sentences.
-- *Nothing needs you:* auto-invest stayed on, so chapter 3 says so ("auto-invest stayed on and kept buying"), with that account's own numbers ($1,400 of $1,486.94 is deposits, 94.2%).
+- *Nothing needs you:* auto-invest stayed on, so chapter 3 says so ("Auto-invest stayed on. Your July 1, Aug. 3 and Sept. 1 deposits bought your mix the day they arrived."), with that account's own numbers ($1,400 of $1,536.68 is deposits, about 91%).
 - *Brand-new account:* there is no history yet, so chapters 1–4 become one short chapter ("Your story starts with your first deposit") and the point of view is stated without the "right now" half. Chapters 5 and 6 work unchanged.
 
 ## Narrative and layout
 
-**Decision: a scroll story in six chapters**, each with one sentence of argument and one chart state. At **1024px and wider** the chart stays pinned beside the text and changes as you scroll. **Below 1024px** each chapter carries its own chart inline, because a pinned chart would take half of a small screen. A chapter menu (`#chapter-1` … `#chapter-6`) lets people jump around, and the story never depends on scroll animation.
+**Decision: a scroll story in six chapters**, each with one sentence of argument and one chart state. At **1024px and wider** each chapter's chart sits beside its text and stays pinned while you scroll through that chapter; the next chapter brings the next chart state (chapter 5 pairs each step with its own chart). **Below 1024px** each chapter carries its own chart inline, because a pinned chart would take half of a small screen. A chapter menu (`#chapter-1` … `#chapter-6`) lets people jump around, and the story never depends on scroll animation.
 
 | # | Chapter | The one thing it says | Chart state | Interaction |
 |---|---|---|---|---|
@@ -115,7 +115,7 @@ The story says what happened and stops there. It never says pausing was right or
 
 | Step | What it says | Chart state | Interaction |
 |---|---|---|---|
-| 5a Make a guess | Who has more at 65? | Hidden | **Tap Nia or Theo.** The guess is optional. |
+| 5a Make a guess | Who has more at 65? | Hidden until a guess, or until **Show the answer** | **Tap Nia or Theo.** The guess is optional: **Show the answer** skips it, and the reply is then neutral. |
 | 5b The answer | Nia: $242,251. Theo: $186,213. | Both lines draw to 65; Nia's glows | The reply depends on the guess: "You got it" or "Theo puts in more each month, so he seems like the better guess." |
 | 5c Why | Nia put in *less*. Most of her money is growth on growth. | Nia's area splits into "put in" and grainy "growth" | Hover or tap any age to read both layers |
 | 5d Every year counts | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
@@ -123,7 +123,7 @@ The story says what happened and stops there. It never says pausing was right or
 | 5f Real life is bumpy | Real years go up and down. Same overall growth, and Nia still ends ahead. | Smooth vs. bumpy | **Smooth / Bumpy toggle** |
 | 5g Your turn | Rosa, 26, $150 a month. (The "not a plan or advice" line is removed: disclaimer language, ruling B and Sept. 25.) | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
 
-Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, and the sources.
+Closing: a three-line takeaway (the point of view and two of chapter 5's checked claims), then the story's words as 48px chips (**Words on this screen**: growth on growth, return, the market) using the shared term explanations, and the sources (the growth rate note and the price notes).
 
 **Practice** (`/practice`): pick one of the 10 investments → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over the last 12 months → **Start over**. A persistent banner, "Practice money. Nothing here touches your account."; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**. Crypto holdings show **"Amount"** with the coin's unit ("0.00247299 BTC"), never "Shares".
 
@@ -132,7 +132,7 @@ Closing: a three-line takeaway, then **Words from this story** (growth on growth
 ## Interaction rules
 
 - **Sliders** are real range inputs. The arrow keys move them, and values are shown and announced in words ("Start at 30. At 65 you'd have…"). Every result comes from the same formula the validator checks.
-- **Toggles and filters** are real buttons with a pressed state, and each has a sentence that says what the chart now shows.
+- **Toggles and filters** are real buttons with a pressed state, and each has a sentence that says what the chart now shows. A chart's title follows its time range ("Your balance in the last month").
 - **The guess** is optional. Skipping it still works.
 - **Show as table** sits under every chart.
 - **Motion respects reduced motion:** with `prefers-reduced-motion`, charts appear in their final state and nothing required is animated.

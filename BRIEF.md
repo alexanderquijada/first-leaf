@@ -324,7 +324,7 @@ One app, three layouts. Each lens is designed for its own size; every screen mus
 |---|---|---|---|
 | **Navigation** | Opaque top bar and opaque bottom tab bar, 48px targets | Top bar and top tabs | Left rail and top bar |
 | **Phone view** (`/p303`) | No frame: the screens fill the phone | Only the phone: its own layout, the frame centered; a short window makes the phone shorter (down to a 667px screen) before scaling it, and text never drops below 14px; "Back to full view" top left | The same; the 390 × 844 frame at full size when the window is tall enough |
-| **Home** | **P303's check-in:** balance, up or down this week, a small balance chart, a "needs you" card, why it moved, the last 3 transactions, word of the day | Two columns: alerts, then balance; charts full width | **P301's dashboard:** alerts first (top left), balance beside them, then balance over time, mix, goal, this week |
+| **Home** | **P303's check-in:** balance, up or down this week, a "needs you" card, why it moved, a small balance chart, the last 3 transactions, word of the day | Two columns: alerts, then balance; charts full width | **P301's dashboard:** alerts first (top left), balance beside them, then balance over time, mix, goal, this week |
 | **Alerts, Activity, Investments** | Full-screen pages, one tap from Home; alert details end with "Words on this screen" chips | Single column | Two panes where useful (the list with its detail) |
 | **Your money story** | The chart sits inline after each passage | Inline below 1024px | The chart is pinned beside the text |
 | **Practice, Words** | Full-screen, thumb-friendly | Single column | Single column with room for the practice mix |
