@@ -24,9 +24,13 @@ const r2 = (n) => Math.round(n * 100) / 100;
 const r4 = (n) => Math.round(n * 10000) / 10000;
 const floor4 = (n) => Math.floor(n * 10000 + 1e-9) / 10000;
 const eq = (a, b, tol = 0.005) => typeof a === 'number' && typeof b === 'number' && Math.abs(a - b) <= tol;
-const HOLIDAYS_2026 = ['2026-01-01','2026-01-19','2026-02-16','2026-04-03','2026-05-25','2026-06-19','2026-07-03','2026-09-07','2026-11-26','2026-12-25'];
+const HOLIDAYS = ['2025-11-27','2025-12-25','2026-01-01','2026-01-19','2026-02-16','2026-04-03','2026-05-25','2026-06-19','2026-07-03','2026-09-07','2026-11-26','2026-12-25'];
 const dow = (s) => new Date(s + 'T00:00:00Z').getUTCDay();
-const isTradingDay = (s) => dow(s) !== 0 && dow(s) !== 6 && !HOLIDAYS_2026.includes(s);
+const isTradingDay = (s) => dow(s) !== 0 && dow(s) !== 6 && !HOLIDAYS.includes(s);
+const prevTradingDay = (s) => { let d = addDays(s, -1); while (!isTradingDay(d)) d = addDays(d, -1); return d; };
+const roundN = (n, d) => Math.round(n * 10 ** d) / 10 ** d;
+const floorN = (n, d) => Math.floor(n * 10 ** d + 1e-9) / 10 ** d;
+const DECIMALS = { stock: 4, crypto: 8 };
 const addDays = (s, n) => { const d = new Date(s + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 const nextTradingDay = (s) => { let d = s; while (!isTradingDay(d)) d = addDays(d, 1); return d; };
 const daysBetween = (a, b) => Math.round((new Date(b + 'T00:00:00Z') - new Date(a + 'T00:00:00Z')) / 864e5);
@@ -68,22 +72,28 @@ export const JARGON = ['volatility', 'volatile', 'liquidity', 'equity', 'equitie
 const hasWord = (text, w) => new RegExp(`(^|[^a-z])${w.replace(/ /g, '\\s+')}([^a-z]|$)`, 'i').test(text);
 
 // ---------------- finance guardrails ----------------
+// Ruling B (Phase 2.5): exactly these real names and tickers are allowed. Every other real
+// ticker or brand below is still blocked.
+export const LINEUP = { AAPL: 'Apple', MSFT: 'Microsoft', NVDA: 'NVIDIA', COST: 'Costco', NKE: 'Nike', AMZN: 'Amazon', TSLA: 'Tesla', BTC: 'Bitcoin', ETH: 'Ethereum', SOL: 'Solana' };
 // A representative denylist of the most-traded U.S. tickers and major financial brands. Extend freely.
 export const REAL_TICKERS = ['AAPL','MSFT','AMZN','GOOG','GOOGL','META','NVDA','TSLA','BRK','JPM','V','MA','UNH','JNJ','XOM','PG','HD','KO','PEP','COST',
   'WMT','DIS','NFLX','INTC','AMD','CRM','ORCL','ADBE','CSCO','BAC','WFC','C','GS','MS','SCHW','PYPL','SQ','HOOD','COIN','UBER','ABNB','NKE','MCD','SBUX',
   'T','VZ','BA','GE','F','GM','PFE','MRK','ABBV','LLY','CVX','SPY','VOO','VTI','VTSAX','VFIAX','VXUS','BND','BNDX','AGG','QQQ','IVV','IWM','DIA','VT',
-  'SCHD','VYM','VNQ','GLD','SLV','TLT','ARKK','FXAIX','FZROX','FSKAX','SWPPX','VGT','XLK','XLF','XLE','ICLN','TAN','QCLN','PBW','SPAXX','VMFXX'];
+  'SCHD','VYM','VNQ','GLD','SLV','TLT','ARKK','FXAIX','FZROX','FSKAX','SWPPX','VGT','XLK','XLF','XLE','ICLN','TAN','QCLN','PBW','SPAXX','VMFXX',
+  'DOGE','XRP','ADA','BNB','USDT','USDC','AVAX','LTC','SHIB','GME','AMC','PLTR'];
 export const REAL_NAMES = ['Apple','Microsoft','Amazon','Alphabet','Google','Meta','Nvidia','Tesla','Berkshire','JPMorgan','Chase','Visa','Mastercard',
   'Vanguard','Fidelity','Schwab','BlackRock','iShares','SPDR','State Street','Invesco','Robinhood','Acorns','Stash','Betterment','Wealthfront','SoFi',
   'E*TRADE','ETRADE','TD Ameritrade','Merrill','Morgan Stanley','Goldman','Wells Fargo','Bank of America','Citi','Coinbase','Public.com','Webull',
-  'Ally','Capital One','Nasdaq','NYSE','Dow Jones','S&P','Russell','MSCI','FTSE','Morningstar','Greenlight','Groundwork','Saguaro Credit Union'];
+  'Ally','Capital One','Nasdaq','NYSE','Dow Jones','S&P','Russell','MSCI','FTSE','Morningstar','Greenlight','Groundwork','Saguaro Credit Union',
+  'Dogecoin','Ripple','Cardano','Binance','Tether','Kraken','Gemini','Walmart','Target','Adidas','Starbucks','Netflix','Disney'];
 // Calls to action about specific investments are advice; education is not (FINRA Rule 2111 FAQ).
 // Absolute safety claims are also banned: nothing in investing is "safe" without qualification.
 // Real-app ruling (Sept. 24): inside the site, First Leaf reads as a real app, so no
 // project language may reach the screen. The data itself stays marked fictional (G1, G5).
-export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i, /this project/i, /for reviewers/i, /\bfictional\b/i];
+// Ruling B (Phase 2.5): no disclaimer of any kind either, so "simulated", "concept" and "not real" are banned too.
+export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i, /this project/i, /for reviewers/i, /\bfictional\b/i, /\bsimulated\b/i, /\bconcept\b/i, /\bnot real\b/i];
 export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we recommend/i, /\bbest (fund|investment|stock)s?\b/i, /guarantee/i,
-  /can'?t lose/i, /risk[- ]free/i, /\bsure thing\b/i, /\bbuy now\b/i, /\bsell now\b/i, /will (definitely|surely) (grow|go up)/i,
+  /can'?t lose/i, /risk[- ]free/i, /\bsure thing\b/i, /\bbuy now\b/i, /\bsell now\b/i, /\bbuy the dip\b/i, /will (definitely|surely) (grow|go up)/i,
   /\b(is|are|very) safe\b/i, /\bcompare fees\b/i, /\bswitch (to|funds)\b/i, /\bmost people\b/i];
 
 // ---------------- copy files (rule L5) ----------------
@@ -93,15 +103,15 @@ export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we
 // not listed here fails L5: give a new placeholder a meaning before you use it.
 export const PLACEHOLDERS = {
   money: ['amount', 'balance', 'cash', 'moneyIn', 'price', 'start', 'end', 'first', 'last', 'paid', 'target', 'actual', 'planned', 'behind',
-    'market', 'dividends', 'earned', 'value', 'nia', 'theo', 'monthly', 'niaMonthly', 'theoMonthly', 'putIn'],
-  change: ['change'],                 // "up $15.57", "down $5.88", "no change"
+    'dividends', 'earned', 'value', 'nia', 'theo', 'monthly', 'niaMonthly', 'theoMonthly', 'putIn'],
+  change: ['change', 'market'],       // "up $15.57", "down $5.88", "no change" (the market's part of this week's move is a change too)
   date: ['date', 'from', 'to'],       // "Sept. 18"
   count: ['count', 'shown', 'total', 'n', 'decimals'],
   number: ['age', 'endAge', 'startAge', 'niaAge', 'theoAge', 'rating', 'now', 'set', 'pct', 'points', 'fee', 'oldFee', 'newFee', 'shares', 'dollars'],
   ticker: ['ticker'],
   // Words, not values: names, labels, terms and whole sentences from the data.
   text: ['name', 'title', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'short', 'example', 'link', 'page', 'query', 'region',
-    'claim', 'note', 'reply', 'setting'],
+    'claim', 'note', 'reply', 'setting', 'month', 'direction'],
 };
 // Names the app quotes rather than writes: a term, the industry's words for it, a
 // source, a fund or a person. The reading level grades OUR words, so a quoted name
@@ -121,6 +131,10 @@ export const LABELED_ELSEWHERE = {
   'src/features/practice/copy.json:percent': 'a row in the list headed "Your practice mix"',
   'src/features/practice/copy.json:order.phoneAmount': 'the amount being typed, shown under and labeled by "Amount"',
 };
+// Data-source credits keep the exact wording set by Alex's ruling B (the stock data note) or
+// by the provider's attribution guide (CoinGecko). They are checked for everything except
+// the reading level, which their fixed wording can't meet.
+export const FIXED_WORDING = { 'src/shared/copy.json:dataNotes.stock': "ruling B's exact wording", 'src/shared/copy.json:dataNotes.crypto': "CoinGecko's attribution guide" };
 export function loadCopy(root = ROOT) {
   const out = {};
   const add = (rel) => { const p = join(root, rel); if (existsSync(p)) out[rel] = JSON.parse(readFileSync(p, 'utf8')); };
@@ -173,6 +187,16 @@ export function loadData(dir = DATA_DIR) {
   }
   return { data, missing };
 }
+// The verified stock anchors and dividends (docs/research/PRICE-ANCHORS.md) and the saved
+// CoinGecko files (src/shared/data/raw/). P1, P2 and A12 check the data against these.
+export function loadSources(root = ROOT) {
+  const doc = readFileSync(join(root, 'docs', 'research', 'PRICE-ANCHORS.md'), 'utf8');
+  const block = (name) => { const m = doc.match(new RegExp('```json ' + name + '\\n([\\s\\S]*?)```')); return m ? JSON.parse(m[1]) : null; };
+  const raw = {};
+  const dir = join(root, 'src', 'shared', 'data', 'raw');
+  if (existsSync(dir)) for (const f of readdirSync(dir)) if (/^coingecko-.*\.json$/.test(f)) { const j = JSON.parse(readFileSync(join(dir, f), 'utf8')); raw[j.ticker] = j; }
+  return { anchors: block('price-anchors'), dividends: block('dividends'), raw };
+}
 export function loadBriefExamples(root = ROOT) {
   const examples = [];
   for (const b of BRIEF_FILES) {
@@ -186,7 +210,7 @@ export function loadBriefExamples(root = ROOT) {
 }
 
 // ---------------- rules ----------------
-export function validate(data, { missing = [], briefExamples = [], copy = null } = {}) {
+export function validate(data, { missing = [], briefExamples = [], copy = null, sources = null } = {}) {
   const results = [];
   const rule = (id, name, fn) => {
     const errors = [];
@@ -203,7 +227,8 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
   const fundBy = Object.fromEntries(funds.map((f) => [f.ticker, f]));
   const glossIds = new Set(glossary.map((g) => g.id));
   const closeOn = (t, d) => fundBy[t]?.history.daily.find((x) => x.date === d)?.close;
-  const feeOn = (t, d) => fundBy[t].expenseRatioHistory.filter((e) => e.effective <= d).at(-1)?.value;
+  const decOf = (t) => DECIMALS[fundBy[t]?.kind] ?? 4;
+  const stockDates = (funds.find((f) => f.kind === 'stock')?.history.daily ?? []).map((d) => d.date);
   const acts = (acc) => activity[acc.id] || [];
   const flagsOf = (acc) => attention[acc.id] || [];
   const forEachFunded = (fn) => { for (const a of funded) fn(a, acts(a), `[${a.id}] `); };
@@ -217,10 +242,10 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
   ]);
   const otherTexts = [
     ...rosaTexts,
-    ['meta:disclaimer', meta.disclaimer], ['story:pointOfView', story.pointOfView], ['story:note', story.assumptions.note],
+    ['story:pointOfView', story.pointOfView], ['story:note', story.assumptions.note],
     ['story:bumpy.note', story.bumpy.note], ['story:yourTurn.note', story.yourTurn.note], ['practice:timeMachine.note', practice.timeMachine.note],
     ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
-    ...funds.map((f) => [`funds:${f.ticker}.inside`, f.inside]),
+    ...funds.map((f) => [`funds:${f.ticker}.about`, f.about]),
     ...scenarios.map((s) => [`scenarios:${s.id}.description`, s.description]), // README-only: exempt from G6, still plain
     ...allAccounts.flatMap((acc) => (activity[acc.id] || []).filter((a) => a.returnReason).map((a) => [`activity:${a.id}.returnReason`, a.returnReason])),
   ];
@@ -228,14 +253,14 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
   // ----- S: structure -----
   rule('S2', 'Required fields are present', (fail) => {
     const req = {
-      meta: ['product', 'asOf', 'lastClose', 'lastReview', 'wordOfTheDay', 'cashWaitingThreshold', 'fictional', 'disclaimer'],
+      meta: ['product', 'asOf', 'lastClose', 'lastReview', 'wordOfTheDay', 'cashWaitingThreshold', 'bigMoveThreshold'],
       persona: ['id', 'firstName', 'age', 'fictional', 'moments'],
       practice: ['startingCash', 'funds', 'priceDate', 'fictional', 'timeMachine'],
       'story-p302': ['assumptions', 'savers', 'catchUp', 'bumpy', 'yourTurn', 'claims', 'startAgeSlider'],
     };
     for (const [file, keys] of Object.entries(req)) for (const k of keys) if (data[file]?.[k] === undefined) fail(`${file}.${k} missing`);
     for (const a of funded) for (const k of ['id', 'ownerId', 'balance', 'investedValue', 'cash', 'moneyIn', 'gainLoss', 'holdings', 'goal', 'weeklyChange', 'history', 'recurringDeposit', 'targetMix', 'autoInvest']) if (a[k] === undefined) fail(`${a.id}.${k} missing`);
-    for (const f of funds) for (const k of ['ticker', 'name', 'fictional', 'kind', 'upsAndDowns', 'expenseRatioHistory', 'latestPrice', 'history', 'inside']) if (f[k] === undefined) fail(`funds[${f.ticker}].${k} missing`);
+    for (const f of funds) for (const k of ['ticker', 'name', 'kind', 'priceSource', 'volatility', 'upsAndDowns', 'dividends', 'latestPrice', 'history', 'about']) if (f[k] === undefined) fail(`funds[${f.ticker}].${k} missing`);
     for (const acc of allAccounts) {
       if (!Array.isArray(activity[acc.id])) fail(`activity has no list for ${acc.id}`);
       if (!Array.isArray(attention[acc.id])) fail(`attention has no list for ${acc.id}`);
@@ -243,30 +268,25 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
     }
     for (const g of glossary) for (const k of ['id', 'term', 'short', 'detail', 'example', 'related']) if (g[k] === undefined) fail(`glossary[${g.id}].${k} missing`);
   });
-  rule('S3', 'The footer disclosure says "risk", "simulated" and "not investment advice"', (fail) => {
-    if (meta.fictional !== true) fail('meta.fictional must be true');
-    if (!/\brisk\b/i.test(meta.disclaimer)) fail('disclosure must say "risk"');
-    if (!/\bsimulated\b/i.test(meta.disclaimer)) fail('disclosure must say the accounts, funds and prices are "simulated"');
-    if (!/\b(not|nothing here is) investment advice\b/i.test(meta.disclaimer)) fail('disclosure must say it is not investment advice');
-  });
-
   // ----- G: finance guardrails -----
-  rule('G1', 'Every fund is marked fictional and uses an FL- ticker', (fail) => {
+  rule('G1', 'Only the approved lineup: every investment is one of its tickers, with its own name', (fail) => {
     for (const f of funds) {
-      if (f.fictional !== true) fail(`${f.ticker} not marked fictional`);
-      if (!/^FL-[A-Z]{3,6}$/.test(f.ticker)) fail(`${f.ticker} does not match the FL-XXX pattern`);
+      if (!LINEUP[f.ticker]) fail(`${f.ticker} is not in the approved lineup`);
+      else if (f.name !== LINEUP[f.ticker]) fail(`${f.ticker} is named "${f.name}", the lineup says "${LINEUP[f.ticker]}"`);
     }
-    for (const t of practice.funds) if (!fundBy[t]) fail(`practice fund ${t} does not exist`);
+    for (const t of practice.funds) if (!fundBy[t]) fail(`practice investment ${t} does not exist`);
+    for (const a of allAccounts) for (const t of Object.keys(a.targetMix || {})) if (!LINEUP[t]) fail(`${a.id} mix uses ${t}, which is not in the lineup`);
   });
-  rule('G2', 'No real tickers or real company/brand names anywhere in the data', (fail) => {
+  rule('G2', 'No real tickers or brand names outside the approved lineup, anywhere in the data', (fail) => {
     for (const [file, obj] of Object.entries(data)) for (const [path, s] of strings(obj)) {
       if (/url$/i.test(path)) continue;
       for (const t of REAL_TICKERS) {
+        if (LINEUP[t]) continue;
         if (!new RegExp(`(^|[^A-Za-z-])${t}([^A-Za-z-]|$)`).test(s)) continue;
         if (t.length <= 2 && !new RegExp(`(^|\\s|\\()${t}(\\s|\\)|$)`).test(s)) continue; // V, C, T, F only as stand-alone tokens
         fail(`${file}:${path} contains real ticker "${t}": "${s.slice(0, 60)}"`);
       }
-      for (const n of REAL_NAMES) if (new RegExp(`(^|[^A-Za-z])${n.replace(/[*&.]/g, (c) => '\\' + c)}([^A-Za-z]|$)`, 'i').test(s)) fail(`${file}:${path} contains real name "${n}"`);
+      for (const n of REAL_NAMES) if (!Object.values(LINEUP).some((x) => x.toLowerCase() === n.toLowerCase()) && new RegExp(`(^|[^A-Za-z])${n.replace(/[*&.]/g, (c) => '\\' + c)}([^A-Za-z]|$)`, 'i').test(s)) fail(`${file}:${path} contains real name "${n}"`);
     }
   });
   rule('G3', 'No advice language, no absolute safety claims, no invented crowd claims', (fail) => {
@@ -284,26 +304,26 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
     for (const a of allAccounts) if (a.fictional !== true) fail(`${a.id} not fictional`);
   });
 
-  rule('G6', 'No project language on screen (made up, demo, case study, this project, for reviewers, fictional)', (fail) => {
+  rule('G6', 'No project or disclaimer language on screen (made up, demo, case study, this project, for reviewers, fictional, simulated, concept, not real)', (fail) => {
     const screen = [
       ...glossary.flatMap((g) => [[`glossary:${g.id}.term`, g.term], [`glossary:${g.id}.alsoCalled`, (g.alsoCalled || []).join(', ')], [`glossary:${g.id}.short`, g.short], [`glossary:${g.id}.detail`, g.detail], [`glossary:${g.id}.example`, g.example]]),
       ...allAccounts.flatMap((acc) => flagsOf(acc).flatMap((a) => [[`attention:${acc.id}:${a.id}`, `${a.title}. ${a.body} ${a.nextStep} ${a.action?.label ?? ''}`]])),
-      ...funds.flatMap((f) => [[`funds:${f.ticker}.name`, f.name], [`funds:${f.ticker}.inside`, f.inside]]),
+      ...funds.flatMap((f) => [[`funds:${f.ticker}.name`, f.name], [`funds:${f.ticker}.about`, f.about]]),
       ['story:title', story.title], ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
       ...otherTexts.filter(([where]) => !where.startsWith('scenarios:')),
     ];
     for (const [where, text] of screen) for (const re of PROJECT_LANGUAGE) if (re.test(text)) fail(`${where} uses project language ${re}: "${text.slice(0, 80)}"`);
   });
 
-  // ----- F: funds -----
-  rule('F1', 'Fund prices are positive, dated in order, and only on trading days', (fail) => {
+  // ----- F: prices -----
+  rule('F1', 'Prices are positive and in date order; stocks only on trading days, crypto every day', (fail) => {
     for (const f of funds) for (const key of ['weekly', 'daily']) {
       const h = f.history[key];
       for (let i = 0; i < h.length; i++) {
         if (!(h[i].close > 0)) fail(`${f.ticker} ${key} ${h[i].date} price not positive`);
         if (i && h[i].date <= h[i - 1].date) fail(`${f.ticker} ${key} dates not ascending at ${h[i].date}`);
-        if (dow(h[i].date) === 0 || dow(h[i].date) === 6) fail(`${f.ticker} ${key} ${h[i].date} is a weekend`);
-        if (key === 'daily' && HOLIDAYS_2026.includes(h[i].date)) fail(`${f.ticker} daily ${h[i].date} is a market holiday`);
+        if (f.kind === 'stock' && !isTradingDay(h[i].date)) fail(`${f.ticker} ${key} ${h[i].date} is not a trading day (weekend or market holiday)`);
+        if (f.kind === 'crypto' && key === 'daily' && i && h[i].date !== addDays(h[i - 1].date, 1)) fail(`${f.ticker} daily skips from ${h[i - 1].date} to ${h[i].date} (crypto trades every day)`);
       }
     }
   });
@@ -320,20 +340,45 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       if (f.latestPrice !== ld.close || f.latestPrice !== lw.close) fail(`${f.ticker} latestPrice ${f.latestPrice} != last close`);
     }
     if (practice.priceDate !== meta.lastClose) fail('practice.priceDate != meta.lastClose');
-    if (practice.timeMachine.from !== funds[0].history.weekly[0].date) fail(`timeMachine.from ${practice.timeMachine.from} != first weekly price ${funds[0].history.weekly[0].date}`);
+    const weeks = (funds.find((f) => f.kind === 'stock')?.history.weekly ?? []).map((w) => w.date);
+    const first = weeks.find((d) => funds.every((f) => f.history.daily.some((x) => x.date === d)));
+    if (practice.timeMachine.from !== first) fail(`timeMachine.from ${practice.timeMachine.from} != the first weekly close every investment has (${first})`);
     if (practice.timeMachine.to !== meta.lastClose) fail('timeMachine.to != lastClose');
     for (const a of allAccounts) if (a.lastClose !== meta.lastClose) fail(`${a.id}.lastClose != meta.lastClose`);
   });
-  rule('F4', 'Fund fees, ratings and the reserve fund price are in range', (fail) => {
+  rule('F4', '"Ups and downs" matches each price history\'s 12-month volatility (BRIEF.md §4 thresholds)', (fail) => {
     for (const f of funds) {
-      for (const e of f.expenseRatioHistory) {
-        if (!(e.value >= 0 && e.value <= 2)) fail(`${f.ticker} fee ${e.value}% out of 0-2% range`);
-        if (e.announcedOn && e.announcedOn >= e.effective) fail(`${f.ticker} fee change announced on/after it takes effect`);
-      }
-      for (let i = 1; i < f.expenseRatioHistory.length; i++) if (f.expenseRatioHistory[i].effective <= f.expenseRatioHistory[i - 1].effective) fail(`${f.ticker} fee history not in date order`);
-      if (!Number.isInteger(f.upsAndDowns) || f.upsAndDowns < 1 || f.upsAndDowns > 5) fail(`${f.ticker} upsAndDowns ${f.upsAndDowns} not 1-5`);
-      if (!['stocks', 'bonds', 'reserve'].includes(f.kind)) fail(`${f.ticker} kind ${f.kind} invalid`);
-      if (f.kind === 'reserve' && f.history.daily.some((d) => d.close !== 1)) fail(`${f.ticker} reserve fund price must stay $1.00`);
+      if (!['stock', 'crypto'].includes(f.kind)) fail(`${f.ticker} kind ${f.kind} invalid`);
+      if (f.priceSource !== (f.kind === 'stock' ? 'modeled' : 'coingecko')) fail(`${f.ticker} priceSource ${f.priceSource} does not fit a ${f.kind}`);
+      const c = f.history.daily.map((x) => x.close), r = [];
+      for (let i = 1; i < c.length; i++) r.push(Math.log(c[i] / c[i - 1]));
+      const m = r.reduce((a, b) => a + b, 0) / r.length;
+      const vol = Math.sqrt(r.reduce((a, b) => a + (b - m) ** 2, 0) / (r.length - 1)) * Math.sqrt(f.kind === 'stock' ? 252 : 365);
+      if (!eq(f.volatility, r4(vol), 0.00011)) fail(`${f.ticker} volatility ${f.volatility} != ${r4(vol)} from its prices`);
+      const want = 1 + [0.2, 0.3, 0.45, 0.65].filter((b) => vol >= b).length;
+      if (f.upsAndDowns !== want) fail(`${f.ticker} "Ups and downs" is ${f.upsAndDowns}, its ${(vol * 100).toFixed(1)}% volatility gives ${want}`);
+    }
+  });
+
+  // ----- P: price sources (ruling B, Phase 2.5) -----
+  rule('P1', 'Each stock hits its three real anchor closes in PRICE-ANCHORS.md exactly', (fail) => {
+    const anchors = sources?.anchors;
+    if (!anchors) { fail('no price-anchors block was loaded from docs/research/PRICE-ANCHORS.md'); return; }
+    for (const f of funds.filter((x) => x.kind === 'stock')) {
+      const a = anchors[f.ticker];
+      if (!a) { fail(`${f.ticker} has no anchors`); continue; }
+      const dates = Object.keys(a).sort();
+      for (const d of dates) { const c = closeOn(f.ticker, d); if (c !== a[d]) fail(`${f.ticker} closes at ${c} on ${d}; the real close is ${a[d]}`); }
+      if (f.history.daily[0].date !== dates[0] || f.history.daily.at(-1).date !== dates.at(-1)) fail(`${f.ticker} history must run from ${dates[0]} to ${dates.at(-1)}`);
+    }
+  });
+  rule('P2', 'Crypto prices match the saved CoinGecko series exactly', (fail) => {
+    const raw = sources?.raw ?? {};
+    for (const f of funds.filter((x) => x.kind === 'crypto')) {
+      const r = raw[f.ticker];
+      if (!r) { fail(`${f.ticker} has no saved CoinGecko file`); continue; }
+      if (r.daily.length !== f.history.daily.length) fail(`${f.ticker} has ${f.history.daily.length} daily prices, CoinGecko's file has ${r.daily.length}`);
+      r.daily.forEach((x, i) => { const y = f.history.daily[i]; if (!y || y.date !== x.date || y.close !== x.close) fail(`${f.ticker} ${x.date}: the data says ${y?.date} ${y?.close}, CoinGecko says ${x.close}`); });
     }
   });
 
@@ -365,7 +410,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
     for (const h of acc.holdings) {
       const b = buysOf(list).filter((a) => a.ticker === h.ticker);
       if (!eq(h.costBasis, r2(b.reduce((s, a) => s + a.amount, 0)))) fail(`${p}${h.ticker} costBasis ${h.costBasis} != buys`);
-      if (!eq(h.shares, r4(b.reduce((s, a) => s + a.shares, 0)), 0.00005)) fail(`${p}${h.ticker} shares ${h.shares} != buys`);
+      if (!eq(h.shares, roundN(b.reduce((s, a) => s + a.shares, 0), decOf(h.ticker)), 0.5 / 10 ** decOf(h.ticker))) fail(`${p}${h.ticker} shares ${h.shares} != buys`);
     }
   }));
   rule('A6', 'Cash = deposits - buys + dividends', (fail) => forEachFunded((acc, list, p) => {
@@ -383,11 +428,11 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
     if (!eq(last.balance, acc.balance)) fail(`${p}history last balance ${last.balance} != balance ${acc.balance}`);
     if (!eq(last.moneyIn, acc.moneyIn)) fail(`${p}history last moneyIn ${last.moneyIn} != moneyIn`);
     if (!eq(last.cash, acc.cash)) fail(`${p}history last cash != cash`);
-    const dates = funds[0].history.daily.map((d) => d.date);
-    if (h.length !== dates.length || h.some((r, i) => r.date !== dates[i])) fail(`${p}history dates do not match fund trading days`);
+    const dates = stockDates.filter((d) => d >= acc.openedOn);
+    if (h.length !== dates.length || h.some((r, i) => r.date !== dates[i])) fail(`${p}history dates do not match the stock market's trading days`);
     if (h[0].date !== acc.openedOn) fail(`${p}history does not start on openedOn`);
   }));
-  rule('A9', 'Your target mix adds up to 100% and uses real (fictional) funds', (fail) => forEachFunded((acc, _, p) => {
+  rule('A9', 'Your target mix adds up to 100% and uses investments in the data', (fail) => forEachFunded((acc, _, p) => {
     const s = r4(Object.values(acc.targetMix).reduce((a, b) => a + b, 0));
     if (s !== 1) fail(`${p}targetMix sums to ${s}`);
     for (const t of Object.keys(acc.targetMix)) if (!fundBy[t]) fail(`${p}targetMix fund ${t} unknown`);
@@ -415,15 +460,31 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
     if (!(g.plannedMoneyInByTarget >= g.target)) fail(`${p}the plan only reaches ${g.plannedMoneyInByTarget} by ${g.targetDate}, below the ${g.target} target`);
     if (g.plan.monthly !== acc.recurringDeposit.amount) fail(`${p}goal plan monthly != recurring deposit`);
   }));
-  rule('A12', "Buys use that day's price, settle next business day (T+1), and share math is right", (fail) => forEachFunded((acc, list, p) => {
+  rule('A12', "Buys use that day's price; stocks settle T+1, crypto the same day; dividends are the real ones, paid on shares held before the ex-date", (fail) => forEachFunded((acc, list, p) => {
     for (const b of buysOf(list)) {
       const px = closeOn(b.ticker, b.date);
       if (px === undefined) { fail(`${p}${b.id} no price on ${b.date}`); continue; }
       if (b.price !== px) fail(`${p}${b.id} price ${b.price} != close ${px}`);
-      if (!eq(b.shares, floor4(b.amount / b.price), 0.00005)) fail(`${p}${b.id} shares ${b.shares} != ${floor4(b.amount / b.price)}`);
-      if (b.settledDate !== nextTradingDay(addDays(b.date, 1))) fail(`${p}${b.id} settles ${b.settledDate}, T+1 is ${nextTradingDay(addDays(b.date, 1))}`);
+      const dec = decOf(b.ticker);
+      if (!eq(b.shares, floorN(b.amount / b.price, dec), 0.5 / 10 ** dec)) fail(`${p}${b.id} shares ${b.shares} != ${floorN(b.amount / b.price, dec)}`);
+      const settle = fundBy[b.ticker].kind === 'crypto' ? b.date : nextTradingDay(addDays(b.date, 1));
+      if (b.settledDate !== settle) fail(`${p}${b.id} settles ${b.settledDate}; a ${fundBy[b.ticker].kind} bought ${b.date} settles ${settle}`);
     }
-    for (const d of divsOf(list)) if (!isTradingDay(d.date)) fail(`${p}${d.id} dividend on non-trading day`);
+    const documented = sources?.dividends ?? [];
+    for (const d of divsOf(list)) {
+      if (!isTradingDay(d.date)) fail(`${p}${d.id} dividend on non-trading day`);
+      const doc = documented.find((x) => x.ticker === d.ticker && x.exDate === d.exDate);
+      if (!doc) { fail(`${p}${d.id} is not a documented ${d.ticker} dividend (ex-date ${d.exDate})`); continue; }
+      if (d.perShare !== doc.perShare || d.date !== nextTradingDay(doc.payDate)) fail(`${p}${d.id} per-share amount or pay date differs from PRICE-ANCHORS.md`);
+      const held = roundN(buysOf(list).filter((b) => b.ticker === d.ticker && b.date < d.exDate).reduce((s, b) => s + b.shares, 0), decOf(d.ticker));
+      if (!eq(d.sharesOnExDate, held, 0.00005)) fail(`${p}${d.id} paid on ${d.sharesOnExDate} shares; ${held} were held before ${d.exDate}`);
+      if (!eq(d.amount, r2(held * d.perShare))) fail(`${p}${d.id} amount ${d.amount} != ${r2(held * d.perShare)}`);
+    }
+    for (const doc of documented) {
+      if (!acc.targetMix[doc.ticker] || doc.exDate <= acc.openedOn || doc.payDate > meta.lastClose) continue;
+      const held = buysOf(list).filter((b) => b.ticker === doc.ticker && b.date < doc.exDate).reduce((s, b) => s + b.shares, 0);
+      if (r2(held * doc.perShare) > 0 && !divsOf(list).some((d) => d.ticker === doc.ticker && d.exDate === doc.exDate)) fail(`${p}the ${doc.ticker} dividend with ex-date ${doc.exDate} was owed but never paid`);
+    }
     const ids = list.map((a) => a.id); if (new Set(ids).size !== ids.length) fail(`${p}activity ids not unique`);
   }));
   rule('A13', '"Waiting in cash since" date is true', (fail) => forEachFunded((acc, _, p) => {
@@ -477,13 +538,14 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       const f3 = expect('cash-sitting', acc.cash >= meta.cashWaitingThreshold);
       if (f3 && (!eq(f3.amount, acc.cash) || f3.date !== acc.cashSince)) fail(`${p}cash-sitting amount/date != cash/cashSince`);
       if (f3 && acc.autoInvest.pausedOn && !f3.body.includes('paused')) fail(`${p}cash-sitting must explain that auto-invest is paused`);
-      const rising = acc.holdings.map((h) => ({ h, up: fundBy[h.ticker].expenseRatioHistory.find((e) => e.effective > meta.asOf && daysBetween(meta.asOf, e.effective) <= 30) })).filter((x) => x.up);
-      const f4 = expect('fee-going-up', rising.length > 0);
-      if (f4) {
-        const { h, up } = rising[0]; const from = feeOn(h.ticker, meta.asOf);
-        if (f4.ticker !== h.ticker || f4.feeFrom !== from || f4.feeTo !== up.value) fail(`${p}fee-going-up fund/fees wrong`);
-        if (!eq(f4.amount, r2(h.value * (up.value - from) / 100))) fail(`${p}fee amount ${f4.amount} != ${r2(h.value * (up.value - from) / 100)}`);
+      for (const h of acc.holdings) {
+        const move = h.price / closeOn(h.ticker, acc.weeklyChange.from) - 1;
+        const fb = expect(`big-move-${h.ticker}`, h.shares > 0 && Math.abs(move) >= meta.bigMoveThreshold);
+        if (fb && !eq(fb.movePercent, r4(move), 0.00005)) fail(`${p}big-move-${h.ticker} says ${fb.movePercent}, the prices say ${r4(move)}`);
       }
+      for (const f of flags) if (f.id.startsWith('big-move-') && !acc.holdings.some((h) => `big-move-${h.ticker}` === f.id)) fail(`${p}${f.id} is about something the account does not hold`);
+      expect('sipc-crypto', acc.holdings.some((h) => fundBy[h.ticker]?.kind === 'crypto' && h.shares > 0));
+      if (flags.some((f) => /fee/i.test(f.id))) fail(`${p}a fee alert is shown; stocks and crypto have no yearly fund fee (ruling B)`);
       const div = divsOf(list).filter((a) => daysBetween(a.date, meta.asOf) <= 7).at(-1);
       const f5 = expect('dividend-paid', !!div); if (f5 && (!eq(f5.amount, div.amount) || f5.ticker !== div.ticker)) fail(`${p}dividend-paid does not match the latest dividend`);
     }
@@ -497,6 +559,8 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       for (const h of acc.holdings) Object.values(h).forEach(add);
       for (const a of acts(acc)) add(a.amount);
       for (const a of flagsOf(acc)) add(a.amount);
+      for (const h of acc.holdings) { add(closeOn(h.ticker, acc.weeklyChange.from)); }
+      for (const x of acc.weeklyChange.byFund) add(Math.abs(x.change));
       for (const a of flagsOf(acc)) for (const field of ['title', 'body', 'nextStep']) for (const m of a[field].match(/\$[\d,]+(\.\d\d)?/g) || []) {
         const n = Number(m.replace(/[$,]/g, '')).toFixed(2);
         if (!known.has(n)) fail(`[${acc.id}] ${a.id}.${field} says ${m}, which is not a number in this account`);
@@ -579,11 +643,21 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
   const money = (n) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   const pct1 = (x) => (Math.round(x * 1000) / 10).toFixed(1);
   const claimOf = (r, id) => r.claims.find((c) => c.id === id);
-  function recomputeDip(win, ticker) {
-    const rows = fundBy[ticker].history.daily.filter((d) => d.date >= win.from && d.date <= win.to);
-    let peak = rows[0], best = { high: rows[0], low: rows[0], drop: 0 };
-    for (const r of rows) { if (r.close > peak.close) peak = r; const drop = r.close / peak.close - 1; if (drop < best.drop) best = { high: peak, low: r, drop }; }
-    return { highDate: best.high.date, high: best.high.close, lowDate: best.low.date, low: best.low.close, drop: r4(best.low.close / best.high.close - 1) };
+  // The dip (ruling B, Phase 2.5): the largest 10-trading-day fall in the account's portfolio
+  // value between April 15 and Aug. 15, 2026: the change in balance with deposits and
+  // dividends taken out. Recomputed here from the account's own history.
+  const DIP_RULE = { from: '2026-04-15', to: '2026-08-15', tradingDays: 10 };
+  const FULL_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  function recomputeDip(acc) {
+    const rows = acc.history.filter((r) => r.date >= DIP_RULE.from && r.date <= DIP_RULE.to);
+    const divIn = (a, b) => r2(divsOf(acts(acc)).filter((x) => x.date > a && x.date <= b).reduce((s, x) => s + x.amount, 0));
+    let best = null;
+    for (let i = 0; i + DIP_RULE.tradingDays < rows.length; i++) {
+      const a = rows[i], b = rows[i + DIP_RULE.tradingDays];
+      const change = r2(b.balance - a.balance - (b.moneyIn - a.moneyIn) - divIn(a.date, b.date));
+      if (!best || change / a.balance < best.pct) best = { a, b, change, pct: change / a.balance };
+    }
+    return { highDate: best.a.date, highBalance: best.a.balance, lowDate: best.b.date, lowBalance: best.b.balance, fall: r2(-best.change), drop: r4(best.pct), month: FULL_MONTHS[Number(best.b.date.slice(5, 7)) - 1] };
   }
   rule('R1', 'The deposits share of her balance is what the story says; "almost all" only when it is at least 90%', (fail) => {
     if (/right now|almost all/i.test(story.pointOfView)) fail('the general point of view (no history yet) must not claim "right now, almost all"');
@@ -599,25 +673,16 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       if (saysAlmostAll !== (share >= 0.9)) fail(`${p}point of view ${saysAlmostAll ? 'says' : 'does not say'} "almost all" but the share is ${(share * 100).toFixed(1)}%`);
     }
   });
-  // The dip rule (ruling, Sept. 24): the largest high-to-low drop in FL-BROAD in the 30
-  // calendar days before Rosa paused auto-invest. The market is the same for every
-  // account, so accounts that never paused use the same window.
-  const pauseAnchor = funded.map((a) => a.autoInvest.pausedOn).find(Boolean);
-  const DIP_WINDOW = pauseAnchor ? { from: addDays(pauseAnchor, -30), to: pauseAnchor } : null;
-  rule('R2', "The July dip (largest drop in the 30 days before the pause) and her balance at the low match the history", (fail) => {
-    if (!DIP_WINDOW) { fail('no account paused auto-invest, so the dip has no anchor'); return; }
+  rule('R2', 'The dip (largest 10-trading-day fall in her portfolio value, April 15 to Aug. 15) and her balance at the low match her history', (fail) => {
     for (const acc of funded) {
       const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue;
-      const d = r.facts.dip;
-      if (d.ticker !== 'FL-BROAD') fail(`${p}the dip must be measured on FL-BROAD, not ${d.ticker}`);
-      if (d.window.from !== DIP_WINDOW.from || d.window.to !== DIP_WINDOW.to) fail(`${p}dip window is ${d.window.from} to ${d.window.to}; the rule says the 30 days before the pause: ${DIP_WINDOW.from} to ${DIP_WINDOW.to}`);
-      const re = recomputeDip(DIP_WINDOW, 'FL-BROAD');
-      for (const k of ['highDate', 'high', 'lowDate', 'low', 'drop']) if (d[k] !== re[k]) fail(`${p}dip.${k} is ${d[k]}, the prices say ${re[k]} (window ${d.window.from} to ${d.window.to})`);
+      const d = r.facts.dip, re = recomputeDip(acc);
+      if (d.window.from !== DIP_RULE.from || d.window.to !== DIP_RULE.to || d.tradingDays !== DIP_RULE.tradingDays) fail(`${p}dip window is ${d.window.from} to ${d.window.to} over ${d.tradingDays} trading days; the rule says ${DIP_RULE.from} to ${DIP_RULE.to} over ${DIP_RULE.tradingDays}`);
+      for (const k of ['highDate', 'highBalance', 'lowDate', 'lowBalance', 'fall', 'drop', 'month']) if (d[k] !== re[k]) fail(`${p}dip.${k} is ${d[k]}, the history says ${re[k]}`);
       const row = acc.history.find((x) => x.date === re.lowDate), a = r.facts.atLow;
-      if (!row) { fail(`${p}no balance history on the low ${re.lowDate}`); continue; }
       if (a.date !== re.lowDate || !eq(a.balance, row.balance) || !eq(a.moneyIn, row.moneyIn) || !eq(a.below, r2(row.moneyIn - row.balance))) fail(`${p}atLow does not match the balance history on ${re.lowDate}`);
       const dc = claimOf(r, 'dip');
-      if (!dc || !dc.text.includes(money(re.high)) || !dc.text.includes(money(re.low)) || !dc.text.includes(`${pct1(-re.drop)}%`)) fail(`${p}the dip sentence does not state the recomputed high, low and drop`);
+      if (!dc || !dc.text.includes(money(re.fall)) || !dc.text.includes(`${pct1(-re.drop)}%`)) fail(`${p}the dip sentence does not state the recomputed fall and drop`);
       if (Boolean(claimOf(r, 'at-low')) !== (r2(row.moneyIn - row.balance) > 0)) fail(`${p}"below what you had put in" is ${claimOf(r, 'at-low') ? 'said' : 'missing'} but the balance was ${row.balance} vs ${row.moneyIn}`);
     }
   });
@@ -626,7 +691,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue;
       const f = r.facts, paused = acc.autoInvest.pausedOn;
       if ((f.pause?.date ?? null) !== paused) fail(`${p}pause ${f.pause?.date ?? null} != autoInvest.pausedOn ${paused}`);
-      if (paused && f.pause && f.pause.date !== nextTradingDay(addDays(f.dip.lowDate, 1))) fail(`${p}the story says she paused "the next day", but ${f.pause.date} is not the trading day after the low ${f.dip.lowDate}`);
+      if (paused && f.pause && f.pause.date !== nextTradingDay(addDays(f.dip.lowDate, 1))) fail(`${p}the story says she paused "the next trading day", but ${f.pause.date} is not the trading day after the low ${f.dip.lowDate}`);
       const since = paused || f.dip.lowDate;
       const back = acc.history.find((x) => x.date > since && x.balance > x.moneyIn);
       if (!back || f.after.backAboveDate !== back.date || !eq(f.after.backAboveBalance, back.balance)) fail(`${p}back above what she put in on ${f.after.backAboveDate}, the history says ${back?.date}`);
@@ -639,7 +704,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       if (f.after.depositsInvested !== !paused) fail(`${p}after.depositsInvested must be ${!paused}`);
       if (!eq(f.after.upNow, acc.gainLoss)) fail(`${p}upNow != gainLoss`);
       const has = (id) => Boolean(claimOf(r, id));
-      if (paused && !(has('pause') && has('cash-after') && !has('kept-buying'))) fail(`${p}a paused account must tell the pause and cash-after, not kept-buying`);
+      if (paused && !(has('pause') && has('cash-after') === deps.length > 0 && !has('kept-buying'))) fail(`${p}a paused account must tell the pause (and cash-after when deposits came after it), not kept-buying`);
       if (!paused && (has('pause') || has('cash-after') || !has('kept-buying'))) fail(`${p}an account that never paused must say auto-invest stayed on, and never tell a pause`);
     }
   });
@@ -721,14 +786,16 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
       const v = {};
       for (const n of PLACEHOLDERS.money) v[n] = fmtMoney(money[n] ?? acc.balance);
       v.change = fmtChange(w?.totalChange ?? 0);
+      v.market = fmtChange(w?.marketChange ?? 0);
       for (const n of PLACEHOLDERS.date) v[n] = fmtDate(acc.asOf);
       for (const n of PLACEHOLDERS.count) v[n] = n === 'decimals' ? String(practice.maxDecimals) : '3';
       Object.assign(v, { age: '22', endAge: '65', startAge: '22', niaAge: '22', theoAge: '32', rating: String(funds[0].upsAndDowns), now: '40', set: '35',
         pct: '95', points: '0.10', fee: '0.45', oldFee: '0.45', newFee: '0.55', shares: '0.5190', dollars: '196' });
       v.ticker = acc.holdings[0]?.ticker ?? funds[0].ticker;
       Object.assign(v, { name: persona.firstName, title: flag.title, label: 'Your balance since March', series: 'Balance', kind: 'Stocks', status: 'Pending',
-        type: 'Deposits', page: 'Activity', query: 'fee', region: funds[0].region,
-        claim: story.claims[0].text, note: story.bumpy.note, reply: 'Here is how it turns out.', setting: 'Start at 30' });
+        type: 'Deposits', page: 'Activity', query: 'fee', region: funds[0].region ?? 'United States',
+        claim: story.claims[0].text, note: story.bumpy.note, reply: 'Here is how it turns out.', setting: 'Start at 30',
+        month: story.rosaStory?.[acc.id]?.facts.dip.month ?? 'May', direction: 'up' });
       const flags = flagsOf(acc).length ? flagsOf(acc) : [flag];
       return [...glossaryVariants.map((g) => ({ ...v, ...g })), ...flags.map((f) => ({ ...v, ...glossaryVariants[0], title: f.title }))];
     };
@@ -759,7 +826,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null }
           for (const n of names) if (isWord(n)) v[n] = parent[`${n}Word`];
           const filled = fill(t, v);
           const graded = fill(t, { ...v, ...Object.fromEntries(QUOTED_NAMES.filter((n) => !isWord(n)).map((n) => [n, 'Name'])) });
-          if (!seen.has(filled)) { seen.add(filled); lint(`${file}:${path} [${scId}]`, filled, bare, graded); }
+          if (!seen.has(filled)) { seen.add(filled); lint(`${file}:${path} [${scId}]`, filled, bare, FIXED_WORDING[`${file}:${path}`] ? '' : graded); }
         }
       }
     }
@@ -806,6 +873,6 @@ export function report(results, { quiet = false } = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { data, missing } = loadData();
-  const failed = report(validate(data, { missing, briefExamples: loadBriefExamples(), copy: loadCopy() }));
+  const failed = report(validate(data, { missing, briefExamples: loadBriefExamples(), copy: loadCopy(), sources: loadSources() }));
   process.exit(failed ? 1 : 0);
 }
