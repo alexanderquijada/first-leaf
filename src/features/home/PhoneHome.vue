@@ -190,6 +190,7 @@ function nextWord() {
 <style scoped>
 .phome {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
@@ -232,6 +233,7 @@ function nextWord() {
 .phome__top,
 .phome__more {
   display: flex;
+  flex-wrap: wrap; /* on a narrow phone the title moves under its badge instead of squeezing */
   align-items: center;
   gap: 10px;
   min-height: 56px;
@@ -249,8 +251,8 @@ function nextWord() {
 }
 
 .phome__top-text {
-  flex: 1;
-  line-height: 1.4;
+  flex: 1 1 9rem;
+  line-height: var(--fl-body-leading);
 }
 
 .phome__seen {

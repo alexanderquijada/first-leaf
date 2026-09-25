@@ -2,7 +2,7 @@
 // The practice order on a phone: buy or sell, pick a fund, type the amount on a
 // large keypad, review it in a bottom sheet, confirm. Errors show above the keypad
 // and Review/Confirm stay disabled until the order is valid.
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import BottomSheet from '@/shared/components/BottomSheet.vue'
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
 import { funds, getFund } from '@/shared/data'
@@ -20,6 +20,14 @@ const reviewText = computed(() => {
   return side.value === 'buy' ? (c ? O.reviewBuyCrypto : O.reviewBuy) : c ? O.reviewSellCrypto : O.reviewSell
 })
 const sheetOpen = ref(false)
+// When an error appears, scroll just enough to show it below the sticky banner. Only then:
+// scrolling on every key press would move the keys under a finger.
+const errorEl = ref<HTMLElement | null>(null)
+watch(shownError, async (now, before) => {
+  if (!now || now === before) return
+  await nextTick()
+  errorEl.value?.scrollIntoView({ block: 'nearest' })
+})
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'del'] as const
 
 function press(k: (typeof KEYS)[number]) {
@@ -55,7 +63,7 @@ function onSheet(open: boolean) {
       </fieldset>
       <p class="porder__label" id="porder-amount-label">{{ O.phoneAmountLabel }}</p>
       <p class="porder__amount fl-tabular" aria-labelledby="porder-amount-label" role="status">{{ fill(O.phoneAmount, { dollars: amount || '0' }) }}</p>
-      <p class="porder__error" role="alert">{{ shownError }}</p>
+      <p ref="errorEl" class="porder__error" role="alert">{{ shownError }}</p>
       <div class="porder__keys" role="group" :aria-label="O.keypad">
         <button
           v-for="k in KEYS"
@@ -139,7 +147,9 @@ function onSheet(open: boolean) {
   margin: 4px 0 8px;
   color: var(--color-terracotta);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: var(--fl-body-leading);
+  /* Room for the sticky banner under the top bar (the page already keeps 128px). */
+  scroll-margin-top: 64px;
 }
 
 .porder__keys {
@@ -184,7 +194,7 @@ function onSheet(open: boolean) {
   display: flex;
   gap: 8px;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: var(--fl-body-leading);
 }
 
 .porder__done .mdi {
