@@ -17,6 +17,7 @@ async function seriousViolations(page: Page) {
 const PAGES = ['/', '/story', '/activity', '/activity/rosa-starter-035', '/alerts', '/alerts/deposit-returned', '/alerts/nope', '/funds', '/funds/AAPL', '/funds/BTC', '/practice', '/learn', '/learn/ups-and-downs', '/?scenario=all-clear', '/?scenario=brand-new', '/story?scenario=brand-new', '/activity?scenario=brand-new']
 const WIDTHS = [
   { width: 390, height: 844 },
+  { width: 768, height: 1024 },
   { width: 1280, height: 800 },
 ]
 
@@ -51,6 +52,10 @@ for (const size of WIDTHS) {
       await page.goto('/')
       if (size.width < 600) await page.getByRole('button', { name: 'Why it moved this week' }).click()
       await page.getByRole('button', { name: 'Show as table' }).first().click()
+      // Playwright's click scrolls the button into view, which can leave the chart's range
+      // buttons under the sticky top bar at 768px; axe then reports them as obscured. That's
+      // the test's scroll position, not the page, so measure from the top of the page.
+      await page.evaluate(() => window.scrollTo(0, 0))
       expect(await seriousViolations(page)).toEqual([])
     })
 

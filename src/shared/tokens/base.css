@@ -17,6 +17,9 @@
 }
 
 html {
+  /* Scrolling (focus moving into a panel, a #chapter link) leaves room for the sticky top
+     bar, so nothing lands underneath it (WCAG 2.4.11). Same offset as the router's. */
+  scroll-padding-top: 128px;
   font-family: var(--font-ui);
   color: var(--color-ink);
   background: var(--color-cream);
