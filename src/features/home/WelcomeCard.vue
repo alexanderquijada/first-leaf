@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SceneArt from '@/shared/illustrations/SceneArt.vue'
 // A brand-new account: no money yet, so no charts, just what happens next.
 import { persona } from '@/shared/data'
 import CopyText from '@/shared/components/CopyText.vue'
@@ -11,6 +12,7 @@ const W = copy.welcome
 
 <template>
   <section class="welcome" aria-labelledby="welcome-title">
+    <SceneArt scene="welcome" :size="120" class="welcome__art" />
     <h2 id="welcome-title" class="welcome__title">{{ fill(W.title, { name: persona.firstName }) }}</h2>
     <p>{{ W.lede }}</p>
     <ol class="welcome__steps">
@@ -22,6 +24,11 @@ const W = copy.welcome
 </template>
 
 <style scoped>
+.welcome__art {
+  float: right;
+  margin: 0 0 8px 16px;
+}
+
 .welcome__title {
   font-size: 2rem;
 }

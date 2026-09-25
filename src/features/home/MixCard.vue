@@ -3,6 +3,7 @@
 // she set. Cash is shown separately; it isn't part of the mix.
 import { computed } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
+import GroupMixBar from '@/shared/charts/GroupMixBar.vue'
 import CopyText from '@/shared/components/CopyText.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { fill } from '@/shared/copy'
@@ -35,10 +36,16 @@ const columns = [
   { key: 'set', label: X.colSet, numeric: true },
 ]
 const rows = computed(() => rowsRaw.value.map((r) => ({ fund: r.ticker, now: `${r.now}%`, set: `${r.set}%` })))
+const groups = computed(() => [
+  ...account.value.holdings.map((h) => ({ group: (getFund(h.ticker)?.kind === 'crypto' ? 'crypto' : 'stocks') as 'stocks' | 'crypto', value: h.value })),
+  { group: 'cash' as const, value: account.value.cash },
+])
 </script>
 
 <template>
   <ChartFrame :title="X.title" :summary="summary" :columns="columns" :rows="rows">
+    <!-- Stocks, crypto and cash on the dark panel, each with its own pattern (BRIEF.md §6). -->
+    <GroupMixBar :parts="groups" class="mix__groups" />
     <p class="mix__lede"><CopyText :text="X.lede"><template #mix><TermTip id="your-mix">{{ X.mixWord }}</TermTip></template></CopyText></p>
     <ul class="mix" :aria-label="X.listLabel">
       <li v-for="r in rowsRaw" :key="r.ticker" class="mix__row">
@@ -55,6 +62,10 @@ const rows = computed(() => rowsRaw.value.map((r) => ({ fund: r.ticker, now: `${
 </template>
 
 <style scoped>
+.mix__groups {
+  margin: 4px 0 12px;
+}
+
 .mix__lede {
   margin: 0 0 8px;
 }

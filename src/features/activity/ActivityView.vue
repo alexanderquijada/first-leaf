@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SceneArt from '@/shared/illustrations/SceneArt.vue'
 // Activity: every deposit, buy and dividend, newest first, with this session's
 // pending deposits on top. Type and status filters combine.
 import { describeActivity } from '@/shared/activityText'
@@ -26,7 +27,7 @@ const filterSummary = computed(
 <template>
   <div class="activity">
     <h1>{{ copy.title }}</h1>
-    <p v-if="!all.length" class="activity__empty">{{ copy.empty }}</p>
+    <div v-if="!all.length" class="activity__empty"><SceneArt scene="empty" :size="140" /><p>{{ copy.empty }}</p></div>
     <template v-else>
       <template v-if="isPhone">
         <div class="activity__phonebar">
@@ -139,7 +140,7 @@ const filterSummary = computed(
   min-height: 48px;
   padding: 0 18px;
   border: 1px solid var(--color-forest);
-  border-radius: 4px;
+  border-radius: 999px;
   background: var(--color-paper);
   color: var(--color-forest);
   font: inherit;
@@ -201,7 +202,7 @@ const filterSummary = computed(
   min-height: 48px;
   padding: 0 16px;
   border: 1px solid var(--color-forest);
-  border-radius: 24px;
+  border-radius: 999px;
   background: var(--color-paper);
   color: var(--color-forest);
   font: inherit;

@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import SceneArt from '@/shared/illustrations/SceneArt.vue'
 // A friendly 404, inside the app's layout, so all the navigation still works.
 import copy from './copy.json'
 </script>
 
 <template>
   <div class="nf">
+    <SceneArt scene="lost" :size="160" />
     <h1>{{ copy.title }}</h1>
     <p>{{ copy.why }}</p>
     <RouterLink to="/" class="nf__home">{{ copy.home }}</RouterLink>
