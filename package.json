@@ -23,9 +23,10 @@
     "check:deploy": "node scripts/check-deploy.mjs",
     "test:e2e": "playwright test",
     "check:live": "node scripts/check-live.mjs",
+    "check:fixtures": "node scripts/check-fixtures.mjs",
     "check:icons": "node scripts/check-icons.mjs",
     "check:icons:selftest": "node scripts/check-icons.mjs --selftest",
-    "check": "npm run build && npm run validate && npm run validate:selftest && npm run check:boundaries && npm run check:boundaries:selftest && npm run check:icons && npm run check:icons:selftest && npm run test:e2e",
+    "check": "npm run build && npm run check:fixtures && npm run validate && npm run validate:selftest && npm run check:boundaries && npm run check:boundaries:selftest && npm run check:icons && npm run check:icons:selftest && npm run test:e2e",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
   },
   "dependencies": {

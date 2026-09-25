@@ -1,0 +1,23 @@
+{
+  "id": "rosa",
+  "firstName": "Rosa",
+  "age": 26,
+  "city": "Tucson, Arizona",
+  "job": "Dental hygienist",
+  "fictional": true,
+  "story": "Rosa opened her first investing account in March 2026. She had never bought a stock before. She puts in $150 each month. This summer, a dip in prices made her nervous, so she paused auto-invest. She wants to understand what her money is doing without feeling lost.",
+  "worries": [
+    "Losing money without knowing why",
+    "Words like \"volatility\" that nobody explains",
+    "Doing something wrong and not being able to undo it"
+  ],
+  "devices": {
+    "phone": "iPhone, one hand, between other things",
+    "laptop": "Laptop on Sunday mornings"
+  },
+  "moments": {
+    "P301": "Sunday morning at her laptop, doing a calm weekly review of the whole account.",
+    "P302": "An evening on the couch, working through one lesson about why starting early matters.",
+    "P303": "A 60-second check on her phone between other things, like waiting in line for coffee: does anything need me, and why did my balance move?"
+  }
+}

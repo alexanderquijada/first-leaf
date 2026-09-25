@@ -14,8 +14,14 @@ export default defineConfig({
     vueDevTools(),
   ],
   resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-    },
+    alias: [
+      // Test-only builds (FL_DATA_DIR, used by the big-move Playwright project) read the
+      // app's data from a fixture folder. The shipped build never sets it, and
+      // `npm run check:fixtures` proves no fixture reaches dist/.
+      ...(process.env.FL_DATA_DIR
+        ? [{ find: /^@\/shared\/data\/([\w-]+\.json)$/, replacement: `${fileURLToPath(new URL(`./${process.env.FL_DATA_DIR}/`, import.meta.url))}$1` }]
+        : []),
+      { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+    ],
   },
 })

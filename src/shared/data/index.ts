@@ -6,19 +6,22 @@
 //
 // Screens don't read accounts, activity or attention directly. They go through
 // useScenario(), which picks the account for the current demo scenario.
+//
+// Imports use the @/shared/data/ path so a test-only build can point them at a fixture
+// folder (FL_DATA_DIR, see vite.config.ts). The shipped build always uses this folder.
 
-import metaJson from './meta.json'
-import personaJson from './persona.json'
-import fundsJson from './funds.json'
-import accountJson from './account.json'
-import accountAllClearJson from './account-all-clear.json'
-import accountNewJson from './account-new.json'
-import activityJson from './activity.json'
-import attentionJson from './attention.json'
-import scenariosJson from './scenarios.json'
-import practiceJson from './practice.json'
-import storyJson from './story-p302.json'
-import glossaryJson from './glossary.json'
+import metaJson from '@/shared/data/meta.json'
+import personaJson from '@/shared/data/persona.json'
+import fundsJson from '@/shared/data/funds.json'
+import accountJson from '@/shared/data/account.json'
+import accountAllClearJson from '@/shared/data/account-all-clear.json'
+import accountNewJson from '@/shared/data/account-new.json'
+import activityJson from '@/shared/data/activity.json'
+import attentionJson from '@/shared/data/attention.json'
+import scenariosJson from '@/shared/data/scenarios.json'
+import practiceJson from '@/shared/data/practice.json'
+import storyJson from '@/shared/data/story-p302.json'
+import glossaryJson from '@/shared/data/glossary.json'
 
 /** A date as YYYY-MM-DD. */
 export type ISODate = string
@@ -315,7 +318,7 @@ export interface Story {
     theo: { age: number; value: number }[]
     note: string
   }
-  yourTurn: { personaId: string; startAge: number; monthly: number; note: string }
+  yourTurn: { personaId: string; startAge: number; monthly: number }
   claims: { id: string; text: string }[]
   sources: { label: string; url: string }[]
   /** Per account; null for an account with no history yet. */

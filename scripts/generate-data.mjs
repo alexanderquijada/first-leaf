@@ -16,7 +16,11 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = join(ROOT, 'src', 'shared', 'data');
+// FL_FIXTURE=big-move writes a TEST-ONLY copy of the data (a week where NVIDIA moved 9%)
+// to tests/fixtures/big-move/, for the Playwright test that proves the big-move alert.
+// It never goes into src/shared/data, and check:fixtures proves it never ships.
+const FIXTURE = process.env.FL_FIXTURE === 'big-move';
+const OUT = FIXTURE ? join(ROOT, 'tests', 'fixtures', 'big-move') : join(ROOT, 'src', 'shared', 'data');
 mkdirSync(OUT, { recursive: true });
 
 // ---------- helpers ----------
@@ -65,7 +69,7 @@ const block = (name) => JSON.parse(ANCHOR_DOC.match(new RegExp('```json ' + name
 const ANCHORS = block('price-anchors');
 const STOCK_VOL = block('stock-volatility');
 const DIVIDENDS = block('dividends');
-const coingecko = (id) => JSON.parse(readFileSync(join(OUT, 'raw', `coingecko-${id}.json`), 'utf8'));
+const coingecko = (id) => JSON.parse(readFileSync(join(ROOT, 'src', 'shared', 'data', 'raw', `coingecko-${id}.json`), 'utf8'));
 
 // ---------- fixed facts ----------
 const AS_OF = '2026-09-20';            // Sunday: the day of Rosa's weekly review
@@ -380,6 +384,15 @@ for (let seed = Number(process.env.FL_SEED || 2); ; seed++) {
   if (calm.flags.some((f) => f.severity !== 'fyi')) continue;
   SEED = seed; dip = d1; break;
 }
+if (FIXTURE) {
+  // Lower NVIDIA's Sept. 11 close so it rises 9% this week, then re-run both accounts on it.
+  const nv = assets.find((a) => a.ticker === 'NVDA'), p0 = r2(nv.latestPrice / 1.09), base = priceOn;
+  for (const k of ['daily', 'weekly']) for (const x of nv.history[k]) if (x.date === WEEK_START_CLOSE) x.close = p0;
+  priceOn = (t, d) => (t === 'NVDA' && d === WEEK_START_CLOSE ? p0 : base(t, d));
+  main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, autoInvestPausedOn: main.account.autoInvest.pausedOn, returnedDeposits: { '2026-09-01': '2026-09-03' } });
+  calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn });
+  meta.fixture = 'TEST-ONLY: a big-move week for the Playwright test. Never shipped.';
+}
 const funds = assets;
 const PAUSED_ON = main.account.autoInvest.pausedOn;
 const emptyAccount = {
@@ -467,8 +480,8 @@ const story = {
   startAgeSlider: { min: 18, max: 45, step: 1, monthly: 100 },
   bumpy: { seed: bumpySeed, yearlyReturns, overallGrowth: RATE, nia: bNia, theo: bTheo,
     note: 'Same overall growth as the smooth line: 6% a year. The order of good and bad years changes the ending.' },
-  yourTurn: { personaId: 'rosa', startAge: persona.age, monthly: RECURRING.amount,
-    note: 'This is an example, not a plan or advice.' },
+  // Ruling (Sept. 25): no "not a plan or advice" note (disclaimer language, ruling B).
+  yourTurn: { personaId: 'rosa', startAge: persona.age, monthly: RECURRING.amount },
   claims: [
     { id: 'early-ends-ahead', text: 'Nia ends with more money than Theo.' },
     { id: 'early-puts-in-less', text: 'Nia puts in less money than Theo.' },
@@ -536,6 +549,7 @@ write('attention.json', { 'rosa-starter': main.flags, 'rosa-all-clear': calm.fla
 write('scenarios.json', scenarios);
 write('practice.json', practice);
 write('story-p302.json', story);
+if (FIXTURE) writeFileSync(join(OUT, 'glossary.json'), readFileSync(join(ROOT, 'src', 'shared', 'data', 'glossary.json')));
 console.log(`Wrote data to ${OUT} (seed ${SEED})`);
 console.log('dip', dip, 'paused', PAUSED_ON);
 for (const { account: a, flags } of [main, calm]) console.log(a.id, { balance: a.balance, cash: a.cash, moneyIn: a.moneyIn, gainLoss: a.gainLoss, week: a.weeklyChange.totalChange, goal: [a.goal.behindBy, a.goal.progress], flags: flags.map((f) => `${f.id}${f.newSinceLastReview ? '*' : ''}`) });

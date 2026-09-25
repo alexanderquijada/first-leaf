@@ -1,0 +1,20 @@
+[
+  {
+    "id": "normal",
+    "label": "Rosa, six months in",
+    "description": "Six months in. Her account has a few things worth a look.",
+    "accountId": "rosa-starter"
+  },
+  {
+    "id": "all-clear",
+    "label": "Nothing needs you",
+    "description": "A calmer version of Rosa. Every deposit went through and auto-invest stayed on.",
+    "accountId": "rosa-all-clear"
+  },
+  {
+    "id": "brand-new",
+    "label": "Brand-new account",
+    "description": "Rosa just opened her account and has not added money yet.",
+    "accountId": "rosa-new"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "id": "rosa-new",
+  "ownerId": "rosa",
+  "name": "Starter account",
+  "fictional": true,
+  "openedOn": "2026-09-18",
+  "asOf": "2026-09-20",
+  "lastClose": "2026-09-18",
+  "balance": 0,
+  "investedValue": 0,
+  "cash": 0,
+  "cashSince": null,
+  "moneyIn": 0,
+  "gainLoss": 0,
+  "gainLossPercent": 0,
+  "dividendsTotal": 0,
+  "recurringDeposit": null,
+  "autoInvest": {
+    "on": false,
+    "startedOn": null,
+    "pausedOn": null
+  },
+  "targetMix": null,
+  "holdings": [],
+  "goal": null,
+  "weeklyChange": null,
+  "history": []
+}

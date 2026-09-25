@@ -195,7 +195,7 @@ for (const c of rosaA.claims.filter((c) => !rosaN.claims.some((x) => x.id === c.
   const r = rows['Your money story'].at(-1); r.shown = `${c.text} *(the “Nothing needs you” account only)*`; r.other = 'Normal: not shown<br>Brand-new: not shown';
 }
 for (const c of story.claims) addRow('Your money story', `data:story.claims.${c.id}`, c.text, 'Your money story, chapter 5');
-for (const [k, t] of [['assumptions.note', story.assumptions.note], ['bumpy.note', story.bumpy.note], ['yourTurn.note', story.yourTurn.note]]) addRow('Your money story', `data:story.${k}`, t, 'Your money story, chapter 5');
+for (const [k, t] of [['assumptions.note', story.assumptions.note], ['bumpy.note', story.bumpy.note]]) addRow('Your money story', `data:story.${k}`, t, 'Your money story, chapter 5');
 addRow('Practice', 'data:practice.timeMachine.note', practice.timeMachine.note, 'Practice');
 for (const g of glossary) for (const field of ['term', 'alsoCalled', 'short', 'detail', 'example']) {
   const t = field === 'alsoCalled' ? g.alsoCalled.join(', ') : g[field]; if (!t) continue;

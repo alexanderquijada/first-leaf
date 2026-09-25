@@ -159,7 +159,6 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
     <p class="chapter__claim" aria-live="polite" data-testid="your-turn">
       {{ fill(K.yourResult, { age: myAge, monthly: whole(myMonthly), endAge, value: whole(myResult.value) }) }}
     </p>
-    <p class="k5__note">{{ story.yourTurn.note }}</p>
   </section>
 </template>
 

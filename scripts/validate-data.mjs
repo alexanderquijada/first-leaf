@@ -91,7 +91,12 @@ export const REAL_NAMES = ['Apple','Microsoft','Amazon','Alphabet','Google','Met
 // Real-app ruling (Sept. 24): inside the site, First Leaf reads as a real app, so no
 // project language may reach the screen. The data itself stays marked fictional (G1, G5).
 // Ruling B (Phase 2.5): no disclaimer of any kind either, so "simulated", "concept" and "not real" are banned too.
-export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i, /this project/i, /for reviewers/i, /\bfictional\b/i, /\bsimulated\b/i, /\bconcept\b/i, /\bnot real\b/i];
+export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i, /this project/i, /for reviewers/i, /\bfictional\b/i, /\bsimulated\b/i, /\bconcept\b/i, /\bnot real\b/i,
+  // Ruling (Sept. 25): no advice disclaimer in any wording ("not financial advice",
+  // "not a plan or advice", "Nothing here is investment advice")...
+  /\b(financial|investment) advice\b/i, /\bnot\b[^.]{0,30}\badvice\b/i,
+  // ...and never a claim of SIPC membership or protection (15 U.S.C. §78jjj(d)), or FDIC.
+  /\bmember sipc\b/i, /\bsipc member\b/i, /\bprotected by sipc\b/i, /\bsipc[- ]protected\b/i, /\bfdic\b/i];
 export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we recommend/i, /\bbest (fund|investment|stock)s?\b/i, /guarantee/i,
   /can'?t lose/i, /risk[- ]free/i, /\bsure thing\b/i, /\bbuy now\b/i, /\bsell now\b/i, /\bbuy the dip\b/i, /will (definitely|surely) (grow|go up)/i,
   /\b(is|are|very) safe\b/i, /\bcompare fees\b/i, /\bswitch (to|funds)\b/i, /\bmost people\b/i];
@@ -243,7 +248,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   const otherTexts = [
     ...rosaTexts,
     ['story:pointOfView', story.pointOfView], ['story:note', story.assumptions.note],
-    ['story:bumpy.note', story.bumpy.note], ['story:yourTurn.note', story.yourTurn.note], ['practice:timeMachine.note', practice.timeMachine.note],
+    ['story:bumpy.note', story.bumpy.note], ['practice:timeMachine.note', practice.timeMachine.note],
     ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
     ...funds.map((f) => [`funds:${f.ticker}.about`, f.about]),
     ...scenarios.map((s) => [`scenarios:${s.id}.description`, s.description]), // README-only: exempt from G6, still plain
@@ -304,7 +309,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     for (const a of allAccounts) if (a.fictional !== true) fail(`${a.id} not fictional`);
   });
 
-  rule('G6', 'No project or disclaimer language on screen (made up, demo, case study, this project, for reviewers, fictional, simulated, concept, not real)', (fail) => {
+  rule('G6', 'No project or disclaimer language on screen (made up, demo, case study, this project, for reviewers, fictional, simulated, concept, not real, any "not advice" wording) and no SIPC-membership, SIPC-protection or FDIC claims', (fail) => {
     const screen = [
       ...glossary.flatMap((g) => [[`glossary:${g.id}.term`, g.term], [`glossary:${g.id}.alsoCalled`, (g.alsoCalled || []).join(', ')], [`glossary:${g.id}.short`, g.short], [`glossary:${g.id}.detail`, g.detail], [`glossary:${g.id}.example`, g.example]]),
       ...allAccounts.flatMap((acc) => flagsOf(acc).flatMap((a) => [[`attention:${acc.id}:${a.id}`, `${a.title}. ${a.body} ${a.nextStep} ${a.action?.label ?? ''}`]])),
@@ -834,7 +839,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     const storySentences = [
       ...Object.values(story.rosaStory || {}).filter(Boolean).flatMap((r) => [[`story:rosaStory:${r.accountId}.pointOfView`, r.pointOfView], ...r.claims.map((c) => [`story:rosaStory:${r.accountId}:${c.id}`, c.text])]),
       ['story:pointOfView', story.pointOfView], ['story:assumptions.note', story.assumptions.note], ['story:bumpy.note', story.bumpy.note],
-      ['story:yourTurn.note', story.yourTurn.note], ['practice:timeMachine.note', practice.timeMachine.note],
+      ['practice:timeMachine.note', practice.timeMachine.note],
       ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
     ];
     for (const [where, text] of storySentences) lint(where, text, text);

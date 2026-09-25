@@ -1,0 +1,14 @@
+{
+  "product": "First Leaf",
+  "company": "First Leaf Investing",
+  "asOf": "2026-09-20",
+  "lastClose": "2026-09-18",
+  "lastReview": "2026-09-13",
+  "cashWaitingThreshold": 25,
+  "bigMoveThreshold": 0.07,
+  "wordOfTheDay": "ups-and-downs",
+  "currency": "USD",
+  "fictional": true,
+  "dataVersion": 3,
+  "fixture": "TEST-ONLY: a big-move week for the Playwright test. Never shipped."
+}

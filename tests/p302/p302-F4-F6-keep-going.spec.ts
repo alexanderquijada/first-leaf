@@ -66,10 +66,11 @@ test('smooth and bumpy show the same friends, with "overall growth" and never "a
   expect((await series())[0].at(-1)).toBe(nia.final.value)
 })
 
-test("your turn starts at Rosa's numbers and says it is an example", async ({ page }) => {
+test("your turn starts at Rosa's numbers, with no advice disclaimer", async ({ page }) => {
   await page.goto('/story#chapter-5')
   await expect(page.getByTestId('your-turn')).toHaveText(`Start at 26 with $150 a month. At 65 you would have ${whole(proj(26, 150))}.`)
-  await expect(page.locator('#chapter-5')).toContainText('This is an example, not a plan or advice.')
+  // Ruling 7 (Sept. 25): the "not a plan or advice" line is gone (disclaimer language).
+  await expect(page.locator('#chapter-5')).not.toContainText('advice')
 })
 
 test('chapter 6 leads into Practice', async ({ page }) => {

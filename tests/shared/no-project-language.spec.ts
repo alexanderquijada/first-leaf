@@ -3,7 +3,7 @@ import { test, expect } from '../fixtures'
 // Real-app ruling (Sept. 24) and ruling B (Phase 2.5): nothing on screen may read as a
 // project, an exercise or a disclaimer. This crawls every page in every scenario, at phone
 // and laptop widths, with the usual things opened, and searches the rendered text.
-const BANNED = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d|\bsimulated\b|\bconcept\b|\bnot real\b|(investment|financial) advice/i
+const BANNED = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d|\bsimulated\b|\bconcept\b|\bnot real\b|(investment|financial) advice|\bnot\b[^.]{0,30}\badvice\b|member sipc|sipc member|protected by sipc|sipc[- ]protected|\bfdic\b/i
 const PAGES = ['/', '/alerts', '/alerts/deposit-returned', '/alerts/cash-sitting', '/alerts/sipc-crypto', '/activity', '/activity/rosa-starter-035', '/activity/rosa-starter-002', '/funds', '/funds/AAPL', '/funds/BTC', '/funds/SOL', '/story', '/practice', '/learn', '/learn/ups-and-downs', '/learn/practice-mode', '/learn/sipc-protection', '/nope']
 const SCENARIOS = ['normal', 'all-clear', 'brand-new']
 
@@ -40,7 +40,7 @@ const ALLOWED = [
 ]
 test('the banned words are caught, and the Practice banner and data notes are not', () => {
   for (const t of ALLOWED) expect(t).not.toMatch(BANNED)
-  for (const t of ['Prices here are simulated.', 'First Leaf is a concept app.', 'This money is not real.', 'Nothing here is investment advice.'])
+  for (const t of ['Prices here are simulated.', 'First Leaf is a concept app.', 'This money is not real.', 'Nothing here is investment advice.', 'This is not financial advice.', 'This is an example, not a plan or advice.', 'Member SIPC', 'First Leaf is a SIPC member.', 'Your stocks are protected by SIPC.', 'SIPC-protected account', 'FDIC insured'])
     expect(t, t).toMatch(BANNED)
 })
 
