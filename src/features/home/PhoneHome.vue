@@ -89,10 +89,9 @@ function nextWord() {
           <template v-else><Starburst :size="26" color="var(--color-lime)" class="phome__sun" />{{ P.nothing }}</template>
         </h2>
         <RouterLink v-if="top" :to="`/alerts/${top.id}`" class="phome__top">
-          <SeverityBadge :severity="top.severity" />
+          <span class="phome__tags"><SeverityBadge :severity="top.severity" /><span v-if="isSeen(top.id)" class="phome__seen">{{ P.seen }}</span></span>
           <span class="phome__top-text">{{ top.title }}</span>
-          <span v-if="isSeen(top.id)" class="phome__seen">{{ P.seen }}</span>
-          <span class="mdi mdi-chevron-right" aria-hidden="true" />
+          <span class="mdi mdi-chevron-right phome__go" aria-hidden="true" />
         </RouterLink>
         <RouterLink v-if="top && restHeadsUps" to="/alerts" class="phome__more">
           {{ restHeadsUps === 1 ? P.seeHeadsUpOne : fill(P.seeHeadsUpMany, { count: restHeadsUps }) }}
@@ -271,7 +270,7 @@ function nextWord() {
   padding: 2px 8px;
   border: 1px solid var(--color-on-panel);
   border-radius: 999px;
-  font-size: 0.8125rem;
+  font-size: var(--type-small); /* never under 14px */
   color: var(--color-on-panel);
 }
 
@@ -466,5 +465,26 @@ function nextWord() {
 .phome__next {
   background: var(--color-forest);
   color: var(--color-paper);
+}
+
+/* The needs-you row: its badge (and "Seen") above the title, the chevron on the right,
+   so the row never breaks apart, even with "Seen", at 320px or with large text. */
+.phome__needs .phome__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  row-gap: 6px;
+}
+
+.phome__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.phome__needs .phome__top > .phome__go {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
 }
 </style>

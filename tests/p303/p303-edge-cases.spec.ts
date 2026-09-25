@@ -107,3 +107,52 @@ test('phone body text has a line height of at least 1.6', async ({ page }) => {
   }
   expect(low).toEqual([])
 })
+
+// Phase 5 (second review): no text on any phone page is under 14px, including the "Seen"
+// pill and chapter 5's slider labels, anywhere on the page, not only on the first screen.
+test('no phone text is under 14px on any page', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  const small: string[] = []
+  const scan = async (where: string) => {
+    small.push(
+      ...(await page.evaluate((where) => {
+        const out: string[] = []
+        const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+        for (let n = w.nextNode(); n; n = w.nextNode()) {
+          const el = n.parentElement!
+          if (!n.textContent!.trim() || el.closest('.fl-visually-hidden, [aria-hidden="true"]') || !el.getClientRects().length) continue
+          const fs = parseFloat(getComputedStyle(el).fontSize)
+          if (fs < 14) out.push(`${where}: "${n.textContent!.trim().slice(0, 24)}" ${fs}px`)
+        }
+        return out
+      }, where)),
+    )
+  }
+  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/activity', '/activity/rosa-starter-035', '/funds', '/funds/BTC', '/practice', '/learn', '/learn/crypto', '/?scenario=all-clear', '/?scenario=brand-new']) {
+    await page.goto(path)
+    await page.locator('main').waitFor()
+    await scan(path)
+  }
+  // After an alert is seen, and with chapter 5 open.
+  await page.goto('/')
+  await page.locator('.phome__needs .phome__top').first().click()
+  await page.locator('.fl-bottombar').getByRole('link', { name: 'Home' }).click()
+  await expect(page.locator('.phome__seen')).toBeVisible()
+  await scan('/ (seen)')
+  await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click()
+  await scan('/story (chapter 5 open)')
+  expect([...new Set(small)]).toEqual([])
+})
+
+test('with "Seen", the needs-you row keeps its chevron on the right, on one row', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await page.locator('.phome__needs .phome__top').first().click()
+  await page.locator('.fl-bottombar').getByRole('link', { name: 'Home' }).click()
+  const row = page.locator('.phome__needs .phome__top').first()
+  await expect(row.locator('.phome__seen')).toBeVisible()
+  const [r, go] = [(await row.boundingBox())!, (await row.locator('.phome__go').boundingBox())!]
+  expect(go.x + go.width).toBeGreaterThan(r.x + r.width - 40)
+  expect(go.y).toBeLessThan(r.y + r.height / 2 + 12)
+})
