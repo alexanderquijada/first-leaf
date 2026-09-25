@@ -9,10 +9,10 @@ import { useGlossary } from '@/shared/composables/useGlossary'
 import { useHandled } from '@/shared/composables/useHandled'
 import { useScenario } from '@/shared/composables/useScenario'
 import { useSession } from '@/shared/composables/useSession'
-import type { AttentionFlag } from '@/shared/data'
+import { getFund, type AttentionFlag } from '@/shared/data'
 import CopyText from '@/shared/components/CopyText.vue'
 import { fill } from '@/shared/copy'
-import { formatDate, formatMoney } from '@/shared/format'
+import { formatChange, formatDate, formatMoney } from '@/shared/format'
 import copy from './copy.json'
 
 const F = copy.facts
@@ -56,13 +56,16 @@ const facts = computed<{ label: string; value: string }[]>(() => {
       { label: F.waitingSince, value: acc.cashSince ? formatDate(acc.cashSince) : '' },
       { label: F.autoInvest, value: autoInvestOn.value ? F.on : acc.autoInvest.pausedOn ? fill(F.pausedSince, { date: formatDate(acc.autoInvest.pausedOn) }) : F.off },
     ]
-  if (a.id === 'fee-going-up' && a.feeFrom !== undefined && a.feeTo !== undefined)
+  if (a.id.startsWith('big-move-') && a.ticker && a.movePercent !== undefined && acc.weeklyChange) {
+    const w = acc.weeklyChange, f = getFund(a.ticker), change = w.byFund.find((x) => x.ticker === a.ticker)?.change ?? 0
+    const close = (d: string) => f?.history.daily.find((x) => x.date === d)?.close ?? 0
     return [
-      { label: F.feeNow, value: `${a.feeFrom.toFixed(2)}%` },
-      { label: fill(F.feeFrom, { date: formatDate(a.date) }), value: `${a.feeTo.toFixed(2)}%` },
-      { label: F.change, value: fill(F.feeChange, { points: (a.feeTo - a.feeFrom).toFixed(2) }) },
-      { label: F.about, value: fill(F.moreAYear, { amount: formatMoney(a.amount) }) },
+      { label: fill(F.priceOn, { date: formatDate(w.from) }), value: formatMoney(close(w.from)) },
+      { label: fill(F.priceOn, { date: formatDate(w.to) }), value: formatMoney(close(w.to)) },
+      { label: F.move, value: fill(F.moveValue, { direction: a.movePercent >= 0 ? F.up : F.down, pct: (Math.abs(a.movePercent) * 100).toFixed(1) }) },
+      { label: F.yourChange, value: formatChange(change) },
     ]
+  }
   if (a.id === 'dividend-paid')
     return [
       { label: F.amount, value: formatMoney(a.amount) },

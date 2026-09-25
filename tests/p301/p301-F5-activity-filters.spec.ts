@@ -5,7 +5,7 @@ import { load } from '../data'
 // the returned deposit opens its details; session items show with their status.
 test.use({ viewport: { width: 1280, height: 900 } })
 
-const acts = load('activity')['rosa-starter'] as { type: string; status: string }[]
+const acts = load('activity')['rosa-starter'] as { id: string; type: string; status: string }[]
 const TYPES = [['All', null], ['Deposits', 'deposit'], ['Buys', 'buy'], ['Dividends', 'dividend']] as const
 const STATUSES = [['All', null], ['Completed', 'completed'], ['Pending', 'pending'], ['Returned', 'returned']] as const
 
@@ -33,7 +33,8 @@ test('the returned deposit opens its details', async ({ page }) => {
   await page.getByRole('group', { name: 'Type' }).getByRole('button', { name: 'Deposits' }).click()
   await page.getByRole('group', { name: 'Status' }).getByRole('button', { name: 'Returned' }).click()
   await page.locator('.activity__table').getByRole('link', { name: 'Monthly deposit' }).click()
-  await expect(page).toHaveURL(/\/activity\/rosa-starter-034/)
+  const returned = acts.find((x: { status: string }) => x.status === 'returned')
+  await expect(page).toHaveURL(new RegExp(`/activity/${returned.id}$`))
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Monthly deposit')
   await expect(page.locator('.adet__facts')).toContainText('Sent back on')
   await expect(page.locator('.adet__facts')).toContainText('Sept. 3')

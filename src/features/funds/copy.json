@@ -1,26 +1,23 @@
 {
-  "title": "Your funds",
-  "tableLabel": "Your funds",
-  "caption": "All funds, with what you have in each",
+  "title": "Your investments",
+  "tableLabel": "Your investments",
+  "caption": "All investments, with what you have in each",
   "col": {
-    "fund": "Fund",
+    "fund": "Investment",
     "kind": "Kind",
-    "fee": "Yearly fee",
     "ups": "Ups and downs",
     "value": "Your value",
     "change": "Up or down"
   },
   "kind": {
-    "stocks": "Stocks",
-    "bonds": "Bonds",
-    "reserve": "Reserve"
+    "stock": "Stock",
+    "crypto": "Crypto"
   },
-  "percent": "{fee}%",
   "upsValue": "{rating} of 5",
   "notOwned": "Not owned",
   "cardValue": "Your value: {value} · {change}",
-  "allFunds": "All funds",
-  "nameLine": "{name} · {kind} · {region}",
+  "allFunds": "All investments",
+  "nameLine": "{kind}",
   "whatYouHave": "What you have",
   "vsPaid": "{change} on the {paid} you paid.",
   "facts": {
@@ -29,38 +26,41 @@
     "shares": "Shares",
     "price": "Price"
   },
-  "notOwnedYet": "You don't own this fund yet.",
+  "notOwnedYet": "You don't own any yet.",
   "priceNow": "Price: {price} a share.",
   "chart": {
     "title": "Price over time",
     "summary": "From {from} to {to}, the price went from {start} to {end}.",
     "series": "Price",
-    "day": "{date}: {price} a share.",
+    "day": "{date}: price {price}.",
     "colDate": "Date",
     "colPrice": "Price",
     "range": "Time range",
     "since": "Since you bought",
-    "1y": "1 year",
-    "5y": "5 years"
+    "6m": "6 months",
+    "1y": "1 year"
   },
-  "fee": {
-    "heading": "{term}: {fee}%",
-    "change": "{oldFee}% to {newFee}% on {date}, up {points} percentage points.",
-    "told": " The fund told owners on {date}.",
-    "steady": "It has been {fee}% since {date}.",
-    "termWord": "Yearly fee"
+  "about": {
+    "heading": "What it is"
   },
   "ups": {
     "heading": "{term}: {rating} of 5",
-    "scale": "1 means its price barely moves. 5 means it moves the most.",
-    "termWord": "Ups and downs"
+    "termWord": "Ups and downs",
+    "scale": "1 means its price barely moves. 5 means it moves the most."
   },
-  "inside": {
-    "heading": "What is inside",
-    "dividendMonthly": "It pays a {dividend} each month.",
-    "dividendQuarterly": "It pays a {dividend} each quarter.",
+  "dividends": {
+    "heading": "Dividends",
+    "intro": "{name} pays a {dividend} for each share you own before its ex-dividend date.",
     "dividendWord": "dividend",
-    "noDividend": "It does not pay dividends."
+    "paid": "{amount} a share, paid {date}",
+    "upcoming": "{amount} a share, to be paid {date}",
+    "yours": "You got {amount} in dividends from it.",
+    "none": "It does not pay dividends."
   },
-  "notFound": "We could not find that fund."
+  "sipc": {
+    "heading": "Not covered by {term}",
+    "termWord": "SIPC protection",
+    "body": "SIPC protection helps get back stocks and cash if a brokerage firm fails. It does not cover crypto."
+  },
+  "notFound": "We could not find that investment."
 }

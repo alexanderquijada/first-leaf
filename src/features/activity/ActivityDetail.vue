@@ -9,7 +9,7 @@ import WordChips from '@/shared/components/WordChips.vue'
 import { useGlossary } from '@/shared/composables/useGlossary'
 import { useViewport } from '@/shared/composables/useViewport'
 import { getFund } from '@/shared/data'
-import { formatDate, formatMoney } from '@/shared/format'
+import { formatDate, formatMoney, formatShares } from '@/shared/format'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 import { useActivityRows } from './useActivityRows'
@@ -45,7 +45,7 @@ const facts = computed<{ label: string; value: string }[]>(() => {
       { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) },
       { label: F.boughtOn, value: formatDate(r.date) },
       { label: F.price, value: formatMoney(r.price) },
-      { label: F.shares, value: r.shares.toFixed(4) },
+      { label: F.shares, value: formatShares(r.shares, getFund(r.ticker)?.kind ?? 'stock') },
       { label: F.settledOn, value: formatDate(r.settledDate) },
     ]
   return [...base, { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) }, { label: F.paidOn, value: formatDate(r.date) }]

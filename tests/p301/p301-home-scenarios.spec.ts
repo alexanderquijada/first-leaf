@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures'
-import { load, money, moneyShort, SCENARIOS } from '../data'
+import { apDate, load, money, moneyShort, SCENARIOS } from '../data'
 
 // Every scenario's laptop Home shows that account's own numbers, and no sentence is false.
 test.use({ viewport: { width: 1280, height: 800 } })
@@ -21,15 +21,15 @@ for (const s of SCENARIOS) {
     await expect(panel.locator('.balance__big')).toHaveText(money(a.balance))
     await expect(panel).toContainText(`${a.gainLoss >= 0 ? 'Up' : 'Down'} ${money(a.gainLoss)} on the ${moneyShort(a.moneyIn)} you put in.`)
     await expect(panel).toContainText(`This week: ${a.weeklyChange.totalChange >= 0 ? 'up' : 'down'} ${money(a.weeklyChange.totalChange)}.`)
-    await expect(panel).toContainText(a.autoInvest.on ? 'Auto-invest: On.' : 'Auto-invest: Paused since July 14.')
-    await expect(panel).toContainText(`In funds${money(a.investedValue)}`)
+    await expect(panel).toContainText(a.autoInvest.on ? 'Auto-invest: On.' : `Auto-invest: Paused since ${apDate(a.autoInvest.pausedOn)}.`)
+    await expect(panel).toContainText(`Invested${money(a.investedValue)}`)
     await expect(panel).toContainText(`Cash${money(a.cash)}`)
 
     const flags = attention[a.id]
     const needs = flags.filter((f: { severity: string }) => f.severity !== 'fyi')
     const alerts = page.locator('.fl-alerts')
-    if (needs.length) await expect(alerts).toContainText(`${needs.length} alerts need a look.`)
-    else await expect(alerts).toContainText('Nothing needs you this week.')
+    if (needs.length) await expect(alerts).toContainText(needs.length === 1 ? '1 thing needs you.' : `${needs.length} things need you.`)
+    else await expect(alerts).toContainText('Nothing needs you right now.')
     for (const f of flags) await expect(alerts).toContainText(f.title)
 
     const g = a.goal

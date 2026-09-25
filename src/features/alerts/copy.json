@@ -30,13 +30,13 @@
     "on": "On",
     "off": "Off",
     "pausedSince": "Paused since {date}",
-    "feeNow": "Yearly fee now",
-    "feeFrom": "From {date}",
-    "change": "Change",
-    "feeChange": "+{points} percentage points",
-    "about": "About",
-    "moreAYear": "{amount} more a year",
-    "fund": "Fund",
-    "paidOn": "Paid on"
+    "fund": "Investment",
+    "paidOn": "Paid on",
+    "priceOn": "Price on {date}",
+    "move": "Price move",
+    "moveValue": "{direction} {pct}%",
+    "up": "up",
+    "down": "down",
+    "yourChange": "What you own in it"
   }
 }
