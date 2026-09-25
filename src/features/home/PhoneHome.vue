@@ -36,6 +36,16 @@ const restHeadsUps = computed(() => headsUps.value.filter((a) => a !== top.value
 const w = computed(() => account.value.weeklyChange)
 const whyOpen = ref(false)
 const fundOpen = ref<string | null>(null)
+// "Why it moved" in one line: each piece is its own sentence, and a $0.00 piece is left out (ruling 6).
+const whyShort = computed(() => {
+  const w = account.value.weeklyChange
+  if (!w) return ''
+  return [
+    w.marketChange !== 0 ? fill(P.whyMarket, { market: formatChange(w.marketChange) }) : '',
+    w.dividends !== 0 ? fill(P.whyDividends, { dividends: formatChange(w.dividends) }) : '',
+    w.deposits !== 0 ? fill(P.whyDeposits, { deposits: formatChange(w.deposits) }) : '',
+  ].filter(Boolean).join(' ')
+})
 const anyDown = computed(() => w.value?.byFund.some((f) => f.change < 0) ?? false)
 
 // Latest three: this session's pending deposits first, then the newest activity.
@@ -100,22 +110,23 @@ function nextWord() {
           </button>
         </h2>
         <p class="phome__why-short">
-          {{ fill(P.whyShort, { market: formatChange(w.marketChange), dividends: formatChange(w.dividends) }) }}
+          {{ whyShort }}
         </p>
         <div v-if="whyOpen" id="phome-why-body">
           <table class="phome__table">
             <caption class="fl-visually-hidden">{{ copy.week.caption }}</caption>
             <tbody>
               <tr><th scope="row">{{ fill(copy.week.startBalance, { date: formatDate(w.from) }) }}</th><td class="fl-tabular">{{ formatMoney(w.startBalance) }}</td></tr>
-              <tr>
+              <!-- A piece that is $0.00 is left out (ruling 6, Sept. 25); what is shown still adds up. -->
+              <tr v-if="w.marketChange !== 0">
                 <th scope="row">{{ copy.week.market }}</th>
                 <td class="fl-tabular"><span aria-hidden="true">{{ formatSigned(w.marketChange) }}</span><span class="fl-visually-hidden">{{ formatChange(w.marketChange) }}</span></td>
               </tr>
-              <tr>
+              <tr v-if="w.dividends !== 0">
                 <th scope="row">{{ copy.week.dividends }}</th>
                 <td class="fl-tabular"><span aria-hidden="true">{{ formatSigned(w.dividends) }}</span><span class="fl-visually-hidden">{{ formatChange(w.dividends) }}</span></td>
               </tr>
-              <tr>
+              <tr v-if="w.deposits !== 0">
                 <th scope="row">{{ copy.week.deposits }}</th>
                 <td class="fl-tabular"><span aria-hidden="true">{{ formatSigned(w.deposits) }}</span><span class="fl-visually-hidden">{{ formatChange(w.deposits) }}</span></td>
               </tr>

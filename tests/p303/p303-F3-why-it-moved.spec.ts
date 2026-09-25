@@ -22,8 +22,15 @@ test('why it moved opens in place and adds up to the cent', async ({ page }) => 
     const t = (await shown.innerText()).replace(/[$,+]/g, '').replace('−', '-')
     return Math.round(Number(t) * 100)
   }
-  const [start, market, divs, deps] = [await cents(0), await cents(1), await cents(2), await cents(3)]
-  expect(start + market + divs + deps).toBe(Math.round(w.endBalance * 100))
+  // Every row but the last (the end balance) is a piece; $0.00 pieces are left out (ruling 6),
+  // so the rows shown must still add up to the end balance, to the cent.
+  const n = await body.locator('tbody tr').count()
+  let sum = 0
+  for (let i = 0; i < n - 1; i++) sum += await cents(i)
+  expect(sum).toBe(Math.round(w.endBalance * 100))
+  expect(n - 2).toBe([w.marketChange, w.dividends, w.deposits].filter((x: number) => x !== 0).length)
+  await expect(body.locator('tbody')).not.toContainText('$0.00')
+  await expect(page.locator('main')).not.toContainText('no change')
   // Fund by fund: the pieces add up to the market change.
   const fundCents = (await body.locator('.phome__fund .fl-tabular [aria-hidden="true"]').allInnerTexts()).map((t) => Math.round(Number(t.replace(/[$,+]/g, '').replace('−', '-')) * 100))
   expect(fundCents.reduce((x, y) => x + y, 0)).toBe(Math.round(w.marketChange * 100))
