@@ -25,7 +25,7 @@
     "notNumber": "Enter a number, like 25 or 25.50.",
     "decimals": "Use no more than {decimals} decimals, like 25.50.",
     "notEnough": "You have {cash} in practice money. Enter that much or less.",
-    "noneOwned": "You do not own any {ticker} in Practice.",
+    "noneOwned": "You do not own any {ticker} in Practice, so there is nothing to sell. Pick one you own.",
     "tooMuch": "You own {value} of {ticker} in Practice. Enter that much or less."
   },
   "severity": {
@@ -53,10 +53,10 @@
   },
   "alerts": {
     "title": "Needs your attention",
-    "countOne": "1 alert needs a look.",
-    "countMany": "{count} alerts need a look.",
+    "countOne": "1 thing needs you.",
+    "countMany": "{count} things need you.",
     "allHandled": "You have handled everything for this week.",
-    "nothing": "Nothing needs you this week.",
+    "nothing": "Nothing needs you right now.",
     "fyiTitle": "Just so you know",
     "new": "New",
     "seen": "Seen",
@@ -77,8 +77,8 @@
     "to": "To",
     "toValue": "Your First Leaf account",
     "amountError": "Enter an amount from $1 to $10,000, with no more than 2 decimals.",
-    "timing": "It takes 1 to 3 days to arrive, not counting weekends.",
-    "confirmDeposit": "You are about to ask your bank for a {amount} deposit. It takes 1 to 3 days to arrive, not counting weekends.",
+    "timing": "It should arrive in 1 to 3 business days.",
+    "confirmDeposit": "You are about to ask your bank for a {amount} deposit. It should arrive in 1 to 3 business days.",
     "seeInActivity": "You can see it as Pending in Activity.",
     "autoOnNow": "Auto-invest is on. Each deposit buys your mix on the day it arrives.",
     "autoPausedSince": "Auto-invest is paused. It has been off since {date}.",
@@ -117,11 +117,11 @@
   "ranges": {
     "group": "Time range",
     "1m": {
-      "label": "1M",
+      "label": "1 month",
       "name": "Last month"
     },
     "3m": {
-      "label": "3M",
+      "label": "3 months",
       "name": "Last 3 months"
     },
     "all": {
@@ -153,5 +153,12 @@
       "Fri.",
       "Sat."
     ]
+  },
+  "dataNotes": {
+    "stock": "Daily stock prices are modeled between real closes on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026.",
+    "crypto": "Powered by {link}",
+    "cryptoLink": "CoinGecko API",
+    "cryptoUrl": "https://www.coingecko.com/en/api/",
+    "newTab": " (opens in a new tab)"
   }
 }

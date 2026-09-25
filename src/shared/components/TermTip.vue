@@ -18,7 +18,7 @@ import { copy, fill } from '../copy'
 const T = copy.termTip
 
 const props = defineProps<{
-  /** Glossary id, e.g. "expense-ratio". */
+  /** Glossary id, e.g. "ups-and-downs". */
   id: string
 }>()
 

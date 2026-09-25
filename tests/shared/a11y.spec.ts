@@ -14,7 +14,7 @@ async function seriousViolations(page: Page) {
     .map((v) => `${v.impact}: ${v.id}: ${v.help} (${v.nodes.map((n) => n.target.join(' ')).join(' | ')})`)
 }
 
-const PAGES = ['/', '/story', '/activity', '/activity/rosa-starter-034', '/alerts', '/alerts/deposit-returned', '/alerts/nope', '/funds', '/funds/FL-GREEN', '/funds/FL-CALM', '/practice', '/learn', '/learn/expense-ratio', '/?scenario=all-clear', '/?scenario=brand-new', '/story?scenario=brand-new', '/activity?scenario=brand-new']
+const PAGES = ['/', '/story', '/activity', '/activity/rosa-starter-035', '/alerts', '/alerts/deposit-returned', '/alerts/nope', '/funds', '/funds/AAPL', '/funds/BTC', '/practice', '/learn', '/learn/ups-and-downs', '/?scenario=all-clear', '/?scenario=brand-new', '/story?scenario=brand-new', '/activity?scenario=brand-new']
 const WIDTHS = [
   { width: 390, height: 844 },
   { width: 1280, height: 800 },

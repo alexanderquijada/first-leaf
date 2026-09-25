@@ -11,8 +11,10 @@ const E = copy.practiceErrors
 // data is frozen, so any write would throw).
 
 const r2 = (n: number) => Math.round(n * 100) / 100
-const r4 = (n: number) => Math.round(n * 10000) / 10000
-const floor4 = (n: number) => Math.floor(n * 10000 + 1e-9) / 10000
+// Parts of a share: 4 decimal places for stocks, 8 for crypto (as in the real account).
+const places = (t: Ticker) => (getFund(t)?.kind === 'crypto' ? 8 : 4)
+const roundTo = (n: number, t: Ticker) => Math.round(n * 10 ** places(t)) / 10 ** places(t)
+const floorTo = (n: number, t: Ticker) => Math.floor(n * 10 ** places(t) + 1e-9) / 10 ** places(t)
 
 interface Lot {
   shares: number
@@ -61,9 +63,9 @@ export function usePractice() {
     const amount = r2(Number(text.trim().replace(/^\$/, '').replace(/,/g, '')))
     const price = priceOf(ticker)
     if (side === 'buy') {
-      const shares = floor4(amount / price)
+      const shares = floorTo(amount / price, ticker)
       const lot = state.lots[ticker] ?? { shares: 0, paid: 0 }
-      state.lots[ticker] = { shares: r4(lot.shares + shares), paid: r2(lot.paid + amount) }
+      state.lots[ticker] = { shares: roundTo(lot.shares + shares, ticker), paid: r2(lot.paid + amount) }
       state.cash = r2(state.cash - amount)
       return { shares, amount }
     }
@@ -75,8 +77,8 @@ export function usePractice() {
       state.cash = r2(state.cash + value)
       return { shares: lot.shares, amount: value }
     }
-    const shares = r4(amount / price)
-    const left = r4(lot.shares - shares)
+    const shares = roundTo(amount / price, ticker)
+    const left = roundTo(lot.shares - shares, ticker)
     state.lots[ticker] = { shares: left, paid: r2(lot.paid * (left / lot.shares)) }
     state.cash = r2(state.cash + amount)
     return { shares, amount }
@@ -91,10 +93,13 @@ export function usePractice() {
   const timeMachine = computed(() => {
     const held = holdings.value
     if (!held.length) return []
-    const weekly = funds[0]!.history.weekly.filter((w) => w.date >= practiceRules.timeMachine.from && w.date <= practiceRules.timeMachine.to)
-    return weekly.map((w, i) => ({
+    // Weekly closes from the stock calendar; each holding's price is looked up by date
+    // (crypto trades every day, so it has a price on every one of them).
+    const weekly = funds.find((f) => f.kind === 'stock')!.history.weekly.filter((w) => w.date >= practiceRules.timeMachine.from && w.date <= practiceRules.timeMachine.to)
+    const closeOn = (ticker: string, date: string) => getFund(ticker)!.history.daily.find((d) => d.date === date)?.close ?? 0
+    return weekly.map((w) => ({
       date: w.date,
-      value: r2(held.reduce((s, h) => s + h.shares * (getFund(h.ticker)!.history.weekly[i]?.close ?? 0), 0)),
+      value: r2(held.reduce((s, h) => s + h.shares * closeOn(h.ticker, w.date), 0)),
     }))
   })
 

@@ -2,7 +2,6 @@
 // The one app shell. Navigation changes with the screen size (BRIEF.md §3):
 // a left rail from 1024px, top tabs at 600–1023px, a bottom tab bar under 600px.
 // The router puts each feature's page inside <router-view>.
-import AppFooter from './AppFooter.vue'
 import copy from './copy.json'
 import BottomTabBar from './BottomTabBar.vue'
 import DesktopRail from './DesktopRail.vue'
@@ -40,9 +39,6 @@ function skipToContent(e: Event) {
           <router-view />
         </div>
       </main>
-      <div class="fl-app__footer">
-        <AppFooter />
-      </div>
     </div>
     <BottomTabBar />
   </div>
@@ -69,15 +65,11 @@ function skipToContent(e: Event) {
 }
 
 .fl-app__main {
-  padding: 32px 16px 0;
+  padding: 32px 16px 64px;
 }
 
 .fl-app__main:focus {
   outline: none;
-}
-
-.fl-app__footer {
-  padding: 0 16px;
 }
 
 /* Phone: room for the fixed bottom tab bar, and roomier lines (P303 brief). */
@@ -93,8 +85,7 @@ function skipToContent(e: Event) {
 }
 
 @media (min-width: 600px) {
-  .fl-app__main,
-  .fl-app__footer {
+  .fl-app__main {
     padding-left: 24px;
     padding-right: 24px;
   }
@@ -106,8 +97,7 @@ function skipToContent(e: Event) {
     grid-template-columns: 240px minmax(0, 1fr);
   }
 
-  .fl-app__main,
-  .fl-app__footer {
+  .fl-app__main {
     padding-left: 32px;
     padding-right: 32px;
   }

@@ -22,13 +22,13 @@ export const colors = {
   coral: '#F08A5D',
 } as const
 
-// One color per fund, for charts. Never a one-hue ramp.
+// Chart categories (BRIEF.md §6): seven holdings can't be told apart under color
+// blindness, so charts group them into stocks, crypto and cash (closest pair ΔE 22.7
+// under all three simulations). Per-holding detail lives in tables and lists.
 export const chartColors = {
-  'FL-BROAD': colors.lime,
-  'FL-WORLD': colors.sky,
-  'FL-BOND': colors.periwinkle,
-  'FL-GREEN': colors.coral,
-  'FL-CALM': colors.cream,
+  stocks: colors.sky,
+  crypto: colors.coral,
+  cash: colors.cream,
 } as const
 
 // Font stacks. Swapping in licensed Klim fonts later means changing these three lines.

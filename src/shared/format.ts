@@ -47,3 +47,8 @@ export function formatSigned(n: number): string {
 export function formatPercent(x: number, digits = 0): string {
   return `${(x * 100).toFixed(digits)}%`
 }
+
+/** Shares owned: 4 decimal places for stocks, 8 for crypto (parts of a coin are tiny). */
+export function formatShares(n: number, kind: 'stock' | 'crypto'): string {
+  return n.toFixed(kind === 'crypto' ? 8 : 4)
+}

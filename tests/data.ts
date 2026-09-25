@@ -17,3 +17,7 @@ export const SCENARIOS = [
   { id: 'all-clear', file: 'account-all-clear' },
   { id: 'brand-new', file: 'account-new' },
 ] as const
+
+const AP_MONTHS = ['Jan.', 'Feb.', 'March', 'April', 'May', 'June', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.']
+/** "2026-05-27" → "May 27", the app's date style. */
+export const apDate = (iso: string) => `${AP_MONTHS[Number(iso.slice(5, 7)) - 1]} ${Number(iso.slice(8, 10))}`

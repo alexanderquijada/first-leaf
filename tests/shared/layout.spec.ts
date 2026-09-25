@@ -13,7 +13,7 @@ test.describe('desktop, 1280px', () => {
     await expect(page.locator('.fl-tabs')).toBeHidden()
     await expect(page.locator('.fl-bottombar')).toBeHidden()
     const links = nav(page).getByRole('link')
-    await expect(links).toHaveText(['Home', 'Activity', 'Funds', 'Your money story', 'Practice', 'Words'])
+    await expect(links).toHaveText(['Home', 'Activity', 'Investments', 'Your money story', 'Practice', 'Words'])
     await expect(nav(page).getByRole('link', { name: 'Activity' })).toHaveAttribute('aria-current', 'page')
     await expect(page.getByText('Good morning, Rosa.')).toBeVisible()
     await expect(page.getByText('Prices as of Fri., Sept. 18')).toBeVisible()
@@ -53,15 +53,15 @@ test.describe('phone, 390px', () => {
     expect(bg).toBe('rgb(255, 253, 248)')
   })
 
-  test('the footer is not hidden behind the bottom tab bar', async ({ page }) => {
+  test('the end of the page is not hidden behind the bottom tab bar', async ({ page }) => {
     await page.goto('/story')
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your money story')
-    const disclosure = page.locator('footer .fl-disclaimer')
+    const last = page.locator('main #chapter-6 .k6__go')
     const bar = page.locator('.fl-bottombar')
     await expect
       .poll(async () => {
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-        const a = (await disclosure.boundingBox())!
+        const a = (await last.boundingBox())!
         const b = (await bar.boundingBox())!
         return b.y - (a.y + a.height)
       })
@@ -69,22 +69,13 @@ test.describe('phone, 390px', () => {
   })
 })
 
-test('every page has the risk disclosure in the footer', async ({ page }) => {
-  for (const path of ['/', '/story', '/practice', '/learn/expense-ratio', '/nope']) {
-    await page.goto(path)
-    await expect(page.locator('footer .fl-disclaimer')).toHaveText(
-      'Investing involves risk, including losing money you put in. First Leaf is a concept app: accounts, funds and prices shown are simulated. Nothing here is investment advice.',
-    )
-  }
-})
-
 test('old case-study addresses redirect and keep the scenario', async ({ page }) => {
   const cases = [
     ['/p301', '/'],
     ['/p302', '/story'],
     ['/p303', '/'],
-    ['/p301/funds/FL-GREEN', '/funds/FL-GREEN'],
-    ['/p303/learn/expense-ratio', '/learn/expense-ratio'],
+    ['/p301/funds/AAPL', '/funds/AAPL'],
+    ['/p303/learn/ups-and-downs', '/learn/ups-and-downs'],
     ['/p303/attention', '/alerts'],
     ['/about', '/'],
   ]

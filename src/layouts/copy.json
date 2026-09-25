@@ -14,8 +14,8 @@
       "short": "Activity"
     },
     "funds": {
-      "label": "Funds",
-      "short": "Funds"
+      "label": "Investments",
+      "short": "Investments"
     },
     "story": {
       "label": "Your money story",
@@ -41,7 +41,7 @@
     "home": "Home",
     "alerts": "Alerts",
     "activity": "Activity",
-    "funds": "Your funds",
+    "funds": "Your investments",
     "story": "Your money story",
     "practice": "Practice",
     "learn": "Words to know",

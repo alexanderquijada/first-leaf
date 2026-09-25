@@ -1,10 +1,10 @@
 import { test, expect } from '../fixtures'
 
-// Real-app ruling (Sept. 24): nothing on screen may read as a project or exercise.
-// This crawls every page in every scenario, at phone and laptop widths, with the
-// usual things opened, and searches the rendered text.
-const BANNED = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d/i
-const PAGES = ['/', '/alerts', '/alerts/deposit-returned', '/alerts/cash-sitting', '/activity', '/activity/rosa-starter-034', '/activity/rosa-starter-002', '/funds', '/funds/FL-GREEN', '/funds/FL-CALM', '/story', '/practice', '/learn', '/learn/expense-ratio', '/learn/practice-mode', '/nope']
+// Real-app ruling (Sept. 24) and ruling B (Phase 2.5): nothing on screen may read as a
+// project, an exercise or a disclaimer. This crawls every page in every scenario, at phone
+// and laptop widths, with the usual things opened, and searches the rendered text.
+const BANNED = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d|\bsimulated\b|\bconcept\b|\bnot real\b|(investment|financial) advice/i
+const PAGES = ['/', '/alerts', '/alerts/deposit-returned', '/alerts/cash-sitting', '/alerts/sipc-crypto', '/activity', '/activity/rosa-starter-035', '/activity/rosa-starter-002', '/funds', '/funds/AAPL', '/funds/BTC', '/funds/SOL', '/story', '/practice', '/learn', '/learn/ups-and-downs', '/learn/practice-mode', '/learn/sipc-protection', '/nope']
 const SCENARIOS = ['normal', 'all-clear', 'brand-new']
 
 for (const width of [390, 1280]) {
@@ -32,7 +32,35 @@ for (const width of [390, 1280]) {
   })
 }
 
-test('the only disclosure words are the footer’s', async ({ page }) => {
-  await page.goto('/')
-  await expect(page.locator('footer')).toContainText('First Leaf is a concept app')
+// The crawl must let the two allowed notes through, and must still catch the banned words.
+const ALLOWED = [
+  'Practice money. Nothing here touches your account.',
+  'Daily stock prices are modeled between real closes on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026.',
+  'Powered by CoinGecko API',
+]
+test('the banned words are caught, and the Practice banner and data notes are not', () => {
+  for (const t of ALLOWED) expect(t).not.toMatch(BANNED)
+  for (const t of ['Prices here are simulated.', 'First Leaf is a concept app.', 'This money is not real.', 'Nothing here is investment advice.'])
+    expect(t, t).toMatch(BANNED)
+})
+
+test('the notes that are allowed are on screen: the Practice banner and the stock data note', async ({ page }) => {
+  await page.goto('/practice')
+  await expect(page.getByText(ALLOWED[0]!)).toBeVisible()
+  await page.goto('/funds/AAPL')
+  await expect(page.getByText(ALLOWED[1]!)).toBeVisible()
+  const text = await page.evaluate(() => document.body.innerText)
+  expect(text).not.toMatch(BANNED)
+  // And the crawl's check fails on screen when a banned word appears.
+  await page.evaluate(() => document.querySelector('main')!.insertAdjacentText('beforeend', 'Prices shown are simulated.'))
+  expect(await page.evaluate(() => document.body.innerText)).toMatch(BANNED)
+})
+
+test('no page has a footer or a disclaimer (ruling B)', async ({ page }) => {
+  for (const path of ['/', '/story', '/practice', '/funds/AAPL', '/learn/ups-and-downs', '/nope']) {
+    await page.goto(path)
+    await page.locator('main').waitFor()
+    await expect(page.locator('footer')).toHaveCount(0)
+    await expect(page.getByText(/investment advice|involves risk/i)).toHaveCount(0)
+  }
 })
