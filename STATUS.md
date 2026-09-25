@@ -78,6 +78,30 @@ Then Claude applies only the approved wording (rebuild the table with `npm run c
 
 Newest first. Include what we got wrong and why.
 
+### Sept. 25, 2026: Phase 2.5 rulings (and the brief for Phase 3)
+
+- **Ratified:**
+  - crypto history starting Sept. 24, 2025 (the Demo plan's limit);
+  - "Powered by CoinGecko API";
+  - the ending of rewrite 3 ("…a $10.99 drop." / "rise");
+  - stopping at the unexpected certificate before sending the key.
+  Commits that only build as a set are accepted this once. **From now on each commit builds on its own, or its message says it doesn't.**
+- **Copy:** the ten recommended rewrites in the Phase 2.5 copy review are **approved**, except where the changes below touch the same text (these win). The Phase 2.5 new copy is approved as changed below. This closes Phase 2's copy sign-off.
+- **Changes:**
+  1. **The stock data note** is reworded: "Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled." Its reading-level exemption is removed; the CoinGecko credit keeps its exemption (CoinGecko sets that wording).
+  2. **SIPC:** nothing on the site may say or imply that First Leaf is a SIPC member or that Rosa's holdings are protected. Falsely claiming SIPC membership or protection is prohibited by federal law (15 U.S.C. §78jjj(d), `docs/research/SIPC.md`). The notice and the glossary word become the general fact: "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price." G6 bans "Member SIPC", "SIPC member", "protected by SIPC", "SIPC-protected" and "FDIC".
+  3. **A deeper dip:** use the first seed after 1 where chapter 3's dip is an 8% to 15% fall and every other rule passes. That is seed 10: 9.5% ($80.24), May 21 to June 5, pause June 8. The dip markers must sit visibly apart at 390px.
+  4. **The big-move alert stays.** It is proven by a validator broken case and a Playwright test that uses a test-only week with a 7%+ move. That fixture never ships (a check confirms it isn't in `dist/`), and the README doesn't mention it.
+  5. **Crypto amounts** are labeled "Amount", with the coin's unit ("0.00136690 BTC"), everywhere, including Practice.
+  6. **"Why it moved"** (laptop and phone) leaves out any piece that is $0.00. The pieces shown still add up to the cent (A10).
+  7. **Chapter 5** loses "This is an example, not a plan or advice." (disclaimer language). G6 catches "not financial advice" and "not investment advice" in any wording. Chapter 5 still passes G3.
+  8. **"N things need you"** counts only what Rosa must act on. FYIs sit under "Just so you know" and are never counted, on the laptop or the phone.
+  9. **The ten "What it is" descriptions** are checked against each company's or project's own description, kept factual, and their sources recorded in `docs/research/`.
+- **What we got wrong:**
+  - The SIPC wording ("Your crypto isn't covered…", "helps get back the stocks and cash in a brokerage account") could be read as saying Rosa's stocks at First Leaf are protected, which implies membership.
+  - The stock data note was written above grade 8, and then exempted instead of rewritten.
+  - The first dip (4.2%, a low only $0.74 under what she had put in) was too shallow to carry chapter 3.
+
 ### Sept. 24, 2026: Phase 2.5 · Real names, real crypto prices and the Phase 2 rewrites (built; waiting on copy approval)
 
 **Done**

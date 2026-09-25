@@ -67,7 +67,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 | Goal behind plan | Planned vs. put in, and **Add a one-time deposit** (the same flow, amount filled in) |
 | Waiting in cash | Auto-invest status (paused since the day after the dip's low) with an On/Off switch and a confirmation |
 | A big move (only if the data has one) | The investment, last Friday's and this Friday's price, the percent move, and what it did to Rosa's holding in dollars |
-| Crypto and SIPC protection | What SIPC protection covers, and that it doesn't cover crypto (wording checked against sipc.org) |
+| SIPC protection and crypto | The general fact only: "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price." Never implies First Leaf is a member (BRIEF.md §8) |
 | Dividend paid | Amount, company and date |
 
 ## Layout (designed at 390 × 844, works from 320px)
@@ -129,7 +129,7 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 |---|---|---|---|
 | F1 | **Glance** | Open `/` on a phone (or Phone view) | Balance, this week's change and the "needs you" card are visible without scrolling at 390 × 844 |
 | F2 | **See what needs me** | Tap the "needs you" card → the alert's page (what happened, what it means, what you can do, "Words on this screen") → back → Alerts list | Back returns to where she was; opened alerts show as "Seen" for the session |
-| F3 | **Understand why it moved** | Tap "Why it moved" → the waterfall from last Friday's balance to this Friday's: market change, dividends, deposits → tap a fund for its share of the move | The pieces add up exactly (A10), each piece has a term explanation, and its words are listed as 48px chips under "Words on this screen" |
+| F3 | **Understand why it moved** | Tap "Why it moved" → the waterfall from last Friday's balance to this Friday's: market change, dividends, deposits (a piece that is $0.00 is left out; ruling, Sept. 25) → tap an investment for its share of the move | The pieces add up exactly (A10), each piece has a term explanation, and its words are listed as 48px chips under "Words on this screen" |
 | F4 | **Learn a word** | Tap Word of the day → its page → **Next word** or a related word | Works one-handed; Back works |
 | F5 | **Move around one-handed** | Use the bottom tab bar: Activity, Story, Practice, Words, Home | Every tab is at least 48 × 48px, shows where you are, and keeps its place |
 | F6 | **Check every scenario** | Open `/?scenario=all-clear&view=phone`, then `/?scenario=brand-new&view=phone` (by URL only) | Home shows that scenario's account, and every sentence stays true |

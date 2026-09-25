@@ -27,7 +27,7 @@ P301 is **First Leaf's Home on a laptop**, plus the Alerts, Activity and Investm
 | Account balances | Balance, money put in, up or down, cash waiting |
 | Transaction volume | Activity: every deposit, buy and dividend, filterable |
 | Risk flags | The alerts (including a big-move alert when a holding moved 7% or more in a week), and "Ups and downs" ratings (1–5) on every investment |
-| Regulatory alerts | An account notice: crypto isn't covered by SIPC protection the way stocks are (wording checked against sipc.org and cited in the glossary's "SIPC protection") |
+| Regulatory alerts | An account notice with a general fact about SIPC protection and crypto. It never says or implies that First Leaf is a SIPC member or that Rosa's holdings are protected (15 U.S.C. §78jjj(d); BRIEF.md §8) |
 
 ## The user
 
@@ -68,12 +68,13 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 | Needs you | Your $150 deposit from Sept. 1 was sent back | Her bank returned it on Sept. 3 | **Try the deposit again** (review, confirm, confirmation) |
 | Heads-up | Your goal is $150 behind your plan | $1,400 planned vs. $1,250 went through. Deposits only; the market doesn't count. | **Add a one-time deposit** (same flow, amount filled in), or keep going |
 | Heads-up | $X is waiting in cash | Auto-invest paused since the day after the dip's low (data-driven, BRIEF.md §4); later deposits and dividends stayed as cash | **See auto-invest settings** |
-| Heads-up | A big move: *TICKER* moved up (or down) X% this week | Generated **only if the data shows it**: a holding's price moved 7% or more from last Friday's close to this Friday's. It says what happened and that prices move; never what to do about it | **Open *TICKER*** to see its price over time |
-| FYI | Your crypto isn't covered by SIPC protection | An account notice (the "regulatory alerts" example): SIPC protection covers stocks and cash if a member brokerage fails; it doesn't cover crypto that isn't a security. Shown while the account holds crypto | **Read about SIPC protection** (the glossary term) |
+| Heads-up | A big move: *TICKER* moved up (or down) X% this week | Kept (ruling, Sept. 25), and proven by a validator broken case and a Playwright test that loads a **test-only** week with a 7%+ move (never shipped: a check confirms `dist/` doesn't contain it). Generated **only if the data shows it**: a holding's price moved 7% or more from last Friday's close to this Friday's. It says what happened and that prices move; never what to do about it | **Open *TICKER*** to see its price over time |
+| FYI | SIPC protection doesn't cover crypto | An account notice (the "regulatory alerts" example), a general fact only: "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price." Shown while the account holds crypto. Never implies First Leaf is a member | The glossary word "SIPC protection" |
 | FYI | *TICKER* paid you $X | A real dividend paid in the last 7 days, if any | Nothing to do |
 
 The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no yearly fund fee.
 
+- **"N things need you" counts only what Rosa must act on** (needs-you and heads-up alerts). FYIs sit under "Just so you know" and are never counted (ruling, Sept. 25). The same on the phone.
 - Every alert can be **marked handled** (remembered for the session, with "Undo").
 - Alerts raised since last Sunday's review (Sept. 13) show a **New** badge.
 - **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "FYI" (forest, info icon). Color never works alone.

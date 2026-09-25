@@ -55,7 +55,7 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 | Claim on screen | Checked as |
 |---|---|
 | Most of Rosa's balance is money she put in | Deposits vs. what it earned, from the account (R1; "almost all" only at 90% or more) |
-| This summer, her investments dipped | **The dip rule (ruling B, Phase 2.5):** the dip is the **largest 10-trading-day fall in Rosa's portfolio value between April 15 and Aug. 15, 2026**, measured as the market change in her balance with deposits taken out. The chapter title names the month of the low ("The dip in July"). R2 recomputes the window, the fall and the month from the balance history. Each account gets its own dip from its own history. |
+| This summer, her investments dipped | **The dip rule (ruling B, Phase 2.5):** the dip is the **largest 10-trading-day fall in Rosa's portfolio value between April 15 and Aug. 15, 2026**, measured as the market change in her balance with deposits taken out. The chapter title names the month of the low ("The dip in June"). The data uses the first seed after 1 where this dip is an 8% to 15% fall (seed 10: 9.5%, May 21 to June 5; ruling, Sept. 25). R2 recomputes the window, the fall and the month from the balance history. Each account gets its own dip from its own history. On the chart, the dip's event markers sit visibly apart, even at 390px. |
 | At the low, her balance was below what she had put in | Said only when it's true (R2) |
 | She paused auto-invest the next trading day | The pause is the next trading day after the low (A14, R3). The calm account never pauses; its chapter says auto-invest stayed on. |
 | After the pause | When her balance was back above what she'd put in, which deposits stayed as cash, and where she is on Sept. 18 (R3) |
@@ -121,11 +121,11 @@ The story says what happened and stops there. It never says pausing was right or
 | 5d Every year counts | Every year you wait costs you. | One saver at $100 a month | **Start-age slider, 18–45, step 1**, with the result at 65 in words |
 | 5e Can Theo catch up? | Yes, with about $196 a month, nearly twice Nia's. | Theo's line rises with the amount | **Theo's monthly slider, $150–$300, step $1**, with a marker where he passes Nia |
 | 5f Real life is bumpy | Real years go up and down. Same overall growth, and Nia still ends ahead. | Smooth vs. bumpy | **Smooth / Bumpy toggle** |
-| 5g Your turn | Rosa, 26, $150 a month. "This is an example, not a plan or advice." | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
+| 5g Your turn | Rosa, 26, $150 a month. (The "not a plan or advice" line is removed: disclaimer language, ruling B and Sept. 25.) | One line from 26 to 65 | Start-age and amount sliders, pre-set to Rosa's numbers |
 
 Closing: a three-line takeaway, then **Words from this story** (growth on growth, return, the market) using the shared term explanations, and the sources.
 
-**Practice** (`/practice`): pick one of the 10 investments → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over the last 12 months → **Start over**. A persistent banner, "Practice money. Nothing here touches your account."; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**.
+**Practice** (`/practice`): pick one of the 10 investments → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over the last 12 months → **Start over**. A persistent banner, "Practice money. Nothing here touches your account."; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**. Crypto holdings show **"Amount"** with the coin's unit ("0.00247299 BTC"), never "Shares".
 
 **Words** (`/learn`, `/learn/:termId`): search every explanation, open one as its own page, follow related words.
 
