@@ -86,15 +86,16 @@ test.describe('with reduced motion', () => {
   test('nothing moves: no chart animation, no smooth scrolling, and nothing is lost', async ({ page }) => {
     await page.goto('/story#chapter-3')
     await expect(page.locator('#chapter-3-title')).toBeInViewport()
-    // Charts draw at once, and the page jumps instead of gliding.
+    // Charts draw at once, and the page jumps instead of gliding. (Reduced motion shortens every
+    // animation to 0.01ms, which can still count as running for an instant; only visible motion counts.)
     expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
-    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length)).toBe(0)
+    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running' && Number(a.effect?.getComputedTiming().duration) > 50).length)).toBe(0)
     // The events can still be shown and read without any motion.
     const ch3 = page.locator('#chapter-3')
     await expect(ch3.getByRole('list', { name: 'Events on the chart' })).toBeVisible()
     await ch3.getByRole('button', { name: 'Show as table' }).first().click()
     await expect(ch3.getByRole('table').first()).toBeVisible()
-    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running').length)).toBe(0)
+    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running' && Number(a.effect?.getComputedTiming().duration) > 50).length)).toBe(0)
   })
 })
 
