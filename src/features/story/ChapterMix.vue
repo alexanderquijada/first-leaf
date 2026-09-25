@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Chapter 4: Where it is now. Her money by fund and cash, filtered by kind.
+// Chapter 4: Where it is now. Her money by investment and cash, filtered by stocks, crypto or cash.
 import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import TermTip from '@/shared/components/TermTip.vue'
@@ -12,19 +12,18 @@ import copy from './copy.json'
 const M = copy.mix
 
 const props = defineProps<{ account: Account }>()
-type Kind = 'all' | 'stocks' | 'bonds' | 'reserve' | 'cash'
+type Kind = 'all' | 'stocks' | 'crypto' | 'cash'
 const FILTERS: { id: Kind; label: string; term?: string }[] = [
   { id: 'all', label: M.filters.all },
-  { id: 'stocks', label: M.filters.stocks, term: 'stocks' },
-  { id: 'bonds', label: M.filters.bonds, term: 'bonds' },
-  { id: 'reserve', label: M.filters.reserve },
+  { id: 'stocks', label: M.filters.stocks, term: 'stock' },
+  { id: 'crypto', label: M.filters.crypto, term: 'crypto' },
   { id: 'cash', label: M.filters.cash, term: 'cash' },
 ]
 const kind = ref<Kind>('all')
 
 const parts = computed(() => {
   const a = props.account
-  const funds = a.holdings.map((h) => ({ name: h.ticker, kind: (getFund(h.ticker)?.kind ?? 'stocks') as Kind, value: h.value }))
+  const funds = a.holdings.map((h) => ({ name: h.ticker, kind: (getFund(h.ticker)?.kind === 'crypto' ? 'crypto' : 'stocks') as Kind, value: h.value }))
   return [...funds, { name: M.cash, kind: 'cash' as Kind, value: a.cash }].filter((p) => p.value > 0)
 })
 const shown = computed(() => parts.value.filter((p) => kind.value === 'all' || p.kind === kind.value))
@@ -38,9 +37,9 @@ const summary = computed(() => {
     const t = a.cash > 0 ? (n === 1 ? M.summaryOneCash : M.summaryManyCash) : n === 1 ? M.summaryOne : M.summaryMany
     return fill(t, { balance: formatMoney(a.balance), count: n })
   }
-  const label = FILTERS.find((x) => x.id === kind.value)!.label
-  if (!shown.value.length) return kind.value === 'cash' ? M.noCash : fill(M.noneOfKind, { kind: label.toLowerCase() })
-  return fill(kind.value === 'cash' ? M.cashShare : M.kindShare, { kind: label, amount: formatMoney(total.value), pct: pct(total.value) })
+  if (!shown.value.length) return kind.value === 'cash' ? M.noCash : kind.value === 'crypto' ? M.noCrypto : M.noStocks
+  const t = kind.value === 'cash' ? M.cashShare : kind.value === 'crypto' ? M.cryptoShare : M.stocksShare
+  return fill(t, { amount: formatMoney(total.value), pct: pct(total.value) })
 })
 const columns = [
   { key: 'name', label: M.colWhere },
@@ -80,8 +79,8 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
       </ul>
       <p class="where__terms">
         <CopyText :text="M.words"
-          ><template #stocks><TermTip id="stocks">{{ M.stocksWord }}</TermTip></template
-          ><template #bonds><TermTip id="bonds">{{ M.bondsWord }}</TermTip></template
+          ><template #stocks><TermTip id="stock">{{ M.stocksWord }}</TermTip></template
+          ><template #crypto><TermTip id="crypto">{{ M.cryptoWord }}</TermTip></template
           ><template #cash><TermTip id="cash">{{ M.cashWord }}</TermTip></template></CopyText
         >
       </p>

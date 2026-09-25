@@ -1,19 +1,24 @@
 import { test, expect } from '../fixtures'
+import { apDate, load } from '../data'
 
-// F2: show and hide the July events on the chart.
+// F2: show and hide the dip's events on the chart. The events come from Rosa's own
+// history (the data-driven dip, ruling B), so the expected list is built from the data.
+const facts = load('story-p302').rosaStory['rosa-starter'].facts
 test('the dip events can be shown and hidden, and the chart keeps the same series', async ({ page }) => {
   await page.goto('/story')
   const ch3 = page.locator('#chapter-3')
+  await expect(ch3.getByRole('heading', { level: 2 })).toHaveText(`The dip in ${facts.dip.month}`)
   const toggle = ch3.getByRole('button', { name: 'Show events on the chart' })
   const events = ch3.getByRole('list', { name: 'Events on the chart' })
   await expect(toggle).toHaveAttribute('aria-pressed', 'true')
-  await expect(events.getByRole('listitem')).toHaveText([
-    'June 26: FL-BROAD hit its high before the dip.',
-    'July 13: FL-BROAD hit its low.',
-    'July 14: You paused auto-invest.',
-    'July 20: Your balance was back above what you had put in.',
-    'Aug. 3: Your deposit stayed as cash.',
-  ])
+  const want = [
+    [facts.dip.highDate, `${apDate(facts.dip.highDate)}: Your investments started to fall.`],
+    [facts.dip.lowDate, `${apDate(facts.dip.lowDate)}: The fall hit its low.`],
+    [facts.pause.date, `${apDate(facts.pause.date)}: You paused auto-invest.`],
+    [facts.after.backAboveDate, `${apDate(facts.after.backAboveDate)}: Your balance was back above what you had put in.`],
+    ...facts.after.deposits.map((d: { date: string }) => [d.date, `${apDate(d.date)}: Your deposit stayed as cash.`]),
+  ].sort((x, y) => x[0]!.localeCompare(y[0]!)).map((x) => x[1])
+  await expect(events.getByRole('listitem')).toHaveText(want)
   const before = await ch3.locator('[data-series]').getAttribute('data-series')
   await toggle.click()
   await expect(toggle).toHaveAttribute('aria-pressed', 'false')
@@ -24,7 +29,8 @@ test('the dip events can be shown and hidden, and the chart keeps the same serie
 test('in the calm account, the events say auto-invest kept buying', async ({ page }) => {
   await page.goto('/story?scenario=all-clear')
   const list = page.locator('#chapter-3').getByRole('list', { name: 'Events on the chart' })
-  await expect(list).toContainText('Aug. 3: Your deposit bought your mix.')
+  const calm = load('story-p302').rosaStory['rosa-all-clear'].facts
+  for (const d of calm.after.deposits) await expect(list).toContainText(`${apDate(d.date)}: Your deposit bought your mix.`)
   await expect(list).not.toContainText('paused')
 })
 

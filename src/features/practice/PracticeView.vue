@@ -5,12 +5,13 @@ import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import SeriesChart from '@/shared/charts/SeriesChart.vue'
 import Money from '@/shared/components/Money.vue'
+import PriceSourceNote from '@/shared/components/PriceSourceNote.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { useInertBackground } from '@/shared/composables/useInertBackground'
 import { usePractice } from '@/shared/composables/usePractice'
 import { useViewport } from '@/shared/composables/useViewport'
-import { practiceRules } from '@/shared/data'
-import { formatDate, formatMoney, formatMoneyShort } from '@/shared/format'
+import { getFund, practiceRules } from '@/shared/data'
+import { formatDate, formatMoney, formatMoneyShort, formatShares } from '@/shared/format'
 import { colors } from '@/shared/tokens/tokens'
 import OrderForm from './OrderForm.vue'
 import PhoneOrder from './PhoneOrder.vue'
@@ -24,6 +25,8 @@ const { isPhone } = useViewport()
 const withYear = (iso: string) => `${formatDate(iso)}, ${iso.slice(0, 4)}`
 
 const tm = computed(() => p.timeMachine.value)
+// Where the time machine's prices come from, for the kinds in the practice mix.
+const tmKinds = computed(() => [...new Set(p.holdings.value.map((h) => getFund(h.ticker)!.kind))].sort().reverse())
 const tmSummary = computed(() => {
   const a = tm.value[0], b = tm.value.at(-1)
   return a && b ? fill(TM.summary, { from: withYear(a.date), to: withYear(b.date), start: formatMoney(a.value), end: formatMoney(b.value) }) : ''
@@ -67,7 +70,7 @@ function startOver() {
             <tbody>
               <tr v-for="h in p.holdings.value" :key="h.ticker">
                 <td>{{ h.ticker }}</td>
-                <td class="is-num fl-tabular">{{ h.shares.toFixed(4) }}</td>
+                <td class="is-num fl-tabular">{{ formatShares(h.shares, getFund(h.ticker)!.kind) }}</td>
                 <td class="is-num fl-tabular">{{ formatMoney(h.value) }}</td>
                 <td class="is-num fl-tabular">{{ formatMoney(h.paid) }}</td>
                 <td class="is-num fl-tabular"><Money :amount="h.gainLoss" change context="table" /></td>
@@ -105,6 +108,7 @@ function startOver() {
           :height="isPhone ? 180 : 240"
         />
         <p class="practice__note">{{ practiceRules.timeMachine.note }}</p>
+        <PriceSourceNote v-if="tm.length" :kinds="tmKinds" />
       </ChartFrame>
     </div>
 

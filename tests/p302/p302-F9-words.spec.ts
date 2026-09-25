@@ -4,17 +4,17 @@ import { load } from '../data'
 // F9: Words. Search, an empty state, every term page with related words and Back.
 const glossary = load('glossary') as { id: string; term: string; related: string[]; short: string }[]
 
-test('search finds "fee", and a search with no match says so', async ({ page }) => {
+test('search finds "crypto", and a search with no match says so', async ({ page }) => {
   await page.goto('/learn')
   await expect(page.getByRole('status')).toHaveText(`${glossary.length} words`)
-  await page.getByLabel('Search words').fill('fee')
+  await page.getByLabel('Search words').fill('crypto')
   await expect(page.locator('.learn__row').first()).toBeVisible()
-  await page.getByRole('link', { name: /Yearly fee/ }).click()
-  await expect(page).toHaveURL(/\/learn\/expense-ratio$/)
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Yearly fee')
+  await page.getByRole('link', { name: /^Crypto/ }).click()
+  await expect(page).toHaveURL(/\/learn\/crypto$/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Crypto')
   await page.goBack()
   await page.getByLabel('Search words').fill('zebra')
-  await expect(page.getByText('No words match “zebra”. Try “fee” or “fund”.')).toBeVisible()
+  await expect(page.getByText('No words match “zebra”. Try “stock” or “crypto”.')).toBeVisible()
   await expect(page.locator('.learn__row')).toHaveCount(0)
 })
 
@@ -26,9 +26,9 @@ test('every term page opens directly, with its related words and a way back', as
     const chips = page.locator('.term__related a')
     await expect(chips).toHaveCount(g.related.length)
   }
-  await page.goto('/learn/expense-ratio')
+  await page.goto('/learn/sipc-protection')
   await page.locator('.term__related a').first().click()
-  await expect(page).not.toHaveURL(/expense-ratio/)
+  await expect(page).not.toHaveURL(/sipc-protection/)
   await page.getByRole('link', { name: 'All words' }).click()
   await expect(page).toHaveURL(/\/learn$/)
 })

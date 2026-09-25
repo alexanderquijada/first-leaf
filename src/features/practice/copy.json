@@ -1,15 +1,15 @@
 {
   "title": "Practice",
-  "banner": "Practice money. It isn't real money.",
+  "banner": "Practice money. Nothing here touches your account.",
   "sum": {
     "left": "Practice money left",
-    "inFunds": "In practice funds",
+    "inFunds": "In practice investments",
     "total": "Total in Practice"
   },
   "ownHeading": "What you own in Practice",
-  "ownEmpty": "Nothing yet. Buy a fund to start.",
+  "ownEmpty": "Nothing yet. Buy a stock or crypto to start.",
   "col": {
-    "fund": "Fund",
+    "fund": "Investment",
     "shares": "Shares",
     "value": "Value",
     "paid": "Paid",
@@ -20,7 +20,7 @@
   "timeMachine": {
     "title": "Time machine",
     "summary": "If you had held this mix since {from}, it would be worth {end} on {to}. On {from} it would have been worth {start}.",
-    "empty": "Buy a fund to see how your mix would have moved.",
+    "empty": "Buy an investment to see how your mix would have moved.",
     "colWeek": "Week of",
     "colValue": "Value",
     "series": "Your practice mix",
@@ -28,14 +28,14 @@
   },
   "startOver": "Start over",
   "startOverTitle": "Start over?",
-  "startOverBody": "This clears your practice funds and sets your practice money back to {amount}.",
+  "startOverBody": "This clears your practice investments and sets your practice money back to {amount}.",
   "cancel": "Cancel",
   "order": {
     "title": "Place an order",
     "side": "Buy or sell",
     "buy": "Buy",
     "sell": "Sell",
-    "pickFund": "Pick a fund",
+    "pickFund": "Pick an investment",
     "amountLabel": "Amount in dollars",
     "dollar": "$",
     "phoneAmountLabel": "Amount",
@@ -51,7 +51,7 @@
     "back": "Back",
     "confirm": "Confirm",
     "bought": "You bought {amount} of {ticker} with practice money.",
-    "sold": "You sold {amount} of {ticker}. The practice money went back to your practice cash.",
+    "sold": "You sold {amount} of {ticker}. That money is back in your practice money.",
     "newOrder": "New order"
   }
 }

@@ -42,7 +42,7 @@ const chapters = computed(() =>
     ? [
         { n: 1, title: T['1'] },
         { n: 2, title: T['2'] },
-        { n: 3, title: T['3'] },
+        { n: 3, title: fill(T['3'], { month: rosa.value.facts.dip.month }) },
         { n: 4, title: T['4'] },
         { n: 5, title: T['5'] },
         { n: 6, title: T['6'] },

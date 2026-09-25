@@ -3,7 +3,7 @@
   "search": "Search words",
   "countOne": "1 word",
   "countMany": "{count} words",
-  "none": "No words match “{query}”. Try “fee” or “fund”.",
+  "none": "No words match “{query}”. Try “stock” or “crypto”.",
   "allWords": "All words",
   "alsoCalled": "Also called {terms}",
   "example": "{label} {example}",

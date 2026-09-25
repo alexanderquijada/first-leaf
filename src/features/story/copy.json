@@ -3,12 +3,12 @@
   "chapters": "Chapters",
   "chapterNum": "Chapter {n}",
   "titles": {
-    "1": "Seven months in",
+    "1": "Six months in",
     "2": "Most of it is still your money",
-    "3": "The dip in July",
+    "3": "The dip in {month}",
     "4": "Where it is now",
     "5": "What happens if you keep going",
-    "6": "Try it with pretend money",
+    "6": "Try it with practice money",
     "new": "Your story starts with your first deposit"
   },
   "newClaim": "Once your first deposit arrives, this story will show how your money has moved.",
@@ -36,8 +36,8 @@
     "returnWord": "return"
   },
   "dip": {
-    "high": "{date}: {ticker} hit its high before the dip.",
-    "low": "{date}: {ticker} hit its low.",
+    "high": "{date}: Your investments started to fall.",
+    "low": "{date}: The fall hit its low.",
     "paused": "{date}: You paused auto-invest.",
     "backAbove": "{date}: Your balance was back above what you had put in.",
     "depositInvested": "{date}: Your deposit bought your mix.",
@@ -55,18 +55,19 @@
     "filters": {
       "all": "All",
       "stocks": "Stocks",
-      "bonds": "Bonds",
-      "reserve": "Reserve",
+      "crypto": "Crypto",
       "cash": "Cash"
     },
     "cash": "Cash",
-    "summaryOne": "Your {balance} is split across {count} fund.",
-    "summaryMany": "Your {balance} is split across {count} funds.",
-    "summaryOneCash": "Your {balance} is split across {count} fund and cash.",
-    "summaryManyCash": "Your {balance} is split across {count} funds and cash.",
+    "summaryOne": "Your {balance} is split across {count} investment.",
+    "summaryMany": "Your {balance} is split across {count} investments.",
+    "summaryOneCash": "Your {balance} is split across {count} investment and cash.",
+    "summaryManyCash": "Your {balance} is split across {count} investments and cash.",
+    "noStocks": "You do not own any stocks right now.",
+    "noCrypto": "You do not own any crypto right now.",
+    "stocksShare": "Stocks are {amount} of your balance, or {pct}%.",
+    "cryptoShare": "Crypto is {amount} of your balance, or {pct}%.",
     "noCash": "You have no cash waiting right now.",
-    "noneOfKind": "You do not own any {kind} funds right now.",
-    "kindShare": "{kind} are {amount} of your balance, or {pct}%.",
     "cashShare": "Cash is {amount} of your balance, or {pct}%.",
     "colWhere": "Where",
     "colAmount": "Amount",
@@ -77,14 +78,14 @@
     "filterGroup": "Show",
     "rowsKey": "Each row shows the amount and its share of your balance.",
     "rowNums": "{amount} · {pct}%",
-    "words": "Words: {stocks}, {bonds}, {cash}.",
+    "words": "Words: {stocks}, {crypto}, {cash}.",
     "stocksWord": "stocks",
-    "bondsWord": "bonds",
-    "cashWord": "cash"
+    "cashWord": "cash",
+    "cryptoWord": "crypto"
   },
   "keepGoing": {
     "gotIt": "You got it.",
-    "theoGuess": "Theo puts in more each month, so he seems like the safe guess.",
+    "theoGuess": "Theo puts in more each month, so he seems like the better guess.",
     "noGuess": "Here is how it turns out.",
     "nia": "Nia",
     "theo": "Theo",
@@ -126,7 +127,7 @@
     "yourResult": "Start at {age} with {monthly} a month. At {endAge} you would have {value}."
   },
   "practice": {
-    "claim": "Practice lets you try a mix with money that is not real. Nothing you do there touches your account.",
+    "claim": "Practice lets you try a mix with practice money. Nothing you do there touches your account.",
     "go": "Go to Practice"
   },
   "slider": {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Chapter 3: The dip in July. Every sentence here is a checked claim (rules R2-R4);
+// Chapter 3: The dip, titled with the month of its low. Every sentence here is a checked claim (rules R2-R4);
 // the events can be shown or hidden on the chart.
 import { computed, ref } from 'vue'
 import BalanceChart, { type ChartEvent } from '@/shared/charts/BalanceChart.vue'
@@ -21,8 +21,8 @@ const points = computed(() => props.account.history.filter((r) => r.date >= from
 const events = computed<ChartEvent[]>(() => {
   const x = f.value
   const list: ChartEvent[] = [
-    { date: x.dip.highDate, label: fill(D.high, { date: formatDate(x.dip.highDate), ticker: x.dip.ticker }) },
-    { date: x.dip.lowDate, label: fill(D.low, { date: formatDate(x.dip.lowDate), ticker: x.dip.ticker }) },
+    { date: x.dip.highDate, label: fill(D.high, { date: formatDate(x.dip.highDate) }) },
+    { date: x.dip.lowDate, label: fill(D.low, { date: formatDate(x.dip.lowDate) }) },
   ]
   if (x.pause) list.push({ date: x.pause.date, label: fill(D.paused, { date: formatDate(x.pause.date) }) })
   list.push({ date: x.after.backAboveDate, label: fill(D.backAbove, { date: formatDate(x.after.backAboveDate) }) })
@@ -48,7 +48,7 @@ const rows = computed(() =>
 <template>
   <section id="chapter-3" class="chapter" aria-labelledby="chapter-3-title">
     <p class="chapter__num">{{ fill(copy.chapterNum, { n: 3 }) }}</p>
-    <h2 id="chapter-3-title">{{ copy.titles['3'] }}</h2>
+    <h2 id="chapter-3-title">{{ fill(copy.titles['3'], { month: f.dip.month }) }}</h2>
     <p v-for="c in claims" :key="c.id" class="chapter__claim" :data-claim="c.id">{{ c.text }}</p>
     <ChartFrame :title="D.chartTitle" :level="3" :summary="summary" :columns="columns" :rows="rows">
       <button

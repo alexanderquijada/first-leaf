@@ -5,7 +5,7 @@ import type { Ticker } from '@/shared/data'
 // The order being built (module scope, so a half-entered order survives
 // navigation and interruptions; reload clears it).
 const side = ref<Side>('buy')
-const ticker = ref<Ticker>('FL-BROAD')
+const ticker = ref<Ticker>('AAPL')
 const amount = ref('')
 const touched = ref(false)
 const step = ref<'enter' | 'review' | 'done'>('enter')
