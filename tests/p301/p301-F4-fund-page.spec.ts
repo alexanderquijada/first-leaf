@@ -61,6 +61,8 @@ for (const f of funds) {
       await expect(page.getByText('Powered by CoinGecko API')).toBeVisible()
       await expect(page.getByText(STOCK_NOTE)).toHaveCount(0)
       await expect(page.getByRole('heading', { name: 'Not covered by SIPC protection' })).toBeVisible()
+      // Ruling 2 (Sept. 25): only the general fact, never a claim about First Leaf or Rosa's holdings.
+      await expect(page.locator('main')).toContainText("SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.")
     }
   })
 }

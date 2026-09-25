@@ -61,7 +61,7 @@
   "sipc": {
     "heading": "Not covered by {term}",
     "termWord": "SIPC protection",
-    "body": "SIPC protection helps get back stocks and cash if a brokerage firm fails. It does not cover crypto."
+    "body": "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price."
   },
   "notFound": "We could not find that investment.",
   "priceNowCrypto": "Price: {price} for one {ticker}."
