@@ -32,7 +32,24 @@ const rows = computed(() =>
         </RouterLink>
       </li>
     </ul>
-    <div v-else class="funds__wrap" role="region" :aria-label="copy.tableLabel" tabindex="0">
+    <!-- Ruling (Sept. 25): when the content area is under 600px (a laptop at 200% zoom), each
+         holding is a stacked row with every value labeled by its column name. CSS picks the
+         table or the stack by the width of this box, not the window. -->
+    <ul v-if="!isPhone" class="funds__stack" :aria-label="copy.tableLabel">
+      <li v-for="r in rows" :key="r.f.ticker">
+        <p class="funds__stack-head">
+          <RouterLink :to="`/funds/${r.f.ticker}`" class="funds__link"><TickerBadge :ticker="r.f.ticker" :kind="r.f.kind" /></RouterLink>
+          <span class="funds__name">{{ r.f.name }}</span>
+        </p>
+        <dl class="funds__stack-facts">
+          <div><dt>{{ copy.col.kind }}</dt><dd>{{ r.kind }}</dd></div>
+          <div><dt>{{ copy.col.ups }}</dt><dd class="fl-tabular">{{ fill(copy.upsValue, { rating: r.f.upsAndDowns }) }}</dd></div>
+          <div><dt>{{ copy.col.value }}</dt><dd class="fl-tabular">{{ r.h ? formatMoney(r.h.value) : copy.notOwned }}</dd></div>
+          <div v-if="r.h"><dt>{{ copy.col.change }}</dt><dd class="fl-tabular"><Money :amount="r.h.gainLoss" change context="table" /></dd></div>
+        </dl>
+      </li>
+    </ul>
+    <div v-if="!isPhone" class="funds__wrap" role="region" :aria-label="copy.tableLabel" tabindex="0">
       <table class="funds__table">
         <caption class="fl-visually-hidden">{{ copy.caption }}</caption>
         <thead>
@@ -64,6 +81,64 @@ const rows = computed(() =>
 <style scoped>
 .funds {
   max-width: 1000px;
+  container-type: inline-size;
+}
+
+.funds__stack {
+  display: none;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--color-ink-muted);
+  border-radius: 12px;
+  background: var(--color-paper);
+}
+
+.funds__stack > li {
+  padding: 8px 16px 12px;
+  border-bottom: 1px solid var(--color-mint);
+}
+
+.funds__stack > li:last-child {
+  border-bottom: 0;
+}
+
+.funds__stack-head {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.funds__stack-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 4px 32px;
+  margin: 0;
+}
+
+.funds__stack-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.funds__stack-facts dt {
+  color: var(--color-ink-muted);
+}
+
+.funds__stack-facts dd {
+  margin: 0;
+  text-align: right;
+}
+
+@container (max-width: 599px) {
+  .funds__stack {
+    display: block;
+  }
+
+  .funds__wrap {
+    display: none;
+  }
 }
 
 .funds h1 {

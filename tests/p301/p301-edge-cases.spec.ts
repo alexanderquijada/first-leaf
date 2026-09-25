@@ -58,3 +58,38 @@ test('down, not up: losses say "down" in sentences and carry "down" in table lab
   await page.goto(`/funds/${h.ticker}`)
   await expect(page.getByRole('main')).toContainText(`Down ${money(h.gainLoss)} on the ${money(h.costBasis)} you paid.`)
 })
+
+// Ruling (Sept. 25): when the Investments content area is under 600px (a laptop at 200% zoom
+// is 640px, so about 592px of content), each holding becomes a stacked row with every value
+// labeled by its column name. No hidden columns and no sideways scrolling.
+for (const [width, height, what] of [[640, 400, 'a 1280×800 laptop at 200% zoom'], [720, 450, 'a 1440×900 laptop at 200% zoom'], [600, 800, 'a 600px tablet']] as const) {
+  test(`on ${what} (${width}×${height}), no Investments column is cut off`, async ({ page }) => {
+    await page.setViewportSize({ width, height })
+    await page.goto('/funds')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your investments')
+    const cut = await page.evaluate(() => {
+      const out: string[] = []
+      const root = document.querySelector('.funds')!
+      for (const el of root.querySelectorAll<HTMLElement>('*')) {
+        if (el.closest('.fl-visually-hidden')) continue // screen-reader text is 1px wide on purpose
+        if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).overflowX !== 'visible') out.push(`${el.className} scrolls sideways`)
+        if (!el.offsetParent || el.closest('.fl-visually-hidden')) continue
+        const r = el.getBoundingClientRect()
+        if (r.width && r.right > document.documentElement.clientWidth + 0.5) out.push(`"${el.textContent!.trim().slice(0, 20)}" ends at ${Math.round(r.right)}px`)
+      }
+      return [...new Set(out)]
+    })
+    expect(cut).toEqual([])
+    // Every holding shows every column, labeled (when the list is stacked).
+    if (await page.locator('.funds__stack').isVisible()) for (const h of account.holdings as { ticker: string }[]) {
+      const row = page.locator('.funds__stack > li').filter({ has: page.getByRole('link', { name: h.ticker, exact: true }) })
+      for (const label of ['Kind', 'Ups and downs', 'Your value', 'Up or down']) await expect(row.getByText(label, { exact: true })).toBeVisible()
+    }
+  })
+}
+
+test('on a laptop at full size, Investments is still a table', async ({ page }) => {
+  await page.goto('/funds')
+  await expect(page.getByRole('table')).toBeVisible()
+  await expect(page.locator('.funds__stack')).toBeHidden()
+})
