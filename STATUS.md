@@ -2,20 +2,16 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 2 · Plain language, in progress: waiting on Alex's copy approval)
+**Last updated:** Sept. 24, 2026 (Phase 2.5 · Real names, real crypto prices and the Phase 2 rewrites, waiting on Alex's copy approval)
 
 ## NEXT STEP
 
-Alex reviews **`docs/copy/COPY-REVIEW.md`**. That is every piece of text on the site, 716 rows, all DRAFT.
-1. **The ten recommended rewrites at the top, in order.** Approve, decline or amend each one.
-2. **The consistency pass** below them, and any other row with a suggestion (34 in all).
-3. **The three strings rule L5 already changed on screen** (DRAFT):
-   - the phone fund card, "Your value: $684.15 · up $24.15"
-   - the chapter 4 key line, "Each row shows the amount and its share of your balance."
-   - the Activity buy note, "Auto-invest used your deposit to buy it."
-4. **The Phase 2 deviations** in the decision log.
+Alex reviews Phase 2.5, then **approves the copy**:
+1. **`docs/copy/COPY-REVIEW.md`**, rebuilt (it supersedes Phase 2's table). Start with the ten recommended rewrites at the top: the new SIPC notice and word, the ten "What it is" descriptions, the new words, the ending of approved rewrite 3 ("…a $10.99 drop."), and "Shares" for crypto.
+2. **The Phase 2.5 deviations** in the decision log: crypto history starting Sept. 24, 2025, the CoinGecko wording, the stock data note exempt from the grade, and the commits that are only green as a set.
+3. **The live site:** Home, an alert, `/funds/AAPL`, `/funds/BTC`, `/story#chapter-3` ("The dip in May") and Practice.
 
-Then Claude applies only the approved wording: brief first if agreed behavior changes, copy files and `generate-data.mjs`/`glossary.json` for data text, with L5 green. Phase 2 closes after that. **No suggested rewrite is applied before Alex approves it.**
+Then Claude applies only the approved wording (rebuild the table with `npm run copy:review`), and the planning chat issues Phase 3.
 
 ## Live links
 
@@ -62,8 +58,8 @@ Then Claude applies only the approved wording: brief first if agreed behavior ch
 | 1A · Core screens, real app (Sept. 24) | ✅ Disclosure, G6/R1–R4/S3/T4, About and Demo menu removed, scenarios by URL, handled and session state, chart helpers, pre-commit hook, project-language crawl | ✅ Laptop Home, Alerts with realistic flows, basic Activity | ✅ Story chapters 1–4 | ✅ Phone check-in Home, phone alert pages, 48px controls |
 | 1B · Rest of core flows (Sept. 24) | ✅ Dip rule and point of view, practice state (data frozen), line chart, formula, sheets, toggles, checks widened | ✅ Activity with filters and item pages, Funds and fund pages | ✅ Story chapters 5–6, Practice with time machine, Words | ✅ Phone Activity/Funds, keypad Practice, chapter sheet, 48px everywhere |
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
-| 2 · Plain language (Sept. 24; rewrites approved, applied in 2.5) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ⬜ Approved rewrites applied | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
-| 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24) | ⬜ Lineup, real crypto prices, anchored stocks, validator (P1, P2), approved rewrites | ⬜ Investments, big-move and SIPC alerts | ⬜ Story chapters 1, 3, 4 and Practice for the lineup | ⬜ Phone screens for the lineup |
+| 2 · Plain language (Sept. 24) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ✅ Approved rewrites applied in 2.5 | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
+| 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24; waiting on copy approval) | ✅ Lineup, real crypto prices, anchored stocks, validator (P1, P2, 49 rules, 114 cases), approved rewrites, no disclaimer, data notes, grouped chart colors, `npm run copy:review` | ✅ Investments, big-move and SIPC alerts | ✅ Story chapters 1, 3, 4 and Practice for the lineup | ✅ Phone screens for the lineup |
 | 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
 | 4 · Edge cases + sizes | ⬜ | ⬜ Scenarios, errors, 390/768/1280 | ⬜ Extremes, deep links, 390/768/1280 | ⬜ Scenarios, errors, 320–1280 |
 | 5 · Verification | ⬜ README final | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD |
@@ -81,6 +77,51 @@ Then Claude applies only the approved wording: brief first if agreed behavior ch
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 24, 2026: Phase 2.5 · Real names, real crypto prices and the Phase 2 rewrites (built; waiting on copy approval)
+
+**Done**
+- **Prices.**
+  - Crypto: real CoinGecko daily closes (Demo API) for BTC, ETH and SOL, saved by `scripts/fetch-crypto.mjs` into `src/shared/data/raw/`. The key is only in `.env.local`, and the generator never uses the network.
+  - Stocks: a Brownian bridge in log price through each stock's real close on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026. The 21 closes come from Nasdaq.com historical prices (5 cross-checked in the news). Each stock's daily volatility is computed once from those closes; the daily series itself is not copied.
+  - Dividends: 20 real dividends from company announcements and SEC filings. Everything is recorded in `docs/research/PRICE-ANCHORS.md`.
+- **Rosa's account.**
+  - Seed 1 meets every condition: both accounts up, a clear dip, the dip unchanged by her pause, nothing needing the calm account.
+  - The dip: May 11 to May 26, a $34.89 (4.2%) fall. She paused on May 27, so her June, July and Aug. 3 deposits stayed as cash ($452.11 waiting).
+  - On Sept. 18 she is up $86.80 on $1,250, and the calm account is up $119.67.
+  - No holding moved 7% this week, so the big-move alert doesn't fire. The SIPC notice shows for both funded accounts.
+- **Checker (49 rules, 114 broken cases, each new or changed rule shown failing first).**
+  - New: P1 (anchors hit exactly) and P2 (crypto equals the saved CoinGecko files).
+  - G1 and G2 allow only the lineup; G3 bans "buy the dip"; G6 bans "simulated", "concept" and "not real".
+  - F1 lets crypto trade every day; F4 recomputes "Ups and downs" from the prices.
+  - A12 checks crypto settles the same day, 8-decimal crypto shares, and dividends against the documented ones.
+  - N2 covers the big-move and SIPC alerts and fails on any fee alert. R2 and R3 cover the data-driven dip.
+  - S3 and the fee rules are gone.
+- **Screens.**
+  - No footer or disclaimer anywhere.
+  - "Powered by CoinGecko API" next to crypto prices, and the stock data note next to stock prices, only on price charts and investment pages.
+  - Funds becomes Investments, with ticker badges and no logos.
+  - Chapters 1, 3 and 4 follow the new data; Practice offers all ten.
+  - Approved rewrites 1 to 6 and 8 to 10 are applied.
+- **Chart colors.** The 7-color palette fails the color-blind test (ΔE 6.4), so charts group stocks (sky), crypto (coral) and cash (cream): worst pair ΔE 22.7.
+- **The copy review** is rebuilt by the committed `npm run copy:review` (719 rows, all DRAFT).
+
+**Deviations, for Alex to rule on**
+- **Crypto history starts Sept. 24, 2025, not Sept. 19.** CoinGecko's Demo plan only answers for the past 365 days, and the fetch ran on Sept. 24, 2026. Stocks still start at their Sept. 19 anchor. The time machine starts Sept. 26, 2025, the first weekly close that every investment has.
+- **The CoinGecko credit reads "Powered by CoinGecko API", not "Crypto prices by CoinGecko".** Their API terms require "Powered by CoinGecko", and their attribution guide lists "Powered by CoinGecko API" among its accepted wordings. "Crypto prices by CoinGecko" is in neither.
+- **The stock data note keeps your exact wording, which reads at grade 9.2.** Rule L5 exempts the two data-source credits from the grade only (the list is `FIXED_WORDING`). The copy review offers an optional two-sentence version.
+- **Rewrite 3's ending.** Filled with the change word, the approved opening read "…added up to down $10.99", so it ends "…added up to a $10.99 drop." (or "rise"). DRAFT.
+- **"Ups and downs" thresholds.** 1 under 20% a year, 2 under 30%, 3 under 45%, 4 under 65%, 5 above. Costco (19.96%) and Bitcoin (45.01%) sit right at a boundary.
+- **Commits.** The data, checker and screen changes are separate commits as asked. The pre-commit hook checks the whole working tree, so each one passed against the finished tree; the data and checker commits don't build green on their own.
+- **Also changed:**
+  - Practice shares now use 8 decimals for crypto, like the account. At 4, $12 of Bitcoin would buy nothing.
+  - The time machine now looks prices up by date, not by list position (crypto's weekly list starts a week later).
+  - The CoinGecko link gets a 48px target on phones.
+
+**What we got wrong**
+- My first "Ups and downs" name check compared "Nvidia" with "NVIDIA" by exact case, so the lineup's own name was blocked. It now ignores case.
+- L5 treated `{market}` as a plain amount, so a falling week read "The market: −$10.99." in a sentence. It is a change now. This was never caught before because the old week was up.
+- The crawl's banned list missed "Nothing here is investment advice."; its own check caught that, and the pattern now bans any "investment advice".
 
 ### Sept. 24, 2026: Phase 2 rulings and Phase 2.5 ruling B (real names)
 
@@ -542,8 +583,10 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **`.claude/settings.local.json` and global git ignores:** tracked since `c9ae855`. If it ever shows as untracked again, a global ignore is the cause.
 - ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
-- **Copy is DRAFT** until Alex approves `docs/copy/COPY-REVIEW.md` (Phase 2): every copy-file string, glossary entry, flag, fund description and story sentence, plus the three L5 changes (the phone fund card, the chapter 4 key line, the buy note).
-- **The copy review was generated** from the copy files, the data and rendered snapshots (390 and 1280). The generator lives outside the repo, so the table is a snapshot. 173 rows use example values because their text isn't on a captured screen: errors, dialog steps, empty states, bare values in table cells. Tablet (768) wasn't captured separately; it uses the same strings.
+- **Copy is DRAFT** until Alex approves `docs/copy/COPY-REVIEW.md` (rebuilt in Phase 2.5): the new SIPC notice and word, the ten "What it is" descriptions, the new words, the dip sentence, the ending of rewrite 3, and every row still marked DRAFT.
+- **The big-move alert is built but untested on screen:** this week's data has no 7% move, so no alert is generated and no Playwright test can open one. N2 checks the rule both ways.
+- **The dip is small** ($34.89, 4.2%, with a low only $0.74 under what she had put in), because seed 1 is the first to meet the rules. A later seed could give a deeper dip if Alex wants the chapter to land harder.
+- **The copy review is built by `npm run copy:review`** from the copy files, the data and rendered snapshots (390 and 1280). 177 rows use example values because their text isn't on a captured screen: errors, dialog steps, empty states, bare values in table cells. Tablet (768) wasn't captured separately; it uses the same strings.
 - ~~Phase 0 UI copy is DRAFT~~ **APPROVED Sept. 24** with two edits (see the rulings entry). The list as it stood: (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
 
 
