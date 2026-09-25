@@ -165,7 +165,7 @@ function onSheet(open: boolean) {
   min-height: 56px;
   margin-top: 12px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 999px;
   background: var(--color-forest);
   color: var(--color-paper);
   font: inherit;

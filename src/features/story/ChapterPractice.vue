@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChapterMark from './ChapterMark.vue'
 // Chapter 6: try it with pretend money.
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
@@ -6,7 +7,7 @@ import copy from './copy.json'
 
 <template>
   <section id="chapter-6" class="chapter" aria-labelledby="chapter-6-title">
-    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 6 }) }}</p>
+    <ChapterMark :n="6" />
     <h2 id="chapter-6-title">{{ copy.titles['6'] }}</h2>
     <p class="chapter__claim">{{ copy.practice.claim }}</p>
     <RouterLink to="/practice" class="k6__go">{{ copy.practice.go }} <span class="mdi mdi-arrow-right" aria-hidden="true" /></RouterLink>
@@ -21,7 +22,7 @@ import copy from './copy.json'
   min-height: 48px;
   margin-top: 12px;
   padding: 0 20px;
-  border-radius: 4px;
+  border-radius: 999px;
   background: var(--color-forest);
   color: var(--color-paper);
   font-weight: 600;

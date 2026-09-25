@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChapterMark from './ChapterMark.vue'
 // Chapter 5: What happens if you keep going. Nia and Theo (two friends), the guess,
 // the start-age and catch-up sliders, smooth vs. bumpy, then Rosa's own slider.
 // Every number comes from story-p302.json or the same formula rule T1 checks.
@@ -78,7 +79,7 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
 
 <template>
   <section id="chapter-5" class="chapter" aria-labelledby="chapter-5-title">
-    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 5 }) }}</p>
+    <ChapterMark :n="5" />
     <h2 id="chapter-5-title">{{ copy.titles['5'] }}</h2>
     <p class="chapter__claim">
       {{ fill(K.meet, { niaAge: nia.startAge, niaMonthly: whole(nia.monthly), theoAge: theo.startAge, theoMonthly: whole(theo.monthly) }) }}

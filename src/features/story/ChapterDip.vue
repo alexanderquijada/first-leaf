@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChapterMark from './ChapterMark.vue'
 // Chapter 3: The dip, titled with the month of its low. Every sentence here is a checked claim (rules R2-R4);
 // the events can be shown or hidden on the chart.
 import { computed, ref } from 'vue'
@@ -47,7 +48,7 @@ const rows = computed(() =>
 
 <template>
   <section id="chapter-3" class="chapter" aria-labelledby="chapter-3-title">
-    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 3 }) }}</p>
+    <ChapterMark :n="3" />
     <h2 id="chapter-3-title">{{ fill(copy.titles['3'], { month: f.dip.month }) }}</h2>
     <p v-for="c in claims" :key="c.id" class="chapter__claim" :data-claim="c.id">{{ c.text }}</p>
     <ChartFrame :title="D.chartTitle" :level="3" :summary="summary" :columns="columns" :rows="rows">

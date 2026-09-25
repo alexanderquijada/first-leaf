@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import ChapterMark from './ChapterMark.vue'
 // Chapter 4: Where it is now. Her money by investment and cash, filtered by stocks, crypto or cash.
 import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
+import GroupMixBar from '@/shared/charts/GroupMixBar.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { getFund, type Account } from '@/shared/data'
 import CopyText from '@/shared/components/CopyText.vue'
@@ -51,7 +53,7 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
 
 <template>
   <section id="chapter-4" class="chapter" aria-labelledby="chapter-4-title">
-    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 4 }) }}</p>
+    <ChapterMark :n="4" />
     <h2 id="chapter-4-title">{{ copy.titles['4'] }}</h2>
     <p class="chapter__claim">{{ M.claim }}</p>
     <ChartFrame :title="M.chartTitle" :level="3" :summary="summary" :columns="columns" :rows="rows">
@@ -69,6 +71,8 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
           </button>
         </div>
       </template>
+      <!-- The three groups on the dark panel, with patterns (BRIEF.md §6); per-holding rows below. -->
+      <GroupMixBar :parts="parts.map((p) => ({ group: p.kind === 'all' ? 'stocks' : p.kind, value: p.value }))" class="where__groups" />
       <p v-if="shown.length" class="where__key">{{ M.rowsKey }}</p>
       <ul v-if="shown.length" class="where">
         <li v-for="p in shown" :key="p.name" class="where__row">
@@ -144,6 +148,10 @@ const rows = computed(() => shown.value.map((p) => ({ name: p.name, value: forma
   height: 100%;
   border-radius: 4px;
   background: var(--color-forest);
+}
+
+.where__groups {
+  margin: 0 0 12px;
 }
 
 .where__key {

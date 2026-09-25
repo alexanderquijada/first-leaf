@@ -6,6 +6,8 @@ import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import SeriesChart from '@/shared/charts/SeriesChart.vue'
 import Money from '@/shared/components/Money.vue'
 import PriceSourceNote from '@/shared/components/PriceSourceNote.vue'
+import GroupMixBar from '@/shared/charts/GroupMixBar.vue'
+import SceneArt from '@/shared/illustrations/SceneArt.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { useInertBackground } from '@/shared/composables/useInertBackground'
 import { usePractice } from '@/shared/composables/usePractice'
@@ -60,7 +62,7 @@ function startOver() {
 
       <div class="practice__card">
         <h2 class="practice__h">{{ copy.ownHeading }}</h2>
-        <p v-if="!p.holdings.value.length">{{ copy.ownEmpty }}</p>
+        <div v-if="!p.holdings.value.length" class="practice__empty"><SceneArt scene="empty" :size="110" /><p>{{ copy.ownEmpty }}</p></div>
         <div v-else class="practice__wrap" role="region" :aria-label="copy.ownHeading" tabindex="0">
           <table class="practice__table">
             <caption class="fl-visually-hidden">{{ copy.ownHeading }}</caption>
@@ -81,6 +83,7 @@ function startOver() {
 
         <template v-if="p.mix.value.length">
           <h3 class="practice__h3">{{ copy.mixHeading }}</h3>
+          <GroupMixBar :parts="[...p.holdings.value.map((h) => ({ group: (getFund(h.ticker)!.kind === 'crypto' ? 'crypto' : 'stocks') as 'stocks' | 'crypto', value: h.value })), { group: 'cash' as const, value: p.cash.value }]" class="practice__groups" />
           <ul class="practice__mix">
             <li v-for="m in p.mix.value" :key="m.ticker">
               <span class="practice__mix-name">{{ m.ticker }}</span>
@@ -127,6 +130,16 @@ function startOver() {
 </template>
 
 <style scoped>
+.practice__groups {
+  margin: 8px 0 12px;
+}
+
+.practice__empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+
 .practice {
   display: grid;
   gap: 16px;
@@ -272,7 +285,7 @@ function startOver() {
   min-height: 48px;
   padding: 0 20px;
   border: 1px solid var(--color-terracotta);
-  border-radius: 4px;
+  border-radius: 999px;
   background: var(--color-paper);
   color: var(--color-terracotta);
   font: inherit;

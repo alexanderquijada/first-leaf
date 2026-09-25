@@ -166,7 +166,7 @@ const reviewText = computed(() => {
   margin-top: 12px;
   padding: 0 20px;
   border: 1px solid var(--color-forest);
-  border-radius: 4px;
+  border-radius: 999px;
   background: var(--color-paper);
   color: var(--color-forest);
   font: inherit;

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChapterMark from './ChapterMark.vue'
 // Chapter 2: Most of it is still your money. The deposits share of her balance (rule R1).
 import { computed, ref } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
@@ -37,7 +38,7 @@ const rows = computed(() => [
 
 <template>
   <section id="chapter-2" class="chapter" aria-labelledby="chapter-2-title">
-    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 2 }) }}</p>
+    <ChapterMark :n="2" />
     <h2 id="chapter-2-title">{{ copy.titles['2'] }}</h2>
     <p class="chapter__claim">{{ claim }}</p>
     <ChartFrame :title="S.chartTitle" :level="3" :summary="claim" :columns="columns" :rows="rows">

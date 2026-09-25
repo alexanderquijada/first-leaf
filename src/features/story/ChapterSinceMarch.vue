@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChapterMark from './ChapterMark.vue'
 // Chapter 1: Seven months in. Her balance since March, drawn in (shown whole
 // under reduced motion), with a toggle for "What you put in / What it earned".
 import { computed, ref } from 'vue'
@@ -35,7 +36,7 @@ const rows = computed(() =>
 
 <template>
   <section id="chapter-1" class="chapter" aria-labelledby="chapter-1-title">
-    <p class="chapter__num">{{ fill(copy.chapterNum, { n: 1 }) }}</p>
+    <ChapterMark :n="1" />
     <h2 id="chapter-1-title">{{ copy.titles['1'] }}</h2>
     <p class="chapter__claim">{{ claim }}</p>
     <ChartFrame :title="S.chartTitle" :level="3" :summary="summary" :columns="columns" :rows="rows">
