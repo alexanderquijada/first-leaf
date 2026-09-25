@@ -22,6 +22,9 @@ const { open, done, undo } = useHandled()
 const { isSeen } = useSession()
 
 const needs = computed(() => open.value.filter((a) => a.severity !== 'fyi'))
+// "N things need you" counts only what Rosa must act on (ruling 8, Sept. 25): needs-you items.
+// Heads-ups are listed but not counted; FYIs sit under "Just so you know".
+const mustAct = computed(() => open.value.filter((a) => a.severity === 'needs-you'))
 const fyi = computed(() => open.value.filter((a) => a.severity === 'fyi'))
 const everHadNeeds = computed(() => attention.value.some((a) => a.severity !== 'fyi'))
 const showHandled = ref(false)
@@ -38,9 +41,10 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 <template>
   <div class="fl-alerts">
     <component :is="h" class="fl-alerts__title">{{ L.title }}</component>
-    <p v-if="needs.length" class="fl-alerts__count">
-      {{ needs.length === 1 ? L.countOne : fill(L.countMany, { count: needs.length }) }}
+    <p v-if="mustAct.length" class="fl-alerts__count">
+      {{ mustAct.length === 1 ? L.countOne : fill(L.countMany, { count: mustAct.length }) }}
     </p>
+    <p v-else-if="needs.length" class="fl-alerts__calm">{{ L.nothing }}</p>
     <p v-else-if="everHadNeeds" class="fl-alerts__calm">{{ L.allHandled }}</p>
     <p v-else class="fl-alerts__calm">{{ L.nothing }}</p>
 

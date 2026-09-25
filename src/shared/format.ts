@@ -52,3 +52,8 @@ export function formatPercent(x: number, digits = 0): string {
 export function formatShares(n: number, kind: 'stock' | 'crypto'): string {
   return n.toFixed(kind === 'crypto' ? 8 : 4)
 }
+
+/** A holding's size: "0.7346" shares of a stock, or "0.00136690 BTC" of a crypto (ruling 5, Sept. 25). */
+export function formatQuantity(n: number, kind: 'stock' | 'crypto', ticker: string): string {
+  return kind === 'crypto' ? `${n.toFixed(8)} ${ticker}` : n.toFixed(4)
+}

@@ -12,12 +12,14 @@ const nv = funds.find((f: { ticker: string }) => f.ticker === 'NVDA')
 const w = account.weeklyChange
 const close = (d: string) => nv.history.daily.find((x: { date: string }) => x.date === d).close
 
-test('a 7%+ week raises a big-move heads-up, with its facts, and it is counted', async ({ page }) => {
+test('a 7%+ week raises a big-move heads-up, with its facts', async ({ page }) => {
   expect(flag.movePercent).toBeGreaterThanOrEqual(0.07)
   await page.goto('/')
   const alerts = page.locator('.fl-alerts')
   await expect(alerts).toContainText('NVDA moved up 9.0% this week')
-  await expect(alerts).toContainText('4 things need you.') // returned deposit, goal, cash, big move; the SIPC FYI is not counted
+  // Ruling 8: only must-act items are counted (the returned deposit); the heads-ups, including
+  // the big move, are listed but not counted, and the SIPC FYI sits under "Just so you know".
+  await expect(alerts).toContainText('1 thing needs you.')
   await alerts.getByRole('link', { name: /NVDA moved up/ }).click()
   await expect(page).toHaveURL(/\/alerts\/big-move-NVDA$/)
   const d = page.locator('.adetail')

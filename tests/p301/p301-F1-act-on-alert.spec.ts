@@ -72,22 +72,22 @@ test('Mark as handled moves an alert to Handled, Undo brings it back, and it sur
   await page.goto('/alerts/goal-behind')
   await page.getByRole('button', { name: 'Mark as handled' }).click()
   const list = page.locator('.alerts__list')
-  await expect(list).toContainText('2 things need you.')
+  await expect(list).toContainText('1 thing needs you.')
   await list.getByRole('button', { name: 'Handled (1)' }).click()
   await expect(list.locator('.fl-alerts__done')).toContainText('Your goal is $150 behind your plan')
   // Survives navigation.
   await page.locator('.fl-rail').getByRole('link', { name: 'Activity' }).click()
   await page.locator('.fl-rail').getByRole('link', { name: 'Home' }).click()
-  await expect(page.locator('.fl-alerts')).toContainText('2 things need you.')
+  await expect(page.locator('.fl-alerts')).toContainText('1 thing needs you.')
   // Undo.
   await page.locator('.fl-alerts').getByRole('button', { name: 'Handled (1)' }).click()
   await page.locator('.fl-alerts').getByRole('button', { name: /^Undo/ }).click()
-  await expect(page.locator('.fl-alerts')).toContainText('3 things need you.')
+  await expect(page.locator('.fl-alerts')).toContainText('1 thing needs you.')
   // Handle again, then reload: the session resets.
   await page.goto('/alerts/goal-behind')
   await page.getByRole('button', { name: 'Mark as handled' }).click()
   await page.reload()
-  await expect(page.locator('.alerts__list')).toContainText('3 things need you.')
+  await expect(page.locator('.alerts__list')).toContainText('1 thing needs you.')
 })
 
 test('a pending deposit survives navigation and resets on reload', async ({ page }) => {

@@ -26,7 +26,8 @@ for (const s of SCENARIOS) {
     await expect(panel).toContainText(`Cash${money(a.cash)}`)
 
     const flags = attention[a.id]
-    const needs = flags.filter((f: { severity: string }) => f.severity !== 'fyi')
+    // Ruling 8 (Sept. 25): only what Rosa must act on (needs-you) is counted.
+    const needs = flags.filter((f: { severity: string }) => f.severity === 'needs-you')
     const alerts = page.locator('.fl-alerts')
     if (needs.length) await expect(alerts).toContainText(needs.length === 1 ? '1 thing needs you.' : `${needs.length} things need you.`)
     else await expect(alerts).toContainText('Nothing needs you right now.')

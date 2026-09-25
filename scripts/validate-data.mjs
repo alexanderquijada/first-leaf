@@ -108,11 +108,11 @@ export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we
 // not listed here fails L5: give a new placeholder a meaning before you use it.
 export const PLACEHOLDERS = {
   money: ['amount', 'balance', 'cash', 'moneyIn', 'price', 'start', 'end', 'first', 'last', 'paid', 'target', 'actual', 'planned', 'behind',
-    'dividends', 'earned', 'value', 'nia', 'theo', 'monthly', 'niaMonthly', 'theoMonthly', 'putIn'],
+    'dividends', 'deposits', 'earned', 'value', 'nia', 'theo', 'monthly', 'niaMonthly', 'theoMonthly', 'putIn'],
   change: ['change', 'market'],       // "up $15.57", "down $5.88", "no change" (the market's part of this week's move is a change too)
   date: ['date', 'from', 'to'],       // "Sept. 18"
   count: ['count', 'shown', 'total', 'n', 'decimals'],
-  number: ['age', 'endAge', 'startAge', 'niaAge', 'theoAge', 'rating', 'now', 'set', 'pct', 'points', 'fee', 'oldFee', 'newFee', 'shares', 'dollars'],
+  number: ['age', 'endAge', 'startAge', 'niaAge', 'theoAge', 'rating', 'now', 'set', 'pct', 'points', 'fee', 'oldFee', 'newFee', 'shares', 'dollars', 'quantity'],
   ticker: ['ticker'],
   // Words, not values: names, labels, terms and whole sentences from the data.
   text: ['name', 'title', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'short', 'example', 'link', 'page', 'query', 'region',
