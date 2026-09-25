@@ -17,7 +17,7 @@ import { useScenario } from '@/shared/composables/useScenario'
 import { useViewport } from '@/shared/composables/useViewport'
 import { getFund, meta } from '@/shared/data'
 import { fill } from '@/shared/copy'
-import { formatDate, formatMoney, formatShares } from '@/shared/format'
+import { formatDate, formatMoney, formatQuantity } from '@/shared/format'
 import { colors } from '@/shared/tokens/tokens'
 import copy from './copy.json'
 
@@ -89,13 +89,14 @@ const words = computed(() => [
           <dl class="fund__facts">
             <div><dt>{{ copy.facts.value }}</dt><dd class="fl-tabular">{{ formatMoney(holding.value) }}</dd></div>
             <div><dt>{{ copy.facts.paid }}</dt><dd class="fl-tabular">{{ formatMoney(holding.costBasis) }}</dd></div>
-            <div><dt><TermTip id="share">{{ copy.facts.shares }}</TermTip></dt><dd class="fl-tabular">{{ formatShares(holding.shares, holding.kind) }}</dd></div>
+            <div v-if="holding.kind === 'crypto'"><dt>{{ copy.facts.amount }}</dt><dd class="fl-tabular">{{ formatQuantity(holding.shares, 'crypto', holding.ticker) }}</dd></div>
+            <div v-else><dt><TermTip id="share">{{ copy.facts.shares }}</TermTip></dt><dd class="fl-tabular">{{ formatQuantity(holding.shares, 'stock', holding.ticker) }}</dd></div>
             <div><dt><TermTip id="price">{{ copy.facts.price }}</TermTip></dt><dd class="fl-tabular">{{ formatMoney(holding.price) }}</dd></div>
           </dl>
         </template>
         <template v-else>
           <p class="fund__line">{{ copy.notOwnedYet }}</p>
-          <p class="fund__line">{{ fill(copy.priceNow, { price: formatMoney(fund.latestPrice) }) }}</p>
+          <p class="fund__line">{{ fill(fund.kind === 'crypto' ? copy.priceNowCrypto : copy.priceNow, { price: formatMoney(fund.latestPrice), ticker: fund.ticker }) }}</p>
         </template>
       </section>
 

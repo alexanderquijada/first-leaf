@@ -46,7 +46,9 @@
     "price": "Price",
     "shares": "Shares",
     "settledOn": "Settled on",
-    "paidOn": "Paid on"
+    "paidOn": "Paid on",
+    "amountCoin": "Amount",
+    "paid": "You paid"
   },
   "pendingNote": "It should arrive in 1 to 3 business days.",
   "buyNote": "Auto-invest used your deposit to buy it.",

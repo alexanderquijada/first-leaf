@@ -24,7 +24,8 @@
     "value": "Your value",
     "paid": "What you paid",
     "shares": "Shares",
-    "price": "Price"
+    "price": "Price",
+    "amount": "Amount"
   },
   "notOwnedYet": "You don't own any yet.",
   "priceNow": "Price: {price} a share.",
@@ -62,5 +63,6 @@
     "termWord": "SIPC protection",
     "body": "SIPC protection helps get back stocks and cash if a brokerage firm fails. It does not cover crypto."
   },
-  "notFound": "We could not find that investment."
+  "notFound": "We could not find that investment.",
+  "priceNowCrypto": "Price: {price} for one {ticker}."
 }

@@ -9,7 +9,7 @@ import WordChips from '@/shared/components/WordChips.vue'
 import { useGlossary } from '@/shared/composables/useGlossary'
 import { useViewport } from '@/shared/composables/useViewport'
 import { getFund } from '@/shared/data'
-import { formatDate, formatMoney, formatShares } from '@/shared/format'
+import { formatDate, formatMoney, formatQuantity } from '@/shared/format'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 import { useActivityRows } from './useActivityRows'
@@ -39,15 +39,19 @@ const facts = computed<{ label: string; value: string }[]>(() => {
         ? { label: F.sentBackOn, value: formatDate(r.returnedDate) }
         : { label: F.arrivedOn, value: formatDate(r.settledDate) },
     ]
-  if (r.type === 'buy')
+  if (r.type === 'buy') {
+    // A buy's dollar figure is what you paid; a crypto's size is its "Amount" (ruling 5, Sept. 25).
+    const crypto = getFund(r.ticker)?.kind === 'crypto'
     return [
-      ...base,
+      { label: F.paid, value: formatMoney(r.amount) },
+      base[1]!,
       { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) },
       { label: F.boughtOn, value: formatDate(r.date) },
       { label: F.price, value: formatMoney(r.price) },
-      { label: F.shares, value: formatShares(r.shares, getFund(r.ticker)?.kind ?? 'stock') },
+      { label: crypto ? F.amountCoin : F.shares, value: formatQuantity(r.shares, crypto ? 'crypto' : 'stock', r.ticker) },
       { label: F.settledOn, value: formatDate(r.settledDate) },
     ]
+  }
   return [...base, { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) }, { label: F.paidOn, value: formatDate(r.date) }]
 })
 

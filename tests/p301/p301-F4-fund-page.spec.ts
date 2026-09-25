@@ -33,6 +33,11 @@ for (const f of funds) {
     if (h) {
       await expect(page.locator('.fund__value')).toHaveText(money(h.value))
       await expect(page.locator('.fund__facts')).toContainText(money(h.costBasis))
+      // Ruling 5 (Sept. 25): crypto shows "Amount" with its unit, never "Shares".
+      if (f.kind === 'crypto') {
+        await expect(page.locator('.fund__facts')).toContainText(`Amount${h.shares.toFixed(8)} ${f.ticker}`)
+        await expect(page.locator('.fund__facts')).not.toContainText('Shares')
+      } else await expect(page.locator('.fund__facts')).toContainText(`Shares${h.shares.toFixed(4)}`)
     } else await expect(page.getByText("You don't own any yet.")).toBeVisible()
     // Every range draws its own prices, and the table matches the chart.
     const group = page.getByRole('group', { name: 'Time range' })

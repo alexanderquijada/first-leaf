@@ -23,21 +23,22 @@ const W = copy.week
           <th scope="row">{{ fill(W.startBalance, { date: formatDate(w.from) }) }}</th>
           <td class="fl-tabular">{{ formatMoney(w.startBalance) }}</td>
         </tr>
-        <tr>
+        <tr v-if="w.marketChange !== 0">
           <th scope="row"><TermTip id="the-market">{{ W.market }}</TermTip></th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.marketChange) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.marketChange) }}</span>
           </td>
         </tr>
-        <tr>
+        <!-- A piece that is $0.00 is left out (ruling 6, Sept. 25); what is shown still adds up. -->
+        <tr v-if="w.dividends !== 0">
           <th scope="row"><TermTip id="dividend">{{ W.dividends }}</TermTip></th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.dividends) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.dividends) }}</span>
           </td>
         </tr>
-        <tr>
+        <tr v-if="w.deposits !== 0">
           <th scope="row"><TermTip id="deposit">{{ W.deposits }}</TermTip></th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.deposits) }}</span
