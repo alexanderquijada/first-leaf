@@ -2,16 +2,16 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 24, 2026 (Phase 2.5 · Real names, real crypto prices and the Phase 2 rewrites, waiting on Alex's copy approval)
+**Last updated:** Sept. 25, 2026 (Phase 3 · Visual design and the Phase 2.5 rulings; waiting on Alex's review)
 
 ## NEXT STEP
 
-Alex reviews Phase 2.5, then **approves the copy**:
-1. **`docs/copy/COPY-REVIEW.md`**, rebuilt (it supersedes Phase 2's table). Start with the ten recommended rewrites at the top: the new SIPC notice and word, the ten "What it is" descriptions, the new words, the ending of approved rewrite 3 ("…a $10.99 drop."), and "Shares" for crypto.
-2. **The Phase 2.5 deviations** in the decision log: crypto history starting Sept. 24, 2025, the CoinGecko wording, the stock data note exempt from the grade, and the commits that are only green as a set.
-3. **The live site:** Home, an alert, `/funds/AAPL`, `/funds/BTC`, `/story#chapter-3` ("The dip in May") and Practice.
+Alex reviews Phase 3:
+1. **The live site at three widths.** Home (and `?scenario=all-clear`, `?scenario=brand-new`), `/funds/BTC`, `/story` (chapter 3, "The dip in June"; chapter 4's group bar) and Practice.
+2. **`docs/copy/COPY-REVIEW.md`.** 28 DRAFT rows (the rest are APPROVED). The six recommended items are at the top, including one decision: a single name for FYIs.
+3. **The Phase 3 deviations** in the decision log.
 
-Then Claude applies only the approved wording (rebuild the table with `npm run copy:review`), and the planning chat issues Phase 3.
+Then the planning chat issues Phase 4 (edge cases and screen sizes).
 
 ## Live links
 
@@ -60,7 +60,7 @@ Then Claude applies only the approved wording (rebuild the table with `npm run c
 | 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
 | 2 · Plain language (Sept. 24) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ✅ Approved rewrites applied in 2.5 | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24; waiting on copy approval) | ✅ Lineup, real crypto prices, anchored stocks, validator (P1, P2, 49 rules, 114 cases), approved rewrites, no disclaimer, data notes, grouped chart colors, `npm run copy:review` | ✅ Investments, big-move and SIPC alerts | ✅ Story chapters 1, 3, 4 and Practice for the lineup | ✅ Phone screens for the lineup |
-| 3 · Visual design | ⬜ Tokens applied, chart glow/grain/halftone, illustrations | ⬜ | ⬜ | ⬜ |
+| 3 · Visual design + Phase 2.5 rulings (Sept. 25; waiting on review) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes | ⬜ | ⬜ Scenarios, errors, 390/768/1280 | ⬜ Extremes, deep links, 390/768/1280 | ⬜ Scenarios, errors, 320–1280 |
 | 5 · Verification | ⬜ README final | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD |
 
@@ -77,6 +77,44 @@ Then Claude applies only the approved wording (rebuild the table with `npm run c
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 25, 2026: Phase 3 · Visual design, plus the Phase 2.5 rulings (built; waiting on review)
+
+**The rulings, applied**
+- **Seed 10.** The dip is a 9.5% fall ($80.24), May 21 to June 5, so chapter 3 is "The dip in June". The pause is June 8. Rosa is up $108.50 on $1,250 (balance $1,358.50, $302.27 in cash); the calm account is up $136.68.
+- **The stock data note** is Alex's new wording, at grade 4.8, with no exemption.
+- **SIPC:** only the general fact, word for word, in the account notice, the glossary and the crypto pages. G6 and the crawl ban membership/protection claims, "FDIC" and any "not … advice" wording. The statute is cited verbatim in `docs/research/SIPC.md`.
+- **The big-move alert** is proven by an N2 broken case and by a Playwright project that builds a TEST-ONLY week (NVIDIA up 9%) into `dist-test/`. `npm run check:fixtures` proves `dist/` never contains it.
+- **Crypto shows "Amount" with its unit** everywhere, including Practice.
+- **Zero pieces are left out of "Why it moved"**; the pieces shown still add up to the cent.
+- **Chapter 5's advice line is gone.**
+- **"N things need you" counts only needs-you items.** For Rosa that is 1 (the returned deposit). The two heads-ups (goal, cash) are listed but not counted, and the SIPC FYI sits under "Just so you know". The phone says the same.
+- **The ten descriptions** are checked against the 10-Ks and project sites (`docs/research/DESCRIPTIONS.md`).
+- **Copy sign-off:** `docs/copy/approved.json` records the approved text. `npm run copy:review` marks 704 rows APPROVED and 28 DRAFT (new or changed since).
+
+**Visual design (BRIEF.md §6)**
+- **Theme:** a type scale (Newsreader for headlines and big numbers, Hanken Grotesk for the interface), pill buttons (Vuetify default and every feature button), quiet 150ms motion turned off under reduced motion, and `scroll-padding-top` so scrolled content clears the sticky bar.
+- **Charts:**
+  - glow only on the balance line;
+  - grain for "what it earned" over the flat "put in";
+  - dip markers alternating above and below the line (apart at 390px);
+  - a stocks / crypto / cash group bar on the dark panel, with stripes, dots and lines, a summary above and a key below (Home mix, chapter 4, Practice);
+  - Theo's line dashed and the mix card's "you set" bars striped (see the color-blind table).
+- **Illustrations:** six Open Peeps (CC0) and original starburst, boomerang, atomic-dot and halftone SVGs. They appear on the brand-new welcome, the empty Activity and Practice states, the 404, the chapter headers and the phone's calm sun.
+
+**Deviations, for Alex to rule on**
+- **No "landing doors":** the site has had no landing page since Phase 0.6, so the illustrations went to empty states and chapter headers instead.
+- **Open Doodles couldn't be reached** (the network intercepts opendoodles.com); only Open Peeps is used.
+- **"N things need you" reads "must act on" as needs-you only.** Heads-ups offer a choice ("Either is fine"), so they are listed but not counted.
+- **FYI vs. "Just so you know":** approved rewrite 9 (both "Good to know") conflicts with ruling 8 (section "Just so you know"). Both are left as they were; flagged in the copy review.
+- **Line charts stay on paper cards.** The group bar (the only categorical fill chart, with a cream mark) sits on the dark panel. Every mark is measured against the background it is drawn on.
+- **Buy detail pages say "You paid"** for the dollar row, so a crypto buy doesn't show two "Amount" rows.
+
+**What we got wrong (and fixed)**
+- My first pass left the old SIPC sentence on the crypto pages. It lives in the Investments copy file, not the data; the screenshots caught it.
+- Practice scrolled sideways on a phone (533px) once Rosa owned something. The new "0.5950 shares" wording widened the table, the grid didn't let it shrink, and a screen-reader-only span escaped the table's scroll box. It's fixed, and a new test fails on it.
+- Axe had never run at 768px. The first run there found focus-driven scrolling hiding a button under the sticky bar.
+- Writing this entry, an unquoted shell heredoc ran the backticked file names as commands and dropped the dollar amounts. STATUS.md was restored from git and rewritten; no other file changed.
 
 ### Sept. 25, 2026: Phase 2.5 rulings (and the brief for Phase 3)
 
@@ -607,12 +645,63 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 - **`.claude/settings.local.json` and global git ignores:** tracked since `c9ae855`. If it ever shows as untracked again, a global ignore is the cause.
 - ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
 - **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
-- **Copy is DRAFT** until Alex approves `docs/copy/COPY-REVIEW.md` (rebuilt in Phase 2.5): the new SIPC notice and word, the ten "What it is" descriptions, the new words, the dip sentence, the ending of rewrite 3, and every row still marked DRAFT.
-- **The big-move alert is built but untested on screen:** this week's data has no 7% move, so no alert is generated and no Playwright test can open one. N2 checks the rule both ways.
-- **The dip is small** ($34.89, 4.2%, with a low only $0.74 under what she had put in), because seed 1 is the first to meet the rules. A later seed could give a deeper dip if Alex wants the chapter to land harder.
+- **Copy:** Phase 2's sign-off is closed (Sept. 25). `docs/copy/COPY-REVIEW.md` has 28 DRAFT rows (new or changed since), listed at its top; the rest are APPROVED against `docs/copy/approved.json`.
+- ~~The big-move alert is untested on screen~~ **Fixed Sept. 25:** a TEST-ONLY week (`tests/fixtures/big-move/`) drives a Playwright test; `check:fixtures` proves it never ships.
+- ~~The dip is small~~ **Fixed Sept. 25:** seed 10 gives a 9.5% dip (May 21 to June 5).
 - **The copy review is built by `npm run copy:review`** from the copy files, the data and rendered snapshots (390 and 1280). 177 rows use example values because their text isn't on a captured screen: errors, dialog steps, empty states, bare values in table cells. Tablet (768) wasn't captured separately; it uses the same strings.
 - ~~Phase 0 UI copy is DRAFT~~ **APPROVED Sept. 24** with two edits (see the rulings entry). The list as it stood: (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
 
+
+## Measured values, Phase 3 (rendered in Chromium, Sept. 25, 2026)
+
+**Every text/background pair actually rendered.** Collected from 15 pages × 3 scenarios × 390/768/1280px, with tables, "Why it moved" and Practice holdings open. Each distinct pair is shown once, at its smallest size. Chips, badges, credits, the Practice banner and severity badges are all included; icon glyphs share their label's color.
+
+| Text / background | Ratio | Needs | Smallest size | Example (where) |
+|---|---|---|---|---|
+| terracotta #A8431E on cream #F5F0E6 | 5.30:1 | 4.5:1 | 18px | "Down $1.67" (fl-money, 390 /) |
+| mustard #7A5C00 on cream #F5F0E6 | 5.51:1 | 4.5:1 | 13px | "Passes Nia: $196" (slider__mark-label, 390 /story) |
+| terracotta #A8431E on paper #FFFDF8 | 5.92:1 | 4.5:1 | 14px | "Needs you" (fl-severity, 390 /) |
+| mustard #7A5C00 on paper #FFFDF8 | 6.15:1 | 4.5:1 | 14px | "Heads-up" (fl-severity, 390 /alerts) |
+| forest #1F5C3B on mint #DDEFD9 | 6.57:1 | 4.5:1 | 13px bold | "AAPL" (fl-badge, 390 /funds) |
+| forest #1F5C3B on cream #F5F0E6 | 6.97:1 | 4.5:1 | 15px | "SIPC: What SIPC protects" (a, 390 /learn/sipc-protection) |
+| coral #F08A5D on panel #0E1C15 | 7.11:1 | 4.5:1 | 16px | "down $1.67" (fl-money, 768 /) |
+| ink-muted #4F4A40 on mint #DDEFD9 | 7.30:1 | 4.5:1 | 16px bold | "Review" (porder__review, 390 /practice) |
+| ink-muted #4F4A40 on cream #F5F0E6 | 7.75:1 | 4.5:1 | 13px | "Start at 18" (span, 390 /story) |
+| forest #1F5C3B on paper #FFFDF8 | 7.79:1 | 4.5:1 | 13px bold | "Home" (fl-bottombar__label, 390 /) |
+| paper #FFFDF8 on forest #1F5C3B | 7.79:1 | 4.5:1 | 16px | "Next word" (phome__next, 390 /) |
+| ink-muted #4F4A40 on paper #FFFDF8 | 8.66:1 | 4.5:1 | 14px | "Price" (li, 390 /funds/AAPL) |
+| on-panel #B9C7BE on panel #0E1C15 | 10.02:1 | 4.5:1 | 14px | "Stocks" (span, 390 /story) |
+| lime #C6F36B on panel #0E1C15 | 13.75:1 | 4.5:1 | 16px | "See 2 heads-ups" (phome__more, 390 /) |
+| ink #15130F on lime #C6F36B | 14.52:1 | 4.5:1 | 16px bold | "Practice money. Nothing here t" (practice__banner, 390 /practice) |
+| ink #15130F on mint #DDEFD9 | 15.39:1 | 4.5:1 | 16px | "Money you put in" (share__label, 390 /story) |
+| cream #F5F0E6 on panel #0E1C15 | 15.46:1 | 4.5:1 | 16px | "Your $150 deposit from Sept. 1" (phome__top-text, 390 /) |
+| ink #15130F on cream #F5F0E6 | 16.33:1 | 4.5:1 | 14px | "Phone view" (fl-pp-toggle, 768 /) |
+| paper #FFFDF8 on panel #0E1C15 | 17.28:1 | 4.5:1 | 14px | "61% · $829.78" (fl-gm__num, 390 /story) |
+| ink #15130F on paper #FFFDF8 | 18.25:1 | 4.5:1 | 13px | "Activity" (fl-bottombar__label, 390 /) |
+
+**Chart marks, against the background each is drawn on** (marks need 3:1):
+
+| Mark | Colors | Ratio | Where |
+|---|---|---|---|
+| Balance line (the only glow) | forest #1F5C3B on paper #FFFDF8 | 7.79:1 | Home, story ch. 1 and 3, phone |
+| "What you put in" edge line | ink-muted #4F4A40 on paper | 8.66:1 | balance charts |
+| "What you put in" flat fill | mint #DDEFD9 on paper | 1.19:1 | an area, carried by its 2px edge line, the grain difference and the key |
+| Dip event markers | mustard #7A5C00 on paper (ink outline 18.25:1) | 6.15:1 | story ch. 3 |
+| Price, Nia, practice-mix lines | forest on paper | 7.79:1 | investment pages, ch. 5, Practice |
+| Theo line (dashed) | mustard on paper | 6.15:1 | ch. 5 |
+| Axis labels and ticks | ink-muted on paper | 8.66:1 | every line chart |
+| Group bar: stocks / crypto / cash | sky #8FD3FF / coral #F08A5D / cream #F5F0E6 on panel #0E1C15 | 10.81 / 7.11 / 15.46:1 | Home mix, ch. 4, Practice |
+| Mix "now" / "you set" bars | forest / mustard (striped) on paper | 7.79 / 6.15:1 | Home mix card |
+| Ch. 4 and Practice row bars | forest on mint track | 6.57:1 | |
+
+**Color-blind simulation of every chart with categorical color** (Machado 2009 at full severity, CIEDE2000; the bar is ΔE 17):
+
+| Chart | Closest pair (worst case) | Result | Non-color signal |
+|---|---|---|---|
+| Group bar: stocks / crypto / cash (and the panel) | stocks / cash, protanopia, ΔE 22.7 | passes all three | stripes / dots / lines, and a text key with percentages |
+| Nia and Theo | nia / theo, protanopia, ΔE 12.3 | fails protanopia (deuteranopia 17.2, tritanopia 41.5) | line width (4px vs. 2.5px), Theo dashed, labeled key |
+| Home mix: now / you set | same colors, ΔE 12.3 | fails protanopia | "you set" striped, each bar labeled ("27% now · 25% set") |
+| Balance chart: put in / earned | put in / earned, ΔE 10.8 in normal vision | close by design | flat vs. grain texture, edge lines, key |
 
 ## Measured values (Phase 0, rendered in Chromium from the production build)
 

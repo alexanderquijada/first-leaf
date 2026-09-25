@@ -314,7 +314,7 @@
   "funds:dividends.none": "It does not pay dividends.",
   "funds:sipc.heading": "Not covered by SIPC protection",
   "funds:sipc.termWord": "SIPC protection",
-  "funds:sipc.body": "SIPC protection helps get back stocks and cash if a brokerage firm fails. It does not cover crypto.",
+  "funds:sipc.body": "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.",
   "funds:notFound": "We could not find that investment.",
   "story:title": "Your money story",
   "story:chapters": "Chapters",
@@ -704,5 +704,7 @@
   "data:funds.TSLA.name": "Tesla",
   "data:funds.BTC.name": "Bitcoin",
   "data:funds.ETH.name": "Ethereum",
-  "data:funds.SOL.name": "Solana"
+  "data:funds.SOL.name": "Solana",
+  "funds:facts.amount": "Amount",
+  "activity:facts.amountCoin": "Amount"
 }
