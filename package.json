@@ -15,6 +15,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "data:generate": "node scripts/generate-data.mjs",
+    "copy:review": "node scripts/copy-review.mjs",
     "validate": "node scripts/validate-data.mjs",
     "validate:selftest": "node scripts/validator-selftest.mjs",
     "check:boundaries": "node scripts/check-boundaries.mjs",
