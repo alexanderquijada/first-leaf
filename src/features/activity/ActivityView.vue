@@ -232,9 +232,10 @@ const filterSummary = computed(
 }
 
 .activity__row {
-  display: grid;
-  grid-template-columns: 4.2em 1fr auto;
-  gap: 12px;
+  /* A row grows taller, never wider: with large text the amount wraps under the words. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
   align-items: center;
   min-height: 56px;
   border-bottom: 1px solid var(--color-mint);
@@ -243,7 +244,17 @@ const filterSummary = computed(
 }
 
 .activity__date {
+  flex: 0 0 4.2em;
   color: var(--color-ink-muted);
+}
+
+.activity__what {
+  flex: 1 1 8em;
+  min-width: 0;
+}
+
+.activity__row > .fl-tabular {
+  margin-left: auto;
 }
 
 .activity__status {

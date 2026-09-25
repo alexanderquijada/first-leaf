@@ -29,7 +29,10 @@ async function smallTargets(page: Page, width: number) {
       // A radio or checkbox is hit through its label.
       const box = (el.matches('input[type=radio], input[type=checkbox]') && el.closest('label') ? el.closest('label')! : el).getBoundingClientRect()
       if (!box.width || !box.height || getComputedStyle(el).visibility === 'hidden') continue
-      const inText = !!el.closest('p, li, dd, dt, td, th, h1, h2, h3, h4') && getComputedStyle(el).display.startsWith('inline') && !el.closest('.fl-words, [class*="__words"], [class*="chips"]')
+      // Inside running text only: a term that is the whole label or heading is a standalone control.
+      const block = el.closest('p, li, dd, dt, td, th, h1, h2, h3, h4')
+      const alone = !!block && block.textContent!.trim() === el.textContent!.trim()
+      const inText = !!block && !alone && getComputedStyle(el).display.startsWith('inline') && !el.closest('.fl-words, [class*="__words"], [class*="chips"]')
       if (inText && width < 600 && box.height >= 24) continue
       if (box.width < min || box.height < min) out.push(`${el.tagName.toLowerCase()} "${(el.getAttribute('aria-label') ?? el.textContent ?? '').trim().slice(0, 30)}" ${Math.round(box.width)}×${Math.round(box.height)}`)
     }
@@ -87,6 +90,27 @@ for (const size of [SIZES[1]!, SIZES[6]!]) {
         }
       }
       expect([...new Set(missing)]).toEqual([])
+    })
+  })
+}
+
+// Large text: the phone's text size set to 200% (the root font doubled), not only a zoomed
+// window. Cards grow taller, never wider, and nothing is cut off (P303 edge cases).
+for (const width of [390, 320]) {
+  test.describe(`at 200% text size on a ${width}px phone`, () => {
+    test.use({ viewport: { width, height: 844 } })
+
+    test('no page scrolls sideways', async ({ page }) => {
+      const wide: string[] = []
+      for (const path of ALL) {
+        await page.goto(path)
+        await page.locator('main').waitFor()
+        await page.evaluate(() => (document.documentElement.style.fontSize = '200%'))
+        await page.waitForTimeout(100)
+        const w = await page.evaluate(() => document.documentElement.scrollWidth)
+        if (w > width) wide.push(`${path}: ${w}px`)
+      }
+      expect(wide).toEqual([])
     })
   })
 }

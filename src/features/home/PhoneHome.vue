@@ -48,6 +48,17 @@ const whyShort = computed(() => {
   ].filter(Boolean).join(' ')
 })
 const anyDown = computed(() => w.value?.byFund.some((f) => f.change < 0) ?? false)
+// "Words on this screen" lists only the words the open breakdown shows (a $0.00 piece is left out).
+const whyWords = computed(() => {
+  const x = w.value
+  if (!x) return []
+  return [
+    ...(x.marketChange !== 0 ? ['the-market'] : []),
+    ...(x.dividends !== 0 ? ['dividend'] : []),
+    ...(x.deposits !== 0 ? ['deposit'] : []),
+    ...(anyDown.value ? ['ups-and-downs'] : []),
+  ]
+})
 
 // Latest three: this session's pending deposits first, then the newest activity.
 const latest = computed<Row[]>(() => [...[...pendingDeposits.value].reverse(), ...[...activity.value].reverse()].slice(0, 3))
@@ -155,7 +166,7 @@ function nextWord() {
           </ul>
           <p v-if="anyDown" class="phome__note">{{ P.someDown }}</p>
           <RouterLink to="/funds" class="phome__link">{{ P.seeFunds }} <span class="mdi mdi-chevron-right" aria-hidden="true" /></RouterLink>
-          <WordChips :ids="['the-market', 'dividend', 'deposit', 'ups-and-downs']" :heading-level="3" />
+          <WordChips :ids="whyWords" :heading-level="3" />
         </div>
       </section>
 
@@ -203,7 +214,8 @@ function nextWord() {
 .phome__big {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 2.75rem;
+  /* Grows with large text, but never wider than the phone (15vw is 58px at 390). */
+  font-size: min(2.75rem, 15vw);
   line-height: 1.1;
 }
 
@@ -390,16 +402,27 @@ function nextWord() {
 }
 
 .phome__latest li {
-  display: grid;
-  grid-template-columns: 4.5em 1fr auto;
-  gap: 12px;
+  /* A row grows taller, never wider: with large text the amount wraps under the words. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
   align-items: center;
   min-height: 48px;
   border-bottom: 1px solid var(--color-mint);
 }
 
 .phome__latest-date {
+  flex: 0 0 4.5em;
   color: var(--color-ink-muted);
+}
+
+.phome__latest-what {
+  flex: 1 1 8em;
+  min-width: 0;
+}
+
+.phome__latest li > .fl-tabular {
+  margin-left: auto;
 }
 
 .phome__status {

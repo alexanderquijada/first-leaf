@@ -42,6 +42,9 @@ h3 {
   line-height: 1.15;
   margin: 0;
   text-wrap: balance; /* no one-word last lines in headlines */
+  /* With very large text, a word longer than the screen breaks instead of widening the page. */
+  overflow-wrap: break-word;
+  hyphens: auto;
   letter-spacing: -0.01em;
 }
 

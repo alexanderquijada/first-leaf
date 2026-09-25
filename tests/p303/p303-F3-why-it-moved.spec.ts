@@ -40,9 +40,9 @@ test('why it moved opens in place and adds up to the cent', async ({ page }) => 
   await expect(body).toContainText(`${down.ticker} moved down ${money(down.change)} this week.`)
   await expect(body).toContainText(`Price changes across everything you own added up to a ${money(w.marketChange)} ${w.marketChange < 0 ? 'drop' : 'rise'}.`)
   await expect(body).toContainText('Ups and downs are normal.')
-  // Its words, as 48px chips.
+  // Its words, as 48px chips: only the words the breakdown shows (a $0.00 piece is left out).
   const chips = body.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')
-  await expect(chips).toHaveCount(4)
+  await expect(chips).toHaveCount([w.marketChange, w.dividends, w.deposits].filter((v) => v !== 0).length + 1)
   for (const b of await chips.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()))) {
     expect(b.height).toBeGreaterThanOrEqual(48)
     expect(b.width).toBeGreaterThanOrEqual(48)

@@ -11,7 +11,7 @@ const currentOpen = ref<string | null>(null)
 // button. The panel is a labelled dialog whose description is the explanation,
 // so screen readers announce it when focus lands there. Nothing is hover-only.
 // Under 600px wide the panel opens as a bottom sheet.
-import { computed, nextTick, onBeforeUnmount, useId, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, useId, watch } from 'vue'
 import CopyText from './CopyText.vue'
 import { useGlossary } from '../composables/useGlossary'
 import { copy, fill } from '../copy'
@@ -28,6 +28,14 @@ const panelId = `fl-termtip-${uid}`
 
 const buttonEl = ref<HTMLButtonElement | null>(null)
 const panelEl = ref<HTMLDivElement | null>(null)
+// A term that is the whole label or heading (not a word inside a sentence) is a standalone
+// control, so on a phone it gets a full 48px target (P303). Inside a sentence, WCAG 2.5.8's
+// inline exception applies and the screen lists its words again as 48px chips.
+const standalone = ref(false)
+onMounted(() => {
+  const block = buttonEl.value?.closest('p, li, dd, dt, td, th, h1, h2, h3, h4')
+  standalone.value = !!block && block.textContent?.trim() === buttonEl.value?.textContent?.trim()
+})
 
 const entry = computed(() => getTerm(props.id))
 if (import.meta.env.DEV && !entry.value) console.warn(`TermTip: no glossary entry "${props.id}"`)
@@ -176,7 +184,7 @@ onBeforeUnmount(() => close(false))
 </script>
 
 <template>
-  <span class="fl-termtip">
+  <span class="fl-termtip" :class="{ 'fl-termtip--standalone': standalone }">
     <button
       ref="buttonEl"
       type="button"
@@ -266,6 +274,15 @@ onBeforeUnmount(() => close(false))
   text-decoration-color: var(--fl-term-underline, var(--color-forest));
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
+}
+
+@media (max-width: 599px) {
+  .fl-termtip--standalone .fl-termtip__button {
+    display: inline-flex;
+    align-items: center;
+    min-width: 48px;
+    min-height: 48px;
+  }
 }
 
 .fl-termtip__button[aria-expanded='true'] {

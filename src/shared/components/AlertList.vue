@@ -136,6 +136,7 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 
 .fl-alerts__row {
   display: flex;
+  flex-wrap: wrap; /* with large text on a phone, the title moves under its badge */
   align-items: center;
   gap: 12px;
   min-height: 56px;
@@ -155,8 +156,9 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 }
 
 .fl-alerts__text {
-  flex: 1;
-  line-height: 1.4;
+  flex: 1 1 9rem;
+  min-width: 0;
+  line-height: var(--fl-body-leading);
   text-wrap: pretty;
 }
 

@@ -51,7 +51,7 @@ const tabs = mainNav.filter((i) => i.onPhone)
 
 .fl-bottombar ul {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
@@ -76,7 +76,9 @@ const tabs = mainNav.filter((i) => i.onPhone)
 }
 
 .fl-bottombar__label {
-  font-size: var(--type-small); /* never under 14px */
+  /* Never under 14px. With large text the labels grow only as far as five tabs fit
+     (about 4vw), as phone tab bars do; every other text on the page keeps growing. */
+  font-size: min(var(--type-small), max(14px, 4vw));
   font-weight: 500;
   line-height: 1.2;
 }
