@@ -72,10 +72,10 @@ Why: a real product is one app that a person uses in different moments, not thre
   | 600–1023px | A top bar (wordmark, "Prices as of Fri., Sept. 18", Phone view), with the rail's six items as top tabs |
   | Under 600px | An opaque top bar (wordmark) and an opaque bottom tab bar (Home, Activity, Story, Practice, Words) with 48px targets. Investments and Alerts are reached from Home. |
 
-  **Phone view** (Alex's rulings, Sept. 24, 2026): at 600px and wider, the top bar has a phone-icon toggle labeled "Phone view". It shows the real app inside a generic 390 × 844 phone frame, so a P303 reviewer can see the phone design on a laptop. It is an iframe of the same app, not a mock-up, and `?view=phone` opens it directly. Details and its known limitation are in the P303 brief.
+  **Phone view** (Alex's rulings, Sept. 24, 2026; phone-only since Phase 4): at 600px and wider, the top bar has a phone-icon button labeled "Phone view". It opens `/p303/…`, which has its own layout: only the real app inside a generic 390 × 844 phone frame, centered on a plain background, with "Back to full view" top left. No sidebar or top bar. Details are in the P303 brief.
 
   There is no footer disclosure (ruling B, Phase 2.5). There is no About page; `/about` redirects to `/`, and the reviewer map lives in `README.md`.
-- **Old addresses still work.** `/p301` and `/p303` redirect to `/`, `/p302` redirects to `/story`, and `/about` redirects to `/`.
+- **Old addresses still work.** `/p301` redirects to `/`, `/p302` to `/story`, `/about` to `/`, and `?view=phone` to `/p303`. `/p303/…` is the phone-only view (on a phone it shows the same screens full size).
 - **Shared building blocks, feature folders.** Term explanations, money formatting, data and state live in `src/shared/`. The shells and navigation live in `src/layouts/`. Each screen family lives in its own feature folder (`src/features/home`, `alerts`, `activity`, `funds`, `story`, `practice`, `learn`, and `not-found` for the 404). **Features and layouts import only from `src/shared/`**, never from each other; the router wires them together.
 - **Which lens owns which code** (this sets the commit prefix):
 
@@ -323,7 +323,7 @@ One app, three layouts. Each lens is designed for its own size; every screen mus
 | | Phone, under 600px (designed at 390×844, works from 320px) | Tablet, 600–1023px | Desktop, 1024px and up (designed at 1280) |
 |---|---|---|---|
 | **Navigation** | Opaque top bar and opaque bottom tab bar, 48px targets | Top bar and top tabs | Left rail and top bar |
-| **Phone view** | Hidden (you're already on a phone) | Toggle in the top bar; the frame scales down to fit the height | Toggle in the top bar; the 390 × 844 frame is shown at full size |
+| **Phone view** (`/p303`) | No frame: the screens fill the phone | Only the phone: its own layout, the frame centered and scaled to the window height, "Back to full view" top left | The same; the 390 × 844 frame at full size when the window is tall enough |
 | **Home** | **P303's check-in:** balance, up or down this week, a small balance chart, a "needs you" card, why it moved, the last 3 transactions, word of the day | Two columns: alerts, then balance; charts full width | **P301's dashboard:** alerts first (top left), balance beside them, then balance over time, mix, goal, this week |
 | **Alerts, Activity, Investments** | Full-screen pages, one tap from Home; alert details end with "Words on this screen" chips | Single column | Two panes where useful (the list with its detail) |
 | **Your money story** | The chart sits inline after each passage | Inline below 1024px | The chart is pinned beside the text |

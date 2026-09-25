@@ -2,7 +2,7 @@
 
 > **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a separate phone site). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Rosa and her account are invented; the stock and crypto names are real (ruling B, Phase 2.5; see BRIEF.md §4).
 >
-> **Live:** the whole app under 600px wide, starting at `/`. Open it on a phone, narrow your browser to 390px, or on a laptop use **Phone view**: https://first-leaf.vercel.app/?view=phone · **Code:** `src/layouts/` (the phone shell and navigation) and the phone-specific parts of each feature · **Commits:** prefixed `[P303]`
+> **Live:** the whole app under 600px wide, starting at `/`. Open it on a phone, narrow your browser to 390px, or on a laptop use **Phone view**: https://first-leaf.vercel.app/p303 · **Code:** `src/layouts/` (the phone shell and navigation) and the phone-specific parts of each feature · **Commits:** prefixed `[P303]`
 
 ## Summary
 
@@ -110,18 +110,19 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 - **Why it moved** opens in place on Home (a disclosure), not on a separate page: the waterfall, the per-fund breakdown and its "Words on this screen" chips. This keeps the 60-second job on one screen.
 - **At 600px and wider** the app switches to the tablet and laptop layouts (P301's Home). P303 is judged under 600px.
 
-## Phone view (for reviewing on a laptop)
+## Phone view: only the phone (for reviewing on a laptop)
 
-A P303 reviewer may never open the site on a real phone, so the app offers a one-click way to see the real phone design on a laptop.
+A P303 reviewer may never open the site on a real phone, so the app offers a one-click way to see the real phone design on a laptop. **Ruling (Sept. 24, built in Phase 4): phone view shows ONLY the phone.**
 
-- **Where:** at 600px and wider, the top bar has a phone-icon toggle button labeled **"Phone view"** (`aria-pressed` on or off). It's hidden under 600px.
-- **On:** the page shows the real app inside a generic rounded phone frame (a 390 × 844 CSS px screen area, a thin dark bezel, rounded corners), centered on cream, with a **"Back to full view"** button beside it. The only note beside the frame is "Practice here is kept apart from the full view.", shown only while Practice is open; nothing on screen explains the project.
-- **It is not a mock-up.** The frame is an iframe of the same app, so the real phone breakpoints, bottom tabs and touch targets apply. It opens on the current route and demo scenario, and it follows route changes in the full view.
-- **Shareable:** `?view=phone` opens it directly (the reviewer link is https://first-leaf.vercel.app/?view=phone).
-- **The frame never imitates a real device brand:** no notch, no camera cutout, no brand shapes.
-- **Between 600 and 1023px** the frame scales down to fit the viewport height (a CSS transform on the frame); the 390px layout inside stays the same.
-- **Accessibility:** the toggle is a real button with a visible label or tooltip. The iframe is titled "First Leaf on a phone". Focus moves into the frame on open and back to the toggle on close. Esc closes it. Any open or close animation respects reduced motion.
-- **Known limitation:** the full view and the phone view are separate app instances, so Practice state isn't shared between them. The demo scenario is carried over through the URL.
+- **Where it lives:** `/p303` and every `/p303/…` address (for example `/p303/story`). The "Phone view" button in the laptop top bar opens the same page there. Old `?view=phone` links redirect to it.
+- **600px and wider:** no sidebar, no top bar, no laptop layout at all. `/p303` has its own layout, not the laptop one with pieces hidden. It shows:
+  - a plain full-window cream background;
+  - the phone frame, centered horizontally and vertically, scaled to fit the window height so **the page never scrolls** (only the content inside the phone scrolls; checked at 1280×800, 1440×900, 1280×720 and 768×1024). The frame edge is measured at 3:1 or better against the background.
+- **Outside the phone, top left, only:** **"Back to full view"**, which returns to the laptop page the visitor came from, or to the laptop Home if they arrived at `/p303` directly. Scenarios are chosen by URL only, so there is no account switcher to bring along. No other text or controls.
+- **Under 600px (a real phone):** no frame. `/p303/…` opens the same screens full size.
+- **It is not a mock-up.** The phone screen is an iframe of the same app at 390 × 844, so the real phone breakpoints, bottom tabs and touch targets apply. It opens on the matching page and the current scenario.
+- **Accessibility:** the frame is decorative and hidden from screen readers. The phone screen keeps its own landmarks, headings and page title (the window title follows it). Focus starts inside the phone; the keyboard order is the outside control, then the phone. It never imitates a real device brand: no notch, no camera cutout.
+- **Known limitation:** the full view and the phone view are separate app instances, so Practice state isn't shared between them. The scenario carries over in the URL.
 
 ## Interactions (the core flows a reviewer can test)
 
@@ -132,8 +133,8 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 | F3 | **Understand why it moved** | Tap "Why it moved" → the waterfall from last Friday's balance to this Friday's: market change, dividends, deposits (a piece that is $0.00 is left out; ruling, Sept. 25) → tap an investment for its share of the move | The pieces add up exactly (A10), each piece has a term explanation, and its words are listed as 48px chips under "Words on this screen" |
 | F4 | **Learn a word** | Tap Word of the day → its page → **Next word** or a related word | Works one-handed; Back works |
 | F5 | **Move around one-handed** | Use the bottom tab bar: Activity, Story, Practice, Words, Home | Every tab is at least 48 × 48px, shows where you are, and keeps its place |
-| F6 | **Check every scenario** | Open `/?scenario=all-clear&view=phone`, then `/?scenario=brand-new&view=phone` (by URL only) | Home shows that scenario's account, and every sentence stays true |
-| F7 | **Review on a laptop** | Click the phone icon in the top bar, or open `/?view=phone` | The real phone Home and bottom tab bar show inside the frame, on the same route and scenario |
+| F6 | **Check every scenario** | Open `/p303?scenario=all-clear`, then `/p303?scenario=brand-new` (by URL only) | Home shows that scenario's account, and every sentence stays true |
+| F7 | **Review on a laptop** | Click **Phone view** in the top bar, or open `/p303` | Only the phone shows: no sidebar or top bar, the frame centered and never scrolling the page, "Back to full view" returns to where you were |
 | F8 | **Check activity one-handed** | Activity tab → a compact list (date, what, amount, status) → **Filters** opens a bottom sheet (type and status, 48px) → tap a row | The row opens as a full page with its words as chips; filters combine; an empty combination says so |
 | F9 | **Look at an investment** | Home or Activity → Investments → a card (ticker badge, name, value, up or down) → the investment page | The page leads with value and up or down, then a small price chart (Since you bought / 6 months / 1 year) with its data note, then "Ups and downs: X of 5", dividends if any, and the SIPC notice on crypto pages |
 | F10 | **Practice with a keypad** | Practice tab → pick an investment → amount on a large number keypad → review in a bottom sheet → confirm | Errors show above the keypad and Confirm stays disabled; the "Practice money. Nothing here touches your account." banner is always visible |
@@ -145,10 +146,11 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 
 | Case | What Rosa sees |
 |---|---|
-| **Nothing needs you** (calm account) | "Nothing needs you right now." A small mid-century sun. Any FYI (the SIPC notice, a dividend) shows under "Just so you know." The card keeps its size. |
+| **Nothing needs you** (calm account) | "Nothing needs you right now." A small mid-century sun. Any FYI (the SIPC notice, a dividend) shows under "Good to know." The card keeps its size. |
 | **Brand-new account** | "Welcome, Rosa." What happens after the first deposit, in three short steps. No $0.00 charts, and no empty "Latest" list. |
 | **Investments that went down** | In "Why it moved," any holding that fell this week shows "−$X" in terracotta, with "down" in the accessible label, next to an explanation that ups and downs are normal. In sentences: "down $X". Never red alone. |
 | **Interrupted mid-flow** | Practice keeps the half-entered order in memory for the session |
+| **Short laptop window (1280×720)** | In phone view, the frame scales down to the window height; the page never scrolls, only the phone's content does |
 | **Large text (200%) / small phone (320px) / landscape** | Cards grow taller, never wider; nothing gets cut off; the tab bar stays usable |
 
 ## Nice to haves
@@ -160,7 +162,7 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 
 | # | Done when… | LI |
 |---|---|---|
-| 1 | `/` loads on the live site on a real phone and in Phone view (`/?view=phone`); the old `/p303` address redirects to `/` | 1 |
+| 1 | `/` loads on the live site on a real phone, and `/p303` shows only the phone on a laptop | 1 |
 | 2 | Flows F1–F7 work end to end at 390px, each with a passing Playwright test | 2 |
 | 3 | Under 600px, Home does *one* job, the check-in, for Rosa in a financial-services context, as this brief describes | 3, 6 |
 | 4 | Nothing-needs-you, brand-new, down-moving funds and interruptions are handled | 7 |

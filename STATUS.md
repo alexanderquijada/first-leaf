@@ -78,7 +78,26 @@ Then the planning chat issues Phase 4 (edge cases and screen sizes).
 
 Newest first. Include what we got wrong and why.
 
-### Sept. 25, 2026: Phase 3 · Visual design, plus the Phase 2.5 rulings (built; waiting on review)
+### Sept. 25, 2026: Phase 3 rulings (and the brief for Phase 4)
+
+- **Ratified:**
+  - seed 10 and "The dip in June";
+  - illustrations in empty states and chapter headers (there has been no landing page since Phase 0.6);
+  - Open Peeps only;
+  - "N things need you" counts only must-act (needs-you) items;
+  - line charts on light cards, and the group bar on the dark panel;
+  - "You paid" on buy detail pages;
+  - the axe fixes and `scroll-padding-top`;
+  - restoring STATUS.md from git after the heredoc mistake.
+  Nia vs. Theo stays as built (Theo's line dashed).
+- **Copy:**
+  - The FYI section is named **"Good to know"** everywhere, on the laptop and the phone (approved rewrite 9). Every "Just so you know" is replaced. Rewrite 9 also renames the "FYI" badge to "Good to know", so the badge and its section use one name.
+  - The 28 DRAFT rows from Phase 3 are **approved** and recorded in `docs/copy/approved.json`.
+- **Phone view shows only the phone.** `/p303` gets its own layout at 600px and wider: no sidebar, no top bar, no laptop layout. A plain cream background, the phone frame centered and scaled to the window height so the page never scrolls, and "Back to full view" top left (it returns to the laptop page the visitor came from, or to Home). Under 600px there is no frame. The frame is decorative and hidden from screen readers; focus starts inside the phone. P303-BRIEF.md, BRIEF.md §2 and §10 are updated, with a new edge-case row for short laptop windows.
+- **Phase 4** covers every edge-case row in the briefs, BRIEF.md §10's screen sizes, 200% zoom, keyboard-only use and measured touch targets.
+- **Certificate check (read-only):** asked whether the "Library of Congress Root CA 1" certificate is installed on this Mac. It is not: `security find-certificate` finds nothing in the System or login keychain, run inside or outside the sandbox. The interception seen in Phases 2.5 and 3 happened outside the sandbox too, so it comes from the network, not from a certificate on this Mac.
+
+### Sept. 25, 2026: Phase 3 · Visual design, plus the Phase 2.5 rulings (built; ruled Sept. 25)
 
 **The rulings, applied**
 - **Seed 10.** The dip is a 9.5% fall ($80.24), May 21 to June 5, so chapter 3 is "The dip in June". The pause is June 8. Rosa is up $108.50 on $1,250 (balance $1,358.50, $302.27 in cash); the calm account is up $136.68.

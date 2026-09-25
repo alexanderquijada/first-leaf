@@ -74,10 +74,10 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 
 The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no yearly fund fee.
 
-- **"N things need you" counts only what Rosa must act on** (needs-you and heads-up alerts). FYIs sit under "Just so you know" and are never counted (ruling, Sept. 25). The same on the phone.
+- **"N things need you" counts only what Rosa must act on** (needs-you alerts; ratified Sept. 25). Heads-ups are listed but not counted. FYIs sit under "Good to know" and are never counted. The same on the phone.
 - Every alert can be **marked handled** (remembered for the session, with "Undo").
 - Alerts raised since last Sunday's review (Sept. 13) show a **New** badge.
-- **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "FYI" (forest, info icon). Color never works alone.
+- **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "Good to know" (forest, info icon; approved rewrite 9, Sept. 25). Color never works alone.
 - **Every money action is a realistic flow:** review → confirm → confirmation, and it changes what the app shows for the rest of the session (a Pending deposit in Activity, "Auto-invest: On"). Reloading resets it; the data files never change.
   - *Try the deposit again* ends with "Your deposit is on its way. It should arrive in 1 to 3 business days." and a Pending deposit in Activity. (The line lives in one place in the code and is used everywhere.)
   - *Add a one-time deposit* is the same flow with the amount filled in.
@@ -129,7 +129,7 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 
 | Case | What Rosa sees |
 |---|---|
-| **Nothing needs you** (calm account: every deposit went through, auto-invest on) | "Nothing needs you right now." A calm illustration. Any FYI (the SIPC notice, a dividend) still shows under "Just so you know". The list keeps its space, so the layout doesn't jump. |
+| **Nothing needs you** (calm account: every deposit went through, auto-invest on) | "Nothing needs you right now." A calm illustration. Any FYI (the SIPC notice, a dividend) still shows under "Good to know". The list keeps its space, so the layout doesn't jump. |
 | **Brand-new account** ($0) | A welcome state with a mid-century illustration explaining what will appear once she adds money. Charts show a labeled empty frame with one sentence, not a broken axis. |
 | **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus an explanation that ups and downs are normal. |
 | **All alerts handled** | "You've handled everything for this week." Undo stays available. |
