@@ -2,11 +2,11 @@
 // The practice order on a phone: buy or sell, pick a fund, type the amount on a
 // large keypad, review it in a bottom sheet, confirm. Errors show above the keypad
 // and Review/Confirm stay disabled until the order is valid.
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import BottomSheet from '@/shared/components/BottomSheet.vue'
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
-import { funds } from '@/shared/data'
-import { formatMoney } from '@/shared/format'
+import { funds, getFund } from '@/shared/data'
+import { formatMoney, formatQuantity } from '@/shared/format'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 import { useOrder } from './useOrder'
@@ -14,6 +14,11 @@ import { useOrder } from './useOrder'
 const O = copy.order
 
 const { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
+// Crypto is reviewed in coins, not shares (ruling 5, Sept. 25).
+const reviewText = computed(() => {
+  const c = getFund(ticker.value)?.kind === 'crypto'
+  return side.value === 'buy' ? (c ? O.reviewBuyCrypto : O.reviewBuy) : c ? O.reviewSellCrypto : O.reviewSell
+})
 const sheetOpen = ref(false)
 const KEYS = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'del'] as const
 
@@ -77,7 +82,7 @@ function onSheet(open: boolean) {
 
     <BottomSheet v-model="sheetOpen" :title="O.checkOrder" @update:model-value="onSheet">
       <p class="porder__sheet-text">
-        {{ fill(side === 'buy' ? O.reviewBuy : O.reviewSell, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), shares: estShares.toFixed(4) })
+        {{ fill(reviewText, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="porder__error" role="alert">{{ error }}</p>

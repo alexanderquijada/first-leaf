@@ -10,7 +10,7 @@
   "ownEmpty": "Nothing yet. Buy a stock or crypto to start.",
   "col": {
     "fund": "Investment",
-    "shares": "Shares",
+    "shares": "Owned",
     "value": "Value",
     "paid": "Paid",
     "change": "Up or down"
@@ -45,13 +45,16 @@
     "decimal": "Decimal point",
     "review": "Review",
     "checkOrder": "Check your order",
-    "reviewBuy": "Buy {amount} of {ticker} at {price} a share. That is about {shares} shares.",
-    "reviewSell": "Sell {amount} of {ticker} at {price} a share. That is about {shares} shares.",
+    "reviewBuy": "Buy {amount} of {ticker} at {price} a share. That is about {quantity} shares.",
+    "reviewSell": "Sell {amount} of {ticker} at {price} a share. That is about {quantity} shares.",
     "noFee": " There is no fee.",
     "back": "Back",
     "confirm": "Confirm",
     "bought": "You bought {amount} of {ticker} with practice money.",
     "sold": "You sold {amount} of {ticker}. That money is back in your practice money.",
-    "newOrder": "New order"
-  }
+    "newOrder": "New order",
+    "reviewBuyCrypto": "Buy {amount} of {ticker} at {price} for one {ticker}. That is about {quantity}.",
+    "reviewSellCrypto": "Sell {amount} of {ticker} at {price} for one {ticker}. That is about {quantity}."
+  },
+  "ownedShares": "{quantity} shares"
 }

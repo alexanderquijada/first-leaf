@@ -77,6 +77,17 @@ test('buy, see it, sell part, sell too much, time machine, start over', async ({
   await expect(page.locator('.practice__sum')).toContainText('$1,000.00')
 })
 
+test('crypto in Practice is reviewed and owned as an amount of coins, not shares', async ({ page }) => {
+  await page.goto('/practice')
+  await order(page, 'Buy', 'BTC', '100')
+  await page.getByRole('button', { name: 'Review' }).click()
+  const coins = (Math.floor((100 / price('BTC')) * 1e8 + 1e-9) / 1e8).toFixed(8)
+  await expect(page.getByText(`Buy $100.00 of BTC at ${money(price('BTC'))} for one BTC. That is about`)).toBeVisible()
+  await page.getByRole('button', { name: 'Confirm' }).click()
+  await expect(page.locator('.practice__table tbody tr')).toContainText(`${coins} BTC`)
+  await expect(page.locator('.practice__table tbody tr')).not.toContainText('shares')
+})
+
 test('the banner stays on screen while scrolling', async ({ page }) => {
   await page.goto('/practice')
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))

@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 // The practice order on a laptop or tablet: buy or sell, pick a fund, amount,
 // review, confirm. Errors show inline; Review and Confirm stay disabled until the
 // order is valid.
 import ToggleGroup from '@/shared/components/ToggleGroup.vue'
-import { funds } from '@/shared/data'
-import { formatMoney } from '@/shared/format'
+import { funds, getFund } from '@/shared/data'
+import { formatMoney, formatQuantity } from '@/shared/format'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 import { useOrder } from './useOrder'
@@ -12,6 +13,11 @@ import { useOrder } from './useOrder'
 const O = copy.order
 
 const { side, ticker, amount, touched, step, last, error, shownError, estShares, review, confirm, next, practice } = useOrder()
+// Crypto is reviewed in coins, not shares (ruling 5, Sept. 25).
+const reviewText = computed(() => {
+  const c = getFund(ticker.value)?.kind === 'crypto'
+  return side.value === 'buy' ? (c ? O.reviewBuyCrypto : O.reviewBuy) : c ? O.reviewSellCrypto : O.reviewSell
+})
 </script>
 
 <template>
@@ -48,7 +54,7 @@ const { side, ticker, amount, touched, step, last, error, shownError, estShares,
     <template v-else-if="step === 'review'">
       <h3 class="order__h">{{ O.checkOrder }}</h3>
       <p>
-        {{ fill(side === 'buy' ? O.reviewBuy : O.reviewSell, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), shares: estShares.toFixed(4) })
+        {{ fill(reviewText, { amount: formatMoney(Number(amount)), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="order__error" role="alert">{{ error }}</p>

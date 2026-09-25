@@ -11,7 +11,7 @@ import { useInertBackground } from '@/shared/composables/useInertBackground'
 import { usePractice } from '@/shared/composables/usePractice'
 import { useViewport } from '@/shared/composables/useViewport'
 import { getFund, practiceRules } from '@/shared/data'
-import { formatDate, formatMoney, formatMoneyShort, formatShares } from '@/shared/format'
+import { formatDate, formatMoney, formatMoneyShort, formatQuantity } from '@/shared/format'
 import { colors } from '@/shared/tokens/tokens'
 import OrderForm from './OrderForm.vue'
 import PhoneOrder from './PhoneOrder.vue'
@@ -70,7 +70,7 @@ function startOver() {
             <tbody>
               <tr v-for="h in p.holdings.value" :key="h.ticker">
                 <td>{{ h.ticker }}</td>
-                <td class="is-num fl-tabular">{{ formatShares(h.shares, getFund(h.ticker)!.kind) }}</td>
+                <td class="is-num fl-tabular">{{ getFund(h.ticker)!.kind === 'crypto' ? formatQuantity(h.shares, 'crypto', h.ticker) : fill(copy.ownedShares, { quantity: formatQuantity(h.shares, 'stock', h.ticker) }) }}</td>
                 <td class="is-num fl-tabular">{{ formatMoney(h.value) }}</td>
                 <td class="is-num fl-tabular">{{ formatMoney(h.paid) }}</td>
                 <td class="is-num fl-tabular"><Money :amount="h.gainLoss" change context="table" /></td>
