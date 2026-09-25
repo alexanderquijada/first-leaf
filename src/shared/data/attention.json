@@ -13,7 +13,7 @@
         "label": "Try the deposit again"
       },
       "amount": 150,
-      "activityId": "rosa-starter-035",
+      "activityId": "rosa-starter-042",
       "terms": [
         "returned-deposit",
         "recurring-deposit"
@@ -46,16 +46,16 @@
     {
       "id": "cash-sitting",
       "severity": "heads-up",
-      "date": "2026-06-01",
-      "raisedOn": "2026-06-01",
-      "title": "$452.11 is waiting in cash",
-      "body": "Auto-invest has been paused since May 27, so deposits since then stay as cash. Cash does not go up or down with the market.",
+      "date": "2026-07-01",
+      "raisedOn": "2026-07-01",
+      "title": "$302.27 is waiting in cash",
+      "body": "Auto-invest has been paused since June 8, so deposits since then stay as cash. Cash does not go up or down with the market.",
       "nextStep": "It is your choice. You can turn auto-invest back on, or leave it paused.",
       "action": {
         "kind": "auto-invest",
         "label": "See auto-invest settings"
       },
-      "amount": 452.11,
+      "amount": 302.27,
       "terms": [
         "cash",
         "auto-invest"
@@ -68,8 +68,8 @@
       "severity": "fyi",
       "date": "2026-03-02",
       "raisedOn": "2026-03-02",
-      "title": "Crypto is not covered by SIPC protection",
-      "body": "SIPC protection helps get back the stocks and cash in a brokerage account if the firm fails. It does not cover crypto, like your Bitcoin and Ethereum.",
+      "title": "SIPC protection doesn't cover crypto",
+      "body": "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.",
       "nextStep": "Nothing to do. This is just so you know.",
       "action": null,
       "amount": 0,
@@ -87,8 +87,8 @@
       "severity": "fyi",
       "date": "2026-03-02",
       "raisedOn": "2026-03-02",
-      "title": "Crypto is not covered by SIPC protection",
-      "body": "SIPC protection helps get back the stocks and cash in a brokerage account if the firm fails. It does not cover crypto, like your Bitcoin and Ethereum.",
+      "title": "SIPC protection doesn't cover crypto",
+      "body": "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.",
       "nextStep": "Nothing to do. This is just so you know.",
       "action": null,
       "amount": 0,

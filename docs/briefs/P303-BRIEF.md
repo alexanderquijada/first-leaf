@@ -41,17 +41,17 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 {
   "account.weeklyChange.from": "2026-09-11",
   "account.weeklyChange.to": "2026-09-18",
-  "account.weeklyChange.startBalance": 1347.79,
+  "account.weeklyChange.startBalance": 1360.17,
   "account.weeklyChange.deposits": 0,
   "account.weeklyChange.dividends": 0,
-  "account.weeklyChange.marketChange": -10.99,
-  "account.weeklyChange.totalChange": -10.99,
-  "account.weeklyChange.endBalance": 1336.8,
+  "account.weeklyChange.marketChange": -1.67,
+  "account.weeklyChange.totalChange": -1.67,
+  "account.weeklyChange.endBalance": 1358.5,
   "attention.rosa-starter.0.title": "Your $150 deposit from Sept. 1 was sent back",
   "meta.wordOfTheDay": "ups-and-downs",
-  "activity.rosa-starter.35.type": "dividend",
-  "activity.rosa-starter.34.status": "returned",
-  "activity.rosa-starter.33.type": "dividend"
+  "activity.rosa-starter.42.type": "dividend",
+  "activity.rosa-starter.41.status": "returned",
+  "activity.rosa-starter.40.type": "dividend"
 }
 ```
 
@@ -76,8 +76,8 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 ┌──────────────────────────────┐
 │ First Leaf                   │  opaque top bar
 │                              │
-│ $1,336.80                    │  serif, big
-│ Down $10.99 this week        │
+│ $1,358.50                    │  serif, big
+│ Down $1.67 this week         │
 │ ╭─╮_╭╮__╱‾  small balance    │  chart since March
 │                              │
 │ ┌──────── PANEL ───────────┐ │
@@ -87,7 +87,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 │ │ + 3 heads-ups           › │ │  tap → Alerts
 │ └───────────────────────────┘ │
 │ ┌ Why it moved this week ──┐ │
-│ │ market down $10.99       │ │  tap → opens in place:
+│ │ market down $1.67        │ │  tap → opens in place:
 │ │ dividend $0.50         › │ │  waterfall, per fund, word chips
 │ └───────────────────────────┘ │
 │ ┌ Latest ──────────────────┐ │

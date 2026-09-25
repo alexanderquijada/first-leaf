@@ -76,7 +76,7 @@ const CASES = [
   { rule: 'A12', why: 'a crypto buy is given T+1 settlement (crypto settles the same day)', mutate: (d) => { const b = d.activity['rosa-starter'].find((a) => a.type === 'buy' && a.ticker === 'BTC'); b.settledDate = '2026-03-03'; } },
   { rule: 'A12', why: 'a dividend uses a per-share amount the company never paid', mutate: (d) => { const x = d.activity['rosa-starter'].find((a) => a.type === 'dividend'); x.perShare = 0.5; } },
   { rule: 'A12', why: 'a dividend is paid on shares bought on the ex-date', mutate: (d) => { const x = d.activity['rosa-starter'].find((a) => a.type === 'dividend'); x.sharesOnExDate = r4(x.sharesOnExDate + 0.1); x.amount = r2(x.sharesOnExDate * x.perShare); } },
-  { rule: 'A13', why: 'waiting-in-cash date is a month early', mutate: (d) => { d.account.cashSince = '2026-07-01'; } },
+  { rule: 'A13', why: 'waiting-in-cash date is a month early', mutate: (d) => { d.account.cashSince = '2026-06-01'; } },
   { rule: 'A14', why: 'REVIEW FINDING (Sept. 23): a buy happens after auto-invest was paused', mutate: (d) => { const b = d.activity['rosa-starter'].find((a) => a.type === 'buy'); b.date = '2026-08-03'; } },
   { rule: 'A14', why: 'auto-invest says "on" but a pause date is set', mutate: (d) => { d.account.autoInvest.on = true; } },
   { rule: 'N1', why: 'an FYI flag is listed before a needs-you flag, and uses an unknown term', mutate: (d) => { const l = d.attention['rosa-starter']; l.unshift(l.pop()); l[0].terms = ['nope']; } },

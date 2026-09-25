@@ -53,11 +53,11 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
   "account.goal.behindBy": 150,
   "account.goal.plannedMoneyInToDate": 1400,
   "account.goal.actualMoneyInToDate": 1250,
-  "account.autoInvest.pausedOn": "2026-05-27",
-  "account.investedValue": 884.69,
-  "account.dividendsTotal": 2.11,
+  "account.autoInvest.pausedOn": "2026-06-08",
+  "account.investedValue": 1056.23,
+  "account.dividendsTotal": 2.27,
   "account.holdings.3.ticker": "COST",
-  "account.holdings.3.gainLoss": -10.59
+  "account.holdings.3.gainLoss": -15.01
 }
 ```
 

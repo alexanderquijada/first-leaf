@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures'
-import { load, money } from '../data'
+import { apDate, load, money } from '../data'
 
 const account = load('account')
 
@@ -18,7 +18,7 @@ test('an alert opens at its own address, beside the list, with what happened, wh
   await expect(page.locator('.alerts__list').getByRole('link', { name: /deposit from Sept. 1/ })).toHaveAttribute('aria-current', 'page')
   // A deep link works on its own.
   await page.goto('/alerts/sipc-crypto')
-  await expect(page.locator('.adetail')).toContainText('It does not cover crypto, like your Bitcoin and Ethereum.')
+  await expect(page.locator('.adetail')).toContainText("SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.")
 })
 
 test('Try the deposit again: review → confirm → confirmation, then Pending in Activity', async ({ page }) => {
@@ -57,7 +57,7 @@ test('auto-invest can be turned on, with a confirmation, and Home shows it', asy
   await page.goto('/alerts/cash-sitting')
   await page.getByRole('button', { name: 'See auto-invest settings' }).click()
   const dialog = page.getByRole('dialog')
-  await expect(dialog).toContainText('Auto-invest is paused. It has been off since May 27.')
+  await expect(dialog).toContainText(`Auto-invest is paused. It has been off since ${apDate(account.autoInvest.pausedOn)}.`)
   await dialog.getByRole('switch').click()
   await dialog.getByRole('button', { name: 'Continue' }).click()
   await expect(dialog).toContainText(`The ${money(account.cash)} already in cash stays as cash.`)
@@ -112,7 +112,7 @@ test('an alert that does not exist, or not in this account, says so', async ({ p
 test('the SIPC notice is an FYI with its word explained, and no fee alert exists any more', async ({ page }) => {
   await page.goto('/alerts/sipc-crypto')
   const detail = page.locator('.adetail')
-  await expect(detail.getByRole('heading', { name: 'Crypto is not covered by SIPC protection' })).toBeVisible()
+  await expect(detail.getByRole('heading', { name: "SIPC protection doesn't cover crypto" })).toBeVisible()
   await expect(detail).toContainText('FYI')
   await expect(detail.getByRole('button', { name: 'SIPC protection' }).first()).toBeVisible()
   await page.goto('/alerts/fee-going-up')

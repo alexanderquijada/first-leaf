@@ -144,11 +144,11 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 {
   "persona.age": 26,
   "account.recurringDeposit.amount": 150,
-  "account.balance": 1336.8,
+  "account.balance": 1358.5,
   "account.moneyIn": 1250,
-  "account.gainLoss": 86.8,
-  "account.cash": 452.11,
-  "account.autoInvest.pausedOn": "2026-05-27",
+  "account.gainLoss": 108.5,
+  "account.cash": 302.27,
+  "account.autoInvest.pausedOn": "2026-06-08",
   "funds.0.ticker": "AAPL",
   "funds.0.history.daily.0.close": 245.5,
   "funds.7.ticker": "BTC",
@@ -196,7 +196,7 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 - **Measured, not hoped for.** The validator scores every explanation, flag and story claim with the Flesch-Kincaid grade formula and fails anything above grade 8 (rule L2). It blocks a jargon list inside explanations (rule L3). We cross-checked our scoring against the `textstat` library, and it agreed within about one grade.
 - **Copy is held for approval.** Claude Code drafts copy. Alex approves it before it ships.
 - **Copy rules:** complete sentences, not headline fragments. Never label a value without saying what it measures. Card copy must stay true under every filter and every demo scenario. A subtitle is optional and has to earn its place.
-- **Money format:** account amounts always show cents ($1,336.80). Whole-dollar amounts in sentences drop them ("$150 deposit"). The Nia and Theo lesson's long-range numbers round to whole dollars ($242,251).
+- **Money format:** account amounts always show cents ($1,358.50). Whole-dollar amounts in sentences drop them ("$150 deposit"). The Nia and Theo lesson's long-range numbers round to whole dollars ($242,251).
 - **Gains and losses (amended Sept. 24, 2026):** in sentences, a change reads as a word with no sign: "up $15.57", "down $5.88". In tables and chart labels it reads "+$15.57" / "−$5.88" (a true minus sign), and the words "up" / "down" are in the accessible label. Color is added in both places, never alone.
 - **Rate changes are in percentage points.** A share of the mix going from 25% to 28% rose "3 percentage points", never "+12%". The same goes for any rate.
 - **Honest wording:** never "safe" without saying safe from what ("does not go up or down with the market"). No claims about what "most people" do unless we can cite it. Our own app terms (Practice, On pace, Auto-invest) cite no outside source, because none exists. No advice about the market, ever: never "buy the dip" (G3).

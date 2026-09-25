@@ -322,9 +322,9 @@
     "alsoCalled": [
       "SIPC coverage"
     ],
-    "short": "Help getting your stocks and cash back if your brokerage firm fails.",
-    "detail": "If a brokerage firm that is a SIPC member fails, SIPC works to give back your stocks and cash, up to $500,000. That includes up to $250,000 in cash. It does not cover a drop in prices. It does not cover crypto like Bitcoin or Ethereum.",
-    "example": "If your firm closed and your shares went missing, SIPC would work to get them back to you.",
+    "short": "Protection for stocks and cash at a member brokerage that fails.",
+    "detail": "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.",
+    "example": "If a member brokerage closed and shares went missing, SIPC would work to get them back to their owners.",
     "related": [
       "stock",
       "crypto",

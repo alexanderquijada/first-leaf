@@ -35,18 +35,18 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 ```json brief-example
 {
   "account.openedOn": "2026-03-02",
-  "account.balance": 1336.8,
+  "account.balance": 1358.5,
   "account.moneyIn": 1250,
-  "account.gainLoss": 86.8,
-  "account.autoInvest.pausedOn": "2026-05-27",
-  "account.cashSince": "2026-06-01",
-  "account.history.49.date": "2026-05-11",
-  "account.history.49.balance": 833.81,
-  "account.history.59.date": "2026-05-26",
-  "account.history.59.balance": 799.26,
-  "account.history.59.moneyIn": 800,
-  "story-p302.rosaStory.rosa-starter.facts.dip.fall": 34.89,
-  "story-p302.rosaStory.rosa-starter.facts.dip.month": "May"
+  "account.gainLoss": 108.5,
+  "account.autoInvest.pausedOn": "2026-06-08",
+  "account.cashSince": "2026-07-01",
+  "account.history.57.date": "2026-05-21",
+  "account.history.57.balance": 846.01,
+  "account.history.67.date": "2026-06-05",
+  "account.history.67.balance": 915.77,
+  "account.history.67.moneyIn": 950,
+  "story-p302.rosaStory.rosa-starter.facts.dip.fall": 80.24,
+  "story-p302.rosaStory.rosa-starter.facts.dip.month": "June"
 }
 ```
 

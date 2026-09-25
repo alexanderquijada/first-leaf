@@ -81,7 +81,9 @@ const BIG_MOVE = 0.07;                 // a holding moving this much in a week g
 // between April 15 and Aug. 15, 2026, measured as the market change in her balance (deposits
 // and dividends taken out). She pauses auto-invest on the next trading day after the low.
 const DIP_WINDOW = { from: '2026-04-15', to: '2026-08-15', tradingDays: 10 };
-const DIP_MIN = 0.04;                  // a "clear" dip: at least a 4% fall
+// Ruling (Sept. 25): the first seed after 1 where the dip is an 8% to 15% fall. Seed 1's
+// 4.2% dip was too shallow to carry chapter 3.
+const DIP_MIN = 0.08, DIP_MAX = 0.15;
 
 const meta = {
   product: 'First Leaf',
@@ -121,17 +123,18 @@ const persona = {
 
 // ---------- the lineup (ruling B) ----------
 // The order of this list fixes the random stock paths. Don't reorder it.
+// "about": checked against each 10-K or project site (docs/research/DESCRIPTIONS.md).
 const ASSET_DEFS = [
-  { ticker: 'AAPL', name: 'Apple', kind: 'stock', about: 'Apple makes the iPhone, the Mac and the iPad. It also sells apps, music and other services.' },
-  { ticker: 'MSFT', name: 'Microsoft', kind: 'stock', about: 'Microsoft makes Windows and Office. It also runs a big cloud, where people rent its computers.' },
-  { ticker: 'NVDA', name: 'NVIDIA', kind: 'stock', about: 'NVIDIA designs computer chips. They run video games and AI.' },
-  { ticker: 'COST', name: 'Costco', kind: 'stock', about: 'Costco runs big warehouse stores. Members pay a yearly fee to shop there and buy in bulk.' },
-  { ticker: 'NKE', name: 'Nike', kind: 'stock', about: 'Nike makes and sells sports shoes, clothes and gear.' },
-  { ticker: 'AMZN', name: 'Amazon', kind: 'stock', about: 'Amazon runs a huge online store. It also rents out computer power over the internet.' },
-  { ticker: 'TSLA', name: 'Tesla', kind: 'stock', about: 'Tesla makes electric cars. It also makes big batteries for homes.' },
+  { ticker: 'AAPL', name: 'Apple', kind: 'stock', about: 'Apple makes the iPhone, the Mac and the iPad. It also sells services like app downloads and music.' },
+  { ticker: 'MSFT', name: 'Microsoft', kind: 'stock', about: 'Microsoft makes Windows and Office. It also runs a cloud service, where people and businesses pay to use its computers over the internet.' },
+  { ticker: 'NVDA', name: 'NVIDIA', kind: 'stock', about: 'NVIDIA designs computer chips. People use them for video games and to build AI.' },
+  { ticker: 'COST', name: 'Costco', kind: 'stock', about: 'Costco runs warehouse stores and websites. Shoppers pay a yearly fee to be members.' },
+  { ticker: 'NKE', name: 'Nike', kind: 'stock', about: 'Nike designs and sells sports shoes, clothes and gear. Other companies make most of it.' },
+  { ticker: 'AMZN', name: 'Amazon', kind: 'stock', about: 'Amazon runs stores online and in person. It also rents out its computers over the internet.' },
+  { ticker: 'TSLA', name: 'Tesla', kind: 'stock', about: 'Tesla makes electric cars. It also makes batteries that store power for homes and businesses.' },
   { ticker: 'BTC', name: 'Bitcoin', kind: 'crypto', coin: 'bitcoin', about: 'Bitcoin is a digital currency. No company or bank runs it.' },
-  { ticker: 'ETH', name: 'Ethereum', kind: 'crypto', coin: 'ethereum', about: 'Ethereum is a digital currency. It also runs small programs on its own network.' },
-  { ticker: 'SOL', name: 'Solana', kind: 'crypto', coin: 'solana', about: 'Solana is a digital currency. It also runs small programs on its own network.' },
+  { ticker: 'ETH', name: 'Ethereum', kind: 'crypto', coin: 'ethereum', about: 'Ethereum is a computer network. It has its own digital currency, called ether. People also run programs on it.' },
+  { ticker: 'SOL', name: 'Solana', kind: 'crypto', coin: 'solana', about: 'Solana is a computer network. It has its own digital currency, called SOL. People also run programs on it.' },
 ];
 const DECIMALS = { stock: 4, crypto: 8 };  // parts of a share: 4 places for stocks, 8 for crypto
 const MIX = { AAPL: 0.25, MSFT: 0.2, NVDA: 0.1, COST: 0.15, NKE: 0.1, BTC: 0.12, ETH: 0.08 };
@@ -341,10 +344,11 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
   const cryptoHeld = holdings.filter((h) => h.kind === 'crypto' && h.shares > 0);
   if (cryptoHeld.length) {
     const firstBuy = activity.find((a) => a.type === 'buy' && kindOf(a.ticker) === 'crypto');
-    const names = cryptoHeld.map((h) => ASSET_DEFS.find((x) => x.ticker === h.ticker).name);
+    // A general fact only (ruling, Sept. 25): never say or imply that First Leaf is a SIPC
+    // member or that Rosa's holdings are protected (15 U.S.C. §78jjj(d)).
     flags.push({ id: 'sipc-crypto', severity: 'fyi', date: firstBuy.date, raisedOn: firstBuy.date,
-      title: 'Crypto is not covered by SIPC protection',
-      body: `SIPC protection helps get back the stocks and cash in a brokerage account if the firm fails. It does not cover crypto, like your ${names.join(' and ')}.`,
+      title: "SIPC protection doesn't cover crypto",
+      body: "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.",
       nextStep: 'Nothing to do. This is just so you know.',
       action: null, amount: 0, terms: ['sipc-protection', 'crypto'], route: 'glossary' });
   }
@@ -359,16 +363,16 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
 }
 
 // ---------- choose the seed ----------
-// Every anchor is hit by construction. The seed is the first one where Rosa is up overall,
-// the dip is clear (a fall of at least 4%), the dip found in her own (paused) history is the
+// Every anchor is hit by construction. The seed is the first one after 1 where Rosa is up overall,
+// the dip is an 8% to 15% fall, the dip found in her own (paused) history is the
 // same one that made her pause, and the calm account has nothing that needs her.
 let SEED, assets, priceOn, main, calm, dip;
-for (let seed = Number(process.env.FL_SEED || 1); ; seed++) {
+for (let seed = Number(process.env.FL_SEED || 2); ; seed++) {
   if (seed > 5000) throw new Error('no seed meets the data rules');
   ({ assets, priceOn } = buildAssets(seed));
   calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn });
   const d0 = findDip(calm.account.history, calm.activity);
-  if (-d0.drop < DIP_MIN) continue;
+  if (-d0.drop < DIP_MIN || -d0.drop > DIP_MAX) continue;
   main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, autoInvestPausedOn: nextTradingDay(addDays(d0.lowDate, 1)), returnedDeposits: { '2026-09-01': '2026-09-03' } });
   const d1 = findDip(main.account.history, main.activity);
   if (d1.highDate !== d0.highDate || d1.lowDate !== d0.lowDate) continue;
