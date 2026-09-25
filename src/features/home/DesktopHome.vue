@@ -92,6 +92,7 @@ const { account } = useScenario()
   .dhome__goal,
   .dhome__week {
     grid-column: span 6;
+    align-self: start; /* each card ends where its content ends: no empty band inside */
   }
 }
 </style>

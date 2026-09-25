@@ -64,5 +64,6 @@
     "body": "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price."
   },
   "notFound": "We could not find that investment.",
-  "priceNowCrypto": "Price: {price} for one {ticker}."
+  "priceNowCrypto": "Price: {price} for one {ticker}.",
+  "lossNote": "Prices go up and down. What you own can be down for a while and up later, or the other way around."
 }

@@ -152,3 +152,53 @@ test('no Home card ends in a big empty gap (the tall mix card takes its own row)
     for (const g of gaps) expect(g.gap, `${g.card} at ${width}`).toBeLessThanOrEqual(80)
   }
 })
+
+// Phase 5, second review.
+test('an alert whose action is done shows the result instead of "What you can do", and is handled', async ({ page }) => {
+  for (const [id, button, confirm, doneText, oldStep] of [
+    ['deposit-returned', 'Try the deposit again', 'Confirm deposit', 'Your deposit is on its way.', 'try the deposit again'],
+    ['goal-behind', 'Add a one-time deposit', 'Confirm deposit', 'Your deposit is on its way.', 'one-time deposit'],
+  ] as const) {
+    // In-app navigation: a reload starts a new session.
+    if (id === 'deposit-returned') await page.goto(`/alerts/${id}`)
+    else await page.locator('.alerts__list').getByRole('link', { name: /goal/ }).click()
+    const d = page.locator('.adetail')
+    await expect(d).toContainText(oldStep)
+    await page.getByRole('button', { name: button }).click()
+    const dialog = page.getByRole('dialog')
+    await dialog.getByRole('button', { name: 'Continue' }).click()
+    await dialog.getByRole('button', { name: confirm }).click()
+    await dialog.getByRole('button', { name: 'Done' }).click()
+    await expect(d).toContainText(doneText)
+    await expect(d).not.toContainText(oldStep)
+    await expect(d.getByRole('button', { name: button })).toHaveCount(0)
+    await expect(d.getByText('Handled', { exact: true })).toBeVisible()
+  }
+  // Both are handled now, so "needs you" counts nothing.
+  await page.locator('.fl-rail').getByRole('link', { name: 'Home' }).click()
+  await expect(page.locator('.fl-alerts')).toContainText('Nothing needs you right now.')
+})
+
+test('the brand-new Alerts page has no detail pane at all', async ({ page }) => {
+  await page.goto('/alerts?scenario=brand-new')
+  await expect(page.locator('.alerts__list')).toBeVisible()
+  await expect(page.locator('.alerts__detail')).toHaveCount(0)
+})
+
+test('a loss says ups and downs are normal, on its page and in This week', async ({ page }) => {
+  const h = account.holdings.find((x: { gainLoss: number }) => x.gainLoss < 0)
+  await page.goto(`/funds/${h.ticker}`)
+  await expect(page.getByRole('main')).toContainText('Prices go up and down. What you own can be down for a while and up later, or the other way around.')
+  await page.goto('/')
+  await expect(page.locator('.week')).toContainText('Ups and downs are normal.')
+})
+
+test('at 768, alert rows keep the chevron on the right of each row', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 })
+  await page.goto('/')
+  for (const row of await page.locator('.fl-alerts__row').all()) {
+    const [r, go] = [(await row.boundingBox())!, (await row.locator('.fl-alerts__go').boundingBox())!]
+    expect(go.x + go.width).toBeGreaterThan(r.x + r.width - 40)
+    expect(r.height).toBeLessThan(110)
+  }
+})

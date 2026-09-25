@@ -23,7 +23,8 @@ const alert = computed(() => attention.value.find((a) => a.id === id.value))
     <template v-if="isDesktop">
       <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
       <div class="alerts__list"><AlertList :selected-id="id" /></div>
-      <div class="alerts__detail">
+      <!-- A brand-new account has no alerts, so there is no detail pane at all. -->
+      <div v-if="attention.length || id" class="alerts__detail">
         <AlertDetail v-if="alert" :key="alert.id" :alert="alert" />
         <div v-else-if="id" class="alerts__missing">
           <h2>{{ copy.notFound }}</h2>

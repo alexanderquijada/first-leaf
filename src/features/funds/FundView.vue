@@ -68,8 +68,9 @@ const D = copy.dividends
 const received = computed(() =>
   activity.value.filter((a) => a.type === 'dividend' && a.ticker === fund.value?.ticker).reduce((s, a) => s + a.amount, 0),
 )
+// Crypto is owned as an amount of coins, not shares, so its page doesn't list "Share".
 const words = computed(() => [
-  'ups-and-downs', 'share', 'price',
+  'ups-and-downs', ...(fund.value?.kind === 'crypto' ? [] : ['share']), 'price',
   ...(fund.value?.dividends.length ? ['dividend'] : []),
   ...(fund.value?.kind === 'crypto' ? ['crypto', 'sipc-protection'] : ['stock']),
 ])
@@ -86,6 +87,7 @@ const words = computed(() => [
         <template v-if="holding">
           <p class="fund__value fl-tabular"><Money :amount="holding.value" /></p>
           <p class="fund__line"><CopyText :text="copy.vsPaid" :values="{ paid: formatMoney(holding.costBasis) }"><template #change><Money :amount="holding.gainLoss" change capitalize /></template></CopyText></p>
+          <p v-if="holding.gainLoss < 0" class="fund__line fund__loss-note">{{ copy.lossNote }}</p>
           <dl class="fund__facts">
             <div><dt>{{ copy.facts.value }}</dt><dd class="fl-tabular">{{ formatMoney(holding.value) }}</dd></div>
             <div><dt>{{ copy.facts.paid }}</dt><dd class="fl-tabular">{{ formatMoney(holding.costBasis) }}</dd></div>

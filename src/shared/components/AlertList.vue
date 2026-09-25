@@ -139,7 +139,6 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 
 .fl-alerts__row {
   display: flex;
-  flex-wrap: wrap; /* with large text on a phone, the title moves under its badge */
   align-items: center;
   gap: 12px;
   min-height: 56px;
@@ -159,7 +158,7 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 }
 
 .fl-alerts__text {
-  flex: 1 1 9rem;
+  flex: 1 1 auto;
   min-width: 0;
   line-height: var(--fl-body-leading);
   text-wrap: pretty;
@@ -231,5 +230,30 @@ const h2 = computed(() => `h${props.headingLevel + 1}`)
 }
 .fl-alerts__art {
   margin: 12px 0 4px;
+}
+
+/* In a narrow list (a tablet's Home card, a phone, large text) the badge sits above the
+   title and the chevron stays on the right, so no row breaks apart. */
+.fl-alerts {
+  container-type: inline-size;
+}
+
+@container (max-width: 420px) {
+  .fl-alerts__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: start;
+    row-gap: 6px;
+  }
+
+  .fl-alerts__row > * {
+    grid-column: 1;
+  }
+
+  .fl-alerts__row > .fl-alerts__go {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    align-self: center;
+  }
 }
 </style>

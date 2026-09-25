@@ -51,6 +51,8 @@ const W = copy.week
         </tr>
       </tbody>
     </table>
+    <!-- A week where any holding fell says that ups and downs are normal (P301 brief, "Down, not up"). -->
+    <p v-if="w.byFund.some((f) => f.change < 0)" class="week__note">{{ copy.phone.someDown }}</p>
   </section>
 </template>
 
@@ -87,5 +89,10 @@ const W = copy.week
   font-weight: 700;
   border-bottom: 0;
   border-top: 2px solid var(--color-ink-muted);
+}
+.week__note {
+  margin: 12px 0 0;
+  color: var(--color-ink-muted);
+  line-height: var(--fl-body-leading);
 }
 </style>

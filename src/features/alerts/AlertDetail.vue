@@ -28,7 +28,16 @@ const { markSeen, autoInvestOn, autoInvestChanged, pendingDeposits } = useSessio
 // "Try the deposit again" the alert shows the new deposit as pending, and after auto-invest
 // is turned on, the cash alert says it is on now.
 const retry = computed(() => (props.alert.id === 'deposit-returned' ? pendingDeposits.value.find((p) => p.kind === 'retry') : undefined))
+const oneTime = computed(() => (props.alert.id === 'goal-behind' ? pendingDeposits.value.find((p) => p.kind === 'one-time') : undefined))
 const autoTurnedOn = computed(() => props.alert.id === 'cash-sitting' && autoInvestChanged.value && autoInvestOn.value)
+// What the done action changed, shown in place of "What you can do" and its button.
+const doneLine = computed(() =>
+  retry.value || oneTime.value ? shared.deposit.confirmation : autoTurnedOn.value ? shared.moneyFlow.autoOnNow : '',
+)
+// Doing the action handles the alert (Undo stays available), so "needs you" stops counting it.
+watch(doneLine, (line) => {
+  if (line && !isHandled(props.alert.id)) markHandled(props.alert)
+})
 
 watch(() => props.alert.id, (id) => markSeen(id), { immediate: true })
 
@@ -102,8 +111,6 @@ function unhandle() {
 
     <h3 class="adetail__h">{{ copy.whatHappened }}</h3>
     <p>{{ alert.body }}</p>
-    <p v-if="retry" class="adetail__now">{{ shared.deposit.confirmation }}</p>
-    <p v-if="autoTurnedOn" class="adetail__now">{{ shared.moneyFlow.autoOnNow }}</p>
     <dl v-if="facts.length" class="adetail__facts">
       <div v-for="f in facts" :key="f.label">
         <dt>{{ f.label }}</dt>
@@ -117,9 +124,10 @@ function unhandle() {
     </ul>
 
     <h3 class="adetail__h">{{ copy.whatYouCanDo }}</h3>
-    <p>{{ alert.nextStep }}</p>
+    <p v-if="doneLine" class="adetail__now">{{ doneLine }}</p>
+    <p v-else>{{ alert.nextStep }}</p>
     <div class="adetail__actions">
-      <template v-if="alert.action && !retry">
+      <template v-if="alert.action && !doneLine">
         <RouterLink
           v-if="alert.action.kind === 'open-fund' && alert.ticker"
           :to="`/funds/${alert.ticker}`"
