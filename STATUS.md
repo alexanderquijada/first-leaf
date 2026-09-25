@@ -8,7 +8,7 @@
 
 **Submit.** All five phases are done and deployed. Before submitting, Alex:
 1. Reads the Phase 5 entry in the decision log and the final report.
-2. Approves (or edits) the 24 DRAFT rows at the top of `docs/copy/COPY-REVIEW.md`, all new in Phase 5.
+2. Approves (or edits) the 30 DRAFT rows in `docs/copy/COPY-REVIEW.md`, all new in Phase 5 (each row's "Why" says which reviewer finding it fixes).
 3. Submits each case study with its live link and its README reviewer section (README.md, "For reviewers": P301, P302, P303).
 
 ## Live links
@@ -60,7 +60,7 @@
 | 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24; waiting on copy approval) | ✅ Lineup, real crypto prices, anchored stocks, validator (P1, P2, 49 rules, 114 cases), approved rewrites, no disclaimer, data notes, grouped chart colors, `npm run copy:review` | ✅ Investments, big-move and SIPC alerts | ✅ Story chapters 1, 3, 4 and Practice for the lineup | ✅ Phone screens for the lineup |
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
-| 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 260 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
+| 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
 
 ## Environment
 
@@ -141,7 +141,21 @@ Newest first. Include what we got wrong and why.
 - The reduced-motion test counted 0.01ms animations as "running" under load; it now counts only motion a person could see.
 - The story's pinned chart was deferred in Phase 1A and never built until a reviewer caught it. Chapter 5's 5c to 5g charts had the same history.
 
-**No decisions are needed from Alex.** Nothing removed a feature, changed a case study's purpose, changed approved copy, or touched the lineup, data rules or guardrails. The 24 new sentences are DRAFT (see Known issues, Copy).
+**Final review (third round, on 8aa543d), and its fixes:**
+- **P301:**
+  - README step 1 asked for "Mark as handled" after the alert had handled itself (step rewritten);
+  - "What happened" still said auto-invest "has been paused" after it was turned on (now "was paused from June 8 until today");
+  - "ex-dividend date" had no explanation (now a glossary word and chip).
+- **P302:**
+  - "$NaN" in the Practice review for "$200" or "1,000" (fixed; the order itself was always right);
+  - balance-chart axes not ending on their last date (fixed);
+  - "0%" in the group bar's key beside "0.2%" (fixed).
+- **P303:**
+  - chapter 4's "Words: stocks, crypto, cash." put three 26px buttons on a phone (now 48px chips there).
+
+After this round, each fix was checked by a test that fails on 8aa543d and passes now, and by the full suite. There was no fourth review round (the prompt allows two re-reviews).
+
+**No decisions are needed from Alex.** Nothing removed a feature, changed a case study's purpose, changed approved copy, or touched the lineup, data rules or guardrails. The 30 new sentences are DRAFT (see Known issues, Copy).
 
 ### Sept. 25, 2026: Phase 4 rulings (and the brief for Phase 5)
 
@@ -756,7 +770,7 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 Current as of submission (Sept. 25, 2026). Resolved items are in the decision log.
 
-- **Copy:** `docs/copy/COPY-REVIEW.md` has 751 rows: 727 APPROVED against `docs/copy/approved.json` and **24 DRAFT**. Every DRAFT row is new in Phase 5, each fixing a reviewer finding (the "Why" column says which). They ship as DRAFT until Alex approves them.
+- **Copy:** `docs/copy/COPY-REVIEW.md` has 757 rows: 727 APPROVED against `docs/copy/approved.json` and **30 DRAFT**. Every DRAFT row is new in Phase 5, each fixing a reviewer finding (the "Why" column says which). They ship as DRAFT until Alex approves them.
 - **The dip isn't visible as a dip on chapter 3's chart.** A $150 deposit on June 1 landed inside the fall, so the balance line barely drops. The sentences, the six event markers and the table carry the dip ($80.24, 9.5%, measured on her investments by rule R2). Showing it on the chart would mean charting invested value instead of the balance, a change to the story's design.
 - **Phone view in a window shorter than 719px:** the phone shrinks to a 667px screen first, then scales (never below 0.875). Body text stays at 14px or more, but 14px labels render at about 12.3px. From 719px up, the phone is at full size.
 - **"New" badges never show.** Every shipped alert was raised before the last review (Sept. 13). Rule N1 checks each flag's "New" against its date.
@@ -765,13 +779,15 @@ Current as of submission (Sept. 25, 2026). Resolved items are in the decision lo
 - **The story's inline words in chapter 4** (stocks, crypto, cash) have no chips. The story isn't a phone detail screen, so the chip rule doesn't apply, but it's the one place a phone reader taps 26px inline words.
 - **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario carries over in the URL. In phone view, the browser's Back button steps back inside the phone.
 - **Password protection is deferred** (Alex's call; the instructions recommend it). One router and one Vercel project keep a later gate easy.
-- **The commit history spans Sept. 23 to 25.** It is phase by phase, with planning on Sept. 23, but compressed.
+- **The commit history spans Sept. 24 to 25** (the Sept. 23 planning session is recorded in STATUS.md, not in git). It is phase by phase, but compressed.
 - **The pre-commit hook checks the working tree, not only what's staged**, so commits are made with unrelated work stashed.
 - **`scripts/setup.sh` embeds a snapshot of the first commit's files.** Only its live Node check was updated.
 - **The rail's paper background is sticky and 100vh tall,** so full-page screenshots show it ending at one screen height. A real window always shows it full height.
 - **Use https://first-leaf.vercel.app.** Per-deployment Vercel URLs redirect (302).
 - **`.claude/settings.local.json` is committed on purpose** (the rubric grades the `.claude` folder).
 - **Pelipper Post** (`~/Projects/pelipper-post`) was read for patterns only and never changed.
+- **The big-move alert never shows in the shipped data** (no holding moved 7% in the last week). A TEST-ONLY fixture proves it on screen, and `check:fixtures` proves the fixture never ships.
+- **Small layout notes from the final review:** at 1024 and 768 the dark Balance panel stretches to the height of the alerts card beside it, leaving some empty dark space under "Auto-invest". The Mix card has no key for its two bars (the "27% now · 25% set" text says which is which). Each pinned story chart is almost as tall as its chapter at 1280×800, so it sits beside the text but barely pins. On brand-new Investments the "Up or down" column is empty.
 
 ## Measured values, Phase 5 (rendered in Chromium, Sept. 25, 2026)
 
@@ -787,7 +803,7 @@ Current as of submission (Sept. 25, 2026). Resolved items are in the decision lo
 | Practice holdings at 1280 | stacked rows in a 438px card (the table was 493px) |
 | Home at 1280: Mix · Goal · This week | 976×656 · each ends at its content (no empty band; the test allows up to 80px) |
 | Story chapter 1 y-axis with layers on | starts at $0 (was about $400) |
-| Playwright | 260 passed, 2 skipped (after two back-to-back full runs to rule out flakes) |
+| Playwright | 264 passed, 4 skipped (the skips are phone-only or laptop-only checks at the other widths) |
 
 ## Measured values, Phase 4 (rendered in Chromium, Sept. 25, 2026)
 

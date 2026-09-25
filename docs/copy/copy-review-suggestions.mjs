@@ -46,6 +46,12 @@ export const CHANGED = {
   'story:keepGoing.catchTitle': REV('P302', 'that 5e had no chart (and two charts would share one title)'),
   'story:closing.title': REV('P302', 'that the story had no closing takeaway'),
   'story:closing.sources': REV('P302', 'that the closing had no sources'),
+  'alerts:pausedUntilToday': REV('P301', 'that "What happened" still said auto-invest "has been paused" after it was turned on'),
+  'funds:dividends.exDateWord': REV('P301', 'that "ex-dividend date" had no explanation; the word is now a term button (same words)'),
+  'data:glossary.ex-dividend-date.term': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
+  'data:glossary.ex-dividend-date.short': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
+  'data:glossary.ex-dividend-date.detail': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
+  'data:glossary.ex-dividend-date.example': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
 }
 
 export const SUGGEST = {
@@ -55,7 +61,7 @@ export const SUGGEST = {
 };
 
 export const TOP = [
-  'Approve the 24 new Phase 5 rows (all DRAFT, grade 5.9 or below). Each fixes a reviewer finding; the "Why" column says which.',
+  'Approve the new Phase 5 rows (all DRAFT, all grade 8 or below). Each fixes a reviewer finding; the "Why" column says which.',
   'Optional, carried from Phase 2: the below-what-you-put-in chart sentence ([[home:chart.nowDown]]) and "you set" on the mix card ([[home:mix.set]]).',
 ];
 
