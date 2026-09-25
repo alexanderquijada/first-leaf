@@ -116,7 +116,7 @@ export const PLACEHOLDERS = {
   ticker: ['ticker'],
   // Words, not values: names, labels, terms and whole sentences from the data.
   text: ['name', 'title', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'short', 'example', 'link', 'page', 'query', 'region',
-    'claim', 'note', 'reply', 'setting', 'month', 'direction'],
+    'claim', 'note', 'reply', 'setting', 'month', 'direction', 'list'],
 };
 // Names the app quotes rather than writes: a term, the industry's words for it, a
 // source, a fund or a person. The reading level grades OUR words, so a quoted name
@@ -800,7 +800,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       Object.assign(v, { name: persona.firstName, title: flag.title, label: 'Your balance since March', series: 'Balance', kind: 'Stocks', status: 'Pending',
         type: 'Deposits', page: 'Activity', query: 'fee', region: funds[0].region ?? 'United States',
         claim: story.claims[0].text, note: story.bumpy.note, reply: 'Here is how it turns out.', setting: 'Start at 30',
-        month: story.rosaStory?.[acc.id]?.facts.dip.month ?? 'May', direction: 'up' });
+        month: story.rosaStory?.[acc.id]?.facts.dip.month ?? 'May', direction: 'up', list: 'Stocks 70%, Crypto 18%, Cash 12%' });
       const flags = flagsOf(acc).length ? flagsOf(acc) : [flag];
       return [...glossaryVariants.map((g) => ({ ...v, ...g })), ...flags.map((f) => ({ ...v, ...glossaryVariants[0], title: f.title }))];
     };

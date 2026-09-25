@@ -4,7 +4,7 @@
 // with the arrow keys. The chart's numbers are the same series the table shows.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ActiveDataPoint, ChartDataset } from 'chart.js'
-import { Chart } from './register'
+import { Chart, grainPattern } from './register'
 import { colors } from '../tokens/tokens'
 import { formatChange, formatDate, formatMoney } from '../format'
 import { copy, fill } from '../copy'
@@ -74,14 +74,19 @@ function datasets(): ChartDataset<'line'>[] {
     borderColor: colors.forest,
     borderWidth: 3,
     backgroundColor: 'rgba(39, 107, 67, 0.28)',
-    fill: props.layers ? { target: '-1', above: 'rgba(39, 107, 67, 0.28)', below: 'rgba(168, 67, 30, 0.22)' } : false,
+    // "What it earned" is grain over the flat "what you put in"; below it (a loss) stays a flat tint.
+    fill: props.layers ? { target: '-1', above: earnedFill(), below: 'rgba(168, 67, 30, 0.22)' } : false,
     pointRadius: 0,
     pointHoverRadius: 5,
-  })
+    // The one line to read first glows (BRIEF.md §6).
+    glow: 'rgba(198, 243, 107, 0.95)',
+  } as ChartDataset<'line'>)
   if (props.events.length) {
     sets.push({
       label: copy.chart.events,
-      data: props.points.map((p) => (eventAt.value.has(p.date) ? p.balance : null)) as number[],
+      // Markers alternate above and below the line, so events on neighboring days (a low on a
+      // Friday, a pause on the Monday) sit visibly apart even on a phone.
+      data: eventData(),
       showLine: false,
       pointRadius: 7,
       pointHoverRadius: 8,
@@ -92,6 +97,18 @@ function datasets(): ChartDataset<'line'>[] {
     })
   }
   return sets
+}
+
+function earnedFill(): CanvasPattern | string {
+  const ctx = canvasEl.value?.getContext('2d')
+  return ctx ? grainPattern(ctx, 'rgba(39, 107, 67, 0.26)', 'rgba(31, 92, 59, 0.9)') : 'rgba(39, 107, 67, 0.28)'
+}
+
+function eventData(): (number | null)[] {
+  const vals = props.points.map((p) => p.balance)
+  const step = (Math.max(...vals) - Math.min(...vals)) * 0.07
+  let n = 0
+  return props.points.map((p) => (eventAt.value.has(p.date) ? p.balance + (n++ % 2 === 0 ? step : -step) : null))
 }
 
 function setActive(i: number | null) {
@@ -225,7 +242,9 @@ onBeforeUnmount(() => chart?.destroy())
 }
 
 .fl-balchart__swatch.is-earned {
-  background: rgba(39, 107, 67, 0.28);
+  background-color: rgba(39, 107, 67, 0.26);
+  background-image: radial-gradient(rgba(31, 92, 59, 0.9) 0.8px, transparent 1px);
+  background-size: 4px 4px;
   border: 2px solid var(--color-forest);
 }
 

@@ -160,5 +160,12 @@
     "cryptoLink": "CoinGecko API",
     "cryptoUrl": "https://www.coingecko.com/en/api/",
     "newTab": " (opens in a new tab)"
+  },
+  "mixGroups": {
+    "stocks": "Stocks",
+    "crypto": "Crypto",
+    "cash": "Cash",
+    "part": "{name} {pct}%",
+    "summary": "Your balance by kind: {list}."
   }
 }
