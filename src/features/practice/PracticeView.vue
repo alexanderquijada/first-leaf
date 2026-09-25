@@ -191,12 +191,14 @@ function startOver() {
 
 .practice__grid {
   display: grid;
+  /* minmax(0, 1fr): a wide table scrolls inside its own box instead of widening the page. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
 }
 
 @media (min-width: 1024px) {
   .practice__grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 
@@ -223,6 +225,7 @@ function startOver() {
 }
 
 .practice__wrap {
+  position: relative; /* keeps screen-reader-only text inside the scrolling box */
   margin-top: 8px;
   overflow-x: auto;
 }
