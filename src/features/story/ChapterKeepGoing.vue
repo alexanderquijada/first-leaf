@@ -32,7 +32,7 @@ const reply = computed(() =>
 )
 const friendsSeries = computed(() => [
   { label: K.nia, data: ages.map((a) => valueAt(nia.yearly, a)), color: colors.forest, width: 4 },
-  { label: K.theo, data: ages.map((a) => valueAt(theo.yearly, a)), color: colors.mustard, width: 2.5 },
+  { label: K.theo, data: ages.map((a) => valueAt(theo.yearly, a)), color: colors.mustard, width: 2.5, dash: [6, 4] },
 ])
 const describeFriends = (i: number) => {
   const a = ages[i]!, n = valueAt(nia.yearly, a), t = valueAt(theo.yearly, a)
@@ -58,7 +58,7 @@ const shapeSeries = computed(() => {
   const t = shape.value === 'smooth' ? theo.yearly : story.bumpy.theo
   return [
     { label: K.nia, data: ages.map((a) => valueAt(n, a)), color: colors.forest, width: 4 },
-    { label: K.theo, data: ages.map((a) => valueAt(t, a)), color: colors.mustard, width: 2.5 },
+    { label: K.theo, data: ages.map((a) => valueAt(t, a)), color: colors.mustard, width: 2.5, dash: [6, 4] },
   ]
 })
 const describeShape = (i: number) => {
