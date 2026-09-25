@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Phone view (P303 brief, Phase 4): at 600px and wider, /p303/… shows ONLY the phone.
 // Its own layout, not the laptop one with parts hidden: no rail, no top bar. A plain
-// cream window, the phone frame centered and scaled to fit so the page never scrolls
+// cream window, the phone frame centered and fitted (shorter first, then scaled) so the page never scrolls
 // (only the app inside the phone does), and "Back to full view" top left.
 //
 // The screen is an iframe of the same app at 390 × 844, so the phone breakpoints, the
@@ -18,13 +18,15 @@ const route = useRoute()
 const router = useRouter()
 
 const SCREEN_W = 390
-const SCREEN_H = 844
-const BEZEL = 12
+const SCREEN_MAX_H = 844
+const SCREEN_MIN_H = 667 // the iPhone SE screen: the shortest the phone gets before it is scaled
+const BEZEL = 10
 const DEVICE_W = SCREEN_W + BEZEL * 2
-const DEVICE_H = SCREEN_H + BEZEL * 2
-const GAP = 24 // room kept around the phone
+const GAP = 16 // room kept around the phone
 const BACK_ROOM = 72 // the button's strip at the top, kept clear when the phone would reach it
 const BACK_WIDTH = 240
+// Text never renders below 14px (ruling, Sept. 25): scaling stops where 16px body text is 14px.
+const MIN_SCALE = 14 / 16
 
 const innerPath = (rest: unknown) => '/' + ([] as string[]).concat((rest as string[] | string | undefined) ?? []).filter(Boolean).join('/')
 
@@ -33,12 +35,17 @@ const frameQuery: LocationQueryRaw = { ...route.query, embed: 'phone' }
 const frameSrc = router.resolve({ path: innerPath(route.params.rest), query: frameQuery, hash: route.hash }).href
 
 const size = ref({ w: window.innerWidth, h: window.innerHeight })
-const scale = computed(() => {
+// A short window first makes the phone shorter (full width kept, down to a 667px screen).
+// Only if that isn't enough is the whole phone scaled down.
+const fit = computed(() => {
   const { w, h } = size.value
-  let s = Math.min(1, (h - GAP * 2) / DEVICE_H, (w - GAP * 2) / DEVICE_W)
   // On a narrow window the phone's top edge could reach the button, so keep its strip clear.
-  if ((w - DEVICE_W * s) / 2 < BACK_WIDTH) s = Math.min(s, (h - BACK_ROOM * 2) / DEVICE_H)
-  return Math.max(0.4, s)
+  const edge = (w - DEVICE_W) / 2 < BACK_WIDTH ? BACK_ROOM : GAP
+  const room = h - edge * 2
+  const screenH = Math.round(Math.min(SCREEN_MAX_H, Math.max(SCREEN_MIN_H, room - BEZEL * 2)))
+  const deviceH = screenH + BEZEL * 2
+  const scale = Math.max(MIN_SCALE, Math.min(1, room / deviceH, (w - GAP * 2) / DEVICE_W))
+  return { screenH, deviceH, scale }
 })
 
 const frameEl = ref<HTMLIFrameElement | null>(null)
@@ -94,10 +101,10 @@ onBeforeUnmount(() => {
         <span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ P.back }}
       </button>
     </header>
-    <div class="fl-phoneview__stage" :style="{ width: `${DEVICE_W * scale}px`, height: `${DEVICE_H * scale}px` }">
+    <div class="fl-phoneview__stage" :style="{ width: `${DEVICE_W * fit.scale}px`, height: `${fit.deviceH * fit.scale}px` }">
       <div
         class="fl-phoneview__device"
-        :style="{ width: `${DEVICE_W}px`, height: `${DEVICE_H}px`, transform: `scale(${scale})` }"
+        :style="{ width: `${DEVICE_W}px`, height: `${fit.deviceH}px`, transform: `scale(${fit.scale})` }"
       >
         <iframe
           ref="frameEl"
@@ -105,7 +112,7 @@ onBeforeUnmount(() => {
           :src="frameSrc"
           :title="P.frameTitle"
           :width="SCREEN_W"
-          :height="SCREEN_H"
+          :height="fit.screenH"
           @load="onFrameLoad"
         />
       </div>
@@ -156,8 +163,8 @@ onBeforeUnmount(() => {
 
 .fl-phoneview__device {
   transform-origin: top left;
-  padding: 12px;
-  border-radius: 52px;
+  padding: 10px;
+  border-radius: 50px;
   background: var(--color-ink);
   box-shadow: 0 16px 40px rgb(21 19 15 / 0.25);
 }

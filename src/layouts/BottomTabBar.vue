@@ -76,7 +76,7 @@ const tabs = mainNav.filter((i) => i.onPhone)
 }
 
 .fl-bottombar__label {
-  font-size: 0.8125rem;
+  font-size: var(--type-small); /* never under 14px */
   font-weight: 500;
   line-height: 1.2;
 }

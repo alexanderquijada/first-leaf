@@ -22,7 +22,7 @@ defineProps<{ ticker: string; kind: AssetKind }>()
   background: var(--color-mint);
   color: var(--color-forest);
   font-family: var(--font-ui);
-  font-size: 0.8125rem;
+  font-size: var(--type-small); /* never under 14px */
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.4;

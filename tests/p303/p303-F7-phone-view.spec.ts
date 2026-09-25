@@ -34,10 +34,48 @@ for (const [width, height] of [[1280, 800], [1440, 900], [1280, 720], [768, 1024
       expect(box.y + box.height).toBeLessThanOrEqual(height)
       const back = (await page.getByRole('button', { name: 'Back to full view' }).boundingBox())!
       expect(back.x + back.width <= box.x || back.y + back.height <= box.y).toBe(true)
-      // The screen inside is the real 390 × 844 phone layout, whatever the scale.
-      const inner = await page.locator(FRAME).evaluate((f: HTMLIFrameElement) => [f.contentWindow!.innerWidth, f.contentWindow!.innerHeight])
-      expect(inner).toEqual([390, 844])
+      // The screen inside is the real 390px phone layout, 667 to 844px tall (ruling, Sept. 25).
+      const [iw, ih] = await page.locator(FRAME).evaluate((f: HTMLIFrameElement) => [f.contentWindow!.innerWidth, f.contentWindow!.innerHeight])
+      expect(iw).toBe(390)
+      expect(ih).toBeGreaterThanOrEqual(667)
+      expect(ih).toBeLessThanOrEqual(844)
     })
+  })
+}
+
+// Ruling (Sept. 25): phone view text never renders below 14px. A short window makes the phone
+// shorter first (down to a 667px screen); only then is it scaled.
+for (const [width, height] of [[1280, 720], [1280, 800], [1440, 900]] as const) {
+  test(`at ${width}×${height}, no text in the phone renders below 14px`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height })
+    const smallest: Record<string, number> = {}
+    for (const path of ['/p303', '/p303/funds', '/p303/story']) {
+      await page.goto(path)
+      await expect(page.frameLocator(FRAME).locator('.fl-bottombar')).toBeVisible()
+      await page.waitForTimeout(300)
+      const scale = await page.evaluate(() => {
+        const stage = document.querySelector('.fl-phoneview__stage')!.getBoundingClientRect()
+        return stage.height / (document.querySelector('.fl-phoneview__device') as HTMLElement).offsetHeight
+      })
+      const [all, body] = await page.locator(FRAME).evaluate((f: HTMLIFrameElement) => {
+        const d = f.contentDocument!
+        let min = Infinity, bodyMin = Infinity
+        const w = d.createTreeWalker(d.body, NodeFilter.SHOW_TEXT)
+        for (let n = w.nextNode(); n; n = w.nextNode()) {
+          const el = n.parentElement!
+          if (!n.textContent!.trim() || el.closest('.fl-visually-hidden, [aria-hidden="true"]')) continue
+          const r = el.getBoundingClientRect()
+          if (!r.width || r.bottom < 0 || r.top > f.contentWindow!.innerHeight) continue
+          const fs = parseFloat(getComputedStyle(el).fontSize)
+          min = Math.min(min, fs)
+          if (el.closest('main p')) bodyMin = Math.min(bodyMin, fs)
+        }
+        return [min, bodyMin]
+      })
+      smallest[path] = Math.round(all * scale * 10) / 10
+      info.annotations.push({ type: 'measured', description: `${path}: smallest text ${(all * scale).toFixed(1)}px, smallest body text ${Number.isFinite(body) ? (body * scale).toFixed(1) + "px" : "(no paragraphs)"} (scale ${scale.toFixed(3)})` })
+      expect(all * scale, `${path} at ${width}×${height}`).toBeGreaterThanOrEqual(14)
+    }
   })
 }
 
