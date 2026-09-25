@@ -97,6 +97,7 @@ test.describe('at 1280px', () => {
 
   test('the frame edge stands out from the background (at least 3:1)', async ({ page }) => {
     await page.goto('/p303')
+    await expect(page.locator('.fl-phoneview__device')).toBeVisible()
     const [edge, bg] = await page.evaluate(() => [
       getComputedStyle(document.querySelector('.fl-phoneview__device')!).backgroundColor,
       getComputedStyle(document.querySelector('.fl-phoneview')!).backgroundColor,
