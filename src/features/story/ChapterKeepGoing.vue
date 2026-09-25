@@ -49,7 +49,7 @@ const answerShown = computed(() => revealed.value || guess.value !== null)
 // 5c: Nia's money splits into what she put in and what it grew into.
 const niaPutIn = ages.map((a) => (a < nia.startAge ? null : Math.round((a - nia.startAge) * 12 * nia.monthly)))
 const splitSeries = [
-  { label: K.niaMoney, data: ages.map((a) => valueAt(nia.yearly, a)), color: colors.forest, width: 3, fill: '+1' as const, background: 'rgba(39, 107, 67, 0.28)' },
+  { label: K.niaMoney, data: ages.map((a) => valueAt(nia.yearly, a)), color: colors.forest, width: 3, fill: '+1' as const, background: 'rgba(39, 107, 67, 0.26)', grain: true },
   { label: K.niaPutIn, data: niaPutIn, color: colors.inkMuted, width: 2, dash: [6, 4], fill: 'origin' as const, background: colors.mint },
 ]
 const describeSplit = (i: number) => fill(K.daySplit, { age: ages[i]!, value: whole(valueAt(nia.yearly, ages[i]!) ?? 0), putIn: whole(niaPutIn[i] ?? 0) })
@@ -130,7 +130,7 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
     <p class="k5__note">{{ story.assumptions.note }}</p>
 
     <!-- Each step sits beside its own chart from 1024px (StoryView's .story-pin). -->
-    <div class="k5__step story-pin">
+    <div class="k5__step" :class="{ 'story-pin': answerShown }">
       <h3 class="k5__h">{{ fill(K.guessHeading, { age: endAge }) }}</h3>
       <ToggleGroup
         v-model="guess as unknown as 'nia' | 'theo'"
@@ -148,6 +148,8 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
       </div>
     </div>
 
+    <!-- Everything after the guess would give the answer away, so it waits for a guess or "Show the answer" (5a). -->
+    <template v-if="answerShown">
     <div class="k5__step story-pin">
       <h3 class="k5__h">{{ K.whyHeading }}</h3>
       <p class="chapter__claim">
@@ -237,6 +239,7 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
         </ChartFrame>
       </div>
     </div>
+    </template>
   </section>
 </template>
 
@@ -256,6 +259,7 @@ const startAt = (v: number) => fill(K.startAt, { age: v })
 }
 
 .k5__reveal {
+  justify-self: start;
   display: inline-flex;
   align-items: center;
   min-height: 48px;

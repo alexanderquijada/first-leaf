@@ -29,7 +29,11 @@ const parts = computed(() => {
   return [...funds, { name: M.cash, kind: 'cash' as Kind, value: a.cash }].filter((p) => p.value > 0)
 })
 const shown = computed(() => parts.value.filter((p) => kind.value === 'all' || p.kind === kind.value))
-const pct = (v: number) => Math.round((v / props.account.balance) * 100)
+// A small non-zero share reads as a decimal ("0.2%"), never as "0%".
+const pct = (v: number) => {
+  const p = (v / props.account.balance) * 100
+  return p > 0 && p < 1 ? Math.round(p * 10) / 10 : Math.round(p)
+}
 const total = computed(() => shown.value.reduce((s, p) => s + p.value, 0))
 
 const summary = computed(() => {

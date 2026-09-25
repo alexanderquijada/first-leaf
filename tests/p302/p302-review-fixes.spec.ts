@@ -17,7 +17,8 @@ test.describe('at 1280px', () => {
       expect(chart.x, `chapter ${n}`).toBeGreaterThan(text.x + text.width / 2)
       expect(await ch.locator('> .fl-chart').evaluate((e) => getComputedStyle(e).position)).toBe('sticky')
     }
-    // Chapter 5 pairs each step with its own chart, beside it.
+    // Chapter 5 pairs each step with its own chart, beside it (after the guess).
+    await page.locator('#chapter-5').getByRole('button', { name: 'Show the answer' }).click()
     const steps = page.locator('#chapter-5 .k5__step')
     await expect(steps).toHaveCount(6)
   })
@@ -65,4 +66,35 @@ test('the story closes with a takeaway, its words as chips, and the sources', as
   await expect(end.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')).toHaveText(['Growth on growth', 'Return', 'The market'])
   await expect(end).toContainText(story.assumptions.note)
   await expect(end).toContainText('Powered by CoinGecko API')
+})
+
+test('before a guess, nothing in chapter 5 gives the answer away', async ({ page }) => {
+  await page.goto('/story#chapter-5')
+  const ch = page.locator('#chapter-5')
+  await expect(ch.getByRole('button', { name: 'Show the answer' })).toBeVisible()
+  for (const hidden of ['Why Nia ends ahead', 'Every year counts', 'Can Theo catch up?', 'Real life is bumpy', 'Your turn'])
+    await expect(ch.getByRole('heading', { name: hidden })).toHaveCount(0)
+  await expect(ch).not.toContainText('Nia ends')
+  await ch.getByRole('group', { name: 'Your guess' }).getByRole('button', { name: 'Theo' }).click()
+  await expect(ch.getByRole('heading', { name: 'Why Nia ends ahead' })).toBeVisible()
+  await expect(ch.getByRole('heading', { name: 'Your turn' })).toBeVisible()
+})
+
+test('chart axes end on their last label (65), and the stacked areas start at zero', async ({ page }) => {
+  await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click()
+  const first = page.locator('#chapter-5 .k5__step').first().locator('canvas')
+  await expect(first).toHaveAttribute('data-x-last', '65')
+  await page.goto('/story#chapter-1')
+  await expect(page.locator('#chapter-1 canvas')).toHaveAttribute('data-y-min', '0')
+  // With the layers off it is a single line, so the axis may start near the data.
+  await page.locator('#chapter-1').getByRole('button', { name: 'Show what you put in and what it earned' }).click()
+  await expect(page.locator('#chapter-1 canvas')).not.toHaveAttribute('data-y-min', '0')
+})
+
+test('a small cash share is never shown as 0%', async ({ page }) => {
+  await page.goto('/story?scenario=all-clear#chapter-4')
+  const ch4 = page.locator('#chapter-4')
+  await ch4.getByRole('group', { name: 'Show' }).getByRole('button', { name: 'Cash' }).click()
+  await expect(ch4).toContainText('Cash is $2.48 of your balance, or 0.2%.')
 })

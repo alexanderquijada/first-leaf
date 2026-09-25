@@ -54,7 +54,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 
 .slider__track {
   position: relative;
-  padding-bottom: 20px;
+  padding-bottom: 32px;
 }
 
 .slider input {
@@ -67,7 +67,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 
 .slider__mark {
   position: absolute;
-  top: 30px;
+  top: 54px; /* below the input and its focus ring, so the ring never strikes the label */
   transform: translateX(-50%);
   display: grid;
   justify-items: center;
@@ -81,7 +81,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 }
 
 .slider__mark-label {
-  font-size: 0.8125rem;
+  font-size: var(--type-small);
   font-weight: 600;
   color: var(--color-mustard);
   white-space: nowrap;
@@ -91,7 +91,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
   display: flex;
   justify-content: space-between;
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: var(--type-small);
   color: var(--color-ink-muted);
 }
 </style>

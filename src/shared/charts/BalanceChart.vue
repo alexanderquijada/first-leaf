@@ -146,7 +146,9 @@ function build() {
         x: { display: !props.compact, grid: { display: false }, ticks: { maxTicksLimit: 6, maxRotation: 0 } },
         y: {
           display: !props.compact,
-          beginAtZero: false,
+          // Stacked areas ("put in" under "earned") start at zero, or the layers mislead;
+          // a single balance line may start near its data.
+          beginAtZero: props.layers,
           grid: { color: 'rgba(79, 74, 64, 0.15)' },
           ticks: { callback: (v) => formatMoney(Number(v)).replace('.00', '') },
         },
@@ -158,6 +160,9 @@ function build() {
         if (els.length) setActive(els[0]!.index)
       },
     },
+  })
+  requestAnimationFrame(() => {
+    if (canvasEl.value && chart) canvasEl.value.dataset.yMin = String(chart.scales.y?.min ?? '')
   })
 }
 

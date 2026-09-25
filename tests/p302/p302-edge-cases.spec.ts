@@ -14,6 +14,7 @@ function proj(startAge: number, monthly: number) {
 
 test('every slider at both ends keeps its sentences true', async ({ page }) => {
   await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
   const ch = page.locator('#chapter-5')
   const age = page.getByRole('slider', { name: /^Start age/ }).first()
   await age.focus()

@@ -75,6 +75,7 @@ for (const size of WIDTHS) {
       await page.getByLabel('Search words').fill('zebra')
       expect(await seriousViolations(page)).toEqual([])
       await page.goto('/story#chapter-5')
+      await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
       await page.getByRole('group', { name: 'Your guess' }).getByRole('button', { name: 'Nia' }).click()
       expect(await seriousViolations(page)).toEqual([])
     })

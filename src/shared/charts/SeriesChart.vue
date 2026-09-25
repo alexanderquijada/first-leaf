@@ -4,7 +4,7 @@
 // arrow keys; the parent's table shows the same series.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ActiveDataPoint, ChartDataset } from 'chart.js'
-import { Chart } from './register'
+import { Chart, grainPattern } from './register'
 import { formatMoney } from '../format'
 import { copy, fill } from '../copy'
 
@@ -17,6 +17,8 @@ export interface Series {
   /** Fill under this line: to the axis ('origin') or to the next series ('+1'). */
   fill?: 'origin' | '+1'
   background?: string
+  /** Grain over the fill: the brief's texture for growth (BRIEF.md §6). */
+  grain?: boolean
 }
 
 const props = withDefaults(
@@ -53,7 +55,7 @@ function datasets(): ChartDataset<'line'>[] {
     pointRadius: s.data.filter((v) => v !== null).length === 1 ? 5 : 0,
     pointHoverRadius: 5,
     fill: s.fill ?? false,
-    backgroundColor: s.background,
+    backgroundColor: s.grain && s.background ? grainFill(s.background) : s.background,
     spanGaps: true,
   }))
   if (props.marks.length) {
@@ -82,6 +84,18 @@ function setActive(i: number | null) {
   chart.update('none')
 }
 
+function grainFill(base: string): CanvasPattern | string {
+  const ctx = canvasEl.value?.getContext('2d')
+  return ctx ? grainPattern(ctx, base, 'rgba(31, 92, 59, 0.9)') : base
+}
+
+// Label about 6 ticks evenly, and always the last; skip a tick that would crowd the last one.
+function showTick(i: number) {
+  const last = props.labels.length - 1
+  const step = Math.max(1, Math.ceil(last / 6))
+  return i === last || (i % step === 0 && last - i >= step / 2)
+}
+
 function build() {
   chart?.destroy()
   if (!canvasEl.value || !props.labels.length) return
@@ -100,7 +114,15 @@ function build() {
         },
       },
       scales: {
-        x: { grid: { display: false }, ticks: { maxTicksLimit: 7, maxRotation: 0 } },
+        // Every few labels, and always the last one, so an axis ends where its title says.
+        x: {
+          grid: { display: false },
+          ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            callback: (_v, i) => (showTick(i) ? props.labels[i] : ''),
+          },
+        },
         y: { grid: { color: 'rgba(79, 74, 64, 0.15)' }, ticks: { callback: (v) => formatMoney(Number(v)).replace('.00', '') } },
       },
       onHover: (_e, els) => {
@@ -110,6 +132,12 @@ function build() {
         if (els.length) setActive(els[0]!.index)
       },
     },
+  })
+  // The last label the axis really draws, for tests and checks (like data-series).
+  requestAnimationFrame(() => {
+    const ticks = chart?.scales.x?.ticks ?? []
+    const last = [...ticks].reverse().find((t) => t.label !== '')
+    if (canvasEl.value) canvasEl.value.dataset.xLast = String(last?.label ?? '')
   })
 }
 

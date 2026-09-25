@@ -26,6 +26,7 @@ test('the guess is optional, and the reply depends on it', async ({ page }) => {
 
 test('the start-age slider moves by keyboard and uses the formula', async ({ page }) => {
   await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
   const slider = page.getByRole('slider', { name: /^Start age/ }).first()
   await slider.focus()
   for (let i = 0; i < 8; i++) await page.keyboard.press('ArrowRight')
@@ -39,6 +40,7 @@ test("Theo's slider lands exactly on $196, and $195 is not enough", async ({ pag
   expect(proj(theo.startAge, 196)).toBeGreaterThanOrEqual(nia.final.value)
   expect(proj(theo.startAge, 195)).toBeLessThan(nia.final.value)
   await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
   const slider = page.getByRole('slider', { name: /^Theo each month/ })
   const out = page.getByTestId('catch-up')
   await slider.focus()
@@ -54,6 +56,7 @@ test("Theo's slider lands exactly on $196, and $195 is not enough", async ({ pag
 
 test('smooth and bumpy show the same friends, with "overall growth" and never "average"', async ({ page }) => {
   await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
   const ch = page.locator('#chapter-5')
   const series = async () => JSON.parse((await ch.locator('.fl-chart', { has: page.getByRole('heading', { name: /^(Smooth|Bumpy) years$/ }) }).locator('[data-series]').getAttribute('data-series'))!)
   await ch.getByRole('group', { name: 'Growth' }).getByRole('button', { name: 'Bumpy' }).click()
@@ -69,6 +72,7 @@ test('smooth and bumpy show the same friends, with "overall growth" and never "a
 
 test("your turn starts at Rosa's numbers, with no advice disclaimer", async ({ page }) => {
   await page.goto('/story#chapter-5')
+  await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
   await expect(page.getByTestId('your-turn')).toHaveText(`Start at 26 with $150 a month. At 65 you would have ${whole(proj(26, 150))}.`)
   // Ruling 7 (Sept. 25): the "not a plan or advice" line is gone (disclaimer language).
   await expect(page.locator('#chapter-5')).not.toContainText('advice')
