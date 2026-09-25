@@ -2,16 +2,14 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 25, 2026 (Phase 4 · Edge cases, screen sizes and the phone-only view; waiting on Alex's review)
+**Last updated:** Sept. 25, 2026 (Phase 5 · Verification and final fixes; ready to submit)
 
 ## NEXT STEP
 
-Alex reviews Phase 4:
-1. **Phone view** at https://first-leaf.vercel.app/p303 on a laptop, at full size and in a short window: only the phone shows, and "Back to full view" returns to where you were.
-2. **A 320px phone** (or a narrow window): Home in all three scenarios, an investment page, and a Practice error.
-3. **The Phase 4 deviations** in the decision log, especially the "Good to know" badge inside the "Good to know" section.
-
-Then the planning chat issues Phase 5 (verification).
+**Submit.** All five phases are done and deployed. Before submitting, Alex:
+1. Reads the Phase 5 entry in the decision log and the final report.
+2. Approves (or edits) the 24 DRAFT rows at the top of `docs/copy/COPY-REVIEW.md`, all new in Phase 5.
+3. Submits each case study with its live link and its README reviewer section (README.md, "For reviewers": P301, P302, P303).
 
 ## Live links
 
@@ -28,20 +26,20 @@ Then the planning chat issues Phase 5 (verification).
 | Decision | Choice | Why |
 |---|---|---|
 | Project shape | **One app, three case-study lenses** (Sept. 24). The site opens straight into Rosa's app; no landing page. P301 = Home on a laptop + Alerts, Activity, Funds; P302 = Your money story + Practice, Words; P303 = the app under 600px | Alex's ruling: three doors read as three projects, not one product |
-| Phone view | At 600px+, "Phone view" in the top bar opens `/p303/…`: only the real app in a 390 × 844 phone frame (an iframe), its own layout, "Back to full view" top left | Alex's rulings (Sept. 24, and phone-only Sept. 25): a P303 reviewer may never open the site on a phone |
-| Product | **First Leaf**, a made-up beginner investing app by made-up *First Leaf Investing* | No clash with any finance brand found in a web check (Sept. 23) |
-| Person | **Rosa**, 26, dental hygienist, Tucson (fictional), 7 months into her first account | One person, three moments; see BRIEF.md §2 |
+| Phone view | At 600px+, "Phone view" in the top bar opens `/p303/…`: only the real app in a phone frame (an iframe, 390px wide, 667 to 844px tall), its own layout, "Back to full view" top left | Alex's rulings (Sept. 24, and phone-only Sept. 25): a P303 reviewer may never open the site on a phone |
+| Product | **First Leaf**, an invented beginner investing app by an invented company, *First Leaf Investing* | No clash with any finance brand found in a web check (Sept. 23) |
+| Person | **Rosa**, 26, dental hygienist, Tucson (fictional), six months into her first account (opened March 2) | One person, three moments; see BRIEF.md §2 |
 | P301 user | **Rosa's own dashboard**: the person who runs the account is its owner | Alex's call. It's operational because it surfaces what's off first and lets her act |
 | P301/P303 interactivity | Lots: pages, pop-ups, actions on flags, filters, practice trading | Alex: "lots of interaction… things to click… fake sandbox investing" |
 | Account type | A real (fictional) starter account **plus** a Practice space with pretend money | The real account reads as financial services; Practice gives the sandbox without advice risk |
 | Demo scenarios | Three accounts: normal, all-clear, brand-new; flags generated from rules per account | Every sentence must stay true in every scenario |
-| Auto-invest | Rosa paused it on July 14 after a price dip; the Aug. 3 deposit waits as cash | Explains the waiting cash honestly; turning it back on is her choice |
+| Auto-invest | Rosa paused it on June 8, the trading day after the June dip's low; her July 1 and Aug. 3 deposits wait as cash (seed 10, Phase 3) | Explains the waiting cash honestly; turning it back on is her choice |
 | Goal | "Put in my first $2,000" by Feb. 1, 2027; counts deposits only | One measure; the plan reaches it exactly; the market can't make her "behind" |
 | P302 story | **Your money story** (Sept. 24): Rosa's own seven months argue "growth needs years, so starting early and staying steady matter more than picking the perfect moment"; Nia and Theo become chapter 5 | Alex's ruling; replaces "Start early beats start big" as the whole story |
 | P303 task | 60-second check-in; under 600px Home becomes the check-in, everything else one tap away | Alex's pick; re-shaped as a lens on Sept. 24 |
 | Palette | Cream + deep green-black data panels + lime highlights, near-black text | Alex's pick; blends mid-century and futuristic |
 | Fonts | Free stand-ins (Newsreader, Hanken Grotesk) now; Klim Financier/National swap later if licensed | Klim's test fonts can't be published; web licenses start at $60/style |
-| Imagery | Open Peeps / Open Doodles (CC0) + original mid-century SVG drawn in code; MDI icons for controls | Clean licenses for a public portfolio |
+| Imagery | Open Peeps (CC0; Open Doodles couldn't be reached) + original mid-century SVG drawn in code; MDI icons for controls | Clean licenses for a public portfolio |
 | Stack | Vue 3 + Vite + TS + Vue Router + Vuetify 3 (pinned) + Chart.js/vue-chartjs; static JSON; composables | Proven on Pelipper Post |
 | Hosting | Vercel, **Pelipper Post's Vercel account** | Alex's pick |
 | Deploy check | GitHub Deployments API (`npm run check:deploy`), not the Vercel badge | Stale deployments show green while serving old code |
@@ -57,12 +55,12 @@ Then the planning chat issues Phase 5 (verification).
 | 0.6 · One app (Sept. 24) | ✅ One-app re-plan, layouts, feature folders, About, redirects, 404 in the app | ✅ Desktop rail, Home placeholder | ✅ Story and Practice placeholders | ✅ Phone shell, bottom tab bar, Phone preview |
 | 1A · Core screens, real app (Sept. 24) | ✅ Disclosure, G6/R1–R4/S3/T4, About and Demo menu removed, scenarios by URL, handled and session state, chart helpers, pre-commit hook, project-language crawl | ✅ Laptop Home, Alerts with realistic flows, basic Activity | ✅ Story chapters 1–4 | ✅ Phone check-in Home, phone alert pages, 48px controls |
 | 1B · Rest of core flows (Sept. 24) | ✅ Dip rule and point of view, practice state (data frozen), line chart, formula, sheets, toggles, checks widened | ✅ Activity with filters and item pages, Funds and fund pages | ✅ Story chapters 5–6, Practice with time machine, Words | ✅ Phone Activity/Funds, keypad Practice, chapter sheet, 48px everywhere |
-| 1 · Core flows | ⬜ Shared composables | ⬜ F1–F8 | ⬜ 8 chapters, guess, sliders, toggle | ⬜ F1–F6 |
+| 1 · Core flows (planned; built as 1A and 1B above) | ✅ Shared composables | ✅ F1–F6 | ✅ Six chapters, guess, sliders, toggles | ✅ F1–F11 |
 | 2 · Plain language (Sept. 24) | ✅ Every string in copy files (no visible change), rule L5 (13 broken cases), calm-story test, copy review table · ✅ Approved rewrites applied in 2.5 | ⬜ Copy approved | ⬜ Copy approved | ⬜ Copy approved |
 | 2.5 · Real names, real crypto prices, Phase 2 rewrites (Sept. 24; waiting on copy approval) | ✅ Lineup, real crypto prices, anchored stocks, validator (P1, P2, 49 rules, 114 cases), approved rewrites, no disclaimer, data notes, grouped chart colors, `npm run copy:review` | ✅ Investments, big-move and SIPC alerts | ✅ Story chapters 1, 3, 4 and Practice for the lineup | ✅ Phone screens for the lineup |
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
-| 4 · Edge cases + sizes (Sept. 25; waiting on review) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
-| 5 · Verification | ⬜ README final | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD | ⬜ Walked vs. own DoD |
+| 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
+| 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 260 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
 
 ## Environment
 
@@ -77,6 +75,73 @@ Then the planning chat issues Phase 5 (verification).
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 25, 2026: Phase 5 · Verification and final fixes (built; ready to submit)
+
+**The Phase 4 rulings, applied**
+- No badge inside "Good to know" (laptop and phone); the badge stays on an FYI's own page.
+- Phone view text never renders below 14px. The phone gets shorter first (390px wide, down to a 667px screen), then scales, never so far that 16px body text drops below 14px. The tab labels, ticker badges, slider labels and the "Seen" pill went from 13px to 14px. At 1280×720, 1280×800 and 1440×900 the phone is at full size (screen 668, 748 and 844px), and the smallest text is 14px.
+- The Investments table becomes labeled, stacked rows when its content area is under 600px (a laptop at 200% zoom), so no column is cut off.
+
+**Independent review, one case study at a time.** A fresh reviewer per case study, given only that case study's brief, its README block, BRIEF.md §1–3 and §6 and the rubric, walked the live site and the repo. Two rounds of fixes followed, then a final round re-checked every row.
+- **P301, round 1:**
+  - no calm illustration;
+  - a brand-new Alerts page asking to "Choose an alert";
+  - a deposit that could be retried again and again;
+  - a stale auto-invest sentence;
+  - no link back from a missing alert;
+  - Goal and This week ending in empty gaps.
+- **P301, round 2:**
+  - "What you can do" still offered an action already taken (and the goal alert ignored a one-time deposit);
+  - an empty pane on brand-new Alerts;
+  - no "ups and downs are normal" note for losses on a laptop;
+  - alert rows breaking apart at 768.
+- **P302, round 1:**
+  - no pinned chart from 1024px;
+  - no closing;
+  - chapter 5 missing its 5c, 5d, 5e and 5g charts, and giving the answer away;
+  - two dip markers hidden under the fill;
+  - toggles that didn't change their sentence;
+  - a range button named "Last month" while showing "1 month" (WCAG 2.5.3);
+  - Practice's table cut off at 1280;
+  - a share estimate that didn't match what she then owned.
+- **P302, round 2:**
+  - every step after the guess still spoiled it;
+  - 5c had no grain;
+  - axes stopped at 64;
+  - stacked areas didn't start at $0;
+  - the focus ring struck through "Passes Nia";
+  - "$2.48 … or 0%".
+- **P303, round 1:**
+  - standalone term buttons under 48px;
+  - the balance running off the screen at 200% text;
+  - word chips for pieces not shown;
+  - no F5 or F6 tests;
+  - the brief not matching the check-in order, Word of the day and F3.
+- **P303, round 2:**
+  - 13px text;
+  - the "Seen" row breaking apart at 390.
+- **Docs:**
+  - the briefs, BRIEF.md and the README were matched to the build before each fix;
+  - the crypto credit reads "Powered by CoinGecko API" everywhere;
+  - every README "Try these" step uses the site's real button names;
+  - no brief mentions a landing page, and all say six chapters.
+- **A favicon** (a leaf on forest green) replaces the missing one.
+
+**Checks added in Phase 5, each shown failing on the build before its fix:**
+- the stacked Investments test (the table ran to 661px in a 592px box);
+- the phone-view 14px test (10.1 to 12.8px);
+- the 200% text-size test at 390 and 320;
+- the standalone-term 48px check;
+- the F5 and F6 specs;
+- specs for every reviewer finding above (18 failures on 485bdcc, 9 more on 9d93633).
+
+**What we got wrong (and fixed)**
+- Two new tests were flaky: one measured the phone frame before it loaded, and two tapped Home before the alert page had marked the alert seen. Each was found by repeating the suite and fixed in the test; the app was right.
+- The reduced-motion test counted 0.01ms animations as "running" under load; it now counts only motion a person could see.
+- The story's pinned chart was deferred in Phase 1A and never built until a reviewer caught it. Chapter 5's 5c to 5g charts had the same history.
+
+**No decisions are needed from Alex.** Nothing removed a feature, changed a case study's purpose, changed approved copy, or touched the lineup, data rules or guardrails. The 24 new sentences are DRAFT (see Known issues, Copy).
 
 ### Sept. 25, 2026: Phase 4 rulings (and the brief for Phase 5)
 
@@ -689,34 +754,40 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 ## Known issues / open items
 
-- ~~TermTip buttons inside a sentence are 29px tall~~ **Ruled Sept. 24:** the inline exception applies, and P303 detail screens add 48px "Words on this screen" chips (built in Phase 1).
-- **No favicon yet.** Vue's was removed in Phase 0; an original First Leaf icon comes in Phase 3.
-- **`scripts/setup.sh` embeds a snapshot of the first commit's files** (its payload). Only its live Node check was updated; the payload stays as it was on Sept. 23, because setup has already run.
-- **Money and SeverityBadge aren't on any page yet.** They're built but not rendered, so their colors (terracotta losses, mustard "Heads-up") will be measured in the rendered UI in Phase 1.
-- ~~Demo menu semantics~~ **Fixed Sept. 24:** a labelled menu of `menuitemradio` items, locked by an aria snapshot. A pass with a real screen reader (VoiceOver) is still worth doing.
-- **The pre-commit hook checks the working tree, not only what's staged**, so an unstaged broken file can block an unrelated commit (and a staged-only problem is still caught). Acceptable for now.
-- **Money has no loss on the dark panel yet in the data** (Rosa is up in every scenario). Coral on the panel is 7.1:1 by the token table, but not yet measured rendered.
-- **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario is carried through the URL. In phone view, the browser's Back button steps back inside the phone.
-- **In a short laptop window the phone is small:** at 1280×720 it is scaled to 0.77, so 16px text inside reads at about 12px. The layout inside is still the real 390px one.
-- **At 200% zoom (640px) the Investments table scrolls inside its box,** and its last column is cut at the edge with no hint that it scrolls.
-- **A one-point chart is proven impossible by rule F5,** not shown on screen: no scenario can produce one.
-- **`npm run copy:review -- --approve` writes COPY-REVIEW.md before approved.json,** so run `npm run copy:review` once more afterwards to see the new status.
-- **The rail's paper background is 100vh tall and sticky.** Full-page screenshots show it ending at one screen height; a real window always shows it full height.
-- **Related-word links in the explanation panel are about 27px tall** (71×27 measured). On desktop that's above the 24px minimum. On P303's bottom sheet, the amended rule may count them as standalone controls that need 48px. Needs a ruling before P303's Phase 1 screens.
-- **Bundle:** the shared data loaders currently land in one 55 kB chunk (Disclaimer + data). `funds.json` is tree-shaken out for now, but it will join that chunk when a screen uses it. Vuetify's full stylesheet plus MDI is 577 kB of CSS (85 kB gzipped). Neither is a problem yet; watch them in Phase 1.
-- **The per-deployment Vercel URL redirects (302).** Use https://first-leaf.vercel.app.
+Current as of submission (Sept. 25, 2026). Resolved items are in the decision log.
 
-- **Pelipper Post location:** `setup.sh` looks for it in `~/Projects` and other common folders (and with Spotlight). If it isn't found, Phase 0 skips the pattern comparison. See the setup output.
-- **Illustrations:** Open Peeps / Open Doodles are downloaded from their sites in Phase 3. If Claude Code can't fetch them, Alex downloads one zip.
-- **`.claude/settings.local.json` and global git ignores:** tracked since `c9ae855`. If it ever shows as untracked again, a global ignore is the cause.
-- ~~`check:deploy` unverified~~ **Verified Sept. 24** on commit `eb30959`, then again at the end of Phase 0.
-- **`.claude/settings.local.json`** is committed on purpose (the rubric grades the `.claude` folder). If Claude Code adds it to `.gitignore`, remove that line.
-- **Copy:** `docs/copy/COPY-REVIEW.md` has 730 rows, all APPROVED against `docs/copy/approved.json` (Phase 4 added no new sentences). Two optional suggestions carried from Phase 2 remain.
-- ~~The big-move alert is untested on screen~~ **Fixed Sept. 25:** a TEST-ONLY week (`tests/fixtures/big-move/`) drives a Playwright test; `check:fixtures` proves it never ships.
-- ~~The dip is small~~ **Fixed Sept. 25:** seed 10 gives a 9.5% dip (May 21 to June 5).
-- **The copy review is built by `npm run copy:review`** from the copy files, the data and rendered snapshots (390 and 1280). 177 rows use example values because their text isn't on a captured screen: errors, dialog steps, empty states, bare values in table cells. Tablet (768) wasn't captured separately; it uses the same strings.
-- ~~Phase 0 UI copy is DRAFT~~ **APPROVED Sept. 24** with two edits (see the rulings entry). The list as it stood: (grade from the validator's scorer in brackets): landing line "A made-up investing app for people who have never invested. It is shown here as three design case studies." (4.9) · "Open P301" door links · P301 "Rosa's weekly review", "The full dashboard is coming in Phase 1." (3.8), "Every fund takes a small yearly fee out of its value." (4.8) · P302 "The story ends by naming the idea behind it: growth on growth." (4.8), "The full story is coming in Phase 1." (3.8) · P303 "Rosa's check-in", "The 60-second check-in is coming in Phase 1." (6.3), "If your bank sends a deposit back, it is called a returned deposit." (5.8) · 404 "We couldn't find that page." / "The link may be old or mistyped. Here are the three case studies." (0.6) · sub-page "Coming in Phase 1." and titles (Your funds, Activity, Practice, Words to know, What needs you, Why it moved, Words) · TermTip labels "Also called", "Example:", "Related words:", "Source:", "Close explanation" · Demo button "Demo: {scenario}" · Money "up +$X" / "down −$X" / "no change" · SeverityBadge "Needs you" / "Heads-up" / "FYI".
+- **Copy:** `docs/copy/COPY-REVIEW.md` has 751 rows: 727 APPROVED against `docs/copy/approved.json` and **24 DRAFT**. Every DRAFT row is new in Phase 5, each fixing a reviewer finding (the "Why" column says which). They ship as DRAFT until Alex approves them.
+- **The dip isn't visible as a dip on chapter 3's chart.** A $150 deposit on June 1 landed inside the fall, so the balance line barely drops. The sentences, the six event markers and the table carry the dip ($80.24, 9.5%, measured on her investments by rule R2). Showing it on the chart would mean charting invested value instead of the balance, a change to the story's design.
+- **Phone view in a window shorter than 719px:** the phone shrinks to a 667px screen first, then scales (never below 0.875). Body text stays at 14px or more, but 14px labels render at about 12.3px. From 719px up, the phone is at full size.
+- **"New" badges never show.** Every shipped alert was raised before the last review (Sept. 13). Rule N1 checks each flag's "New" against its date.
+- **Small rounding effects in Practice:** a buy is floored to 4 decimals of a share (8 for coins), so right after a $25 buy a holding can read "down $0.03". The practice mix percentages can add to 101%.
+- **Approved copy left as is:** the glossary's "Share" says "one unit of a stock or a crypto" (crypto is shown as an amount of coins), and the Time machine sentence gives today's value before the starting value.
+- **The story's inline words in chapter 4** (stocks, crypto, cash) have no chips. The story isn't a phone detail screen, so the chip rule doesn't apply, but it's the one place a phone reader taps 26px inline words.
+- **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario carries over in the URL. In phone view, the browser's Back button steps back inside the phone.
+- **Password protection is deferred** (Alex's call; the instructions recommend it). One router and one Vercel project keep a later gate easy.
+- **The commit history spans Sept. 23 to 25.** It is phase by phase, with planning on Sept. 23, but compressed.
+- **The pre-commit hook checks the working tree, not only what's staged**, so commits are made with unrelated work stashed.
+- **`scripts/setup.sh` embeds a snapshot of the first commit's files.** Only its live Node check was updated.
+- **The rail's paper background is sticky and 100vh tall,** so full-page screenshots show it ending at one screen height. A real window always shows it full height.
+- **Use https://first-leaf.vercel.app.** Per-deployment Vercel URLs redirect (302).
+- **`.claude/settings.local.json` is committed on purpose** (the rubric grades the `.claude` folder).
+- **Pelipper Post** (`~/Projects/pelipper-post`) was read for patterns only and never changed.
 
+## Measured values, Phase 5 (rendered in Chromium, Sept. 25, 2026)
+
+| What | Measured |
+|---|---|
+| Phone view: phone screen and scale at 1280×720 · 1280×800 · 1440×900 · 768×1024 | 390×668 (1.00) · 390×748 (1.00) · 390×844 (1.00) · 390×844 (1.00) |
+| Phone view: smallest rendered text · body text at those sizes | 14.0px · 16.0px (scale 1.000) |
+| Phone view: page scroll at every size | 0, 0 |
+| Phone text under 14px on any page (390, after Seen, chapter 5 open) | none |
+| Standalone term buttons on a phone ("Balance", "Shares", "Price", "Practice") | 48px tall (were 26 to 41px) |
+| 200% text size at 390 and 320: pages wider than the phone | none (Home was 427px) |
+| Investments at 640×400 (1280 at 200% zoom) | stacked rows, no sideways scroll (the table ran to 661px in 592px) |
+| Practice holdings at 1280 | stacked rows in a 438px card (the table was 493px) |
+| Home at 1280: Mix · Goal · This week | 976×656 · each ends at its content (no empty band; the test allows up to 80px) |
+| Story chapter 1 y-axis with layers on | starts at $0 (was about $400) |
+| Playwright | 260 passed, 2 skipped (after two back-to-back full runs to rule out flakes) |
 
 ## Measured values, Phase 4 (rendered in Chromium, Sept. 25, 2026)
 

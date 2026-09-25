@@ -4,7 +4,7 @@
 // approvals: apply the wording, run `npm run copy:review -- --approve`, and trim this file.
 
 export const INTRO = (total) => `
-# Copy review · Phase 4
+# Copy review · Phase 5
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (\`docs/copy/approved.json\`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
@@ -19,12 +19,34 @@ export const INTRO = (total) => `
 - **Suggested rewrite / Why:** a suggestion to approve, or a note on why the row changed.
 `;
 
-// Rows changed in Phase 4 (the reason is shown in the "Why" column).
+// Rows new in Phase 5: each fixes something an independent reviewer found. DRAFT until Alex approves.
+const REV = (lens, what) => `New in Phase 5: the ${lens} reviewer found ${what}.`
 export const CHANGED = {
-  'shared:severity.fyi': 'Approved rewrite 9 (ruled Sept. 25): the badge and its section share one name, "Good to know".',
-  'shared:alerts.fyiTitle': 'Approved rewrite 9 (ruled Sept. 25): "Good to know" everywhere, replacing "Just so you know".',
-  'home:phone.fyiTitle': 'Approved rewrite 9 (ruled Sept. 25): the phone uses the same name as the laptop.',
-};
+  'alerts:facts.triedAgain': REV('P301', 'that a returned deposit could be retried again and again; the alert now shows the retry as a fact'),
+  'alerts:facts.pendingSince': REV('P301', 'that a returned deposit could be retried again and again; this is the retry fact\'s value'),
+  'funds:lossNote': REV('P301', 'no "ups and downs are normal" note for a loss on a laptop, which the brief promises'),
+  'story:sinceMarch.chartTitle1m': REV('P302', 'that chapter 1\'s title said "since March" with 1 month selected'),
+  'story:sinceMarch.chartTitle3m': REV('P302', 'that chapter 1\'s title said "since March" with 3 months selected'),
+  'story:sinceMarch.layersOn': REV('P302', 'that the layers toggle changed no sentence (the brief: each toggle says what the chart now shows)'),
+  'story:sinceMarch.layersOff': REV('P302', 'that the layers toggle changed no sentence'),
+  'story:dip.eventsOn': REV('P302', 'that the events toggle changed no sentence'),
+  'story:dip.eventsOff': REV('P302', 'that the events toggle changed no sentence'),
+  'story:keepGoing.showAnswer': REV('P302', 'that the answer showed before any guess; the guess stays optional through this button'),
+  'story:keepGoing.splitTitle': REV('P302', 'that 5c had no chart splitting Nia\'s money into put in and growth'),
+  'story:keepGoing.niaMoney': REV('P302', 'the missing 5c chart; this is its line'),
+  'story:keepGoing.niaPutIn': REV('P302', 'the missing 5c chart; this is its line'),
+  'story:keepGoing.daySplit': REV('P302', 'the missing 5c chart; this is its read-out'),
+  'story:keepGoing.colMoney': REV('P302', 'the missing 5c, 5d and 5g charts; this is a table column'),
+  'story:keepGoing.colPutIn': REV('P302', 'the missing 5c chart; this is a table column'),
+  'story:keepGoing.oneTitle': REV('P302', 'that 5d had no chart'),
+  'story:keepGoing.saver': REV('P302', 'that 5d had no chart; this is its line'),
+  'story:keepGoing.dayOne': REV('P302', 'that 5d and 5g had no charts; this is their read-out'),
+  'story:keepGoing.yourTitle': REV('P302', 'that 5g had no chart'),
+  'story:keepGoing.you': REV('P302', 'that 5g had no chart; this is its line'),
+  'story:keepGoing.catchTitle': REV('P302', 'that 5e had no chart (and two charts would share one title)'),
+  'story:closing.title': REV('P302', 'that the story had no closing takeaway'),
+  'story:closing.sources': REV('P302', 'that the closing had no sources'),
+}
 
 export const SUGGEST = {
   // ---- carried from earlier reviews, not yet ruled ----
@@ -33,6 +55,7 @@ export const SUGGEST = {
 };
 
 export const TOP = [
+  'Approve the 24 new Phase 5 rows (all DRAFT, grade 5.9 or below). Each fixes a reviewer finding; the "Why" column says which.',
   'Optional, carried from Phase 2: the below-what-you-put-in chart sentence ([[home:chart.nowDown]]) and "you set" on the mix card ([[home:mix.set]]).',
 ];
 

@@ -170,7 +170,7 @@ const EX = { amount: '$150', balance: '$1,336.80', cash: '$452.11', date: 'Sept.
   term: 'Ups and downs', title: 'Your $150 deposit from Sept. 1 was sent back', change: 'down $10.99', name: 'Rosa', price: '$336.13', shares: '0.7346', earned: '$5.00', moneyIn: '$1,250.00',
   status: 'Pending', kind: 'Stock', age: '30', endAge: '65', nia: '$242,251', theo: '$186,213', monthly: '$150', label: 'Start age', setting: 'Start at 30', market: 'down $10.99',
   short: "How much an investment's price tends to jump around.", page: 'Activity', series: 'Balance', month: 'May', direction: 'up',
-  example: 'Costco is a 1. Solana is a 5.', terms: 'volatility', link: 'Investor.gov glossary (U.S. SEC)', rating: '3', set: '35', now: '40', decimals: '2' };
+  example: 'Costco is a 1. Solana is a 5.', terms: 'volatility', link: 'Investor.gov glossary (U.S. SEC)', rating: '3', set: '35', now: '40', decimals: '2', putIn: '$9,600' };
 const example = (t, parent = {}, key = '') => t.replace(/\{(\w+)\}/g, (m, n) =>
   typeof parent[`${n}Word`] === 'string' ? parent[`${n}Word`] : n === 'count' && /One$/.test(key) ? '1' : EX[n] ?? m);
 for (const file of files) {
