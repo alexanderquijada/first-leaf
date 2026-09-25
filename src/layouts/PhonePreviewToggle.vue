@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
   min-height: 48px;
   padding: 0 14px 0 10px;
   border: 1px solid var(--color-ink);
-  border-radius: 4px;
+  border-radius: 999px;
   background: var(--color-cream);
   color: var(--color-ink);
   font: inherit;

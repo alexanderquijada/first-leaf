@@ -2,6 +2,20 @@
    through CSS variables. Loaded after vuetify/styles, so same-specificity
    rules here win without !important. */
 
+/* Type scale (BRIEF.md §6): Newsreader for big numbers and headlines, Hanken Grotesk for
+   the interface. Components pick a step; nothing sets a one-off size for a headline. */
+:root {
+  --type-hero: clamp(2.5rem, 6vw, 3.5rem);   /* page titles and the balance */
+  --type-h1: clamp(2.25rem, 5vw, 3rem);
+  --type-h2: clamp(1.5rem, 3vw, 1.875rem);
+  --type-h3: 1.25rem;
+  --type-body: 1rem;
+  --type-small: 0.875rem;                    /* credits, captions: never under 14px */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --motion-quick: 150ms ease-out;
+}
+
 html {
   font-family: var(--font-ui);
   color: var(--color-ink);
@@ -17,6 +31,28 @@ h3 {
   line-height: 1.15;
   margin: 0;
   text-wrap: balance; /* no one-word last lines in headlines */
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: var(--type-h1);
+}
+
+/* Big money is set in the display serif, with tabular figures off so it reads like type. */
+.fl-display-number {
+  font-family: var(--font-display);
+  font-variant-numeric: lining-nums proportional-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Subtle, meaningful motion: controls answer a hover or press. Reduced motion turns it off below. */
+button,
+a {
+  transition:
+    background-color var(--motion-quick),
+    color var(--motion-quick),
+    border-color var(--motion-quick),
+    box-shadow var(--motion-quick);
 }
 
 a {

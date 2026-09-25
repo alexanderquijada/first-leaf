@@ -20,7 +20,8 @@ const vuetify = createVuetify({
   },
   defaults: {
     // Sentence-case buttons, no Material all-caps.
-    VBtn: { class: 'text-none', style: 'letter-spacing: 0' },
+    // Pill buttons (BRIEF.md §6: lime pill buttons, the Finovia reference).
+    VBtn: { class: 'text-none', style: 'letter-spacing: 0', rounded: 'pill' },
   },
 })
 
