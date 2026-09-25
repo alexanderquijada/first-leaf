@@ -78,7 +78,22 @@ Then the planning chat issues Phase 5 (verification).
 
 Newest first. Include what we got wrong and why.
 
-### Sept. 25, 2026: Phase 4 · Edge cases, screen sizes and the phone-only view (built; waiting on review)
+### Sept. 25, 2026: Phase 4 rulings (and the brief for Phase 5)
+
+- **Ratified:**
+  - "Phone view" as a link, with Back (not Esc) to leave it;
+  - removing the note and the hidden heading beside the frame;
+  - the address following the phone;
+  - six story chapters, with `#chapter-7` and `#chapter-8` opening at the top;
+  - a one-point chart counted as covered by rule F5;
+  - the two extra commits.
+- **Changes:**
+  1. **No badge inside "Good to know."** Items in that section carry no "Good to know" badge, because the heading already says it. An FYI shows the badge only where it appears outside that section. Laptop and phone.
+  2. **Phone view text never renders below 14px.** A short window first makes the phone shorter (full 390px width kept; the screen can drop to 667px, the iPhone SE screen). Only after that is the whole phone scaled down. The page still never scrolls. The smallest rendered body text is measured at 1280×720, 1280×800 and 1440×900.
+  3. **The Investments table stacks when space is narrow.** When its content area is under 600px (including 200% zoom on a laptop), each holding becomes a stacked row with every value labeled by its column name. No hidden columns, no sideways scrolling, and a test fails if any column is cut off at 200% zoom.
+- **Phase 5** is the last phase: an independent review of each case study, fixes for what it finds, and the final README and STATUS for submission. Alex will not bring the results back for rulings.
+
+### Sept. 25, 2026: Phase 4 · Edge cases, screen sizes and the phone-only view (built; ruled Sept. 25)
 
 **What changed**
 - **"Good to know"** replaces "Just so you know" and the "FYI" badge, on the laptop and the phone (approved rewrite 9). The 28 Phase 3 DRAFT rows and these 3 are recorded in `docs/copy/approved.json`; the copy review now shows 730 rows, all APPROVED.

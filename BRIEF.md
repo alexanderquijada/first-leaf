@@ -24,7 +24,7 @@ The rest of this file is the foundation all three share: product, person, data, 
 
 **Industry: Financial Services (retail investing).** We are designing for the part of the industry that serves first-time retail investors, the way brokerages and credit unions do with starter accounts. The design has to feel like a *real account* (balances, deposits, settling trades, dividends) and not like a game or a course.
 
-**Decision: one app, three case-study lenses** (Alex's ruling, Sept. 24, 2026). The site opens straight into Rosa's app. There is no landing page. Each case study is a lens on that one app:
+**Decision: one app, three case-study lenses** (Alex's ruling, Sept. 24, 2026). The site opens straight into Rosa's app, on Home. Each case study is a lens on that one app:
 
 | Lens | What it is in the app |
 |---|---|
@@ -38,7 +38,7 @@ Why: a real product is one app that a person uses in different moments, not thre
 *Why real names (ruling B):* visitors relate to Apple and Bitcoin in a way they never did to invented index funds.
 *What we got wrong:* the About page, the Demo menu and the "made up" copy made the site read as an exercise, not a product.
 
-*Rejected by Alex:* three separate sections behind a landing page with three doors. It read as three projects, not one product.
+*Rejected by Alex:* three separate sections, each with its own door. It read as three projects, not one product.
 *Rejected earlier:* three unrelated products. Easier to review, but a weaker story, and three datasets would each be thinner.
 
 ## 2. The person: Rosa (fictional)
@@ -72,7 +72,7 @@ Why: a real product is one app that a person uses in different moments, not thre
   | 600–1023px | A top bar (wordmark, "Prices as of Fri., Sept. 18", Phone view), with the rail's six items as top tabs |
   | Under 600px | An opaque top bar (wordmark) and an opaque bottom tab bar (Home, Activity, Story, Practice, Words) with 48px targets. Investments and Alerts are reached from Home. |
 
-  **Phone view** (Alex's rulings, Sept. 24, 2026; phone-only since Phase 4): at 600px and wider, the top bar has a phone-icon button labeled "Phone view". It opens `/p303/…`, which has its own layout: only the real app inside a generic 390 × 844 phone frame, centered on a plain background, with "Back to full view" top left. No sidebar or top bar. Details are in the P303 brief.
+  **Phone view** (Alex's rulings, Sept. 24, 2026; phone-only since Phase 4): at 600px and wider, the top bar has a phone-icon button labeled "Phone view". It opens `/p303/…`, which has its own layout: only the real app inside a generic phone frame (390px wide, 667 to 844px tall), centered on a plain background, with "Back to full view" top left. No sidebar or top bar. Details are in the P303 brief.
 
   There is no footer disclosure (ruling B, Phase 2.5). There is no About page; `/about` redirects to `/`, and the reviewer map lives in `README.md`.
 - **Old addresses still work.** `/p301` redirects to `/`, `/p302` to `/story`, `/about` to `/`, and `?view=phone` to `/p303`. `/p303/…` is the phone-only view (on a phone it shows the same screens full size).
@@ -323,7 +323,7 @@ One app, three layouts. Each lens is designed for its own size; every screen mus
 | | Phone, under 600px (designed at 390×844, works from 320px) | Tablet, 600–1023px | Desktop, 1024px and up (designed at 1280) |
 |---|---|---|---|
 | **Navigation** | Opaque top bar and opaque bottom tab bar, 48px targets | Top bar and top tabs | Left rail and top bar |
-| **Phone view** (`/p303`) | No frame: the screens fill the phone | Only the phone: its own layout, the frame centered and scaled to the window height, "Back to full view" top left | The same; the 390 × 844 frame at full size when the window is tall enough |
+| **Phone view** (`/p303`) | No frame: the screens fill the phone | Only the phone: its own layout, the frame centered; a short window makes the phone shorter (down to a 667px screen) before scaling it, and text never drops below 14px; "Back to full view" top left | The same; the 390 × 844 frame at full size when the window is tall enough |
 | **Home** | **P303's check-in:** balance, up or down this week, a small balance chart, a "needs you" card, why it moved, the last 3 transactions, word of the day | Two columns: alerts, then balance; charts full width | **P301's dashboard:** alerts first (top left), balance beside them, then balance over time, mix, goal, this week |
 | **Alerts, Activity, Investments** | Full-screen pages, one tap from Home; alert details end with "Words on this screen" chips | Single column | Two panes where useful (the list with its detail) |
 | **Your money story** | The chart sits inline after each passage | Inline below 1024px | The chart is pinned beside the text |

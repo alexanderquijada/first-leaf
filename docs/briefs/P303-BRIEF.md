@@ -20,7 +20,7 @@ Under 600px wide, Home becomes a **check-in**: her balance, up or down this week
 - **Interruption-proof.** Every screen makes sense on its own. Alert details are full pages with their words listed as chips, so nothing depends on a hover or a small inline tap.
 
 *Rejected:* shrinking the laptop dashboard to phone size. A dashboard asks you to scan; a check-in answers.
-*Rejected:* a separate phone site behind a landing page. It read as a second product. Rosa has one app.
+*Rejected:* a separate phone site with its own front door. It read as a second product. Rosa has one app.
 *Rejected:* a daily-lesson app. That drifts into generic ed-tech and away from financial services.
 
 ## The user
@@ -117,10 +117,10 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 - **Where it lives:** `/p303` and every `/p303/…` address (for example `/p303/story`). The "Phone view" button in the laptop top bar opens the same page there. Old `?view=phone` links redirect to it.
 - **600px and wider:** no sidebar, no top bar, no laptop layout at all. `/p303` has its own layout, not the laptop one with pieces hidden. It shows:
   - a plain full-window cream background;
-  - the phone frame, centered horizontally and vertically, scaled to fit the window height so **the page never scrolls** (only the content inside the phone scrolls; checked at 1280×800, 1440×900, 1280×720 and 768×1024). The frame edge is measured at 3:1 or better against the background.
+  - the phone frame, centered horizontally and vertically. **Text never renders below 14px** (ruling, Sept. 25): a short window first makes the phone **shorter**, keeping its full 390px width (the screen can drop to 667px tall, the iPhone SE screen); only after that is the whole phone scaled down, and never so far that 16px body text drops below 14px. **The page never scrolls** (only the content inside the phone scrolls; checked at 1280×800, 1440×900, 1280×720 and 768×1024). The frame edge is measured at 3:1 or better against the background.
 - **Outside the phone, top left, only:** **"Back to full view"**, which returns to the laptop page the visitor came from, or to the laptop Home if they arrived at `/p303` directly. Scenarios are chosen by URL only, so there is no account switcher to bring along. No other text or controls.
 - **Under 600px (a real phone):** no frame. `/p303/…` opens the same screens full size.
-- **It is not a mock-up.** The phone screen is an iframe of the same app at 390 × 844, so the real phone breakpoints, bottom tabs and touch targets apply. It opens on the matching page and the current scenario.
+- **It is not a mock-up.** The phone screen is an iframe of the same app, 390px wide and 667 to 844px tall, so the real phone breakpoints, bottom tabs and touch targets apply. It opens on the matching page and the current scenario.
 - **Accessibility:** the frame is decorative and hidden from screen readers. The phone screen keeps its own landmarks, headings and page title (the window title follows it). Focus starts inside the phone; the keyboard order is the outside control, then the phone. It never imitates a real device brand: no notch, no camera cutout.
 - **Known limitation:** the full view and the phone view are separate app instances, so Practice state isn't shared between them. The scenario carries over in the URL.
 
@@ -146,11 +146,11 @@ A P303 reviewer may never open the site on a real phone, so the app offers a one
 
 | Case | What Rosa sees |
 |---|---|
-| **Nothing needs you** (calm account) | "Nothing needs you right now." A small mid-century sun. Any FYI (the SIPC notice, a dividend) shows under "Good to know." The card keeps its size. |
+| **Nothing needs you** (calm account) | "Nothing needs you right now." A small mid-century sun. Any FYI (the SIPC notice, a dividend) shows under "Good to know," without a badge (the heading already says it). The card keeps its size. |
 | **Brand-new account** | "Welcome, Rosa." What happens after the first deposit, in three short steps. No $0.00 charts, and no empty "Latest" list. |
 | **Investments that went down** | In "Why it moved," any holding that fell this week shows "−$X" in terracotta, with "down" in the accessible label, next to an explanation that ups and downs are normal. In sentences: "down $X". Never red alone. |
 | **Interrupted mid-flow** | Practice keeps the half-entered order in memory for the session |
-| **Short laptop window (1280×720)** | In phone view, the frame scales down to the window height; the page never scrolls, only the phone's content does |
+| **Short laptop window (1280×720)** | In phone view, the phone gets shorter (down to a 667px screen) before it is scaled; at 1280×720 it fits at full size, so no text drops below its designed size. The page never scrolls, only the phone's content does |
 | **Large text (200%) / small phone (320px) / landscape** | Cards grow taller, never wider; nothing gets cut off; the tab bar stays usable |
 
 ## Nice to haves

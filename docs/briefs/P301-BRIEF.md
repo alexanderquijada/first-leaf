@@ -18,7 +18,7 @@ P301 is **First Leaf's Home on a laptop**, plus the Alerts, Activity and Investm
 **The call we made: the dashboard is the app's Home, not a separate site.** On a laptop, Rosa's Sunday review *is* opening the app. The same Home becomes a 60-second check-in on her phone (P303), with the same data and the same words, because a real product is one app used in different moments.
 
 *Rejected:* a balance-first "hero number" layout like most fintech references. It answers "how much?" before "is anything wrong?", which is the wrong order for a nervous beginner, and it reads as a generic template.
-*Rejected:* a separate dashboard behind a landing page. It read as one of three projects instead of a product.
+*Rejected:* a separate dashboard with its own front door. It read as one of three projects instead of a product.
 
 **How this maps to the instructions' Financial Services example** (*account balances, transaction volume, risk flags, regulatory alerts*):
 
@@ -77,7 +77,7 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 - **"N things need you" counts only what Rosa must act on** (needs-you alerts; ratified Sept. 25). Heads-ups are listed but not counted. FYIs sit under "Good to know" and are never counted. The same on the phone.
 - Every alert can be **marked handled** (remembered for the session, with "Undo").
 - Alerts raised since last Sunday's review (Sept. 13) show a **New** badge.
-- **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "Good to know" (forest, info icon; approved rewrite 9, Sept. 25). Color never works alone.
+- **Severity is a word, an icon and a color**, in that order: "Needs you" (terracotta, alert icon), "Heads-up" (mustard, clock icon), "Good to know" (forest, info icon; approved rewrite 9, Sept. 25). Inside the "Good to know" section, items carry no badge, because the heading already says it (ruling, Sept. 25); the badge shows wherever an FYI appears outside that section, such as its own page. Color never works alone.
 - **Every money action is a realistic flow:** review → confirm → confirmation, and it changes what the app shows for the rest of the session (a Pending deposit in Activity, "Auto-invest: On"). Reloading resets it; the data files never change.
   - *Try the deposit again* ends with "Your deposit is on its way. It should arrive in 1 to 3 business days." and a Pending deposit in Activity. (The line lives in one place in the code and is used everywhere.)
   - *Add a one-time deposit* is the same flow with the amount filled in.
@@ -111,6 +111,7 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 - **The alerts come first** (top left, where the eye lands, and first in reading order). The balance sits beside them in the dark panel, the futuristic half of the brand.
 - **Alerts** (`/alerts`, `/alerts/:id`): on a laptop, a two-pane page, with the list on the left and the open alert's detail on the right. Clicking an alert on Home opens it there, so every alert has its own address.
 - **Activity** (`/activity`) and **Investments** (`/funds`, `/funds/:ticker`; the route keeps its old name) are full pages reached from the rail.
+- **The Investments table stacks when space is narrow** (ruling, Sept. 25): when its content area is under 600px wide (including a laptop at 200% zoom), each holding becomes a stacked row with every value labeled by its column name. No column is hidden and nothing scrolls sideways.
 - **Tablet (600–1023px):** the rail becomes top tabs; Home is two columns; the chart goes full width.
 - **Phone (under 600px):** the same Home becomes P303's check-in (see the P303 brief). P301 must not break there, but it isn't designed for it.
 
@@ -129,12 +130,12 @@ The fee-change alert is removed (ruling B, Phase 2.5): stocks and crypto have no
 
 | Case | What Rosa sees |
 |---|---|
-| **Nothing needs you** (calm account: every deposit went through, auto-invest on) | "Nothing needs you right now." A calm illustration. Any FYI (the SIPC notice, a dividend) still shows under "Good to know". The list keeps its space, so the layout doesn't jump. |
+| **Nothing needs you** (calm account: every deposit went through, auto-invest on) | "Nothing needs you right now." A calm illustration. Any FYI (the SIPC notice, a dividend) still shows under "Good to know", without a badge. The list keeps its space, so the layout doesn't jump. |
 | **Brand-new account** ($0) | A welcome state with a mid-century illustration explaining what will appear once she adds money. Charts show a labeled empty frame with one sentence, not a broken axis. |
 | **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus an explanation that ups and downs are normal. |
 | **All alerts handled** | "You've handled everything for this week." Undo stays available. |
 | **An alert address that doesn't exist** (`/alerts/nope`) | A friendly "We couldn't find that alert" with a link back to Alerts |
-| **Long text, 200% zoom, keyboard only, reduced motion** | Nothing overlaps or gets cut off; focus follows reading order; no motion is needed to understand anything |
+| **Long text, 200% zoom, keyboard only, reduced motion** | Nothing overlaps or gets cut off; the Investments table stacks into labeled rows; focus follows reading order; no motion is needed to understand anything |
 
 ## Nice to haves (only after the Definition of Done passes)
 
