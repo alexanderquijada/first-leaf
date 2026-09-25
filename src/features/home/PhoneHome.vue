@@ -19,6 +19,7 @@ import { fill } from '@/shared/copy'
 import BalanceOverTime from './BalanceOverTime.vue'
 import copy from './copy.json'
 import WelcomeCard from './WelcomeCard.vue'
+import Starburst from '@/shared/illustrations/Starburst.vue'
 
 const { account, activity } = useScenario()
 const { open } = useHandled()
@@ -74,7 +75,7 @@ function nextWord() {
         <h2 id="phome-needs" class="phome__needs-title">
           <template v-if="needsYou.length">{{ needsYou.length === 1 ? P.needsOne : fill(P.needsMany, { count: needsYou.length }) }}</template>
           <template v-else-if="headsUps.length">{{ headsUps.length === 1 ? P.headsUpOne : fill(P.headsUpMany, { count: headsUps.length }) }}</template>
-          <template v-else>{{ P.nothing }}</template>
+          <template v-else><Starburst :size="26" color="var(--color-lime)" class="phome__sun" />{{ P.nothing }}</template>
         </h2>
         <RouterLink v-if="top" :to="`/alerts/${top.id}`" class="phome__top">
           <SeverityBadge :severity="top.severity" />
@@ -217,6 +218,11 @@ function nextWord() {
   background: var(--color-panel);
   color: var(--color-cream);
   --fl-term-underline: var(--color-lime);
+}
+
+.phome__sun {
+  margin-right: 8px;
+  vertical-align: -4px;
 }
 
 .phome__needs-title {
