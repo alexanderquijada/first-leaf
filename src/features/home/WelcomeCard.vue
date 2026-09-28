@@ -2,10 +2,8 @@
 import SceneArt from '@/shared/illustrations/SceneArt.vue'
 // A brand-new account: no money yet, so no charts, just what happens next.
 import { persona } from '@/shared/data'
-import CopyText from '@/shared/components/CopyText.vue'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
-import TermTip from '@/shared/components/TermTip.vue'
 
 const W = copy.welcome
 </script>
@@ -17,8 +15,8 @@ const W = copy.welcome
     <p>{{ W.lede }}</p>
     <ol class="welcome__steps">
       <li>{{ W.step1 }}</li>
-      <li><CopyText :text="W.step2"><template #cash><TermTip id="cash">{{ W.cashWord }}</TermTip></template></CopyText></li>
-      <li><CopyText :text="W.step3"><template #autoInvest><TermTip id="auto-invest">{{ W.autoInvestWord }}</TermTip></template></CopyText></li>
+      <li>{{ W.step2 }}</li>
+      <li>{{ W.step3 }}</li>
     </ol>
   </section>
 </template>

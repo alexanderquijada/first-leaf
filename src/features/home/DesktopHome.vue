@@ -18,8 +18,10 @@ const { account } = useScenario()
   <div class="dhome">
     <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
     <template v-if="account.history.length">
-      <div class="dhome__card dhome__alerts"><AlertList /></div>
+      <!-- The dark balance card first, then what needs her (Alex, Sept. 28): the same order on
+           screen, for the keyboard and for screen readers. Both start at the same top edge. -->
       <BalancePanel class="dhome__balance" />
+      <div class="dhome__card dhome__alerts"><AlertList /></div>
       <div class="dhome__card dhome__chart"><BalanceOverTime /></div>
       <div class="dhome__card dhome__mix"><MixCard /></div>
       <div class="dhome__card dhome__goal"><GoalCard /></div>
@@ -36,7 +38,7 @@ const { account } = useScenario()
 </template>
 
 <style scoped>
-/* Tablet: two columns. Alerts, then balance; the chart and the mix full width. */
+/* Tablet: two columns. The balance card, then alerts; the chart and the mix full width. */
 .dhome {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -49,6 +51,14 @@ const { account } = useScenario()
   border: 1px solid var(--color-ink-muted);
   border-radius: 16px;
   background: var(--color-paper);
+}
+
+/* A card ends where its content ends, so no card holds an empty band (CLAUDE.md §9): the
+   alerts card beside the taller balance card, and the goal card beside This week. */
+.dhome__alerts,
+.dhome__goal,
+.dhome__week {
+  align-self: start;
 }
 
 /* The mix card is the tallest, so it takes a full row: no card beside it ends in a big gap. */
@@ -68,19 +78,19 @@ const { account } = useScenario()
   color: var(--color-ink-muted);
 }
 
-/* Laptop: 12 columns. Alerts 7, balance 5, chart 12, mix 12, then goal and this week at 6 each. */
+/* Laptop: 12 columns. Balance 5, alerts 7, chart 12, mix 12, then goal and this week at 6 each. */
 @media (min-width: 1024px) {
   .dhome {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 20px;
   }
 
-  .dhome__alerts {
-    grid-column: span 7;
-  }
-
   .dhome__balance {
     grid-column: span 5;
+  }
+
+  .dhome__alerts {
+    grid-column: span 7;
   }
 
   .dhome__chart,
@@ -92,7 +102,6 @@ const { account } = useScenario()
   .dhome__goal,
   .dhome__week {
     grid-column: span 6;
-    align-self: start; /* each card ends where its content ends: no empty band inside */
   }
 }
 </style>

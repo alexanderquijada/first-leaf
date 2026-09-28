@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SceneArt from '@/shared/illustrations/SceneArt.vue'
-// Activity: every deposit, buy and dividend, newest first, with this session's
-// pending deposits on top. Type and status filters combine.
+// Activity: every deposit, buy and dividend, newest first, filtered by type. Every row
+// went through, so there is no status filter (Phase 6).
 import { describeActivity } from '@/shared/activityText'
 import { computed, ref } from 'vue'
 import BottomSheet from '@/shared/components/BottomSheet.vue'
@@ -10,17 +10,14 @@ import { useViewport } from '@/shared/composables/useViewport'
 import { formatDate, formatMoney } from '@/shared/format'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
-import { STATUS_OPTIONS, TYPE_OPTIONS, useActivityRows } from './useActivityRows'
+import { TYPE_OPTIONS, useActivityRows } from './useActivityRows'
 
-const { all, shown, type, status, reset } = useActivityRows()
+const { all, shown, type, reset } = useActivityRows()
 const { isPhone } = useViewport()
 const sheetOpen = ref(false)
 const filterSummary = computed(
   () =>
-    fill(copy.filterSummary, {
-      type: TYPE_OPTIONS.find((o) => o.id === type.value)!.label,
-      status: STATUS_OPTIONS.find((o) => o.id === status.value)!.label,
-    }),
+    fill(copy.filterSummary, { type: TYPE_OPTIONS.find((o) => o.id === type.value)!.label }),
 )
 </script>
 
@@ -39,8 +36,6 @@ const filterSummary = computed(
         <BottomSheet v-model="sheetOpen" :title="copy.filters">
           <p class="activity__filter-label" aria-hidden="true">{{ copy.type }}</p>
           <ToggleGroup v-model="type" :label="copy.type" :options="TYPE_OPTIONS" />
-          <p class="activity__filter-label activity__filter-label--gap" aria-hidden="true">{{ copy.status }}</p>
-          <ToggleGroup v-model="status" :label="copy.status" :options="STATUS_OPTIONS" />
           <button type="button" class="activity__show" @click="sheetOpen = false">
             {{ shown.length === 1 ? copy.showOne : fill(copy.showMany, { count: shown.length }) }}
           </button>
@@ -50,10 +45,6 @@ const filterSummary = computed(
         <div class="activity__filter">
           <p class="activity__filter-label" aria-hidden="true">{{ copy.type }}</p>
           <ToggleGroup v-model="type" :label="copy.type" :options="TYPE_OPTIONS" />
-        </div>
-        <div class="activity__filter">
-          <p class="activity__filter-label" aria-hidden="true">{{ copy.status }}</p>
-          <ToggleGroup v-model="status" :label="copy.status" :options="STATUS_OPTIONS" />
         </div>
       </div>
       <p class="activity__count" role="status">{{ fill(copy.count, { shown: shown.length, total: all.length }) }}</p>
@@ -65,7 +56,7 @@ const filterSummary = computed(
         <li v-for="r in shown" :key="r.id">
           <RouterLink :to="`/activity/${r.id}`" class="activity__row" :class="`is-${describeActivity(r).status.toLowerCase()}`">
             <span class="activity__date">{{ formatDate(r.date) }}</span>
-            <span class="activity__what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="activity__status">{{ fill(copy.rowStatus, { status: describeActivity(r).label }) }}</span></span>
+            <span class="activity__what">{{ describeActivity(r).what }}</span>
             <span class="fl-tabular">{{ formatMoney(r.amount) }}</span>
           </RouterLink>
         </li>
@@ -261,8 +252,4 @@ const filterSummary = computed(
   font-weight: 700;
 }
 
-.is-pending td,
-.is-returned td {
-  font-weight: 600;
-}
 </style>

@@ -5,7 +5,7 @@
   "col": {
     "fund": "Investment",
     "kind": "Kind",
-    "ups": "Ups and downs",
+    "ups": "Volatility",
     "value": "Your value",
     "change": "Up or down"
   },
@@ -46,7 +46,7 @@
   },
   "ups": {
     "heading": "{term}: {rating} of 5",
-    "termWord": "Ups and downs",
+    "termWord": "Volatility",
     "scale": "1 means its price barely moves. 5 means it moves the most."
   },
   "dividends": {

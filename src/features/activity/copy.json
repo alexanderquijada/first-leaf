@@ -2,16 +2,14 @@
   "title": "Activity",
   "detailTitle": "Activity item",
   "empty": "Nothing yet. Your deposits, buys and dividends will show here.",
-  "filterSummary": "Type: {type}. Status: {status}.",
-  "filters": "Filters",
+  "filterSummary": "Type: {type}.",
+  "filters": "Filter",
   "type": "Type",
-  "status": "Status",
   "showOne": "Show 1 item",
   "showMany": "Show {count} items",
   "count": "Showing {shown} of {total}.",
-  "none": "Nothing matches these filters.",
+  "none": "Nothing matches this filter.",
   "showEverything": "Show everything",
-  "rowStatus": " · {status}",
   "tableLabel": "Activity",
   "caption": "Activity, newest first",
   "col": {
@@ -26,19 +24,10 @@
     "buy": "Buys",
     "dividend": "Dividends"
   },
-  "statuses": {
-    "all": "All",
-    "completed": "Completed",
-    "pending": "Pending",
-    "returned": "Returned"
-  },
   "allActivity": "All activity",
   "facts": {
     "amount": "Amount",
     "status": "Status",
-    "requestedOn": "Asked for on",
-    "askedOn": "Asked for on",
-    "sentBackOn": "Sent back on",
     "arrivedOn": "Arrived on",
     "fund": "Investment",
     "fundValue": "{ticker}, {name}",
@@ -50,7 +39,6 @@
     "amountCoin": "Amount",
     "paid": "You paid"
   },
-  "pendingNote": "It should arrive in 1 to 3 business days.",
   "buyNote": "Auto-invest used your deposit to buy it.",
   "whatItMeans": "What it means",
   "termLine": "{term}: {short}",

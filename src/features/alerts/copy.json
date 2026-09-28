@@ -17,19 +17,6 @@
   "allAlerts": "All alerts",
   "facts": {
     "amount": "Amount",
-    "askedOn": "Asked for on",
-    "sentBackOn": "Sent back on",
-    "status": "Status",
-    "returned": "Returned",
-    "planByNow": "Your plan by now",
-    "putInSoFar": "Put in so far",
-    "behindBy": "Behind by",
-    "cash": "Cash",
-    "waitingSince": "Waiting since",
-    "autoInvest": "Auto-invest",
-    "on": "On",
-    "off": "Off",
-    "pausedSince": "Paused since {date}",
     "fund": "Investment",
     "paidOn": "Paid on",
     "priceOn": "Price on {date}",
@@ -38,8 +25,10 @@
     "up": "up",
     "down": "down",
     "yourChange": "What you own in it",
-    "triedAgain": "Tried again",
-    "pendingSince": "Pending since {date}"
+    "beneficiary": "Beneficiary",
+    "notNamed": "Not named yet",
+    "named": "{name}, {relationship}"
   },
-  "pausedUntilToday": "Auto-invest was paused from {date} until today. Deposits in that time stayed as cash."
+  "remindLater": "Remind me later",
+  "remindedStatus": "We will remind you the next time you open First Leaf."
 }

@@ -1,61 +1,57 @@
 import { test, expect } from '../fixtures'
-import { load } from '../data'
+import { load, money } from '../data'
 
-// F5: check activity. Type and status filters combine; empty combinations say so;
-// the returned deposit opens its details; session items show with their status.
+// F5: check activity. Every row went through (Phase 6), so the only filter is by type;
+// each row opens its own page, and Back keeps the filter.
 test.use({ viewport: { width: 1280, height: 900 } })
 
-const acts = load('activity')['rosa-starter'] as { id: string; type: string; status: string }[]
+const acts = load('activity')['rosa-starter'] as { id: string; type: string; status: string; amount: number; date: string }[]
 const TYPES = [['All', null], ['Deposits', 'deposit'], ['Buys', 'buy'], ['Dividends', 'dividend']] as const
-const STATUSES = [['All', null], ['Completed', 'completed'], ['Pending', 'pending'], ['Returned', 'returned']] as const
 
-test('every type × status combination shows the right rows, or an empty state', async ({ page }) => {
+test('every row in the data went through', () => {
+  expect(acts.length).toBeGreaterThan(0)
+  for (const a of acts) expect(a.status, a.id).toBe('completed')
+})
+
+test('the type filter shows the right rows, and there is no status filter', async ({ page }) => {
   await page.goto('/activity')
   await expect(page.getByRole('status')).toHaveText(`Showing ${acts.length} of ${acts.length}.`)
-  for (const [tl, t] of TYPES) {
-    for (const [sl, s] of STATUSES) {
-      await page.getByRole('group', { name: 'Type' }).getByRole('button', { name: tl, exact: true }).click()
-      await page.getByRole('group', { name: 'Status' }).getByRole('button', { name: sl, exact: true }).click()
-      const n = acts.filter((a) => (!t || a.type === t) && (!s || a.status === s)).length
-      await expect(page.getByRole('status')).toHaveText(`Showing ${n} of ${acts.length}.`)
-      if (n === 0) {
-        await expect(page.getByText('Nothing matches these filters.')).toBeVisible()
-        await expect(page.locator('.activity__table')).toHaveCount(0)
-      } else await expect(page.locator('.activity__table tbody tr')).toHaveCount(n)
-    }
+  await expect(page.getByRole('group', { name: 'Status' })).toHaveCount(0)
+  const group = page.getByRole('group', { name: 'Type' })
+  await expect(group.getByRole('button')).toHaveText(TYPES.map(([l]) => l))
+  for (const [label, t] of TYPES) {
+    await group.getByRole('button', { name: label, exact: true }).click()
+    await expect(group.getByRole('button', { name: label, exact: true })).toHaveAttribute('aria-pressed', 'true')
+    const n = acts.filter((a) => !t || a.type === t).length
+    expect(n).toBeGreaterThan(0)
+    await expect(page.getByRole('status')).toHaveText(`Showing ${n} of ${acts.length}.`)
+    await expect(page.locator('.activity__table tbody tr')).toHaveCount(n)
   }
-  await page.getByRole('button', { name: 'Show everything' }).click()
-  await expect(page.locator('.activity__table tbody tr')).toHaveCount(acts.length)
 })
 
-test('the returned deposit opens its details', async ({ page }) => {
+test('every row is Completed; none says Returned or Pending', async ({ page }) => {
+  await page.goto('/activity')
+  const status = await page.locator('.activity__table tbody tr td:nth-child(4)').allInnerTexts()
+  expect(status).toHaveLength(acts.length)
+  expect(new Set(status)).toEqual(new Set(['Completed']))
+  const table = page.locator('.activity__table')
+  for (const word of ['Returned', 'Pending', 'Sent back', 'tried again']) await expect(table).not.toContainText(word)
+})
+
+test('a deposit opens its details, and Back keeps the filter', async ({ page }) => {
+  const deposits = acts.filter((a) => a.type === 'deposit')
+  // The table is newest first.
+  const newest = [...deposits].sort((a, b) => b.date.localeCompare(a.date))[0]!
   await page.goto('/activity')
   await page.getByRole('group', { name: 'Type' }).getByRole('button', { name: 'Deposits' }).click()
-  await page.getByRole('group', { name: 'Status' }).getByRole('button', { name: 'Returned' }).click()
-  await page.locator('.activity__table').getByRole('link', { name: 'Monthly deposit' }).click()
-  const returned = acts.find((x: { status: string }) => x.status === 'returned')
-  await expect(page).toHaveURL(new RegExp(`/activity/${returned.id}$`))
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Monthly deposit')
-  await expect(page.locator('.adet__facts')).toContainText('Sent back on')
-  await expect(page.locator('.adet__facts')).toContainText('Sept. 3')
-  await expect(page.getByText('Your bank sent this money back.')).toBeVisible()
-  // Back keeps the filters.
+  await page.locator('.activity__table tbody tr').first().getByRole('link').click()
+  await expect(page).toHaveURL(new RegExp(`/activity/${newest.id}$`))
+  const facts = page.locator('.adet__facts')
+  await expect(facts).toContainText(money(newest.amount))
+  await expect(facts).toContainText('Completed')
+  await expect(facts).not.toContainText('Sent back')
   await page.getByRole('link', { name: 'All activity' }).click()
-  await expect(page.getByRole('status')).toHaveText(`Showing 1 of ${acts.length}.`)
-})
-
-test('a deposit asked for this session shows as Pending, with its own page', async ({ page }) => {
-  await page.goto('/alerts/deposit-returned')
-  await page.getByRole('button', { name: 'Try the deposit again' }).click()
-  await page.getByRole('dialog').getByRole('button', { name: 'Continue' }).click()
-  await page.getByRole('dialog').getByRole('button', { name: 'Confirm deposit' }).click()
-  await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click()
-  await page.locator('.fl-rail').getByRole('link', { name: 'Activity' }).click()
-  await page.getByRole('group', { name: 'Status' }).getByRole('button', { name: 'Pending' }).click()
-  await expect(page.locator('.activity__table tbody tr')).toHaveCount(1)
-  await page.locator('.activity__table').getByRole('link', { name: 'Deposit, tried again' }).click()
-  await expect(page.locator('.adet__facts')).toContainText('Pending')
-  await expect(page.getByText('It should arrive in 1 to 3 business days.')).toBeVisible()
+  await expect(page.getByRole('status')).toHaveText(`Showing ${deposits.length} of ${acts.length}.`)
 })
 
 test('number columns keep at least 24px between them', async ({ page }) => {

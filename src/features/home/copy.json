@@ -2,16 +2,13 @@
   "title": "Home",
   "balance": {
     "label": "Balance",
-    "vsPutIn": "{change} on the {moneyIn} you {putIn}.",
-    "putInWord": "put in",
+    "vsPutIn": "{change} on the {moneyIn} you put in.",
     "thisWeek": "This week: {change}.",
     "inFunds": "Invested",
     "cash": "Cash",
     "youPutIn": "You put in",
-    "autoInvestWord": "Auto-invest",
-    "autoOn": "{autoInvest}: On.",
-    "autoPausedSince": "{autoInvest}: Paused since {date}.",
-    "autoPaused": "{autoInvest}: Paused."
+    "autoInvest": "Auto-invest",
+    "on": "On"
   },
   "chart": {
     "title": "Balance over time",
@@ -30,8 +27,7 @@
     "title": "Your mix",
     "even": "Each investment is at the share you set.",
     "biggestGap": "The biggest difference is {ticker}: {now}% now and {set}% in the mix you set.",
-    "lede": "Your {mix} now, next to the mix you set.",
-    "mixWord": "mix",
+    "lede": "Your mix now, next to the mix you set.",
     "listLabel": "Your mix now and the mix you set",
     "now": "{now}% now",
     "set": " · {set}% set",
@@ -45,9 +41,7 @@
     "progress": "{actual} of {target} put in, with a target of {date}.",
     "barLabel": "Money put in toward your goal",
     "barValue": "{actual} of {target}",
-    "behind": "Your plan had {planned} put in by now, so you are {behind} behind.",
-    "onPace": "You are on {pace} with your plan.",
-    "paceWord": "pace",
+    "onPace": "You are on pace with your plan.",
     "note": "This counts deposits only, not the market."
   },
   "week": {
@@ -64,13 +58,10 @@
     "title": "Welcome, {name}.",
     "lede": "Your account is open. Here is what happens next.",
     "step1": "Add money from your bank. It should arrive in 1 to 3 business days.",
-    "step2": "When it arrives, it waits as {cash} in your account.",
-    "cashWord": "cash",
-    "step3": "Then you choose what to do with it, such as turning on {autoInvest}.",
-    "autoInvestWord": "auto-invest"
+    "step2": "When it arrives, you will see it as cash in your account.",
+    "step3": "Then you choose what to do with it, such as turning on auto-invest."
   },
   "phone": {
-    "weekChange": "{change} this week",
     "needsOne": "1 thing needs you",
     "needsMany": "{count} things need you",
     "headsUpOne": "1 heads-up",
@@ -90,11 +81,10 @@
     "someDown": "Some of your investments went down this week. Ups and downs are normal.",
     "seeFunds": "See your investments",
     "latest": "Latest",
-    "latestStatus": " · {status}",
     "seeActivity": "See all activity",
-    "wordOfTheDay": "Word of the day",
+    "wordOfTheDay": "Term of the Day",
     "readMore": "Read more",
     "readMoreAbout": " about {term}",
-    "nextWord": "Next word"
+    "nextWord": "Next term"
   }
 }

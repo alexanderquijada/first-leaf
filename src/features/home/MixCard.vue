@@ -4,8 +4,6 @@
 import { computed } from 'vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import GroupMixBar from '@/shared/charts/GroupMixBar.vue'
-import CopyText from '@/shared/components/CopyText.vue'
-import TermTip from '@/shared/components/TermTip.vue'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 
@@ -46,7 +44,7 @@ const groups = computed(() => [
   <ChartFrame :title="X.title" :summary="summary" :columns="columns" :rows="rows">
     <!-- Stocks, crypto and cash on the dark panel, each with its own pattern (BRIEF.md §6). -->
     <GroupMixBar :parts="groups" class="mix__groups" />
-    <p class="mix__lede"><CopyText :text="X.lede"><template #mix><TermTip id="your-mix">{{ X.mixWord }}</TermTip></template></CopyText></p>
+    <p class="mix__lede">{{ X.lede }}</p>
     <ul class="mix" :aria-label="X.listLabel">
       <li v-for="r in rowsRaw" :key="r.ticker" class="mix__row">
         <span class="mix__name">{{ r.ticker }}</span>

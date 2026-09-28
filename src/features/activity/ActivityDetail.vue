@@ -30,15 +30,7 @@ const facts = computed<{ label: string; value: string }[]>(() => {
     { label: F.amount, value: formatMoney(r.amount) },
     { label: F.status, value: describeActivity(r).label },
   ]
-  if (r.status === 'pending') return [...base, { label: F.requestedOn, value: formatDate(r.date) }]
-  if (r.type === 'deposit')
-    return [
-      ...base,
-      { label: F.askedOn, value: formatDate(r.date) },
-      r.status === 'returned' && r.returnedDate
-        ? { label: F.sentBackOn, value: formatDate(r.returnedDate) }
-        : { label: F.arrivedOn, value: formatDate(r.settledDate) },
-    ]
+  if (r.type === 'deposit') return [...base, { label: F.arrivedOn, value: formatDate(r.settledDate) }]
   if (r.type === 'buy') {
     // A buy's dollar figure is what you paid; a crypto's size is its "Amount" (ruling 5, Sept. 25).
     const crypto = getFund(r.ticker)?.kind === 'crypto'
@@ -55,13 +47,17 @@ const facts = computed<{ label: string; value: string }[]>(() => {
   return [...base, { label: F.fund, value: fill(F.fundValue, { ticker: r.ticker, name: getFund(r.ticker)?.name ?? '' }) }, { label: F.paidOn, value: formatDate(r.date) }]
 })
 
+// Only real finance terms (Phase 6). Auto-invest buying the same amount each month is
+// dollar-cost averaging; a crypto buy is coins, not shares.
 const termIds = computed(() => {
   const r = item.value
   if (!r) return []
-  if (r.status === 'pending') return ['deposit']
-  if (r.type === 'deposit') return r.status === 'returned' ? ['returned-deposit', 'deposit'] : ['deposit']
-  if (r.type === 'buy') return ['share', 'fractional-share', 'settlement', 'auto-invest']
-  return ['dividend', 'cash']
+  if (r.type === 'deposit') return /* term ids */ ['dollar-cost-averaging', 'brokerage-account']
+  if (r.type === 'buy')
+    return getFund(r.ticker)?.kind === 'crypto'
+      ? /* term ids */ ['cryptocurrency', 'dollar-cost-averaging']
+      : /* term ids */ ['share', 'settlement', 'dollar-cost-averaging']
+  return /* term ids */ ['dividend', 'ex-dividend-date']
 })
 const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => t !== undefined))
 </script>
@@ -77,9 +73,7 @@ const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => 
           <dd class="fl-tabular">{{ f.value }}</dd>
         </div>
       </dl>
-      <p v-if="item.status === 'pending'">{{ copy.pendingNote }}</p>
-      <p v-if="item.status !== 'pending' && item.type === 'deposit' && item.returnReason">{{ item.returnReason }}</p>
-      <p v-if="item.status !== 'pending' && item.type === 'buy'">{{ copy.buyNote }}</p>
+      <p v-if="item.type === 'buy'">{{ copy.buyNote }}</p>
       <h2 class="adet__h">{{ copy.whatItMeans }}</h2>
       <ul class="adet__terms">
         <li v-for="t in terms" :key="t.id"><CopyText :text="copy.termLine" :values="{ short: t.short }"><template #term><TermTip :id="t.id">{{ t.term }}</TermTip></template></CopyText></li>

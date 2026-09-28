@@ -24,7 +24,7 @@ const W = copy.week
           <td class="fl-tabular">{{ formatMoney(w.startBalance) }}</td>
         </tr>
         <tr v-if="w.marketChange !== 0">
-          <th scope="row"><TermTip id="the-market">{{ W.market }}</TermTip></th>
+          <th scope="row">{{ W.market }}</th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.marketChange) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.marketChange) }}</span>
@@ -39,7 +39,7 @@ const W = copy.week
           </td>
         </tr>
         <tr v-if="w.deposits !== 0">
-          <th scope="row"><TermTip id="deposit">{{ W.deposits }}</TermTip></th>
+          <th scope="row">{{ W.deposits }}</th>
           <td class="fl-tabular">
             <span aria-hidden="true">{{ formatSigned(w.deposits) }}</span
             ><span class="fl-visually-hidden">{{ formatChange(w.deposits) }}</span>

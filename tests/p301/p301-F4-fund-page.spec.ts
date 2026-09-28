@@ -28,7 +28,17 @@ for (const f of funds) {
     const h = account.holdings.find((x: { ticker: string }) => x.ticker === f.ticker)
     await page.goto(`/funds/${f.ticker}`)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(`${f.ticker} ${f.name}`)
-    await expect(page.getByText(`Ups and downs: ${f.upsAndDowns} of 5`)).toBeVisible()
+    // Phase 6: the rating is "Volatility: X of 5", and Volatility is a finance term.
+    const ups = page.locator('h2#fund-ups')
+    await expect(ups).toHaveText(`Volatility: ${f.upsAndDowns} of 5`)
+    await expect(ups.locator('.fl-termtip__button')).toHaveText('Volatility')
+    await expect(page.getByText('Ups and downs', { exact: false })).toHaveCount(0)
+    // The kind line ("Stock" or "Crypto") is a term button for Stock or Cryptocurrency.
+    const kind = page.locator('.fund__name .fl-termtip__button')
+    await expect(kind).toHaveText(f.kind === 'stock' ? 'Stock' : 'Crypto')
+    await kind.click()
+    await expect(page.getByRole('dialog')).toContainText(f.kind === 'stock' ? 'Stock' : 'Cryptocurrency')
+    await page.keyboard.press('Escape')
     await expect(page.getByText(f.about)).toBeVisible()
     if (h) {
       await expect(page.locator('.fund__value')).toHaveText(money(h.value))
@@ -60,7 +70,9 @@ for (const f of funds) {
       await expect(credit).toHaveAttribute('href', 'https://www.coingecko.com/en/api/')
       await expect(page.getByText('Powered by CoinGecko API')).toBeVisible()
       await expect(page.getByText(STOCK_NOTE)).toHaveCount(0)
-      await expect(page.getByRole('heading', { name: 'Not covered by SIPC protection' })).toBeVisible()
+      const sipc = page.getByRole('heading', { name: 'Not covered by SIPC protection' })
+      await expect(sipc).toBeVisible()
+      await expect(sipc.locator('.fl-termtip__button')).toHaveText('SIPC protection')
       // Ruling 2 (Sept. 25): only the general fact, never a claim about First Leaf or Rosa's holdings.
       await expect(page.locator('main')).toContainText("SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.")
     }

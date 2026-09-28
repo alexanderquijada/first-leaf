@@ -15,9 +15,10 @@ test('all alerts handled: "You have handled everything for this week.", and Undo
   // In-app navigation only: handled alerts last for the session, and a reload starts over.
   await page.goto('/alerts')
   const list = page.locator('.alerts__list')
+  // The beneficiary alert is handled through Remind me later (or Save); every other through Mark as handled.
   for (const f of flags) {
     await list.getByRole('link', { name: f.title }).click()
-    await page.getByRole('button', { name: 'Mark as handled' }).click()
+    await page.getByRole('button', { name: f.id === 'beneficiary-missing' ? 'Remind me later' : 'Mark as handled' }).click()
   }
   await expect(list).toContainText('You have handled everything for this week.')
   await list.getByRole('button', { name: `Handled (${flags.length})` }).click()
@@ -83,7 +84,7 @@ for (const [width, height, what] of [[640, 400, 'a 1280×800 laptop at 200% zoom
     // Every holding shows every column, labeled (when the list is stacked).
     if (await page.locator('.funds__stack').isVisible()) for (const h of account.holdings as { ticker: string }[]) {
       const row = page.locator('.funds__stack > li').filter({ has: page.getByRole('link', { name: h.ticker, exact: true }) })
-      for (const label of ['Kind', 'Ups and downs', 'Your value', 'Up or down']) await expect(row.getByText(label, { exact: true })).toBeVisible()
+      for (const label of ['Kind', 'Volatility', 'Your value', 'Up or down']) await expect(row.getByText(label, { exact: true })).toBeVisible()
     }
   })
 }
@@ -111,81 +112,63 @@ test('a brand-new account has no "Choose an alert" pane, and a missing alert lin
   await expect(page).toHaveURL(/\/alerts$/)
 })
 
-test('a returned deposit is tried again once: then it shows as pending, with no second try', async ({ page }) => {
-  await page.goto('/alerts/deposit-returned')
-  await page.getByRole('button', { name: 'Try the deposit again' }).click()
-  const dialog = page.getByRole('dialog')
-  await dialog.getByRole('button', { name: 'Continue' }).click()
-  await dialog.getByRole('button', { name: 'Confirm deposit' }).click()
-  await dialog.getByRole('button', { name: 'Done' }).click()
-  const d = page.locator('.adetail')
-  await expect(d.getByRole('button', { name: 'Try the deposit again' })).toHaveCount(0)
-  await expect(d).toContainText('Your deposit is on its way. It should arrive in 1 to 3 business days.')
-  await expect(d).toContainText('Tried againPending since Sept. 20')
-})
-
-test('after auto-invest is turned on, the cash alert says so', async ({ page }) => {
-  await page.goto('/alerts/cash-sitting')
-  const d = page.locator('.adetail')
-  await expect(d).not.toContainText('Auto-invest is on. Each deposit buys your mix on the day it arrives.')
-  await page.getByRole('button', { name: 'See auto-invest settings' }).click()
-  const dialog = page.getByRole('dialog')
-  await dialog.getByRole('switch').click()
-  await dialog.getByRole('button', { name: 'Continue' }).click()
-  await dialog.getByRole('button', { name: 'Turn on' }).click()
-  await dialog.getByRole('button', { name: 'Done' }).click()
-  await expect(d).toContainText('Auto-invest is on. Each deposit buys your mix on the day it arrives.')
-  // "What happened" no longer says it "has been paused": it tells the past as past.
-  await expect(d).not.toContainText('has been paused')
-  await expect(d).toContainText('Auto-invest was paused from June 8 until today. Deposits in that time stayed as cash.')
-})
-
 test('"ex-dividend date" is explained where it appears', async ({ page }) => {
   await page.goto('/funds/AAPL')
   await page.getByRole('button', { name: 'ex-dividend date' }).click()
   await expect(page.getByRole('dialog')).toContainText('The date that decides who gets the next dividend.')
 })
 
+// The alerts and goal cards are checked on their own below (a known Phase 6 gap).
+const SHORT = /dhome__(alerts|goal)/
+const gapsAt = (page: import('@playwright/test').Page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>('.dhome__card')].map((card) => {
+      const kids = [...card.querySelectorAll<HTMLElement>('*')].filter((e) => e.offsetParent && !e.closest('.fl-visually-hidden'))
+      const bottom = Math.max(...kids.map((e) => e.getBoundingClientRect().bottom))
+      return { card: card.className, gap: Math.round(card.getBoundingClientRect().bottom - bottom) }
+    }),
+  )
+
 test('no Home card ends in a big empty gap (the tall mix card takes its own row)', async ({ page }) => {
   for (const width of [1280, 1024, 768]) {
     await page.setViewportSize({ width, height: 800 })
     await page.goto('/')
     await expect(page.locator('.dhome__week')).toBeVisible()
-    const gaps = await page.evaluate(() =>
-      [...document.querySelectorAll<HTMLElement>('.dhome__card')].map((card) => {
-        const kids = [...card.querySelectorAll<HTMLElement>('*')].filter((e) => e.offsetParent && !e.closest('.fl-visually-hidden'))
-        const bottom = Math.max(...kids.map((e) => e.getBoundingClientRect().bottom))
-        return { card: card.className, gap: Math.round(card.getBoundingClientRect().bottom - bottom) }
-      }),
-    )
-    for (const g of gaps) expect(g.gap, `${g.card} at ${width}`).toBeLessThanOrEqual(80)
+    for (const g of await gapsAt(page)) if (!SHORT.test(g.card)) expect(g.gap, `${g.card} at ${width}`).toBeLessThanOrEqual(80)
+  }
+})
+
+// Failed before the fix (Phase 6): "Needs your attention" ended in a 138px gap at 1280 and the goal card in 102px at 768 (CLAUDE.md §9).
+test('"Needs your attention" and the goal card do not end in a big empty gap', async ({ page }) => {
+  for (const width of [1280, 1024, 768]) {
+    await page.setViewportSize({ width, height: 800 })
+    await page.goto('/')
+    await expect(page.locator('.dhome__week')).toBeVisible()
+    for (const g of await gapsAt(page)) if (SHORT.test(g.card)) expect(g.gap, `${g.card} at ${width}`).toBeLessThanOrEqual(80)
   }
 })
 
 // Phase 5, second review.
 test('an alert whose action is done shows the result instead of "What you can do", and is handled', async ({ page }) => {
-  for (const [id, button, confirm, doneText, oldStep] of [
-    ['deposit-returned', 'Try the deposit again', 'Confirm deposit', 'Your deposit is on its way.', 'try the deposit again'],
-    ['goal-behind', 'Add a one-time deposit', 'Confirm deposit', 'Your deposit is on its way.', 'one-time deposit'],
-  ] as const) {
-    // In-app navigation: a reload starts a new session.
-    if (id === 'deposit-returned') await page.goto(`/alerts/${id}`)
-    else await page.locator('.alerts__list').getByRole('link', { name: /goal/ }).click()
-    const d = page.locator('.adetail')
-    await expect(d).toContainText(oldStep)
-    await page.getByRole('button', { name: button }).click()
-    const dialog = page.getByRole('dialog')
-    await dialog.getByRole('button', { name: 'Continue' }).click()
-    await dialog.getByRole('button', { name: confirm }).click()
-    await dialog.getByRole('button', { name: 'Done' }).click()
-    await expect(d).toContainText(doneText)
-    await expect(d).not.toContainText(oldStep)
-    await expect(d.getByRole('button', { name: button })).toHaveCount(0)
-    await expect(d.getByText('Handled', { exact: true })).toBeVisible()
-  }
-  // Both are handled now, so "needs you" counts nothing.
+  const flag = (attention[account.id] as { id: string; title: string; nextStep: string }[]).find((f) => f.id === 'beneficiary-missing')!
+  await page.goto('/alerts/beneficiary-missing')
+  const d = page.locator('.adetail')
+  await expect(d).toContainText(flag.nextStep)
+  await d.getByRole('button', { name: 'Add a beneficiary' }).click()
+  const dialog = page.getByRole('dialog')
+  await dialog.getByLabel('Name', { exact: true }).fill('Ana Ruiz')
+  await dialog.getByLabel('Relationship').fill('friend')
+  await dialog.getByRole('button', { name: 'Save' }).click()
+  await dialog.getByRole('button', { name: 'Done' }).click()
+  await expect(d).toContainText('Saved. Ana Ruiz is now the beneficiary of your account.')
+  await expect(d).not.toContainText(flag.nextStep)
+  // Never offered twice.
+  await expect(d.getByRole('button', { name: 'Add a beneficiary' })).toHaveCount(0)
+  await expect(d.getByText('Handled', { exact: true })).toBeVisible()
+  // "Needs you" no longer counts it (in-app navigation: a reload starts a new session).
   await page.locator('.fl-rail').getByRole('link', { name: 'Home' }).click()
-  await expect(page.locator('.fl-alerts')).toContainText('Nothing needs you right now.')
+  await expect(page.locator('.fl-alerts')).not.toContainText('1 thing needs you.')
+  await expect(page.locator('.fl-alerts').getByRole('link', { name: flag.title })).toHaveCount(0)
 })
 
 test('the brand-new Alerts page has no detail pane at all', async ({ page }) => {

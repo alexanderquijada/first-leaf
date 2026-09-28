@@ -68,11 +68,10 @@ const D = copy.dividends
 const received = computed(() =>
   activity.value.filter((a) => a.type === 'dividend' && a.ticker === fund.value?.ticker).reduce((s, a) => s + a.amount, 0),
 )
-// Crypto is owned as an amount of coins, not shares, so its page doesn't list "Share".
+// Only real finance terms (Phase 6). Crypto is owned as an amount of coins, not shares.
 const words = computed(() => [
-  'ups-and-downs', ...(fund.value?.kind === 'crypto' ? [] : ['share']), 'price',
-  ...(fund.value?.dividends.length ? ['dividend', 'ex-dividend-date'] : []),
-  ...(fund.value?.kind === 'crypto' ? ['crypto', 'sipc-protection'] : ['stock']),
+  ...(fund.value?.kind === 'crypto' ? /* term ids */ ['cryptocurrency', 'volatility', 'sipc-protection'] : /* term ids */ ['stock', 'share', 'volatility']),
+  ...(fund.value?.dividends.length ? /* term ids */ ['dividend', 'ex-dividend-date'] : []),
 ])
 </script>
 
@@ -81,7 +80,8 @@ const words = computed(() => [
     <RouterLink to="/funds" class="fund__back"><span class="mdi mdi-arrow-left" aria-hidden="true" /> {{ copy.allFunds }}</RouterLink>
     <template v-if="fund">
       <h1 class="fund__title"><TickerBadge :ticker="fund.ticker" :kind="fund.kind" class="fund__badge" /> {{ fund.name }}</h1>
-      <p class="fund__name">{{ fill(copy.nameLine, { kind: KIND[fund.kind] }) }}</p>
+      <!-- "Stock" and "Crypto" are real finance terms (Phase 6). -->
+      <p class="fund__name"><TermTip :id="fund.kind === 'crypto' ? 'cryptocurrency' : 'stock'">{{ fill(copy.nameLine, { kind: KIND[fund.kind] }) }}</TermTip></p>
 
       <section class="fund__card" :aria-label="copy.whatYouHave">
         <template v-if="holding">
@@ -93,7 +93,7 @@ const words = computed(() => [
             <div><dt>{{ copy.facts.paid }}</dt><dd class="fl-tabular">{{ formatMoney(holding.costBasis) }}</dd></div>
             <div v-if="holding.kind === 'crypto'"><dt>{{ copy.facts.amount }}</dt><dd class="fl-tabular">{{ formatQuantity(holding.shares, 'crypto', holding.ticker) }}</dd></div>
             <div v-else><dt><TermTip id="share">{{ copy.facts.shares }}</TermTip></dt><dd class="fl-tabular">{{ formatQuantity(holding.shares, 'stock', holding.ticker) }}</dd></div>
-            <div><dt><TermTip id="price">{{ copy.facts.price }}</TermTip></dt><dd class="fl-tabular">{{ formatMoney(holding.price) }}</dd></div>
+            <div><dt>{{ copy.facts.price }}</dt><dd class="fl-tabular">{{ formatMoney(holding.price) }}</dd></div>
           </dl>
         </template>
         <template v-else>
@@ -116,7 +116,7 @@ const words = computed(() => [
       </section>
 
       <section class="fund__card" aria-labelledby="fund-ups">
-        <h2 id="fund-ups" class="fund__h"><CopyText :text="copy.ups.heading" :values="{ rating: fund.upsAndDowns }"><template #term><TermTip id="ups-and-downs">{{ copy.ups.termWord }}</TermTip></template></CopyText></h2>
+        <h2 id="fund-ups" class="fund__h"><CopyText :text="copy.ups.heading" :values="{ rating: fund.upsAndDowns }"><template #term><TermTip id="volatility">{{ copy.ups.termWord }}</TermTip></template></CopyText></h2>
         <p class="fund__line">{{ copy.ups.scale }}</p>
       </section>
 

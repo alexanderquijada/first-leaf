@@ -1,8 +1,8 @@
 <script setup lang="ts">
-// One alert: what happened, the facts behind it, what it means (its words), and
-// what you can do (a realistic money flow, or a link), then Mark as handled.
+// One alert: what happened, the facts behind it, what it means (its terms), and what you
+// can do (a short settings sheet, or a link), then Mark as handled.
 import { computed, ref, watch } from 'vue'
-import MoneyActionFlow from '@/shared/components/MoneyActionFlow.vue'
+import BeneficiaryFlow from '@/shared/components/BeneficiaryFlow.vue'
 import SeverityBadge from '@/shared/components/SeverityBadge.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import { useGlossary } from '@/shared/composables/useGlossary'
@@ -19,25 +19,20 @@ const F = copy.facts
 
 const props = withDefaults(defineProps<{ alert: AttentionFlag; headingLevel?: 1 | 2 }>(), { headingLevel: 2 })
 
-const { account, activity } = useScenario()
+const { account } = useScenario()
 const { getTerm } = useGlossary()
 const { isHandled, markHandled, undo } = useHandled()
-const { markSeen, autoInvestOn, autoInvestChanged, pendingDeposits } = useSession()
+const { markSeen, sessionBeneficiary } = useSession()
 
-// An action already taken this session isn't offered again (P301 brief, edge cases): after
-// "Try the deposit again" the alert shows the new deposit as pending, and after auto-invest
-// is turned on, the cash alert says it is on now.
-const retry = computed(() => (props.alert.id === 'deposit-returned' ? pendingDeposits.value.find((p) => p.kind === 'retry') : undefined))
-const oneTime = computed(() => (props.alert.id === 'goal-behind' ? pendingDeposits.value.find((p) => p.kind === 'one-time') : undefined))
-const autoTurnedOn = computed(() => props.alert.id === 'cash-sitting' && autoInvestChanged.value && autoInvestOn.value)
-// What the done action changed, shown in place of "What you can do" and its button.
+// The beneficiary alert (Phase 6): once she names one this visit, the alert shows who, in place
+// of "What you can do" and its buttons, and it moves to Handled (Undo stays).
+const isBeneficiary = computed(() => props.alert.action?.kind === 'beneficiary')
 const doneLine = computed(() =>
-  retry.value || oneTime.value ? shared.deposit.confirmation : autoTurnedOn.value ? shared.moneyFlow.autoOnNow : '',
+  isBeneficiary.value && sessionBeneficiary.value ? fill(shared.beneficiaryFlow.saved, { name: sessionBeneficiary.value.name }) : '',
 )
-// Doing the action handles the alert (Undo stays available), so "needs you" stops counting it.
-watch(doneLine, (line) => {
-  if (line && !isHandled(props.alert.id)) markHandled(props.alert)
-})
+function onSaved() {
+  if (!isHandled(props.alert.id)) markHandled(props.alert)
+}
 
 watch(() => props.alert.id, (id) => markSeen(id), { immediate: true })
 
@@ -48,30 +43,10 @@ const status = ref('')
 // The facts behind each kind of alert, shown as label / value rows.
 const facts = computed<{ label: string; value: string }[]>(() => {
   const a = props.alert, acc = account.value
-  if (a.id === 'deposit-returned') {
-    const d = activity.value.find((x) => x.id === a.activityId)
-    return d && d.type === 'deposit'
-      ? [
-          { label: F.amount, value: formatMoney(d.amount) },
-          { label: F.askedOn, value: formatDate(d.date) },
-          { label: F.sentBackOn, value: d.returnedDate ? formatDate(d.returnedDate) : '' },
-          { label: F.status, value: F.returned },
-          ...(retry.value ? [{ label: F.triedAgain, value: fill(F.pendingSince, { date: formatDate(retry.value.date) }) }] : []),
-        ]
-      : []
+  if (isBeneficiary.value) {
+    const b = sessionBeneficiary.value
+    return [{ label: F.beneficiary, value: b ? fill(F.named, { name: b.name, relationship: b.relationship }) : F.notNamed }]
   }
-  if (a.id === 'goal-behind' && acc.goal)
-    return [
-      { label: F.planByNow, value: formatMoney(acc.goal.plannedMoneyInToDate) },
-      { label: F.putInSoFar, value: formatMoney(acc.goal.actualMoneyInToDate) },
-      { label: F.behindBy, value: formatMoney(acc.goal.behindBy) },
-    ]
-  if (a.id === 'cash-sitting')
-    return [
-      { label: F.cash, value: formatMoney(acc.cash) },
-      { label: F.waitingSince, value: acc.cashSince ? formatDate(acc.cashSince) : '' },
-      { label: F.autoInvest, value: autoInvestOn.value ? F.on : acc.autoInvest.pausedOn ? fill(F.pausedSince, { date: formatDate(acc.autoInvest.pausedOn) }) : F.off },
-    ]
   if (a.id.startsWith('big-move-') && a.ticker && a.movePercent !== undefined && acc.weeklyChange) {
     const w = acc.weeklyChange, f = getFund(a.ticker), change = w.byFund.find((x) => x.ticker === a.ticker)?.change ?? 0
     const close = (d: string) => f?.history.daily.find((x) => x.date === d)?.close ?? 0
@@ -91,6 +66,10 @@ const facts = computed<{ label: string; value: string }[]>(() => {
   return []
 })
 
+function remindLater() {
+  markHandled(props.alert)
+  status.value = copy.remindedStatus
+}
 function handle() {
   markHandled(props.alert)
   status.value = copy.markedStatus
@@ -110,9 +89,7 @@ function unhandle() {
     <component :is="`h${headingLevel}`" :id="`adetail-${alert.id}`" class="adetail__title">{{ alert.title }}</component>
 
     <h3 class="adetail__h">{{ copy.whatHappened }}</h3>
-    <!-- After auto-invest is turned on, "has been paused" would be false: tell the past as past. -->
-    <p v-if="autoTurnedOn && account.autoInvest.pausedOn">{{ fill(copy.pausedUntilToday, { date: formatDate(account.autoInvest.pausedOn) }) }}</p>
-    <p v-else>{{ alert.body }}</p>
+    <p>{{ alert.body }}</p>
     <dl v-if="facts.length" class="adetail__facts">
       <div v-for="f in facts" :key="f.label">
         <dt>{{ f.label }}</dt>
@@ -129,7 +106,7 @@ function unhandle() {
     <p v-if="doneLine" class="adetail__now">{{ doneLine }}</p>
     <p v-else>{{ alert.nextStep }}</p>
     <div class="adetail__actions">
-      <template v-if="alert.action && !doneLine">
+      <template v-if="alert.action && !doneLine && !isHandled(alert.id)">
         <RouterLink
           v-if="alert.action.kind === 'open-fund' && alert.ticker"
           :to="`/funds/${alert.ticker}`"
@@ -140,7 +117,10 @@ function unhandle() {
           {{ alert.action.label }}
         </button>
       </template>
-      <button v-if="!isHandled(alert.id)" type="button" class="adetail__btn" @click="handle">{{ copy.markHandled }}</button>
+      <template v-if="!isHandled(alert.id)">
+        <button v-if="isBeneficiary" type="button" class="adetail__btn" @click="remindLater">{{ copy.remindLater }}</button>
+        <button v-else type="button" class="adetail__btn" @click="handle">{{ copy.markHandled }}</button>
+      </template>
       <template v-else>
         <span class="adetail__handled"><span class="mdi mdi-check" aria-hidden="true" /> {{ copy.handled }}</span>
         <button type="button" class="adetail__btn" @click="unhandle">{{ copy.undo }}</button>
@@ -148,7 +128,7 @@ function unhandle() {
     </div>
     <p class="fl-visually-hidden" role="status">{{ status }}</p>
     <slot name="after" />
-    <MoneyActionFlow v-if="alert.action && alert.action.kind !== 'open-fund'" v-model="flowOpen" :alert="alert" />
+    <BeneficiaryFlow v-if="isBeneficiary" v-model="flowOpen" @saved="onSaved" />
   </article>
 </template>
 

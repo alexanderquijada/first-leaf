@@ -1,10 +1,8 @@
 <script setup lang="ts">
 // The goal counts deposits only: money put in against the plan, never the market.
 import { computed } from 'vue'
-import CopyText from '@/shared/components/CopyText.vue'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
-import TermTip from '@/shared/components/TermTip.vue'
 import { useScenario } from '@/shared/composables/useScenario'
 import { formatDate, formatMoneyShort } from '@/shared/format'
 
@@ -32,12 +30,8 @@ const pct = computed(() => (goal.value ? Math.round(goal.value.progress * 100) :
     >
       <span class="goal__fill" :style="{ width: `${pct}%` }" />
     </div>
-    <p v-if="goal.behindBy > 0" class="goal__line">
-      {{ fill(G.behind, { planned: formatMoneyShort(goal.plannedMoneyInToDate), behind: formatMoneyShort(goal.behindBy) }) }}
-    </p>
-    <p v-else class="goal__line">
-      <CopyText :text="G.onPace"><template #pace><TermTip id="goal-pace">{{ G.paceWord }}</TermTip></template></CopyText>
-    </p>
+    <!-- Every deposit went through, so she is on pace (Phase 6). -->
+    <p class="goal__line">{{ G.onPace }}</p>
     <p class="goal__note">{{ G.note }}</p>
   </section>
 </template>

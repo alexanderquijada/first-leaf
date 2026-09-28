@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures'
-import { apDate, load, money, moneyShort, SCENARIOS } from '../data'
+import { load, money, moneyShort, SCENARIOS } from '../data'
 
 // Every scenario's laptop Home shows that account's own numbers, and no sentence is false.
 test.use({ viewport: { width: 1280, height: 800 } })
@@ -18,12 +18,19 @@ for (const s of SCENARIOS) {
       return
     }
     const panel = page.locator('.balance')
+    await expect(panel.locator('.balance__label')).toHaveText('Balance')
     await expect(panel.locator('.balance__big')).toHaveText(money(a.balance))
     await expect(panel).toContainText(`${a.gainLoss >= 0 ? 'Up' : 'Down'} ${money(a.gainLoss)} on the ${moneyShort(a.moneyIn)} you put in.`)
     await expect(panel).toContainText(`This week: ${a.weeklyChange.totalChange >= 0 ? 'up' : 'down'} ${money(a.weeklyChange.totalChange)}.`)
-    await expect(panel).toContainText(a.autoInvest.on ? 'Auto-invest: On.' : `Auto-invest: Paused since ${apDate(a.autoInvest.pausedOn)}.`)
-    await expect(panel).toContainText(`Invested${money(a.investedValue)}`)
-    await expect(panel).toContainText(`Cash${money(a.cash)}`)
+    // The rows, in order: Invested (a finance term), Cash, You put in, Auto-invest.
+    expect(a.autoInvest.on).toBe(true)
+    expect(a.autoInvest.pausedOn).toBeUndefined()
+    const rows = panel.locator('.balance__parts > div')
+    await expect(rows).toHaveText([`Invested${money(a.investedValue)}`, `Cash${money(a.cash)}`, `You put in${money(a.moneyIn)}`, 'Auto-investOn'])
+    await expect(rows.nth(0).locator('dt .fl-termtip__button')).toHaveText('Invested')
+    for (const i of [1, 2, 3]) await expect(rows.nth(i).locator('.fl-termtip__button')).toHaveCount(0)
+    // The parts add up to the balance, to the cent.
+    expect(Math.round((a.investedValue + a.cash) * 100)).toBe(Math.round(a.balance * 100))
 
     const flags = attention[a.id]
     // Ruling 8 (Sept. 25): only what Rosa must act on (needs-you) is counted.
@@ -36,8 +43,10 @@ for (const s of SCENARIOS) {
     const g = a.goal
     const goal = page.locator('.goal')
     await expect(goal).toContainText(`${moneyShort(g.actualMoneyInToDate)} of ${moneyShort(g.target)} put in`)
-    if (g.behindBy > 0) await expect(goal).toContainText(`so you are ${moneyShort(g.behindBy)} behind.`)
-    else await expect(goal).toContainText('You are on pace with your plan.')
+    // Every planned deposit arrived (rule A13), so the goal is on pace.
+    expect(g.behindBy).toBe(0)
+    await expect(goal).toContainText('You are on pace with your plan.')
+    await expect(goal).not.toContainText('behind')
 
     const w = a.weeklyChange
     const week = page.locator('.week')
@@ -49,14 +58,43 @@ for (const s of SCENARIOS) {
   })
 }
 
-test('alerts come first: top left, before the balance in reading order', async ({ page }) => {
-  await page.goto('/')
-  const alerts = (await page.locator('.fl-alerts').boundingBox())!
-  const balance = (await page.locator('.balance').boundingBox())!
-  expect(alerts.x).toBeLessThan(balance.x)
-  const order = await page.evaluate(() => {
-    const a = document.querySelector('.fl-alerts')!, b = document.querySelector('.balance')!
-    return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? 'alerts first' : 'balance first'
+// Phase 6: the dark balance card comes first. It sits LEFT of "Needs your attention", at the
+// same top edge, both fully in view at 1280×800 without scrolling; balance first in reading
+// and keyboard order too. The same order at 768×1024.
+for (const [width, height] of [[1280, 800], [768, 1024]] as const) {
+  test(`the balance card comes first, beside "Needs your attention", at ${width}×${height}`, async ({ page }) => {
+    await page.setViewportSize({ width, height })
+    await page.goto('/')
+    const balance = (await page.locator('.balance').boundingBox())!
+    const card = page.locator('.fl-alerts').locator('xpath=ancestor::*[contains(@class,"dhome__card")][1]')
+    const alerts = (await card.boundingBox())!
+    expect(balance.x + balance.width).toBeLessThanOrEqual(alerts.x)
+    expect(Math.abs(balance.y - alerts.y)).toBeLessThanOrEqual(1)
+    if (width === 1280) {
+      // Fully visible without scrolling.
+      expect(await page.evaluate(() => window.scrollY)).toBe(0)
+      for (const box of [balance, alerts]) {
+        expect(box.y).toBeGreaterThanOrEqual(0)
+        expect(box.x).toBeGreaterThanOrEqual(0)
+        expect(box.y + box.height).toBeLessThanOrEqual(height)
+        expect(box.x + box.width).toBeLessThanOrEqual(width)
+      }
+    }
+    const order = await page.evaluate(() => {
+      const a = document.querySelector('.fl-alerts')!, b = document.querySelector('.balance')!
+      return b.compareDocumentPosition(a) & Node.DOCUMENT_POSITION_FOLLOWING ? 'balance first' : 'alerts first'
+    })
+    expect(order).toBe('balance first')
   })
-  expect(order).toBe('alerts first')
+}
+
+test('in keyboard order, the balance card\'s term comes before the alerts', async ({ page }) => {
+  await page.goto('/')
+  const invested = page.locator('.balance .fl-termtip__button', { hasText: 'Invested' })
+  const firstAlert = page.locator('.fl-alerts a').first()
+  await invested.focus()
+  await expect(invested).toBeFocused()
+  // Tab forward from Invested reaches the first alert link without going back up the page.
+  for (let i = 0; i < 10 && !(await firstAlert.evaluate((el) => el === document.activeElement)); i++) await page.keyboard.press('Tab')
+  await expect(firstAlert).toBeFocused()
 })
