@@ -34,6 +34,9 @@ export const CHANGED = {
   'story:next': 'New in Phase 6: every section ends with a button to the next one.',
   'learn:title': 'Renamed in Phase 6: "Words" is now "Finance Terms".',
   'home:balance.vsPutIn': 'Changed in Phase 6: the sentence moved inside the dark balance card on every size.',
+  'story:names.1new': 'New in Phase 6 (review fix): a brand-new account has not had six months, so section 1 is "Your start".',
+  'story:names.2new': 'New in Phase 6 (review fix): a brand-new account has had no dip yet, so section 2 is "When prices dip".',
+  'story:newDipClaim': 'New in Phase 6 (review fix): brand-new section 2 repeated section 1 word for word; it now has its own sentence.',
   'data:glossary.invested.short': 'New in Phase 6: "Invested" is the term on the dark card, from Investor.gov.',
 }
 

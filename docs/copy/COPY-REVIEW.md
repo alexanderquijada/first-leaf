@@ -2,7 +2,7 @@
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (`docs/copy/approved.json`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
-**What this covers:** all 536 pieces of text a person can read or hear in First Leaf: every string in the copy files and the text that comes from the data (alerts, the ten investments, the story's sentences, the glossary). Built by `npm run copy:review` from the live pages.
+**What this covers:** all 538 pieces of text a person can read or hear in First Leaf: every string in the copy files and the text that comes from the data (alerts, the ten investments, the story's sentences, the glossary). Built by `npm run copy:review` from the live pages.
 
 **How to read a row**
 
@@ -139,7 +139,7 @@ At most ten, most important first. Each one links to its row below.
 | H70<br>APPROVED | Home (phone)<br><sub>`home:phone.seeActivity`</sub> | See all activity | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H71<br>DRAFT | Home (phone)<br><sub>`home:phone.wordOfTheDay`</sub> | Term of the Day | -2.2 | Nothing needs you: same<br>Brand-new: same | — |  |
 | H72<br>APPROVED | Home (phone)<br><sub>`home:phone.readMore`</sub> | Read more | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| H73<br>APPROVED | Home (phone); Alerts (laptop, phone); Add a beneficiary sheet; Beneficiary alert (reminded)<br><sub>`home:phone.readMoreAbout`</sub> | about Invested *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| H73<br>APPROVED | Home (phone); Alerts (laptop, phone); Add a beneficiary sheet<br><sub>`home:phone.readMoreAbout`</sub> | about Invested *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | H74<br>DRAFT | Home (phone)<br><sub>`home:phone.nextWord`</sub> | Next term | label | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Alerts
@@ -193,7 +193,7 @@ At most ten, most important first. Each one links to its row below.
 | L45<br>DRAFT | Beneficiary alert (reminded)<br><sub>`alerts:remindedStatus`</sub> | We will remind you the next time you open First Leaf. | 2.6 | Nothing needs you: not shown<br>Brand-new: not shown | — | New in Phase 6: what "Remind me later" confirms. |
 | L46<br>DRAFT | Home (laptop, phone); Alerts (laptop, phone); Add a beneficiary sheet; and 3 more screens<br><sub>`data:attention.beneficiary-missing.title`</sub> | Name a beneficiary for your account | 0.5 | Nothing needs you: not shown<br>Brand-new: not shown | — | New in Phase 6: the one thing that needs Rosa in the default account. |
 | L47<br>DRAFT | Alerts (laptop, phone); Add a beneficiary sheet; Add a beneficiary sheet (saved); Beneficiary alert (reminded)<br><sub>`data:attention.beneficiary-missing.body`</sub> | A beneficiary is the person who gets the money in your account if you die. You have not named one yet. Brokerages ask so your money can go to the person you choose, with fewer steps for your family. | 4.3 | Nothing needs you: not shown<br>Brand-new: not shown | — | New in Phase 6: explains what a beneficiary is and why brokerages ask. |
-| L48<br>DRAFT | Alerts (laptop, phone); Add a beneficiary sheet; Beneficiary alert (reminded)<br><sub>`data:attention.beneficiary-missing.nextStep`</sub> | You can add one now, or be reminded later. It takes about a minute. | 2.3 | Nothing needs you: not shown<br>Brand-new: not shown | — | New in Phase 6: offers the choice, never pushes it. |
+| L48<br>DRAFT | Alerts (laptop, phone); Add a beneficiary sheet<br><sub>`data:attention.beneficiary-missing.nextStep`</sub> | You can add one now, or be reminded later. It takes about a minute. | 2.3 | Nothing needs you: not shown<br>Brand-new: not shown | — | New in Phase 6: offers the choice, never pushes it. |
 | L49<br>DRAFT | Alerts (laptop, phone); Add a beneficiary sheet; Add a beneficiary sheet (saved)<br><sub>`data:attention.beneficiary-missing.action.label`</sub> | Add a beneficiary | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | L50<br>APPROVED | Alerts (laptop, phone); Home (laptop); Add a beneficiary sheet; and 3 more screens<br><sub>`data:attention.sipc-crypto.title`</sub> | SIPC protection doesn't cover crypto | 0.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | L51<br>APPROVED | Alerts (laptop, phone); Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`data:attention.sipc-crypto.body`</sub> | SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price. | 4.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
@@ -273,7 +273,7 @@ At most ten, most important first. Each one links to its row below.
 | F3<br>APPROVED | Investments (laptop)<br><sub>`funds:caption`</sub> | All investments, with what you have in each | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F4<br>APPROVED | Activity (laptop, phone); Home (laptop); Investments (laptop)<br><sub>`funds:col.fund`</sub> | Investment | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F5<br>APPROVED | Investments (laptop)<br><sub>`funds:col.kind`</sub> | Kind | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F6<br>DRAFT | Home (phone); Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`funds:col.ups`</sub> | Volatility | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| F6<br>DRAFT | Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`funds:col.ups`</sub> | Volatility | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F7<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:col.value`</sub> | Your value | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F8<br>APPROVED | Your Journey (laptop, phone); Investments (laptop); Practice (after buying)<br><sub>`funds:col.change`</sub> | Up or down | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F9<br>APPROVED | Investments (laptop, phone); Finance Terms (laptop, phone); Term explanation<br><sub>`funds:kind.stock`</sub> | Stock | label | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -304,7 +304,7 @@ At most ten, most important first. Each one links to its row below.
 | F34<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:chart.1y`</sub> | 1 year | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F35<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:about.heading`</sub> | What it is | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F36<br>DRAFT | Investments (laptop, phone)<br><sub>`funds:ups.heading`</sub> | Volatility: 2 of 5 *(and 4 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F37<br>DRAFT | Home (phone); Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`funds:ups.termWord`</sub> | Volatility | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| F37<br>DRAFT | Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`funds:ups.termWord`</sub> | Volatility | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F38<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:ups.scale`</sub> | 1 means its price barely moves. 5 means it moves the most. | 2.5 | Nothing needs you: same<br>Brand-new: same | — |  |
 | F39<br>APPROVED | Investments (laptop, phone); Activity (laptop)<br><sub>`funds:dividends.heading`</sub> | Dividends | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F40<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:dividends.intro`</sub> | Apple pays a dividend for each share you own before its ex-dividend date. *(and 4 more like it)* | 1.9 | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -348,70 +348,72 @@ At most ten, most important first. Each one links to its row below.
 | S1<br>DRAFT | Your Journey (laptop, phone); Home (laptop); Alerts (laptop); and 13 more screens<br><sub>`story:title`</sub> | Your Journey | label | Nothing needs you: same<br>Brand-new: same | — | Renamed in Phase 6: "Your money story" is now "Your Journey". |
 | S2<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sections`</sub> | Sections | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | S3<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sectionNum`</sub> | Section 1 *(and 7 more like it)* | label | Nothing needs you: same<br>Brand-new: “Section 1” | — |  |
-| S4<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.1`</sub> | Six months in | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S4<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.1`</sub> | Six months in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | S5<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.2`</sub> | The dip in June *(and 1 more like it)* | -2.2 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | S6<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.3`</sub> | Start early | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | S7<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.4`</sub> | Try it | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S8<br>DRAFT | Your Journey (phone)<br><sub>`story:names.2new`</sub> | The dip *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — |  |
-| S9<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:next`</sub> | Next: The dip in June *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: “Next: The dip” | — | New in Phase 6: every section ends with a button to the next one. |
-| S10<br>DRAFT | Your Journey (phone)<br><sub>`story:newClaim`</sub> | Once your first deposit arrives, this page will show how your money has moved. *(only in the brand-new account)* | 5.0 | Nothing needs you: not shown<br>Brand-new: same | — |  |
-| S11<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:one.rateLine`</sub> | Shown as a percent, what it earned is called your rate of return. | 1.6 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S12<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:one.rateWord`</sub> | rate of return | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S13<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.chartTitle`</sub> | Your balance since March | 0.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S14<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.summary`</sub> | From March 2 to Sept. 18, your balance went from $499.88 to $1,536.68. | 5.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S15<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.layers`</sub> | Show what you put in and what it earned | -0.3 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S16<br>APPROVED | Home (laptop, phone); Investments (laptop, phone); Your Journey (laptop, phone); Activity (laptop)<br><sub>`story:sinceMarch.colDate`</sub> | Date | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S17<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:sinceMarch.colBalance`</sub> | Balance | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S18<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:sinceMarch.colMoneyIn`</sub> | You put in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S19<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone)<br><sub>`story:sinceMarch.colEarned`</sub> | It earned | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S20<br>DRAFT | Your Journey<br><sub>`story:sinceMarch.chartTitle1m`</sub> | Your balance in the last month *(not on a captured screen; example values)* | 0.5 | Same words wherever it shows | — |  |
-| S21<br>DRAFT | Your Journey<br><sub>`story:sinceMarch.chartTitle3m`</sub> | Your balance in the last 3 months *(not on a captured screen; example values)* | 2.3 | Same words wherever it shows | — |  |
-| S22<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.layersOn`</sub> | The flat layer is what you put in, and the grainy layer above it is what it earned. | 5.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S23<br>DRAFT | Your Journey<br><sub>`story:sinceMarch.layersOff`</sub> | The chart shows your balance as one line. *(not on a captured screen; example values)* | 0.8 | Same words wherever it shows | — |  |
-| S24<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.high`</sub> | May 21: Your investments started to fall. | 2.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S25<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.low`</sub> | June 5: The fall hit its low. | -1.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S26<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.backAbove`</sub> | June 15: Your balance was back above what you had put in. | 2.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S27<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.depositInvested`</sub> | June 1: Your deposit bought your mix. *(and 3 more like it)* | 2.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S28<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.summary`</sub> | Your balance from April 15 to Sept. 18, with the dip and what came after. | 6.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S29<br>APPROVED | Home (laptop, phone); Investments (laptop, phone); Your Journey (laptop, phone); Activity (laptop)<br><sub>`story:dip.colDate`</sub> | Date | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S30<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:dip.colBalance`</sub> | Balance | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S31<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:dip.colMoneyIn`</sub> | You put in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S32<br>APPROVED | Your Journey (laptop, phone); Investments (laptop); Practice (after buying)<br><sub>`story:dip.colDiff`</sub> | Up or down | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S33<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.chartTitle`</sub> | The dip and what came after | 0.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S34<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.showEvents`</sub> | Show events on the chart | 0.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S35<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.eventsLabel`</sub> | Events on the chart | 0.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S36<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.eventsOn`</sub> | A diamond marks each event, and the list below the chart names them. | 4.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S37<br>DRAFT | Your Journey<br><sub>`story:dip.eventsOff`</sub> | The chart shows your balance without the events. *(not on a captured screen; example values)* | 3.8 | Same words wherever it shows | — |  |
-| S38<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.dcaLine`</sub> | Buying the same amount every month is called dollar-cost averaging. | 5.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S39<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.dcaWord`</sub> | dollar-cost averaging | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S40<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.meet`</sub> | Nia starts at 22 with $100 a month. Theo starts at 32 with $150. | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S41<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.why`</sub> | Nia puts in less, but her money has 10 more years of compounding. | 3.1 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S42<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.compoundingWord`</sub> | compounding | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S43<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoAge`</sub> | Theo's start age *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| S44<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoMonthly`</sub> | Theo each month *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| S45<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.startAt`</sub> | Start at 18 *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S46<br>DRAFT | Your Journey (laptop, phone); Finance Terms (laptop, phone)<br><sub>`story:startEarly.perMonth`</sub> | $150 a month *(and 3 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S47<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.passesMark`</sub> | Passes Nia: $196 | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S48<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.result`</sub> | At 65, Theo has $186,213. Nia has $242,251. | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S49<br>DRAFT | Your Journey<br><sub>`story:startEarly.passes`</sub> |  Theo passes Nia. *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| S50<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.behind`</sub> | Theo is still behind. | 0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S51<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.chartTitle`</sub> | Nia and Theo from 18 to 65 *(and 1 more like it)* | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S52<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.nia`</sub> | Nia | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S53<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.theo`</sub> | Theo | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S54<br>DRAFT | Your Journey<br><sub>`story:startEarly.day`</sub> | Age 30: Nia has $242,251. $186,213 *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| S55<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.theoHas`</sub> | Theo has $186,213. | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S56<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoNotYet`</sub> | Theo has not started yet. *(not on a captured screen; example values)* | -1.8 | Same words wherever it shows | — |  |
-| S57<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.notStarted`</sub> | Not started | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S58<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.colAge`</sub> | Age | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S59<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.claim`</sub> | Practice lets you try a mix with practice money. Nothing you do there touches your account. | 3.0 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S60<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.timeMachine`</sub> | Its time machine shows how a mix could have moved over the last year. | 3.4 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S61<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.go`</sub> | Go to Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S62<br>APPROVED | Your Journey<br><sub>`story:slider.label`</sub> | Start age: Start at 30 *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| S63<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.pointOfView`</sub> | Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment. | 6.3 | Nothing needs you: same<br>Brand-new: “Growth needs years. Starting early and staying steady matter more than picking the perfect moment.” | — |  |
-| S64<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.deposits-share`</sub> | About 91% of your balance is money you put in. The other $136.68 is what it earned. | 3.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
-| S65<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:rosaStory.dip`</sub> | From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%. | 3.6 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
-| S66<br>DRAFT | Your Journey (laptop, phone)<br><sub>`data:rosaStory.kept-buying`</sub> | Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived. | 6.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
-| S67<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:story.assumptions.note`</sub> | An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S8<br>DRAFT | Your Journey (phone)<br><sub>`story:names.1new`</sub> | Your start *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — | New in Phase 6 (review fix): a brand-new account has not had six months, so section 1 is "Your start". |
+| S9<br>DRAFT | Your Journey (phone)<br><sub>`story:names.2new`</sub> | When prices dip *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — | New in Phase 6 (review fix): a brand-new account has had no dip yet, so section 2 is "When prices dip". |
+| S10<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:next`</sub> | Next: The dip in June *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: “Next: When prices dip” | — | New in Phase 6: every section ends with a button to the next one. |
+| S11<br>DRAFT | Your Journey (phone)<br><sub>`story:newClaim`</sub> | Once your first deposit arrives, this page will show how your money has moved. *(only in the brand-new account)* | 5.0 | Nothing needs you: not shown<br>Brand-new: same | — |  |
+| S12<br>DRAFT | Your Journey (phone)<br><sub>`story:newDipClaim`</sub> | Prices sometimes fall for a while. Once your money is invested, this section will show how it moved through a dip. *(only in the brand-new account)* | 3.1 | Nothing needs you: not shown<br>Brand-new: same | — | New in Phase 6 (review fix): brand-new section 2 repeated section 1 word for word; it now has its own sentence. |
+| S13<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:one.rateLine`</sub> | Shown as a percent, what it earned is called your rate of return. | 1.6 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S14<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:one.rateWord`</sub> | rate of return | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S15<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.chartTitle`</sub> | Your balance since March | 0.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S16<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.summary`</sub> | From March 2 to Sept. 18, your balance went from $499.88 to $1,536.68. | 5.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S17<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.layers`</sub> | Show what you put in and what it earned | -0.3 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S18<br>APPROVED | Home (laptop, phone); Investments (laptop, phone); Your Journey (laptop, phone); Activity (laptop)<br><sub>`story:sinceMarch.colDate`</sub> | Date | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S19<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:sinceMarch.colBalance`</sub> | Balance | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S20<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:sinceMarch.colMoneyIn`</sub> | You put in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S21<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone)<br><sub>`story:sinceMarch.colEarned`</sub> | It earned | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S22<br>DRAFT | Your Journey<br><sub>`story:sinceMarch.chartTitle1m`</sub> | Your balance in the last month *(not on a captured screen; example values)* | 0.5 | Same words wherever it shows | — |  |
+| S23<br>DRAFT | Your Journey<br><sub>`story:sinceMarch.chartTitle3m`</sub> | Your balance in the last 3 months *(not on a captured screen; example values)* | 2.3 | Same words wherever it shows | — |  |
+| S24<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sinceMarch.layersOn`</sub> | The flat layer is what you put in, and the grainy layer above it is what it earned. | 5.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S25<br>DRAFT | Your Journey<br><sub>`story:sinceMarch.layersOff`</sub> | The chart shows your balance as one line. *(not on a captured screen; example values)* | 0.8 | Same words wherever it shows | — |  |
+| S26<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.high`</sub> | May 21: Your investments started to fall. | 2.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S27<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.low`</sub> | June 5: The fall hit its low. | -1.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S28<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.backAbove`</sub> | June 15: Your balance was back above what you had put in. | 2.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S29<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.depositInvested`</sub> | June 1: Your deposit bought your mix. *(and 3 more like it)* | 2.9 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S30<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.summary`</sub> | Your balance from April 15 to Sept. 18, with the dip and what came after. | 6.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S31<br>APPROVED | Home (laptop, phone); Investments (laptop, phone); Your Journey (laptop, phone); Activity (laptop)<br><sub>`story:dip.colDate`</sub> | Date | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S32<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:dip.colBalance`</sub> | Balance | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S33<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Term explanation<br><sub>`story:dip.colMoneyIn`</sub> | You put in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S34<br>APPROVED | Your Journey (laptop, phone); Investments (laptop); Practice (after buying)<br><sub>`story:dip.colDiff`</sub> | Up or down | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S35<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.chartTitle`</sub> | The dip and what came after | 0.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S36<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.showEvents`</sub> | Show events on the chart | 0.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S37<br>APPROVED | Your Journey (laptop, phone)<br><sub>`story:dip.eventsLabel`</sub> | Events on the chart | 0.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S38<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.eventsOn`</sub> | A diamond marks each event, and the list below the chart names them. | 4.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S39<br>DRAFT | Your Journey<br><sub>`story:dip.eventsOff`</sub> | The chart shows your balance without the events. *(not on a captured screen; example values)* | 3.8 | Same words wherever it shows | — |  |
+| S40<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.dcaLine`</sub> | Buying the same amount every month is called dollar-cost averaging. | 5.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S41<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.dcaWord`</sub> | dollar-cost averaging | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S42<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.meet`</sub> | Nia starts at 22 with $100 a month. Theo starts at 32 with $150. | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S43<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.why`</sub> | Nia puts in less, but her money has 10 more years of compounding. | 3.1 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S44<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.compoundingWord`</sub> | compounding | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S45<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoAge`</sub> | Theo's start age *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| S46<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoMonthly`</sub> | Theo each month *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| S47<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.startAt`</sub> | Start at 18 *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S48<br>DRAFT | Your Journey (laptop, phone); Finance Terms (laptop, phone)<br><sub>`story:startEarly.perMonth`</sub> | $150 a month *(and 3 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S49<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.passesMark`</sub> | Passes Nia: $196 | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S50<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.result`</sub> | At 65, Theo has $186,213. Nia has $242,251. | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S51<br>DRAFT | Your Journey<br><sub>`story:startEarly.passes`</sub> |  Theo passes Nia. *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| S52<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.behind`</sub> | Theo is still behind. | 0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S53<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.chartTitle`</sub> | Nia and Theo from 18 to 65 *(and 1 more like it)* | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S54<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.nia`</sub> | Nia | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S55<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.theo`</sub> | Theo | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S56<br>DRAFT | Your Journey<br><sub>`story:startEarly.day`</sub> | Age 30: Nia has $242,251. $186,213 *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| S57<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.theoHas`</sub> | Theo has $186,213. | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S58<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoNotYet`</sub> | Theo has not started yet. *(not on a captured screen; example values)* | -1.8 | Same words wherever it shows | — |  |
+| S59<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.notStarted`</sub> | Not started | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S60<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.colAge`</sub> | Age | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S61<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.claim`</sub> | Practice lets you try a mix with practice money. Nothing you do there touches your account. | 3.0 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S62<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.timeMachine`</sub> | Its time machine shows how a mix could have moved over the last year. | 3.4 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S63<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.go`</sub> | Go to Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S64<br>APPROVED | Your Journey<br><sub>`story:slider.label`</sub> | Start age: Start at 30 *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| S65<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.pointOfView`</sub> | Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment. | 6.3 | Nothing needs you: same<br>Brand-new: “Growth needs years. Starting early and staying steady matter more than picking the perfect moment.” | — |  |
+| S66<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.deposits-share`</sub> | About 91% of your balance is money you put in. The other $136.68 is what it earned. | 3.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
+| S67<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:rosaStory.dip`</sub> | From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%. | 3.6 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
+| S68<br>DRAFT | Your Journey (laptop, phone)<br><sub>`data:rosaStory.kept-buying`</sub> | Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived. | 6.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
+| S69<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:story.assumptions.note`</sub> | An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Practice
 
@@ -484,7 +486,7 @@ At most ten, most important first. Each one links to its row below.
 | W1<br>DRAFT | Finance Terms (laptop, phone); Home (laptop); Alerts (laptop); and 12 more screens<br><sub>`learn:title`</sub> | Finance Terms | label | Nothing needs you: same<br>Brand-new: same | — | Renamed in Phase 6: "Words" is now "Finance Terms". |
 | W2<br>DRAFT | Finance Terms (laptop, phone); Finance Terms (no match)<br><sub>`learn:search`</sub> | Search finance terms | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | W3<br>DRAFT | Finance Terms<br><sub>`learn:countOne`</sub> | 1 term *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| W4<br>DRAFT | Home (phone); Alerts (phone); Activity (phone); and 4 more screens<br><sub>`learn:countMany`</sub> | Search finance terms *(and 6 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| W4<br>DRAFT | Alerts (phone); Activity (phone); Investments (phone); and 3 more screens<br><sub>`learn:countMany`</sub> | Search finance terms *(and 6 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | W5<br>DRAFT | Finance Terms (no match)<br><sub>`learn:none`</sub> | No terms match “zebra”. Try “stock” or “crypto”. | -2.2 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | W6<br>DRAFT | Finance Terms (laptop, phone)<br><sub>`learn:allWords`</sub> | All finance terms | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | W7<br>APPROVED | Finance Terms (laptop, phone); Term explanation<br><sub>`learn:alsoCalled`</sub> | Also called market value *(and 6 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -522,7 +524,7 @@ At most ten, most important first. Each one links to its row below.
 | W39<br>DRAFT | Activity (laptop, phone); Finance Terms (laptop, phone)<br><sub>`data:glossary.ex-dividend-date.short`</sub> | The date that decides who gets the next dividend. | 1.0 | Same in every scenario | — |  |
 | W40<br>DRAFT | Finance Terms (laptop, phone)<br><sub>`data:glossary.ex-dividend-date.detail`</sub> | A company sets this date for each dividend it pays. If you own a share before that date, you get the payment. If you buy on or after it, you wait for the next one. | 2.4 | Same in every scenario | — |  |
 | W41<br>DRAFT | Finance Terms (laptop, phone)<br><sub>`data:glossary.ex-dividend-date.example`</sub> | Say the date is Nov. 10. You must own the share by Nov. 9 to get that payment. | 1.7 | Same in every scenario | — |  |
-| W42<br>DRAFT | Home (phone); Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`data:glossary.volatility.term`</sub> | Volatility | label | Same in every scenario | — |  |
+| W42<br>DRAFT | Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`data:glossary.volatility.term`</sub> | Volatility | label | Same in every scenario | — |  |
 | W43<br>DRAFT | Finance Terms (laptop, phone)<br><sub>`data:glossary.volatility.short`</sub> | How much an investment's price tends to jump around. | 3.7 | Same in every scenario | — |  |
 | W44<br>DRAFT | Finance Terms (laptop, phone)<br><sub>`data:glossary.volatility.detail`</sub> | We rate each one from 1, calm, to 5, bumpy, using how much its price moved each day over the past year. Bumpy ones can grow more over time, but they can also fall more on a bad day. | 6.2 | Same in every scenario | — |  |
 | W45<br>DRAFT | Finance Terms (laptop, phone)<br><sub>`data:glossary.volatility.example`</sub> | Costco is a 1. Solana is a 5. | label | Same in every scenario | — |  |
@@ -591,7 +593,7 @@ At most ten, most important first. Each one links to its row below.
 | # | Where it appears | Text as shown (normal scenario) | Grade | Other scenario versions | Suggested rewrite | Why |
 |---|---|---|---|---|---|---|
 | E1<br>APPROVED | Term explanations and sheets (every screen)<br><sub>`shared:placeholder.soon`</sub> | Coming soon. *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| E2<br>DRAFT | Home (phone); Alerts (phone); Activity (phone); Investments (phone)<br><sub>`shared:wordChips.title`</sub> | Finance terms on this screen | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
+| E2<br>DRAFT | Alerts (phone); Activity (phone); Investments (phone)<br><sub>`shared:wordChips.title`</sub> | Finance terms on this screen | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
 | E3<br>APPROVED | Sections sheet<br><sub>`shared:sheet.close`</sub> | Close | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | E4<br>APPROVED | Finance Terms (laptop, phone); Term explanation<br><sub>`shared:termTip.alsoCalled`</sub> | Also called market value *(and 6 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | E5<br>APPROVED | Finance Terms (laptop, phone); Term explanation<br><sub>`shared:termTip.example`</sub> | Example: | label | Nothing needs you: same<br>Brand-new: same | — |  |

@@ -2,11 +2,11 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 28, 2026 (Phase 6 · Alex's review round; in progress)
+**Last updated:** Sept. 28, 2026 (Phase 6 · Alex's review round; built, reviewed and live)
 
 ## NEXT STEP
 
-**Phase 6 is being built: see the Sept. 28 decision-log entry.**
+**Phase 6 is built, independently reviewed and live. Ready to submit.** Alex's one open item is optional: approving the DRAFT rows in `docs/copy/COPY-REVIEW.md` (149 rows, all new or changed in Phase 6, all grade 8 or below). See the Sept. 28 decision-log entry.
 
 ## Live links
 
@@ -61,7 +61,7 @@
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
-| 6 · Alex's review round (Sept. 28; in progress) | ⬜ | ⬜ | ⬜ | ⬜ |
+| 6 · Alex's review round (Sept. 28) | ✅ Removed stories, beneficiary alert and sheet, 15 cited Finance Terms (rule L6; 51 rules, 135 cases), Term of the Day, logo and favicons, renamed navigation, business-day deposits, reduced-motion fix, 312 tests | ✅ Balance card first with Balance inside, beneficiary flow, Volatility rating, type filter only, independent review (approve) and fixes | ✅ Your Journey in four sections with WAI-ARIA tabs, deep links, brand-new names, Finance Terms, market order term, independent review (approve) and fixes | ✅ Dark card first on a phone, Term of the Day, "Finance terms on this screen" chips, Journey and Terms tabs, independent review (approve) and fixes |
 
 ## Environment
 
@@ -97,6 +97,21 @@ Alex reviewed the live site and asked for seven changes. The data is already reg
 - **We highlighted everyday words that aren't finance terms,** such as Balance, Cash, Your mix, Practice, Put in, On pace, Auto-invest, Ups and downs and Bitcoin. Dotted underlines on plain words made the app feel harder than it is and diluted the words that really need explaining.
 - **The story ran too long:** six chapters, and chapter 5 alone had seven steps. A reader on the couch lost the point before the end.
 - **The product had no real logo,** only a typed wordmark, so it didn't read as a finished brand.
+
+**What was built** (commits 170cefe, f2a3050, 0b55878, 0c0d655, 80874e4, 98602a8, then the review fixes)
+- **Data:** every $150 deposit arrives on the first business day of the month and is invested that day; cash is only leftovers ($2.48); the goal is on pace. Seed 10 and the June dip are kept. The default account has no beneficiary, so it has one needs-you alert; the calm account names one (Luis Ortega, brother, invented).
+- **The beneficiary alert:** What happened, What it means (Beneficiary and Brokerage account terms), What you can do. **Add a beneficiary** opens a short sheet (Name, Relationship; errors say what to enter); Save confirms, shows the name, and moves the alert to Handled. **Remind me later** moves it to Handled and says "We will remind you the next time you open First Leaf." Undo also undoes a save. Kept for this visit only.
+- **Home:** the dark card first, holding Balance, the balance, the vs-put-in line, This week, and Invested (a term), Cash, You put in and Auto-invest rows. Laptop and tablet: card left, "Needs your attention" right, same top edge; phone: card on top.
+- **Finance Terms:** 15 entries, each citing Investor.gov, IRS.gov or SIPC.org; only those words are term buttons. Investment pages rate "Volatility: X of 5". Practice's review names the market order.
+- **Your Journey:** four sections, one at a time, with WAI-ARIA tabs (a 2×2 grid under 600px, one row from 600px) and a Sections sheet on a phone; each section has one chart or interaction, at most 60 words (58, 54, 58, 30) and a Next button. `#section-1` to `#section-4`, and old `#chapter-N` links map to their section.
+- **Logo:** option A, "Sprout tile" (`docs/brand/logo-options.html`), in the rail, the top bar, the favicons (SVG, 16, 32, with a thin cream ring for dark browser tabs) and the apple-touch-icon; the README opens with it.
+- **Found while building:** with reduced motion on, buttons and links still faded their colors for 150ms (a type selector outranked the reduced-motion `*` rule); fixed. Home's alerts, goal and This week cards held empty bands (up to 138px); each now ends at its content. At 200% text on a 320px phone the dark card's rows ran 5px wide; they now wrap.
+
+**Independent review (a fresh reviewer per case study, given its brief, README block, BRIEF.md §1–3 and §6 and the rubric):** all three **approved** on the live site at 98602a8, with minor findings only. Fixed, each with a test that failed first:
+- **P301:** after Remind me later, "What you can do" still offered the choice; the Aug. 1 deposit fell on a Saturday while its buys were dated Aug. 3 (deposits now move to the next business day; rule A13 now checks each deposit is dated the day it arrived); the favicon's tile edge was 2.1:1 on a dark browser tab (cream ring added).
+- **P302:** the section tabs wrapped to two rows between 600 and 899px (DoD 5); "Six months in" and "The dip" named things a brand-new account hasn't had (now "Your start" and "When prices dip", with its own sentence); chart dates collided at 320px (now one label per 75px of axis); screen readers never heard the "Passes Nia: $196" mark (now the slider's description); Practice's last confirmation outlived Start over; the start-age slider held an empty 32px band; the brief's section copy had drifted from the screen (brief updated).
+- **P303:** "Why it moved" listed a Volatility chip for a word it never names (removed); the tablet tabs cut off "Finance Terms" at 600px (tighter links below 768px); the brief said "Filters" where the button says "Filter" (brief updated).
+- **Not changed, recorded as known issues:** "Invested" cites Investor.gov's closing-price page (Alex asked for this term; no investor.gov page defines "invested" by name); the Mix card's empty track; blank "Up or down" cells for investments she doesn't own; practice rounding.
 
 ### Sept. 25, 2026: Phase 5 · Verification and final fixes (built; ready to submit)
 
@@ -790,18 +805,23 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 ## Known issues / open items
 
-Current as of submission (Sept. 25, 2026). Resolved items are in the decision log.
+Current as of Sept. 28, 2026 (Phase 6). Resolved items are in the decision log.
 
-- **Copy:** `docs/copy/COPY-REVIEW.md` has 757 rows: 727 APPROVED against `docs/copy/approved.json` and **30 DRAFT**. Every DRAFT row is new in Phase 5, each fixing a reviewer finding (the "Why" column says which). They ship as DRAFT until Alex approves them.
-- **The dip isn't visible as a dip on chapter 3's chart.** A $150 deposit on June 1 landed inside the fall, so the balance line barely drops. The sentences, the six event markers and the table carry the dip ($80.24, 9.5%, measured on her investments by rule R2). Showing it on the chart would mean charting invested value instead of the balance, a change to the story's design.
+- **Copy:** `docs/copy/COPY-REVIEW.md` has 538 rows: 389 APPROVED against `docs/copy/approved.json` and **149 DRAFT**, all new or changed in Phase 6 (the beneficiary alert and sheet, Your Journey, Finance Terms, the renamed navigation). None is above grade 8. They ship as DRAFT until Alex approves them.
+- **"Invested" cites Investor.gov's closing-price page.** Alex asked for "Invested" on the dark card; no investor.gov page defines "invested" by name, so the entry cites the closest definition and explains value as shares times the closing price. Two reviewers called it the weakest citation.
+- **The dip is small on section 2's chart.** The June 1 deposit landed inside the fall, so the balance line barely drops. The sentences, the event markers and the table carry the dip ($80.24, 9.5%, rule R2). At 320px the first three event diamonds overlap (the brief promises they sit apart at 390px).
+- **Unused story data:** `story-p302.json` still holds the removed chapters' data (smooth and bumpy returns, "your turn", the catch-up claims) and four checked claims no section shows. The validator still checks them; nothing reads them on screen.
+- **"All handled" after Remind me later:** Home says "You have handled everything for this week." even though she only deferred it (the brief's approved wording).
+- **At 320×640 and in a 668px Phone view,** the needs-you card's title shows but its item sits under the tab bar (the brief promises both at 390×844).
+- **Sections 1 and 3 are at 58 of 60 words,** so any copy change there needs a trim.
 - **Phone view in a window shorter than 719px:** the phone shrinks to a 667px screen first, then scales (never below 0.875). Body text stays at 14px or more, but 14px labels render at about 12.3px. From 719px up, the phone is at full size.
 - **"New" badges never show.** Every shipped alert was raised before the last review (Sept. 13). Rule N1 checks each flag's "New" against its date.
-- **Small rounding effects in Practice:** a buy is floored to 4 decimals of a share (8 for coins), so right after a $25 buy a holding can read "down $0.03". The practice mix percentages can add to 101%.
+- **Small rounding effects in Practice:** a buy is floored to 4 decimals of a share (8 for coins), so right after a $25 buy a holding can read "down $0.01", and buying $200 then selling $50 at one price leaves $149.98. The practice mix percentages can add to 101%.
 - **Approved copy left as is:** the glossary's "Share" says "one unit of a stock or a crypto" (crypto is shown as an amount of coins), and the Time machine sentence gives today's value before the starting value.
-- **The story's inline words in chapter 4** (stocks, crypto, cash) have no chips. The story isn't a phone detail screen, so the chip rule doesn't apply, but it's the one place a phone reader taps 26px inline words.
+- **Your Journey's inline terms** (rate of return, dollar-cost averaging, compounding) have no chips. The story isn't a phone detail screen, so the chip rule doesn't apply; the inline buttons use WCAG 2.5.8's inline exception.
 - **Phone view limitation (by design):** Practice state isn't shared between the full view and the phone frame; the scenario carries over in the URL. In phone view, the browser's Back button steps back inside the phone.
 - **Password protection is deferred** (Alex's call; the instructions recommend it). One router and one Vercel project keep a later gate easy.
-- **The commit history spans Sept. 24 to 25** (the Sept. 23 planning session is recorded in STATUS.md, not in git). It is phase by phase, but compressed.
+- **The commit history spans Sept. 24, 25 and 28** (the Sept. 23 planning session is recorded in STATUS.md, not in git). It is phase by phase, but compressed.
 - **The pre-commit hook checks the working tree, not only what's staged**, so commits are made with unrelated work stashed.
 - **`scripts/setup.sh` embeds a snapshot of the first commit's files.** Only its live Node check was updated.
 - **The rail's paper background is sticky and 100vh tall,** so full-page screenshots show it ending at one screen height. A real window always shows it full height.
@@ -809,7 +829,25 @@ Current as of submission (Sept. 25, 2026). Resolved items are in the decision lo
 - **`.claude/settings.local.json` is committed on purpose** (the rubric grades the `.claude` folder).
 - **Pelipper Post** (`~/Projects/pelipper-post`) was read for patterns only and never changed.
 - **The big-move alert never shows in the shipped data** (no holding moved 7% in the last week). A TEST-ONLY fixture proves it on screen, and `check:fixtures` proves the fixture never ships.
-- **Small layout notes from the final review:** at 1024 and 768 the dark Balance panel stretches to the height of the alerts card beside it, leaving some empty dark space under "Auto-invest". The Mix card has no key for its two bars (the "27% now · 25% set" text says which is which). Each pinned story chart is almost as tall as its chapter at 1280×800, so it sits beside the text but barely pins. On brand-new Investments the "Up or down" column is empty.
+- **Small layout notes from the reviews:** the Mix card's rows end in empty track after the longest bar, and it has no key for its two bars (the "26% now · 25% set" text says which is which). On Investments the "Up or down" cell is blank for investments she doesn't own (and every row on brand-new). Section 4 of Your Journey is short, so at 1280 its right side is empty. On `/alerts/*` the navigation highlights Home.
+
+## Measured values, Phase 6 (rendered in Chromium, Sept. 28, 2026)
+
+| What | Measured |
+|---|---|
+| Logo: forest tile on cream top bar · on paper rail · lime seedling on forest · cream on forest | 6.97:1 · 7.79:1 · 6.20:1 · 6.97:1 |
+| Logo wordmark (ink, Newsreader 24px) on paper · on cream | 18.25:1 · 16.33:1 |
+| Favicon: cream ring on a dark browser tab (#202124) · tile on a light tab | about 14:1 · about 5.7:1 |
+| Section tabs at 320px · selected tab text (ink on lime) · unselected (ink on paper) | 140×78px each, page 320px wide · 14.52:1 · 18.25:1 |
+| Section tabs from 600px | one row of four at 600, 700, 768, 1024 and 1280; "Section N" on one line |
+| Words per section (normal / brand-new) | 58 / 29 · 54 / 21 · 58 / 58 · 30 / 30 (limit 60) |
+| Phone tabs at 320px | 64×56 each; "Terms" 1 line (38.5px); "Finance Terms" would take 2 lines (60px), so the tab says "Terms" |
+| Tablet tabs at 600px | fit in 600px (needed 623px before) |
+| Home at 1280×800: balance card · "Needs your attention" | both top at y=98, both fully in view; each card ends at its content |
+| Beneficiary sheet controls on a phone | fields and buttons at least 48px tall |
+| Reading grade of new copy | all rows at grade 8 or below (copy review, graded as rule L5 grades) |
+| Console errors across 10 screens × 3 sizes | none |
+| Playwright | 308 passed, 4 skipped (width-specific checks) |
 
 ## Measured values, Phase 5 (rendered in Chromium, Sept. 25, 2026)
 
