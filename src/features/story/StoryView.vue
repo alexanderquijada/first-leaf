@@ -4,7 +4,7 @@
 // between tabs, Enter or Space selects one, and the selection is announced. Each section has
 // one chart or interaction, at most 60 words, and a "Next" button. Deep links: #section-1 to
 // #section-4 (old #chapter-N links are sent to their section by the router).
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import BottomSheet from '@/shared/components/BottomSheet.vue'
 import { useViewport } from '@/shared/composables/useViewport'
@@ -36,6 +36,13 @@ const fromHash = (hash: string) => {
   return m ? Number(m[1]) : null
 }
 const selected = ref(fromHash(route.hash) ?? 1)
+// A deep link (#section-3) opens the page at the top, title and tabs in view: the browser would
+// otherwise scroll to the section's id after it renders, leaving the tabs under the top bar.
+onMounted(() => {
+  if (!fromHash(route.hash)) return
+  requestAnimationFrame(() => window.scrollTo({ top: 0 }))
+  window.addEventListener('load', () => window.scrollTo({ top: 0 }), { once: true })
+})
 watch(
   () => route.hash,
   (h) => {
@@ -94,7 +101,7 @@ async function pick(n: number) {
         role="tab"
         class="story__tab"
         :aria-selected="selected === s.n ? 'true' : 'false'"
-        :aria-controls="`section-${s.n}`"
+        :aria-controls="selected === s.n ? `section-${s.n}` : undefined"
         :tabindex="focusIndex === i ? 0 : -1"
         @click="select(s.n)"
         @focus="focusIndex = i"
@@ -222,6 +229,7 @@ async function pick(n: number) {
   .story__tabs {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr; /* both rows the height of the tallest tab */
     gap: 8px;
   }
 

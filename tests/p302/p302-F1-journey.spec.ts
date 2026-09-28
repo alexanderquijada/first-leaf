@@ -237,3 +237,15 @@ test('the brand-new account shows the short text in sections 1 and 2, with no ch
   await panel(page).getByRole('button', { name: 'Next: Your head start' }).click()
   await expect(panel(page).locator('canvas')).toHaveCount(1)
 })
+
+// Phase 6.1 review: a deep link landed scrolled down, with the tabs half under the top bar; and
+// three tabs pointed (aria-controls) at panels that aren't in the page.
+test('a deep link opens at the top with the tabs in view, and only the selected tab controls a panel', async ({ page }) => {
+  await page.goto('/story#section-3')
+  await expect(page.getByRole('tab', { selected: true })).toContainText('Section 3')
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
+  await expect(page.getByRole('tab').first()).toBeInViewport({ ratio: 1 })
+  const controls = await page.getByRole('tab').evaluateAll((els) => els.map((e) => e.getAttribute('aria-controls')))
+  expect(controls).toEqual([null, null, 'section-3', null])
+  expect(await page.locator('#section-3').count()).toBe(1)
+})

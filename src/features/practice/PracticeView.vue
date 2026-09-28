@@ -97,7 +97,7 @@ function startOver() {
 
         <template v-if="p.mix.value.length">
           <h3 class="practice__h3">{{ copy.mixHeading }}</h3>
-          <GroupMixBar :parts="[...p.holdings.value.map((h) => ({ group: (getFund(h.ticker)!.kind === 'crypto' ? 'crypto' : 'stocks') as 'stocks' | 'crypto', value: h.value })), { group: 'cash' as const, value: p.cash.value }]" class="practice__groups" />
+          <GroupMixBar :summary="copy.mixSummary" :parts="[...p.holdings.value.map((h) => ({ group: (getFund(h.ticker)!.kind === 'crypto' ? 'crypto' : 'stocks') as 'stocks' | 'crypto', value: h.value })), { group: 'cash' as const, value: p.cash.value }]" class="practice__groups" />
           <ul class="practice__mix">
             <li v-for="m in p.mix.value" :key="m.ticker">
               <span class="practice__mix-name">{{ m.ticker }}</span>
@@ -156,6 +156,9 @@ function startOver() {
 
 .practice {
   display: grid;
+  /* minmax(0, 1fr): a chart's fixed canvas width never widens the page (at 320px the time
+     machine held its card at 342px, Phase 6.1 Practice check). */
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   max-width: 1100px;
 }

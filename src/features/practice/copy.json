@@ -15,6 +15,7 @@
     "change": "Up or down"
   },
   "mixHeading": "Your practice mix",
+  "mixSummary": "Your practice money by kind: {list}.",
   "percent": "{pct}%",
   "timeMachine": {
     "title": "Time machine",

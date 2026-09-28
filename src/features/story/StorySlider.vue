@@ -37,10 +37,13 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
         :aria-valuetext="valueText(value)"
         :aria-describedby="mark ? `${id}-mark` : hint ? `${id}-hint` : undefined"
       />
-      <span v-if="mark" class="slider__mark" :style="{ left: `${markPct}%` }" aria-hidden="true">
-        <span class="slider__mark-line" />
-        <span :id="`${id}-mark`" class="slider__mark-label">{{ mark.label }}</span>
-      </span>
+      <!-- The line sits exactly on the marked value. The label moves with it but is shifted by the
+           same share of its own width, so it starts flush left at the low end and ends flush right
+           at the high end: it never leaves the track (Phase 6.1 review). -->
+      <template v-if="mark">
+        <span class="slider__mark-line" :style="{ left: `${markPct}%` }" aria-hidden="true" />
+        <span :id="`${id}-mark`" class="slider__mark-label" :style="{ left: `${markPct}%`, transform: `translateX(-${markPct}%)` }" aria-hidden="true">{{ mark.label }}</span>
+      </template>
     </div>
     <p v-if="hint" :id="`${id}-hint`" class="slider__hint">{{ hint }}</p>
     <p class="slider__ends" aria-hidden="true"><span>{{ valueText(min) }}</span><span>{{ valueText(max) }}</span></p>
@@ -54,6 +57,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 
 .slider__label {
   display: block;
+  margin-bottom: 4px; /* room for the input's focus ring, so it never touches the label */
   font-weight: 600;
 }
 
@@ -74,26 +78,28 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
   cursor: pointer;
 }
 
-.slider__mark {
+.slider__mark-line,
+.slider__mark-label {
   position: absolute;
-  top: 54px; /* below the input and its focus ring, so the ring never strikes the label */
-  transform: translateX(-50%);
-  display: grid;
-  justify-items: center;
   pointer-events: none;
 }
 
 .slider__mark-line {
+  top: 54px; /* below the input and its focus ring, so the ring never strikes the label */
   width: 2px;
   height: 10px;
+  margin-left: -1px;
   background: var(--color-mustard);
 }
 
 .slider__mark-label {
+  top: 64px;
+  /* One line, unless the text is larger than the track (200% text on a phone): then it wraps. */
+  width: max-content;
+  max-width: 100%;
   font-size: var(--type-small);
   font-weight: 600;
   color: var(--color-mustard);
-  white-space: nowrap;
 }
 
 .slider__hint {

@@ -100,3 +100,11 @@ test.describe('with reduced motion', () => {
     await everySection(page, true)
   })
 })
+
+// Phase 6.1 review: at 390 the first row of tabs was 78px tall and the second 64px.
+test('on a phone both rows of section tabs are the same height', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/story')
+  const h = await page.getByRole('tab').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().height)))
+  expect(new Set(h).size, `tab heights ${h.join(', ')}`).toBe(1)
+})

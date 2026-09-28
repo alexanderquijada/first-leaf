@@ -63,3 +63,24 @@ test('a half-entered order survives leaving and coming back', async ({ page }) =
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Practice' }).click()
   await expect(page.locator('.porder__amount')).toHaveText('$75')
 })
+
+// Phase 6.1 Practice check: at 320px, once she owned something, the time machine's chart held its
+// card at 342px and the page grew to 358px, cutting off every card's right edge.
+test.describe('at 320px', () => {
+  test.use({ viewport: { width: 320, height: 640 } })
+
+  test('Practice with a holding is never wider than the phone', async ({ page }) => {
+    await page.goto('/practice')
+    await page.getByRole('radio', { name: /AAPL/ }).check()
+    await keys(page, '100')
+    await page.getByRole('button', { name: 'Review' }).click()
+    await page.getByRole('dialog', { name: 'Check your order' }).getByRole('button', { name: 'Confirm' }).click()
+    await expect(page.getByText('You bought $100.00 of AAPL with practice money.')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Time machine' })).toBeVisible()
+    expect(await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.querySelector('main')!.scrollWidth))).toBeLessThanOrEqual(320)
+    for (const b of await page.locator('.practice__card').evaluateAll((els) => els.map((e) => e.getBoundingClientRect().right))) expect(b).toBeLessThanOrEqual(320)
+    // The practice mix never calls practice money a "balance" (Home's word for the real account).
+    await expect(page.locator('main')).not.toContainText('Your balance by kind')
+    await expect(page.locator('main')).toContainText('Your practice money by kind:')
+  })
+})

@@ -113,3 +113,26 @@ test('a slider without a mark has its end labels right under the track', async (
   const ends = await first.locator('.slider__ends').boundingBox()
   expect(ends!.y - (input!.y + input!.height), 'gap between the track and its end labels').toBeLessThanOrEqual(8)
 })
+
+// Phase 6.1 review: the "Catches up" label was centred on its point and never clamped, so near the
+// slider's ends it ran off the section (cut off at 1-2 years; the page scrolled sideways at 9-10).
+for (const width of [320, 390, 768, 1280]) {
+  test(`the catch-up label stays inside its slider at every delay, at ${width}px`, async ({ page }) => {
+    test.setTimeout(60_000)
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/story#section-3')
+    const delay = page.getByRole('slider', { name: /^Start again in/ })
+    await delay.focus()
+    await page.keyboard.press('Home')
+    for (let years = 1; years <= 10; years++) {
+      if (years > 1) await page.keyboard.press('ArrowRight')
+      const label = page.locator('.slider__mark-label')
+      await expect(label).toHaveText(`Catches up at $${catchUp(years)} a month`)
+      const track = (await page.locator('.slider__track--marked').boundingBox())!
+      const box = (await label.boundingBox())!
+      expect(box.x, `${years} years: left edge`).toBeGreaterThanOrEqual(track.x - 0.5)
+      expect(box.x + box.width, `${years} years: right edge`).toBeLessThanOrEqual(track.x + track.width + 0.5)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), `${years} years: no sideways scroll`).toBeLessThanOrEqual(width)
+    }
+  })
+}
