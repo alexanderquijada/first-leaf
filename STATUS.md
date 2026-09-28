@@ -61,7 +61,7 @@
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
-| 6 · Alex's review round (Sept. 28) | ✅ Removed stories, beneficiary alert and sheet, 15 cited Finance Terms (rule L6; 51 rules, 135 cases), Term of the Day, logo and favicons, renamed navigation, business-day deposits, reduced-motion fix, 312 tests | ✅ Balance card first with Balance inside, beneficiary flow, Volatility rating, type filter only, independent review (approve) and fixes | ✅ Your Journey in four sections with WAI-ARIA tabs, deep links, brand-new names, Finance Terms, market order term, independent review (approve) and fixes | ✅ Dark card first on a phone, Term of the Day, "Finance terms on this screen" chips, Journey and Terms tabs, independent review (approve) and fixes |
+| 6 · Alex's review round (Sept. 28) | ✅ Removed stories, beneficiary alert and sheet, 15 cited Finance Terms (rule L6; 51 rules, 135 cases), Term of the Day, logo and favicons, renamed navigation, business-day deposits, reduced-motion fix, 313 tests | ✅ Balance card first with Balance inside, beneficiary flow, Volatility rating, type filter only, independent review (approve) and fixes | ✅ Your Journey in four sections with WAI-ARIA tabs, deep links, brand-new names, Finance Terms, market order term, independent review (approve) and fixes | ✅ Dark card first on a phone, Term of the Day, "Finance terms on this screen" chips, Journey and Terms tabs, independent review (approve) and fixes |
 
 ## Environment
 
@@ -111,6 +111,7 @@ Alex reviewed the live site and asked for seven changes. The data is already reg
 - **P301:** after Remind me later, "What you can do" still offered the choice; the Aug. 1 deposit fell on a Saturday while its buys were dated Aug. 3 (deposits now move to the next business day; rule A13 now checks each deposit is dated the day it arrived); the favicon's tile edge was 2.1:1 on a dark browser tab (cream ring added).
 - **P302:** the section tabs wrapped to two rows between 600 and 899px (DoD 5); "Six months in" and "The dip" named things a brand-new account hasn't had (now "Your start" and "When prices dip", with its own sentence); chart dates collided at 320px (now one label per 75px of axis); screen readers never heard the "Passes Nia: $196" mark (now the slider's description); Practice's last confirmation outlived Start over; the start-age slider held an empty 32px band; the brief's section copy had drifted from the screen (brief updated).
 - **P303:** "Why it moved" listed a Volatility chip for a word it never names (removed); the tablet tabs cut off "Finance Terms" at 600px (tighter links below 768px); the brief said "Filters" where the button says "Filter" (brief updated).
+- **Round 2 (fresh reviewers, live at b631927):** all three **approved** again; every Definition of Done row, rubric item and "Try these" step passed. Fixed after it: investment price charts crowded seven dates into one line at 390px and overlapped at 600px (now about one per 110px of axis); the section 1 toggle label sat centered when it wrapped at 1024px; `check:live` still visited three removed addresses; the briefs called the beneficiary dialog a "sheet", said "ten more years", and left out the "back above" event.
 - **Not changed, recorded as known issues:** "Invested" cites Investor.gov's closing-price page (Alex asked for this term; no investor.gov page defines "invested" by name); the Mix card's empty track; blank "Up or down" cells for investments she doesn't own; practice rounding.
 
 ### Sept. 25, 2026: Phase 5 · Verification and final fixes (built; ready to submit)
@@ -813,7 +814,8 @@ Current as of Sept. 28, 2026 (Phase 6). Resolved items are in the decision log.
 - **Unused story data:** `story-p302.json` still holds the removed chapters' data (smooth and bumpy returns, "your turn", the catch-up claims) and four checked claims no section shows. The validator still checks them; nothing reads them on screen.
 - **"All handled" after Remind me later:** Home says "You have handled everything for this week." even though she only deferred it (the brief's approved wording).
 - **At 320×640 and in a 668px Phone view,** the needs-you card's title shows but its item sits under the tab bar (the brief promises both at 390×844).
-- **Sections 1 and 3 are at 58 of 60 words,** so any copy change there needs a trim.
+- **Sections 1 and 3 are at 58 of 60 words,** so any copy change there needs a trim. Section 3's result sentence also appears as its chart's summary (every chart has one), so a screen reader hears it twice.
+- **At 200% text on a 320px phone,** section 3's "Passes Nia: $196" label overlaps the slider's end labels and the section tab names run past their boxes; nothing scrolls sideways.
 - **Phone view in a window shorter than 719px:** the phone shrinks to a 667px screen first, then scales (never below 0.875). Body text stays at 14px or more, but 14px labels render at about 12.3px. From 719px up, the phone is at full size.
 - **"New" badges never show.** Every shipped alert was raised before the last review (Sept. 13). Rule N1 checks each flag's "New" against its date.
 - **Small rounding effects in Practice:** a buy is floored to 4 decimals of a share (8 for coins), so right after a $25 buy a holding can read "down $0.01", and buying $200 then selling $50 at one price leaves $149.98. The practice mix percentages can add to 101%.
@@ -847,7 +849,7 @@ Current as of Sept. 28, 2026 (Phase 6). Resolved items are in the decision log.
 | Beneficiary sheet controls on a phone | fields and buttons at least 48px tall |
 | Reading grade of new copy | all rows at grade 8 or below (copy review, graded as rule L5 grades) |
 | Console errors across 10 screens × 3 sizes | none |
-| Playwright | 308 passed, 4 skipped (width-specific checks) |
+| Playwright | 309 passed, 4 skipped (width-specific checks) |
 
 ## Measured values, Phase 5 (rendered in Chromium, Sept. 25, 2026)
 
