@@ -1,6 +1,6 @@
 # CLAUDE.md: build rules for First Leaf
 
-You are building **First Leaf**, **one app** reviewed as three Protogen case studies, each a lens on it: **P301** (operational dashboard: Home on a laptop, Alerts, Activity, Funds), **P302** (interactive data story: Your money story, Practice, Words) and **P303** (mobile experience: the whole app under 600px). See BRIEF.md §1–3. Alex is a senior product designer, not a developer. He reviews and redirects; you build. These rules are non-negotiable.
+You are building **First Leaf**, **one app** reviewed as three Protogen case studies, each a lens on it: **P301** (operational dashboard: Home on a laptop, Alerts, Activity, Funds), **P302** (interactive data story: Your Journey, Practice, Finance Terms) and **P303** (mobile experience: the whole app under 600px). See BRIEF.md §1–3. Alex is a senior product designer, not a developer. He reviews and redirects; you build. These rules are non-negotiable.
 
 ## 0. Start of every session
 
@@ -19,7 +19,7 @@ You are building **First Leaf**, **one app** reviewed as three Protogen case stu
 
 - **A pre-commit hook runs `npm run check` on the whole working tree** (not just what's staged). Commit or discard unrelated changes before committing, or they can block the commit. Never bypass it (`--no-verify` is denied).
 - **Commit and push at the end of every phase without asking.** Within a phase, commit each lens's work **separately**, with a prefix:
-  `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Your money story, Practice, Words · `[P303]` the phone layout, phone navigation, Phone view and phone-specific screens · `[shared]` shared code, data, tokens, and layouts used at every size · `[docs]` briefs, STATUS, README only.
+  `[P301]` Home on desktop, Alerts, Activity, Funds · `[P302]` Your Journey, Practice, Finance Terms · `[P303]` the phone layout, phone navigation, Phone view and phone-specific screens · `[shared]` shared code, data, tokens, and layouts used at every size · `[docs]` briefs, STATUS, README only.
 - Messages say what changed and why, in the present tense: `[P303] Add "Why it moved" waterfall with per-fund breakdown`. Never just "update", "fix", "wip" or "changes".
 - After pushing, run `npm run check:deploy`. It waits until Vercel's **Production deployment of this exact commit** has succeeded. Report the short commit hash and the result. **A green badge is not proof.** Only a matching commit hash is.
 - If check:deploy times out with the build stuck in "Initializing": Vercel's free plan builds one project at a time *across the whole account*. Another project may be holding the queue. Report it; don't try to fix it from the repo.
@@ -54,11 +54,11 @@ Never say "this should work." Before claiming a phase is done, run all of these 
 ## 5. Finance guardrails (standing rules)
 
 1. **Only the approved lineup is real** (ruling B, Phase 2.5): AAPL Apple, MSFT Microsoft, NVDA NVIDIA, COST Costco, NKE Nike, AMZN Amazon, TSLA Tesla, BTC Bitcoin, ETH Ethereum, SOL Solana. **Every other real company name, brand or ticker is still blocked** (G1, G2). People and accounts are invented. Crypto prices are real CoinGecko closes; stock prices are modeled between real anchor closes (`docs/research/PRICE-ANCHORS.md`). No company logos.
-2. **Teach, never advise.** No call to action about a specific investment: no "you should buy/sell", "best fund", "switch to", "guaranteed", no "safe" without saying safe from what, no "most people…". Actions are only about money movement or settings (retry a deposit, add a one-time deposit, auto-invest on/off), always offered as a choice, or about learning. **Exception:** inside Practice, the buttons may say **Buy** and **Sell**, because it's practice money and the banner says so.
+2. **Teach, never advise.** No call to action about a specific investment: no "you should buy/sell", "best fund", "switch to", "guaranteed", no "safe" without saying safe from what, no "most people…". Actions are only about money movement or settings (for example naming a beneficiary, or auto-invest on/off), always offered as a choice, or about learning. **Exception:** inside Practice, the buttons may say **Buy** and **Sell**, because it's practice money and the banner says so.
 3. **Never claim SIPC membership or protection** (ruling, Sept. 25). Falsely claiming it is prohibited by federal law (15 U.S.C. §78jjj(d)). SIPC appears only as the general fact in BRIEF.md §8; G6 bans "Member SIPC", "SIPC member", "protected by SIPC", "SIPC-protected" and "FDIC" on screen.
 4. **Real account vs. Practice are always visually separate.** Buying and selling happen only in Practice, under a persistent "Practice money. Nothing here touches your account." banner.
 5. **No real client data, no Slalom data, no real personal or financial data**, ever. No account or routing numbers.
-6. **Inside the site, First Leaf reads like a real investing app, with no disclaimer of any kind** (ruling B, Phase 2.5). No "made up", "demo", "case study", "for this project", "fictional", "for reviewers", "simulated", "concept", "not real", or "not financial/investment advice" in any wording on screen (rule G6, plus a search of the built app's text). The only data notes are the CoinGecko credit next to crypto prices and the stock data note on stock charts and stock pages. Reviewer and project explanations live only in README.md. Money actions end in realistic confirmations, never "nothing real happens" dialogs. The data rules behind the scenes never loosen.
+6. **Inside the site, First Leaf reads like a real investing app, with no disclaimer of any kind** (ruling B, Phase 2.5). No "made up", "demo", "case study", "for this project", "fictional", "for reviewers", "simulated", "concept", "not real", or "not financial/investment advice" in any wording on screen (rule G6, plus a search of the built app's text). Since Sept. 28, G6 also bans "waiting in cash", "sent back", "returned deposit" and "chapter" on screen. The only data notes are the CoinGecko credit next to crypto prices and the stock data note on stock charts and stock pages. Reviewer and project explanations live only in README.md. Money actions end in realistic confirmations, never "nothing real happens" dialogs. The data rules behind the scenes never loosen.
 
 ## 6. Folder boundaries
 
@@ -92,15 +92,16 @@ If two features need the same thing, move it to `src/shared/`. `npm run check:bo
 - Text under 18px (or under 14px bold) needs **4.5:1**. Larger text, icons and chart marks need **3:1**. Measure every tinted chip: saturated text on a pale tint of the same hue often fails below 2:1. Darkening a tint of the *same hue* as its text makes contrast worse, not better.
 - Color is never the only signal (severity = icon + word + color; gains and losses = the word "up"/"down" in sentences, or a sign with the word in the accessible label in tables and charts, plus color).
 - Categorical colors come from the tested palette in BRIEF.md §6. Never use a one-hue ramp for categories.
+- A word gets a term button only if it's a real finance term defined by investor.gov, sec.gov, finra.org, sipc.org, irs.gov or consumerfinance.gov, cited in its Finance Terms entry (rules L6 and L1 enforce it). Everyday words stay plain.
 - Term explanations use the toggletip pattern: a real `<button>` opens and closes on click, tap, Enter or Space and closes on Esc, and the content is announced. **No hover-only content.**
 - Keyboard works everywhere with a visible focus ring.
-- **P303 touch targets:** every standalone control is at least 48×48px. A term inside a sentence uses WCAG 2.5.8's inline exception; every P303 detail screen also lists its terms as 48px chips under "Words on this screen". P303 body text has a line-height of at least 1.6.
+- **P303 touch targets:** every standalone control is at least 48×48px. A term inside a sentence uses WCAG 2.5.8's inline exception; every P303 detail screen also lists its terms as 48px chips under "Finance terms on this screen". P303 body text has a line-height of at least 1.6.
 - Bars over scrolling content are **opaque**.
 
 ## 9. Copy and layout rules
 
 - Complete, natural sentences. No telegraphic fragments.
-- Never label a value without saying what it measures ("Ups and downs: 4 of 5", not "High").
+- Never label a value without saying what it measures ("Volatility: 4 of 5", not "High").
 - Card copy must stay true under **every** filter and **every** demo scenario.
 - Subtitles are optional and must earn their place. They may explain an unfamiliar visual encoding, never the arithmetic.
 - Reading level: grade 8 or below for anything a learner reads (rule L2).

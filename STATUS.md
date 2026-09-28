@@ -2,14 +2,11 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 25, 2026 (Phase 5 · Verification and final fixes; ready to submit)
+**Last updated:** Sept. 28, 2026 (Phase 6 · Alex's review round; in progress)
 
 ## NEXT STEP
 
-**Submit.** All five phases are done and deployed. Before submitting, Alex:
-1. Reads the Phase 5 entry in the decision log and the final report.
-2. Approves (or edits) the 30 DRAFT rows in `docs/copy/COPY-REVIEW.md`, all new in Phase 5 (each row's "Why" says which reviewer finding it fixes).
-3. Submits each case study with its live link and its README reviewer section (README.md, "For reviewers": P301, P302, P303).
+**Phase 6 is being built: see the Sept. 28 decision-log entry.**
 
 ## Live links
 
@@ -18,14 +15,14 @@
 | GitHub repo | https://github.com/alexanderquijada/first-leaf |
 | Live site | https://first-leaf.vercel.app |
 | P301 (Home on a laptop) | https://first-leaf.vercel.app |
-| P302 (Your money story) | https://first-leaf.vercel.app/story |
+| P302 (Your Journey) | https://first-leaf.vercel.app/story |
 | P303 (Phone view) | https://first-leaf.vercel.app/p303 (or the site on a phone) |
 
 ## Decisions already made (do not relitigate)
 
 | Decision | Choice | Why |
 |---|---|---|
-| Project shape | **One app, three case-study lenses** (Sept. 24). The site opens straight into Rosa's app; no landing page. P301 = Home on a laptop + Alerts, Activity, Funds; P302 = Your money story + Practice, Words; P303 = the app under 600px | Alex's ruling: three doors read as three projects, not one product |
+| Project shape | **One app, three case-study lenses** (Sept. 24). The site opens straight into Rosa's app; no landing page. P301 = Home on a laptop + Alerts, Activity, Funds; P302 = Your Journey + Practice, Finance Terms (renamed Sept. 28); P303 = the app under 600px | Alex's ruling: three doors read as three projects, not one product |
 | Phone view | At 600px+, "Phone view" in the top bar opens `/p303/…`: only the real app in a phone frame (an iframe, 390px wide, 667 to 844px tall), its own layout, "Back to full view" top left | Alex's rulings (Sept. 24, and phone-only Sept. 25): a P303 reviewer may never open the site on a phone |
 | Product | **First Leaf**, an invented beginner investing app by an invented company, *First Leaf Investing* | No clash with any finance brand found in a web check (Sept. 23) |
 | Person | **Rosa**, 26, dental hygienist, Tucson (fictional), six months into her first account (opened March 2) | One person, three moments; see BRIEF.md §2 |
@@ -33,13 +30,16 @@
 | P301/P303 interactivity | Lots: pages, pop-ups, actions on flags, filters, practice trading | Alex: "lots of interaction… things to click… fake sandbox investing" |
 | Account type | A real (fictional) starter account **plus** a Practice space with pretend money | The real account reads as financial services; Practice gives the sandbox without advice risk |
 | Demo scenarios | Three accounts: normal, all-clear, brand-new; flags generated from rules per account | Every sentence must stay true in every scenario |
-| Auto-invest | Rosa paused it on June 8, the trading day after the June dip's low; her July 1 and Aug. 3 deposits wait as cash (seed 10, Phase 3) | Explains the waiting cash honestly; turning it back on is her choice |
-| Goal | "Put in my first $2,000" by Feb. 1, 2027; counts deposits only | One measure; the plan reaches it exactly; the market can't make her "behind" |
-| P302 story | **Your money story** (Sept. 24): Rosa's own seven months argue "growth needs years, so starting early and staying steady matter more than picking the perfect moment"; Nia and Theo become chapter 5 | Alex's ruling; replaces "Start early beats start big" as the whole story |
+| Auto-invest | **Never paused** (Sept. 28, replacing the June 8 pause). Auto-invest is on for the whole history, so every deposit bought her mix the day it arrived, including through the June dip; cash is only leftovers ($2.48) | Alex's review round: the pause and the cash waiting added confusion instead of teaching |
+| Goal | "Put in my first $2,000" by Feb. 1, 2027; counts deposits only. Every planned deposit arrived, so she is on pace ($1,400 of $2,000) | One measure; the plan reaches it exactly; the market can't make her "behind" |
+| P302 story | **Your Journey** (Sept. 28; first ruled Sept. 24 as "Your money story"): Rosa's own six months argue "growth needs years, so starting early and staying steady matter more than picking the perfect moment", in **four sections** shown one at a time with visual tabs (Six months in, The dip in June, Start early, Try it); Nia and Theo live in section 3 | Alex's rulings; six chapters ran too long, so the story was cut to four short sections |
+| P301/P303 Home order | **Balance card first** (Sept. 28, replacing "alerts first"): the dark balance card, with Balance inside it, sits left on a laptop and tablet with "Needs your attention" beside it at the same top edge, and on top on a phone with the needs-you card right under it | Alex's review round; the attention job is kept because the card is in view at once, beside or right below her balance |
 | P303 task | 60-second check-in; under 600px Home becomes the check-in, everything else one tap away | Alex's pick; re-shaped as a lens on Sept. 24 |
 | Palette | Cream + deep green-black data panels + lime highlights, near-black text | Alex's pick; blends mid-century and futuristic |
 | Fonts | Free stand-ins (Newsreader, Hanken Grotesk) now; Klim Financier/National swap later if licensed | Klim's test fonts can't be published; web licenses start at $60/style |
 | Imagery | Open Peeps (CC0; Open Doodles couldn't be reached) + original mid-century SVG drawn in code; MDI icons for controls | Clean licenses for a public portfolio |
+| Brand | **A real First Leaf logo** (Sept. 28): an original seedling-with-first-leaves mark with a small starburst, drawn in code, plus the Newsreader "First Leaf" wordmark, in forest, lime and ink. One fixed lockup everywhere (laptop rail, tablet and phone top bar, README); mark only for the favicon and apple-touch-icon | Alex's review round: the product had no real logo. It must differ from Mint (a leaf in a circle), Acorns (an acorn) and Robinhood (a feather) |
+| Finance terms | Only **real finance terms** get a term button and a Finance Terms entry, each defined and cited on investor.gov, sec.gov, finra.org, sipc.org, irs.gov or consumerfinance.gov (15 entries; rules L1, L3, L6). "Words" is now **Finance Terms**; Word of the day is **Term of the Day** (Sept. 28) | Alex's review round: we had highlighted everyday words |
 | Stack | Vue 3 + Vite + TS + Vue Router + Vuetify 3 (pinned) + Chart.js/vue-chartjs; static JSON; composables | Proven on Pelipper Post |
 | Hosting | Vercel, **Pelipper Post's Vercel account** | Alex's pick |
 | Deploy check | GitHub Deployments API (`npm run check:deploy`), not the Vercel badge | Stale deployments show green while serving old code |
@@ -61,6 +61,7 @@
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
+| 6 · Alex's review round (Sept. 28; in progress) | ⬜ | ⬜ | ⬜ | ⬜ |
 
 ## Environment
 
@@ -75,6 +76,27 @@
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 28, 2026: Alex's review round (Phase 6)
+
+Alex reviewed the live site and asked for seven changes. The data is already regenerated (seed 10 kept) and the Finance Terms entries are rewritten; the briefs were updated first, before any app code (brief first).
+
+**Alex's seven changes**
+1. **Balance goes inside the dark card, everywhere.** On a laptop, a tablet and a phone, the dark card holds the "Balance" label, the big number, "Up $136.68 on the $1,400 you put in.", "This week: down $1.44.", then the rows Invested, Cash, You put in and Auto-invest. On the phone it replaces the balance block that sat outside the card.
+2. **The dark card comes first.** On a laptop and a tablet, the balance card sits left and "Needs your attention" sits right, at the same top edge, both fully visible at 1280×800. On a phone, the balance card is on top and the needs-you card is right under it. Reading and keyboard order match. This replaces "alerts first" in P301 and P303; the attention card is still in view at once.
+3. **One real alert replaces the removed stories.** Every deposit arrived and auto-invest never paused, so the sent-back deposit, the cash waiting, the pause and the goal behind plan are gone, with their flows. Rosa's one needs-you item is "Name a beneficiary for your account" (Add a beneficiary, or Remind me later). The calm account has a beneficiary named, so nothing needs her.
+4. **Only real finance terms are highlighted.** A word gets a term button only if it's a real finance term defined, and cited, on investor.gov, sec.gov, finra.org, sipc.org, irs.gov or consumerfinance.gov. There are 15 entries. Phone detail screens list them under "Finance terms on this screen".
+5. **"Words" becomes "Finance Terms"** (the phone tab says "Terms"), and Word of the day becomes **Term of the Day**, drawn only from Finance Terms entries ("Invested" on Sept. 20).
+6. **"Your money story" becomes "Your Journey", in four sections:** Six months in, The dip in June, Start early, and Try it. One section shows at a time, chosen with visual tabs; each has one chart or interaction, at most 60 words and a Next button. The guess, the smooth and bumpy switch, the "your turn" step and the closing are removed. The word "chapter" leaves the site; old `#chapter-N` links map to the new sections.
+7. **A real First Leaf logo:** an original seedling with its first two leaves and a small starburst, plus the Newsreader wordmark, in forest, lime and ink. Three options go in `docs/brand/logo-options.html`, and the recommended one ships.
+
+**Data rules changed:** A4, A13, A14, N2, R3, G5 and G6 (which now also bans "waiting in cash", "sent back", "returned deposit" and "chapter" on screen); L1 and L3 now tie terms to cited Finance Terms entries; new rule L6 checks that every term button has an entry and every entry is used. The validator has 51 rules.
+
+**What we got wrong**
+- **The cash-waiting and sent-back stories added confusion instead of teaching.** A returned deposit, a paused auto-invest and money waiting in cash gave a beginner three problems to decode on her first screen, and none of them taught her anything about investing.
+- **We highlighted everyday words that aren't finance terms,** such as Balance, Cash, Your mix, Practice, Put in, On pace, Auto-invest, Ups and downs and Bitcoin. Dotted underlines on plain words made the app feel harder than it is and diluted the words that really need explaining.
+- **The story ran too long:** six chapters, and chapter 5 alone had seven steps. A reader on the couch lost the point before the end.
+- **The product had no real logo,** only a typed wordmark, so it didn't read as a finished brand.
 
 ### Sept. 25, 2026: Phase 5 · Verification and final fixes (built; ready to submit)
 
