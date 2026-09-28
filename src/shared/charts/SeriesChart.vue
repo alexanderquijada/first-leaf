@@ -89,10 +89,13 @@ function grainFill(base: string): CanvasPattern | string {
   return ctx ? grainPattern(ctx, base, 'rgba(31, 92, 59, 0.9)') : base
 }
 
-// Label about 6 ticks evenly, and always the last; skip a tick that would crowd the last one.
-function showTick(i: number) {
+// Label up to 7 ticks evenly, about one per 110px of axis (a label can be "Sept. 18, 2026"),
+// and always the last; skip a tick that would crowd the last one. Phase 6 review: at 390px
+// seven dates ran into one line.
+function showTick(i: number, axisWidth: number) {
   const last = props.labels.length - 1
-  const step = Math.max(1, Math.ceil(last / 6))
+  const gaps = Math.max(1, Math.min(6, Math.floor(axisWidth / 110) - 1))
+  const step = Math.max(1, Math.ceil(last / gaps))
   return i === last || (i % step === 0 && last - i >= step / 2)
 }
 
@@ -120,7 +123,9 @@ function build() {
           ticks: {
             autoSkip: false,
             maxRotation: 0,
-            callback: (_v, i) => (showTick(i) ? props.labels[i] : ''),
+            callback(_v, i) {
+              return showTick(i, this.width) ? props.labels[i] : ''
+            },
           },
         },
         y: { grid: { color: 'rgba(79, 74, 64, 0.15)' }, ticks: { callback: (v) => formatMoney(Number(v)).replace('.00', '') } },
