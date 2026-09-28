@@ -1,10 +1,9 @@
 {
   "title": "Practice",
-  "banner": "Practice money. Nothing here touches your account.",
   "sum": {
-    "left": "Practice money left",
-    "inFunds": "In practice investments",
-    "total": "Total in Practice"
+    "total": "Practice money",
+    "left": "Practice money left to use",
+    "inFunds": "Practice money invested"
   },
   "ownHeading": "What you own in Practice",
   "ownEmpty": "Nothing yet. Buy a stock or crypto to start.",
@@ -49,6 +48,7 @@
     "reviewSell": "Sell {amount} of {ticker} at {price} a share. That is about {quantity} shares.",
     "noFee": " There is no fee.",
     "marketLine": "It is a {order}, filled at the latest price.",
+    "usesPractice": "This uses practice money.",
     "orderWord": "market order",
     "back": "Back",
     "confirm": "Confirm",

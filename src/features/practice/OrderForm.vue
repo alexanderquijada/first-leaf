@@ -60,6 +60,7 @@ const reviewText = computed(() => {
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p><CopyText :text="O.marketLine"><template #order><TermTip id="market-order">{{ O.orderWord }}</TermTip></template></CopyText></p>
+      <p class="order__practice">{{ O.usesPractice }}</p>
       <p class="order__error" role="alert">{{ error }}</p>
       <div class="order__row">
         <button type="button" class="order__btn" @click="step = 'enter'">{{ O.back }}</button>

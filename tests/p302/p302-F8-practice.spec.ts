@@ -104,12 +104,40 @@ test('crypto in Practice is reviewed and owned as an amount of coins, not shares
   await expect(page.locator('.practice__table tbody tr:visible, .practice__stack > li:visible')).not.toContainText('shares')
 })
 
-test('the banner stays on screen while scrolling', async ({ page }) => {
+// Phase 6.1: the banner is gone, so Practice's title sits where every page's title does. Practice
+// stays separate from the account by its labels: every amount says "Practice money", and every
+// buy or sell review says "This uses practice money."
+for (const width of [390, 768, 1280]) {
+  test(`Practice has no banner and its title sits where every page's does, at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    const titleTop = async (path: string) => {
+      await page.goto(path)
+      return Math.round((await page.locator('main h1').first().boundingBox())!.y)
+    }
+    const practice = await titleTop('/practice')
+    await expect(page.getByText('Nothing here touches your account.')).toHaveCount(0)
+    for (const path of ['/activity', '/funds', '/story', '/learn']) expect(await titleTop(path), `${path} vs /practice`).toBe(practice)
+  })
+}
+
+test('every Practice amount is labeled "Practice money", and both reviews say so', async ({ page }) => {
   await page.goto('/practice')
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-  const box = (await page.getByRole('note').filter({ hasText: 'Practice money. Nothing here touches your account.' }).boundingBox())!
-  expect(box.y).toBeGreaterThanOrEqual(0)
-  expect(box.y + box.height).toBeLessThanOrEqual(900)
+  await expect(page.locator('.practice__sum dt')).toHaveText(['Practice money', 'Practice money left to use', 'Practice money invested'])
+  await expect(page.locator('.practice__sum dd').first()).toHaveText('$1,000.00')
+  await order(page, 'Buy', 'AAPL', '100')
+  await page.getByRole('button', { name: 'Review' }).click()
+  await expect(page.getByText('This uses practice money.')).toBeVisible()
+  await page.getByRole('button', { name: 'Confirm' }).click()
+  await page.getByRole('button', { name: 'New order' }).click()
+  await order(page, 'Sell', 'AAPL', '50')
+  await page.getByRole('button', { name: 'Review' }).click()
+  await expect(page.getByText('This uses practice money.')).toBeVisible()
+  // Buy and Sell appear only in Practice.
+  for (const path of ['/', '/activity', '/funds/AAPL', '/story#section-4']) {
+    await page.goto(path)
+    await expect(page.getByRole('button', { name: /^(Buy|Sell)$/ })).toHaveCount(0)
+    await expect(page.getByRole('radio', { name: /^(Buy|Sell)$/ })).toHaveCount(0)
+  }
 })
 
 // Practice must never change Rosa's account: snapshot everything the account shows,

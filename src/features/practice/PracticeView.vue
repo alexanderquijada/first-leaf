@@ -47,14 +47,12 @@ function startOver() {
 
 <template>
   <div class="practice">
-    <p class="practice__banner" role="note">
-      <span class="mdi mdi-flask-outline" aria-hidden="true" /> {{ copy.banner }}
-    </p>
     <h1>{{ copy.title }}</h1>
     <dl class="practice__sum">
+      <!-- No banner (Phase 6.1): every amount says it is practice money, and every review says so. -->
+      <div><dt>{{ copy.sum.total }}</dt><dd class="fl-tabular">{{ formatMoney(p.total.value) }}</dd></div>
       <div><dt>{{ copy.sum.left }}</dt><dd class="fl-tabular">{{ formatMoney(p.cash.value) }}</dd></div>
       <div><dt>{{ copy.sum.inFunds }}</dt><dd class="fl-tabular">{{ formatMoney(p.invested.value) }}</dd></div>
-      <div><dt>{{ copy.sum.total }}</dt><dd class="fl-tabular">{{ formatMoney(p.total.value) }}</dd></div>
     </dl>
 
     <div class="practice__grid">
@@ -160,28 +158,6 @@ function startOver() {
   display: grid;
   gap: 16px;
   max-width: 1100px;
-}
-
-/* The banner stays under the top bar (and the tabs on a tablet) while scrolling. */
-.practice__banner {
-  position: sticky;
-  top: 65px;
-  z-index: 15;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  padding: 10px 16px;
-  border-radius: 8px;
-  background: var(--color-lime);
-  color: var(--color-ink);
-  font-weight: 700;
-}
-
-@media (min-width: 600px) and (max-width: 1023px) {
-  .practice__banner {
-    top: 114px;
-  }
 }
 
 .practice__sum {
