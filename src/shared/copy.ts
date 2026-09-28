@@ -10,5 +10,3 @@ export function fill(template: string, values: Record<string, string | number> =
   return template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? String(values[k]) : m))
 }
 
-/** Shown when a deposit request is confirmed (ruling, Sept. 24). */
-export const DEPOSIT_CONFIRMATION = copy.deposit.confirmation

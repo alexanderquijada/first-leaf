@@ -144,16 +144,22 @@ All data is **generated** by `scripts/generate-data.mjs` (seeded, so it is the s
 {
   "persona.age": 26,
   "account.recurringDeposit.amount": 150,
-  "account.balance": 1358.5,
-  "account.moneyIn": 1250,
-  "account.gainLoss": 108.5,
-  "account.cash": 302.27,
-  "account.autoInvest.pausedOn": "2026-06-08",
+  "account.balance": 1536.68,
+  "account.moneyIn": 1400,
+  "account.gainLoss": 136.68,
+  "account.investedValue": 1534.2,
+  "account.cash": 2.48,
+  "account.autoInvest.on": true,
+  "account.autoInvest.startedOn": "2026-03-02",
+  "account.beneficiary": null,
+  "account-all-clear.beneficiary.relationship": "Brother",
+  "account.goal.behindBy": 0,
   "funds.0.ticker": "AAPL",
   "funds.0.history.daily.0.close": 245.5,
   "funds.7.ticker": "BTC",
   "meta.asOf": "2026-09-20",
-  "meta.lastClose": "2026-09-18"
+  "meta.lastClose": "2026-09-18",
+  "meta.wordOfTheDay": "invested"
 }
 ```
 

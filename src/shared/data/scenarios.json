@@ -2,13 +2,13 @@
   {
     "id": "normal",
     "label": "Rosa, six months in",
-    "description": "Six months in. Her account has a few things worth a look.",
+    "description": "Six months in. She has not named a beneficiary yet.",
     "accountId": "rosa-starter"
   },
   {
     "id": "all-clear",
     "label": "Nothing needs you",
-    "description": "A calmer version of Rosa. Every deposit went through and auto-invest stayed on.",
+    "description": "The same six months, with a beneficiary named, so nothing needs her.",
     "accountId": "rosa-all-clear"
   },
   {

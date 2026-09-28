@@ -9,7 +9,6 @@
   "balance": 1536.68,
   "investedValue": 1534.2,
   "cash": 2.48,
-  "cashSince": null,
   "moneyIn": 1400,
   "gainLoss": 136.68,
   "gainLossPercent": 0.0976,
@@ -21,8 +20,12 @@
   },
   "autoInvest": {
     "on": true,
-    "startedOn": "2026-03-02",
-    "pausedOn": null
+    "startedOn": "2026-03-02"
+  },
+  "beneficiary": {
+    "name": "Luis Ortega",
+    "relationship": "Brother",
+    "fictional": true
   },
   "targetMix": {
     "AAPL": 0.25,

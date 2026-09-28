@@ -96,7 +96,12 @@ export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i
   // "not a plan or advice", "Nothing here is investment advice")...
   /\b(financial|investment) advice\b/i, /\bnot\b[^.]{0,30}\badvice\b/i,
   // ...and never a claim of SIPC membership or protection (15 U.S.C. §78jjj(d)), or FDIC.
-  /\bmember sipc\b/i, /\bsipc member\b/i, /\bprotected by sipc\b/i, /\bsipc[- ]protected\b/i, /\bfdic\b/i];
+  /\bmember sipc\b/i, /\bsipc member\b/i, /\bprotected by sipc\b/i, /\bsipc[- ]protected\b/i, /\bfdic\b/i,
+  // Alex's review round (Sept. 28): the cash-waiting and sent-back stories are gone for good, and
+  // Your Journey has sections, not chapters.
+  /waiting in cash/i, /\bsent back\b/i, /\breturned deposits?\b/i, /\bchapters?\b/i];
+// Finance Terms (Phase 6): an entry is a real finance term defined on one of these sites.
+export const TERM_SOURCE_DOMAINS = ['investor.gov', 'sec.gov', 'finra.org', 'sipc.org', 'irs.gov', 'consumerfinance.gov'];
 export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we recommend/i, /\bbest (fund|investment|stock)s?\b/i, /guarantee/i,
   /can'?t lose/i, /risk[- ]free/i, /\bsure thing\b/i, /\bbuy now\b/i, /\bsell now\b/i, /\bbuy the dip\b/i, /will (definitely|surely) (grow|go up)/i,
   /\b(is|are|very) safe\b/i, /\bcompare fees\b/i, /\bswitch (to|funds)\b/i, /\bmost people\b/i];
@@ -116,7 +121,7 @@ export const PLACEHOLDERS = {
   ticker: ['ticker'],
   // Words, not values: names, labels, terms and whole sentences from the data.
   text: ['name', 'title', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'short', 'example', 'link', 'page', 'query', 'region',
-    'claim', 'note', 'reply', 'setting', 'month', 'direction', 'list'],
+    'claim', 'note', 'reply', 'setting', 'month', 'direction', 'list', 'relationship'],
 };
 // Names the app quotes rather than writes: a term, the industry's words for it, a
 // source, a fund or a person. The reading level grades OUR words, so a quoted name
@@ -183,6 +188,26 @@ export function rateProblems(text) {
 }
 
 // ---------------- loading ----------------
+// Every term button and word chip in the app, as [file, term id] (rule L6). A term list built in
+// code is marked with a /* term ids */ comment right before its array.
+export function loadTermUses(root = ROOT) {
+  const uses = [];
+  const walk = (dir) => {
+    for (const f of readdirSync(dir, { withFileTypes: true })) {
+      const path = join(dir, f.name);
+      if (f.isDirectory()) { walk(path); continue; }
+      if (!/\.(vue|ts)$/.test(f.name)) continue;
+      const text = readFileSync(path, 'utf8'), rel = path.slice(root.length + 1);
+      const ids = (list) => [...list.matchAll(/'([a-z0-9-]+)'/g)].map((m) => m[1]);
+      for (const m of text.matchAll(/<TermTip\s+id="([a-z0-9-]+)"/g)) uses.push([rel, m[1]]);
+      for (const m of text.matchAll(/:ids="\[([^\]]*)\]"/g)) for (const id of ids(m[1])) uses.push([rel, id]);
+      for (const m of text.matchAll(/\/\* term ids \*\/\s*\[([^\]]*)\]/g)) for (const id of ids(m[1])) uses.push([rel, id]);
+    }
+  };
+  walk(join(root, 'src'));
+  return uses;
+}
+
 export function loadData(dir = DATA_DIR) {
   const data = {}; const missing = [];
   for (const f of DATA_FILES) {
@@ -215,7 +240,9 @@ export function loadBriefExamples(root = ROOT) {
 }
 
 // ---------------- rules ----------------
-export function validate(data, { missing = [], briefExamples = [], copy = null, sources = null } = {}) {
+const nextMonth = (m) => { const [y, mo] = m.split('-').map(Number); return mo === 12 ? `${y + 1}-01` : `${y}-${String(mo + 1).padStart(2, '0')}`; };
+
+export function validate(data, { missing = [], briefExamples = [], copy = null, sources = null, termUses = null } = {}) {
   const results = [];
   const rule = (id, name, fn) => {
     const errors = [];
@@ -236,6 +263,8 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   const stockDates = (funds.find((f) => f.kind === 'stock')?.history.daily ?? []).map((d) => d.date);
   const acts = (acc) => activity[acc.id] || [];
   const flagsOf = (acc) => attention[acc.id] || [];
+  // Words a Finance Terms entry explains (its term and the industry's words for it).
+  const explainedTerms = new Set(glossary.flatMap((g) => [g.term, ...(g.alsoCalled || [])]).map((t) => t.toLowerCase()));
   const forEachFunded = (fn) => { for (const a of funded) fn(a, acts(a), `[${a.id}] `); };
 
   // Everything a learner can read (used by G6 and the L rules).
@@ -258,20 +287,20 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   // ----- S: structure -----
   rule('S2', 'Required fields are present', (fail) => {
     const req = {
-      meta: ['product', 'asOf', 'lastClose', 'lastReview', 'wordOfTheDay', 'cashWaitingThreshold', 'bigMoveThreshold'],
+      meta: ['product', 'asOf', 'lastClose', 'lastReview', 'wordOfTheDay', 'bigMoveThreshold'],
       persona: ['id', 'firstName', 'age', 'fictional', 'moments'],
       practice: ['startingCash', 'funds', 'priceDate', 'fictional', 'timeMachine'],
       'story-p302': ['assumptions', 'savers', 'catchUp', 'bumpy', 'yourTurn', 'claims', 'startAgeSlider'],
     };
     for (const [file, keys] of Object.entries(req)) for (const k of keys) if (data[file]?.[k] === undefined) fail(`${file}.${k} missing`);
-    for (const a of funded) for (const k of ['id', 'ownerId', 'balance', 'investedValue', 'cash', 'moneyIn', 'gainLoss', 'holdings', 'goal', 'weeklyChange', 'history', 'recurringDeposit', 'targetMix', 'autoInvest']) if (a[k] === undefined) fail(`${a.id}.${k} missing`);
+    for (const a of funded) for (const k of ['id', 'ownerId', 'balance', 'investedValue', 'cash', 'moneyIn', 'gainLoss', 'holdings', 'goal', 'weeklyChange', 'history', 'recurringDeposit', 'targetMix', 'autoInvest', 'beneficiary']) if (a[k] === undefined) fail(`${a.id}.${k} missing`);
     for (const f of funds) for (const k of ['ticker', 'name', 'kind', 'priceSource', 'volatility', 'upsAndDowns', 'dividends', 'latestPrice', 'history', 'about']) if (f[k] === undefined) fail(`funds[${f.ticker}].${k} missing`);
     for (const acc of allAccounts) {
       if (!Array.isArray(activity[acc.id])) fail(`activity has no list for ${acc.id}`);
       if (!Array.isArray(attention[acc.id])) fail(`attention has no list for ${acc.id}`);
       for (const a of flagsOf(acc)) for (const k of ['id', 'severity', 'title', 'body', 'nextStep', 'terms', 'route', 'raisedOn', 'newSinceLastReview']) if (a[k] === undefined) fail(`attention[${acc.id}][${a.id}].${k} missing`);
     }
-    for (const g of glossary) for (const k of ['id', 'term', 'short', 'detail', 'example', 'related']) if (g[k] === undefined) fail(`glossary[${g.id}].${k} missing`);
+    for (const g of glossary) for (const k of ['id', 'term', 'short', 'detail', 'example', 'related', 'source']) if (g[k] === undefined) fail(`glossary[${g.id}].${k} missing`);
   });
   // ----- G: finance guardrails -----
   rule('G1', 'Only the approved lineup: every investment is one of its tickers, with its own name', (fail) => {
@@ -307,6 +336,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     if (persona.fictional !== true) fail('persona not fictional');
     for (const s of story.savers) if (s.fictional !== true) fail(`saver ${s.id} not fictional`);
     for (const a of allAccounts) if (a.fictional !== true) fail(`${a.id} not fictional`);
+    for (const a of allAccounts) if (a.beneficiary && a.beneficiary.fictional !== true) fail(`${a.id} beneficiary not fictional`);
   });
 
   rule('G6', 'No project or disclaimer language on screen (made up, demo, case study, this project, for reviewers, fictional, simulated, concept, not real, any "not advice" wording) and no SIPC-membership, SIPC-protection or FDIC claims', (fail) => {
@@ -416,10 +446,10 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     if (!eq(acc.investedValue, inv)) fail(`${p}investedValue ${acc.investedValue} != sum of holdings ${inv}`);
     if (!eq(acc.balance, r2(inv + acc.cash))) fail(`${p}balance ${acc.balance} != ${r2(inv + acc.cash)}`);
   }));
-  rule('A4', 'Money you put in = deposits that went through (returned deposits excluded)', (fail) => forEachFunded((acc, list, p) => {
+  rule('A4', 'Money you put in = the deposits, every one of which went through', (fail) => forEachFunded((acc, list, p) => {
     const s = r2(depsOf(list).reduce((t, a) => t + a.amount, 0));
     if (!eq(acc.moneyIn, s)) fail(`${p}moneyIn ${acc.moneyIn} != completed deposits ${s}`);
-    for (const a of list.filter((x) => x.type === 'deposit' && x.status === 'returned')) if (!a.returnedDate || a.returnedDate < a.date) fail(`${p}returned deposit ${a.id} has a bad returnedDate`);
+    for (const a of list) if (a.status !== 'completed') fail(`${p}${a.id} is ${a.status}; every deposit, buy and dividend in the data went through`);
   }));
   rule('A5', 'What you paid per fund = its buys; shares = its buys', (fail) => forEachFunded((acc, list, p) => {
     for (const h of acc.holdings) {
@@ -502,31 +532,30 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     }
     const ids = list.map((a) => a.id); if (new Set(ids).size !== ids.length) fail(`${p}activity ids not unique`);
   }));
-  rule('A13', '"Waiting in cash since" date is true', (fail) => forEachFunded((acc, _, p) => {
-    const T = meta.cashWaitingThreshold, h = acc.history;
-    if (acc.cash < T) { if (acc.cashSince !== null) fail(`${p}cash ${acc.cash} is under $${T} but cashSince is set`); return; }
-    const i = h.findIndex((r) => r.date === acc.cashSince);
-    if (i < 1) { fail(`${p}cashSince ${acc.cashSince} not in history`); return; }
-    if (!(h[i - 1].cash < T)) fail(`${p}cash was already ${h[i - 1].cash} the day before cashSince`);
-    for (let k = i; k < h.length; k++) if (h[k].cash < T) fail(`${p}cash dropped below $${T} on ${h[k].date}, after cashSince`);
+  rule('A13', 'Every planned deposit arrived: the first one, then one each month, all completed (Phase 6)', (fail) => forEachFunded((acc, list, p) => {
+    const deps = list.filter((a) => a.type === 'deposit');
+    if (deps.some((d) => d.status !== 'completed')) fail(`${p}a deposit did not go through`);
+    if (!eq(r2(deps.reduce((s, d) => s + d.amount, 0)), acc.goal.plannedMoneyInToDate)) fail(`${p}the deposits don't add up to the plan (${acc.goal.plannedMoneyInToDate})`);
+    const months = new Set(deps.map((d) => d.date.slice(0, 7)));
+    for (let m = acc.openedOn.slice(0, 7); m <= meta.lastClose.slice(0, 7); m = nextMonth(m)) if (!months.has(m)) fail(`${p}no deposit in ${m}`);
+    if (acc.goal.behindBy !== 0) fail(`${p}the goal is ${acc.goal.behindBy} behind; with every deposit through it is on pace`);
   }));
-  rule('A14', 'Auto-invest behaves as stated: each deposit is invested in the mix while on, and nothing is bought while paused', (fail) => forEachFunded((acc, list, p) => {
-    const paused = acc.autoInvest.pausedOn;
-    if (acc.autoInvest.on === Boolean(paused)) fail(`${p}autoInvest.on must be false exactly when pausedOn is set`);
+  rule('A14', 'Auto-invest ran every month: it is on, has no pause, and each deposit bought the mix the day it arrived', (fail) => forEachFunded((acc, list, p) => {
+    if (acc.autoInvest.on !== true) fail(`${p}auto-invest must be on`);
+    if ('pausedOn' in acc.autoInvest) fail(`${p}auto-invest has a pause date; it never paused`);
     for (const d of depsOf(list)) {
       const buys = buysOf(list).filter((b) => b.date === d.settledDate);
-      const shouldInvest = !paused || d.settledDate < paused;
       const spent = r2(buys.reduce((s, b) => s + b.amount, 0));
-      if (shouldInvest && !eq(spent, d.amount, 0.011)) fail(`${p}deposit ${d.id} on ${d.settledDate} should be fully invested; buys total ${spent}`);
-      if (!shouldInvest && buys.length) fail(`${p}buys on ${d.settledDate} happened while auto-invest was paused`);
+      if (!eq(spent, d.amount, 0.011)) fail(`${p}deposit ${d.id} on ${d.settledDate} should be fully invested; buys total ${spent}`);
       for (const b of buys) if (!eq(b.amount, r2(d.amount * (acc.targetMix[b.ticker] || 0)))) fail(`${p}${b.id} does not follow the target mix`);
     }
-    if (paused) for (const b of buysOf(list)) if (b.date >= paused) fail(`${p}${b.id} bought on ${b.date}, after auto-invest was paused`);
+    const months = new Set(buysOf(list).map((b) => b.date.slice(0, 7)));
+    for (let m = acc.openedOn.slice(0, 7); m <= meta.lastClose.slice(0, 7); m = nextMonth(m)) if (!months.has(m)) fail(`${p}auto-invest bought nothing in ${m}`);
   }));
 
   // ----- N: attention flags (checked for every account) -----
   const SEV = ['needs-you', 'heads-up', 'fyi'];
-  const ROUTES = ['overview', 'activity', 'practice', 'fund', 'holdings', 'glossary'];
+  const ROUTES = ['overview', 'activity', 'practice', 'fund', 'holdings', 'glossary', 'settings'];
   rule('N1', 'Flags are well formed: known severity, route and terms; most urgent first; "new" is true', (fail) => {
     for (const acc of allAccounts) {
       const list = flagsOf(acc), p = `[${acc.id}] `;
@@ -547,12 +576,9 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     for (const acc of funded) {
       const list = acts(acc), flags = flagsOf(acc), by = Object.fromEntries(flags.map((f) => [f.id, f])), p = `[${acc.id}] `;
       const expect = (id, cond) => { if (cond && !by[id]) fail(`${p}${id} should be shown but is missing`); if (!cond && by[id]) fail(`${p}${id} is shown but the account facts don't call for it`); return cond && by[id]; };
-      const ret = list.filter((a) => a.status === 'returned' && daysBetween(a.returnedDate, meta.asOf) <= 30).at(-1);
-      const f1 = expect('deposit-returned', !!ret); if (f1 && !eq(f1.amount, ret.amount)) fail(`${p}deposit-returned amount wrong`);
-      const f2 = expect('goal-behind', acc.goal.behindBy > 0); if (f2 && !eq(f2.amount, acc.goal.behindBy)) fail(`${p}goal-behind amount wrong`);
-      const f3 = expect('cash-sitting', acc.cash >= meta.cashWaitingThreshold);
-      if (f3 && (!eq(f3.amount, acc.cash) || f3.date !== acc.cashSince)) fail(`${p}cash-sitting amount/date != cash/cashSince`);
-      if (f3 && acc.autoInvest.pausedOn && !f3.body.includes('paused')) fail(`${p}cash-sitting must explain that auto-invest is paused`);
+      // The one thing that can need Rosa (Phase 6): an account with no beneficiary.
+      expect('beneficiary-missing', !acc.beneficiary);
+      for (const gone of ['deposit-returned', 'goal-behind', 'cash-sitting']) if (by[gone]) fail(`${p}${gone} is back; that story was removed (Sept. 28)`);
       for (const h of acc.holdings) {
         const move = h.price / closeOn(h.ticker, acc.weeklyChange.from) - 1;
         const fb = expect(`big-move-${h.ticker}`, h.shares > 0 && Math.abs(move) >= meta.bigMoveThreshold);
@@ -701,26 +727,20 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       if (Boolean(claimOf(r, 'at-low')) !== (r2(row.moneyIn - row.balance) > 0)) fail(`${p}"below what you had put in" is ${claimOf(r, 'at-low') ? 'said' : 'missing'} but the balance was ${row.balance} vs ${row.moneyIn}`);
     }
   });
-  rule('R3', 'The auto-invest pause date and everything the story says happened "after" it are true', (fail) => {
+  rule('R3', 'Auto-invest kept buying through the dip, and what the story says after the low is true', (fail) => {
     for (const acc of funded) {
       const r = rosa[acc.id], p = `[${acc.id}] `; if (!r) continue;
-      const f = r.facts, paused = acc.autoInvest.pausedOn;
-      if ((f.pause?.date ?? null) !== paused) fail(`${p}pause ${f.pause?.date ?? null} != autoInvest.pausedOn ${paused}`);
-      if (paused && f.pause && f.pause.date !== nextTradingDay(addDays(f.dip.lowDate, 1))) fail(`${p}the story says she paused "the next trading day", but ${f.pause.date} is not the trading day after the low ${f.dip.lowDate}`);
-      const since = paused || f.dip.lowDate;
-      const back = acc.history.find((x) => x.date > since && x.balance > x.moneyIn);
+      const f = r.facts;
+      if ('pause' in f) fail(`${p}the story has a pause; auto-invest never paused`);
+      const back = acc.history.find((x) => x.date > f.dip.lowDate && x.balance > x.moneyIn);
       if (!back || f.after.backAboveDate !== back.date || !eq(f.after.backAboveBalance, back.balance)) fail(`${p}back above what she put in on ${f.after.backAboveDate}, the history says ${back?.date}`);
-      const deps = acts(acc).filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > since).map((x) => ({ date: x.settledDate, amount: x.amount }));
-      if (JSON.stringify(deps) !== JSON.stringify(f.after.deposits)) fail(`${p}deposits after ${since} do not match the activity`);
-      for (const dp of deps) {
-        const bought = buysOf(acts(acc)).some((b) => b.date === dp.date);
-        if (bought !== !paused) fail(`${p}the ${dp.date} deposit ${bought ? 'was' : 'was not'} invested, but the story says it ${paused ? 'stayed as cash' : 'bought the mix'}`);
-      }
-      if (f.after.depositsInvested !== !paused) fail(`${p}after.depositsInvested must be ${!paused}`);
+      const deps = acts(acc).filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > f.dip.highDate).map((x) => ({ date: x.settledDate, amount: x.amount }));
+      if (JSON.stringify(deps) !== JSON.stringify(f.after.deposits)) fail(`${p}deposits from ${f.dip.highDate} do not match the activity`);
+      for (const dp of deps) if (!buysOf(acts(acc)).some((b) => b.date === dp.date)) fail(`${p}the ${dp.date} deposit was not invested, but the story says auto-invest kept buying`);
+      if (f.after.depositsInvested !== true) fail(`${p}after.depositsInvested must be true`);
       if (!eq(f.after.upNow, acc.gainLoss)) fail(`${p}upNow != gainLoss`);
       const has = (id) => Boolean(claimOf(r, id));
-      if (paused && !(has('pause') && has('cash-after') === deps.length > 0 && !has('kept-buying'))) fail(`${p}a paused account must tell the pause (and cash-after when deposits came after it), not kept-buying`);
-      if (!paused && (has('pause') || has('cash-after') || !has('kept-buying'))) fail(`${p}an account that never paused must say auto-invest stayed on, and never tell a pause`);
+      if (has('pause') || has('cash-after') || !has('kept-buying')) fail(`${p}the story must say auto-invest kept buying, and never tell a pause or cash left waiting`);
     }
   });
   rule('R4', 'Every scenario has its own true story, and every number in a story sentence is a checked fact', (fail) => {
@@ -756,10 +776,14 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   });
 
   // ----- L: plain language (everything a learner can read) -----
-  rule('L1', 'Glossary is complete: unique ids, links resolve, word of the day exists, sources are https or deliberately none', (fail) => {
+  rule('L1', 'Finance Terms are complete: unique ids, links resolve, Term of the Day exists, every entry cites a source on investor.gov, sec.gov, finra.org, sipc.org, irs.gov or consumerfinance.gov', (fail) => {
     const ids = glossary.map((g) => g.id); if (new Set(ids).size !== ids.length) fail('glossary ids not unique');
     for (const g of glossary) for (const r of g.related) if (!glossIds.has(r)) fail(`${g.id} related ${r} missing`);
-    for (const g of glossary) if (g.source !== null && !/^https:\/\//.test(g.source?.url || '')) fail(`${g.id} source must be an https link or null`);
+    for (const g of glossary) {
+      const url = g.source?.url || '';
+      const host = /^https:\/\/([^/]+)/.exec(url)?.[1] ?? '';
+      if (!TERM_SOURCE_DOMAINS.some((d) => host === d || host.endsWith(`.${d}`))) fail(`${g.id} source "${url}" is not on ${TERM_SOURCE_DOMAINS.join(', ')}`);
+    }
     if (!glossIds.has(meta.wordOfTheDay)) fail(`wordOfTheDay ${meta.wordOfTheDay} not in glossary`);
   });
   rule('L2', `Reading level is grade ${MAX_GRADE} or below (Flesch-Kincaid) for every learner-facing text`, (fail) => {
@@ -767,7 +791,8 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       const g = fkGrade(text); if (g > MAX_GRADE) fail(`${where} is grade ${g.toFixed(1)}: "${text.slice(0, 70)}..."`);
     }
   });
-  rule('L3', 'No jargon in learner-facing text', (fail) => {
+  rule('L3', 'No jargon in learner-facing text, unless it is a Finance Terms entry (its button explains it)', (fail) => {
+    const JARGON_LEFT = JARGON.filter((w) => !explainedTerms.has(w));
     for (const g of glossary) {
       const allowed = [g.term, ...(g.alsoCalled || [])].map((s) => s.toLowerCase());
       for (const field of ['short', 'detail', 'example']) for (const w of JARGON) {
@@ -775,7 +800,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
         if (hasWord(g[field], w)) fail(`glossary:${g.id}.${field} uses jargon "${w}"`);
       }
     }
-    for (const [where, text] of [...flagTexts, ...otherTexts]) for (const w of JARGON) if (hasWord(text, w)) fail(`${where} uses jargon "${w}"`);
+    for (const [where, text] of [...flagTexts, ...otherTexts]) for (const w of JARGON_LEFT) if (hasWord(text, w)) fail(`${where} uses jargon "${w}"`);
   });
   rule('L4', 'Explanation first lines are short (16 words or fewer)', (fail) => {
     for (const g of glossary) { const n = g.short.split(/\s+/).length; if (n > 16) fail(`${g.id}.short has ${n} words`); }
@@ -810,7 +835,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       Object.assign(v, { name: persona.firstName, title: flag.title, label: 'Your balance since March', series: 'Balance', kind: 'Stocks', status: 'Pending',
         type: 'Deposits', page: 'Activity', query: 'fee', region: funds[0].region ?? 'United States',
         claim: story.claims[0].text, note: story.bumpy.note, reply: 'Here is how it turns out.', setting: 'Start at 30',
-        month: story.rosaStory?.[acc.id]?.facts.dip.month ?? 'May', direction: 'up', list: 'Stocks 70%, Crypto 18%, Cash 12%' });
+        month: story.rosaStory?.[acc.id]?.facts.dip.month ?? 'May', direction: 'up', list: 'Stocks 70%, Crypto 18%, Cash 12%', relationship: 'Brother' });
       const flags = flagsOf(acc).length ? flagsOf(acc) : [flag];
       return [...glossaryVariants.map((g) => ({ ...v, ...g })), ...flags.map((f) => ({ ...v, ...glossaryVariants[0], title: f.title }))];
     };
@@ -818,11 +843,16 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     const words = (t) => t.split(/\s+/).filter((x) => /[A-Za-z]/.test(x)).length;
     // Labels of 3 words or fewer are exempt from the grade ("Type: Deposits. Status: Pending." is two labels).
     // A leading label of 3 words or fewer ("Example:", "Source:") is a label too.
+    // A Finance Terms word is explained by its button, so it reads as one short word for the grade
+    // ("beneficiary" alone would make "Name a beneficiary for your account" grade 8.4).
+    const termWords = glossary.flatMap((g) => [g.term, ...(g.alsoCalled || [])]).sort((a, b) => b.length - a.length);
+    const termRe = new RegExp(`\\b(${termWords.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
     const lint = (where, filled, bare, graded = filled) => {
+      graded = graded.replace(termRe, 'term');
       const lead = graded.match(/^([^.:!?]+):\s+/);
       if (lead && words(lead[1]) <= 3) graded = graded.slice(lead[0].length);
       if (graded.split(/[.!?]+/).some((x) => words(x) > 3)) { const g = fkGrade(graded); if (g > MAX_GRADE) fail(`${where} is grade ${g.toFixed(1)}: "${filled.slice(0, 90)}"`); }
-      for (const w of JARGON) if (hasWord(bare, w)) fail(`${where} uses jargon "${w}"`);
+      for (const w of JARGON) if (!explainedTerms.has(w) && hasWord(bare, w)) fail(`${where} uses jargon "${w}"`);
       for (const re of [...ADVICE_PATTERNS, ...PROJECT_LANGUAGE]) if (re.test(bare)) fail(`${where} matches ${re}: "${bare.slice(0, 90)}"`);
       for (const p of [...rateProblems(filled), ...moneyProblems(filled)]) fail(`${where} ${p}: "${filled.slice(0, 90)}"`);
     };
@@ -856,6 +886,12 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   });
 
   // ----- B: briefs -----
+  rule('L6', 'Every term button points to a Finance Terms entry, and every entry is used on a screen (Phase 6)', (fail) => {
+    if (!termUses) { fail('no term uses were given (run through loadTermUses)'); return; }
+    for (const [where, id] of termUses) if (!glossIds.has(id)) fail(`${where}: term button "${id}" has no Finance Terms entry`);
+    const used = new Set([...termUses.map(([, id]) => id), ...allAccounts.flatMap((acc) => flagsOf(acc).flatMap((a) => a.terms))]);
+    for (const g of glossary) if (!used.has(g.id)) fail(`Finance Terms entry "${g.id}" is not used on any screen; keep only terms that are used`);
+  });
   rule('B1', 'Every example record in the briefs matches the data', (fail) => {
     if (!briefExamples.length) { fail('no ```json brief-example blocks found in the briefs'); return; }
     const get = (path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[/^\d+$/.test(k) ? Number(k) : k]), data);
@@ -888,6 +924,6 @@ export function report(results, { quiet = false } = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const { data, missing } = loadData();
-  const failed = report(validate(data, { missing, briefExamples: loadBriefExamples(), copy: loadCopy(), sources: loadSources() }));
+  const failed = report(validate(data, { missing, briefExamples: loadBriefExamples(), copy: loadCopy(), sources: loadSources(), termUses: loadTermUses() }));
   process.exit(failed ? 1 : 0);
 }

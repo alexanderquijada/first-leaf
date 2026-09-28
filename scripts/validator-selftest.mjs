@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validate, loadData, loadBriefExamples, loadCopy, loadSources } from './validate-data.mjs';
+import { validate, loadData, loadBriefExamples, loadCopy, loadSources, loadTermUses } from './validate-data.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const r2 = (n) => Math.round(n * 100) / 100;
@@ -27,23 +27,23 @@ const CASES = [
   { rule: 'G1', why: 'a real ticker outside the approved lineup (VTI) appears as an investment', mutate: (d) => { d.funds[1].ticker = 'VTI'; } },
   { rule: 'G1', why: 'a lineup ticker carries the wrong company name', mutate: (d) => { d.funds[0].name = 'Apple Computer'; } },
   { rule: 'G2', why: 'a real brand outside the lineup appears in a company description', mutate: (d) => set(d, 'funds.0.about', 'Apple makes the iPhone, like Samsung and Google do.') },
-  { rule: 'G2', why: 'a real ticker appears in a flag', mutate: (d) => { d.attention['rosa-starter'][3].body = 'Compare it with SPY before Oct. 1.'; } },
-  { rule: 'G3', why: 'a flag tells Rosa what to buy', mutate: (d) => { d.attention['rosa-starter'][2].nextStep = 'You should buy AAPL with this cash.'; } },
-  { rule: 'G3', why: 'RULING B: an alert says to buy the dip', mutate: (d) => { d.attention['rosa-starter'][2].nextStep = 'Prices fell, so buy the dip with this cash.'; } },
-  { rule: 'G3', why: 'REVIEW FINDING (Sept. 23): an absolute safety claim ("Cash is safe")', mutate: (d) => { d.glossary.find((g) => g.id === 'cash').detail = 'Cash is safe. It does not grow.'; } },
-  { rule: 'G3', why: 'REVIEW FINDING (Sept. 23): a soft push to switch funds after a fee change', mutate: (d) => { d.attention['rosa-starter'][3].nextStep = 'Compare fees on each fund page.'; } },
+  { rule: 'G2', why: 'a real ticker appears in a flag', mutate: (d) => { d.attention['rosa-starter'][1].body = 'Compare it with SPY before Oct. 1.'; } },
+  { rule: 'G3', why: 'a flag tells Rosa what to buy', mutate: (d) => { d.attention['rosa-starter'][0].nextStep = 'You should buy AAPL with this cash.'; } },
+  { rule: 'G3', why: 'RULING B: an alert says to buy the dip', mutate: (d) => { d.attention['rosa-starter'][0].nextStep = 'Prices fell, so buy the dip with this cash.'; } },
+  { rule: 'G3', why: 'REVIEW FINDING (Sept. 23): an absolute safety claim ("Cash is safe")', mutate: (d) => { d.glossary.find((g) => g.id === 'invested').detail = 'Cash is safe. It does not grow.'; } },
+  { rule: 'G3', why: 'REVIEW FINDING (Sept. 23): a soft push to switch funds after a fee change', mutate: (d) => { d.attention['rosa-starter'][1].nextStep = 'Compare fees on each fund page.'; } },
   { rule: 'G3', why: 'REVIEW FINDING (Sept. 23): an unsupported crowd claim in the story', mutate: (d) => { d['story-p302'].claims[0].text = 'Most people guess Theo.'; } },
-  { rule: 'G4', why: 'an account number sneaks into activity', mutate: (d) => { d.activity['rosa-starter'].find((a) => a.returnReason).returnReason = 'Bank account 123456789012 was low.'; } },
-  { rule: 'G6', why: 'REAL-APP RULING (Sept. 24): the ticker explanation said "In this demo … so you always know it is made up"', mutate: (d) => { d.glossary.find((g) => g.id === 'ticker').detail = 'Real tickers are a few letters long. In this demo, every ticker starts with FL- so you always know it is made up.'; } },
+  { rule: 'G4', why: 'an account number sneaks into activity', mutate: (d) => { d['account-all-clear'].beneficiary.name = 'Luis Ortega, account 123456789012'; } },
+  { rule: 'G6', why: 'REAL-APP RULING (Sept. 24): a term explanation said "In this demo … so you always know it is made up"', mutate: (d) => { d.glossary.find((g) => g.id === 'stock').detail = 'Real tickers are a few letters long. In this demo, every ticker starts with FL- so you always know it is made up.'; } },
   { rule: 'G6', why: 'REAL-APP RULING (Sept. 24): a description says "made-up companies"', mutate: (d) => set(d, 'funds.0.about', 'It owns bits of about 3,000 made-up U.S. companies, big and small.') },
-  { rule: 'G6', why: 'RULING B (Phase 2.5): a glossary line calls the prices simulated', mutate: (d) => { d.glossary.find((g) => g.id === 'price').detail = 'These prices are simulated for learning.'; } },
-  { rule: 'G6', why: 'RULING B (Phase 2.5): the practice word says the money is not real', mutate: (d) => { d.glossary.find((g) => g.id === 'practice-mode').detail = 'You start with $1,000 that is not real.'; } },
+  { rule: 'G6', why: 'RULING B (Phase 2.5): a glossary line calls the prices simulated', mutate: (d) => { d.glossary.find((g) => g.id === 'share').detail = 'These prices are simulated for learning.'; } },
+  { rule: 'G6', why: 'RULING B (Phase 2.5): a term says the practice money is not real', mutate: (d) => { d.glossary.find((g) => g.id === 'market-order').detail = 'You start with $1,000 that is not real.'; } },
   { rule: 'G6', why: 'RULING B (Phase 2.5): a story note calls First Leaf a concept app', mutate: (d) => set(d, 'practice.timeMachine.note', 'First Leaf is a concept app, so these prices show how a mix could have moved.') },
   { rule: 'G6', why: 'RULING (Sept. 25): an alert claims "Member SIPC"', mutate: (d) => { d.attention['rosa-starter'].at(-1).body = 'First Leaf Investing, Member SIPC.'; } },
   { rule: 'G6', why: 'RULING (Sept. 25): the glossary says "a SIPC member"', mutate: (d) => { d.glossary.find((g) => g.id === 'sipc-protection').example = 'First Leaf is a SIPC member.'; } },
   { rule: 'G6', why: 'RULING (Sept. 25): an alert says her stocks are "protected by SIPC"', mutate: (d) => { d.attention['rosa-starter'].at(-1).body = 'Your stocks are protected by SIPC.'; } },
   { rule: 'G6', why: 'RULING (Sept. 25): a description says "SIPC-protected"', mutate: (d) => set(d, 'funds.0.about', 'Your Apple shares are SIPC-protected.') },
-  { rule: 'G6', why: 'RULING (Sept. 25): a glossary line mentions FDIC', mutate: (d) => { d.glossary.find((g) => g.id === 'cash').detail = 'Cash here is FDIC insured.'; } },
+  { rule: 'G6', why: 'RULING (Sept. 25): a glossary line mentions FDIC', mutate: (d) => { d.glossary.find((g) => g.id === 'invested').detail = 'Cash here is FDIC insured.'; } },
   { rule: 'G6', why: 'RULING (Sept. 25): a story note says "This is not financial advice."', mutate: (d) => { d['story-p302'].assumptions.note += ' This is not financial advice.'; } },
   { rule: 'G6', why: 'RULING (Sept. 25): a note says "not a plan or advice" (advice disclaimer in other words)', mutate: (d) => set(d, 'practice.timeMachine.note', 'This is an example, not a plan or advice.') },
   { rule: 'G6', why: 'RULING (Sept. 25): "Nothing here is investment advice."', mutate: (d) => set(d, 'practice.timeMachine.note', 'Nothing here is investment advice.') },
@@ -68,7 +68,7 @@ const CASES = [
   { rule: 'A2', why: 'up/down per fund does not equal value minus cost', mutate: (d) => { d.account.holdings[1].gainLoss += 3; } },
   { rule: 'A3', why: 'balance does not equal funds + cash', mutate: (d) => { d.account.balance += 1; } },
   { rule: 'A3', why: 'the all-clear account (a different scenario) has a wrong balance', mutate: (d) => { d['account-all-clear'].balance += 1; } },
-  { rule: 'A4', why: 'money put in counts the returned deposit', mutate: (d) => { d.account.moneyIn += 150; } },
+  { rule: 'A4', why: 'money put in counts a deposit that never happened', mutate: (d) => { d.account.moneyIn += 150; } },
   { rule: 'A5', why: 'cost of a fund does not match its buys', mutate: (d) => { d.account.holdings[2].costBasis += 5; } },
   { rule: 'A6', why: 'cash does not reconcile with activity', mutate: (d) => { d.account.cash += 20; } },
   { rule: 'A7', why: 'overall up/down is wrong', mutate: (d) => { d.account.gainLoss = 999; } },
@@ -86,17 +86,19 @@ const CASES = [
   { rule: 'A12', why: 'a crypto buy is given T+1 settlement (crypto settles the same day)', mutate: (d) => { const b = d.activity['rosa-starter'].find((a) => a.type === 'buy' && a.ticker === 'BTC'); b.settledDate = '2026-03-03'; } },
   { rule: 'A12', why: 'a dividend uses a per-share amount the company never paid', mutate: (d) => { const x = d.activity['rosa-starter'].find((a) => a.type === 'dividend'); x.perShare = 0.5; } },
   { rule: 'A12', why: 'a dividend is paid on shares bought on the ex-date', mutate: (d) => { const x = d.activity['rosa-starter'].find((a) => a.type === 'dividend'); x.sharesOnExDate = r4(x.sharesOnExDate + 0.1); x.amount = r2(x.sharesOnExDate * x.perShare); } },
-  { rule: 'A13', why: 'waiting-in-cash date is a month early', mutate: (d) => { d.account.cashSince = '2026-06-01'; } },
-  { rule: 'A14', why: 'REVIEW FINDING (Sept. 23): a buy happens after auto-invest was paused', mutate: (d) => { const b = d.activity['rosa-starter'].find((a) => a.type === 'buy'); b.date = '2026-08-03'; } },
-  { rule: 'A14', why: 'auto-invest says "on" but a pause date is set', mutate: (d) => { d.account.autoInvest.on = true; } },
+  { rule: 'A13', why: 'PHASE 6: a deposit did not go through (the removed sent-back story)', mutate: (d) => { d.activity['rosa-starter'].find((a) => a.type === 'deposit' && a.date === '2026-09-01').status = 'returned'; } },
+  { rule: 'A13', why: 'PHASE 6: a month has no deposit', mutate: (d) => { d.activity['rosa-starter'] = d.activity['rosa-starter'].filter((a) => !(a.type === 'deposit' && a.date.startsWith('2026-07'))); } },
+  { rule: 'A14', why: 'PHASE 6: auto-invest skipped a month (the removed pause story)', mutate: (d) => { d.activity['rosa-starter'] = d.activity['rosa-starter'].filter((a) => !(a.type === 'buy' && a.date.startsWith('2026-08'))); } },
+  { rule: 'A14', why: 'PHASE 6: auto-invest has a pause date', mutate: (d) => { d.account.autoInvest.pausedOn = '2026-06-08'; } },
   { rule: 'N1', why: 'an FYI flag is listed before a needs-you flag, and uses an unknown term', mutate: (d) => { const l = d.attention['rosa-starter']; l.unshift(l.pop()); l[0].terms = ['nope']; } },
   { rule: 'N1', why: 'a flag is marked New even though it was raised before last review', mutate: (d) => { d.attention['rosa-starter'][0].newSinceLastReview = true; } },
   { rule: 'N2', why: 'a big-move alert appears although no holding moved 7% this week', mutate: (d) => { d.attention['rosa-starter'].splice(3, 0, { ...d.attention['rosa-starter'][1], id: 'big-move-AAPL', movePercent: 0.08 }); } },
   { rule: 'N2', why: 'the SIPC notice is missing although the account holds crypto', mutate: (d) => { d.attention['rosa-starter'] = d.attention['rosa-starter'].filter((f) => f.id !== 'sipc-crypto'); } },
   { rule: 'N2', why: 'RULING B: a fee alert comes back (stocks and crypto have no yearly fund fee)', mutate: (d) => { d.attention['rosa-starter'].push({ ...d.attention['rosa-starter'].at(-1), id: 'fee-going-up' }); } },
-  { rule: 'N2', why: 'REVIEW FINDING (Sept. 23): the all-clear account shows a returned-deposit flag its facts do not support', mutate: (d) => { d.attention['rosa-all-clear'].unshift({ ...d.attention['rosa-starter'][0] }); } },
-  { rule: 'N2', why: 'a flag is missing even though the account has a returned deposit', mutate: (d) => { d.attention['rosa-starter'].shift(); } },
-  { rule: 'N3', why: 'flag copy states a dollar figure that is not in the data', mutate: (d) => { d.attention['rosa-starter'].find((a) => a.id === 'cash-sitting').title = '$987.65 is waiting in cash'; } },
+  { rule: 'N2', why: 'PHASE 6: the all-clear account (a beneficiary is named) shows the beneficiary alert', mutate: (d) => { d.attention['rosa-all-clear'].unshift({ ...d.attention['rosa-starter'][0] }); } },
+  { rule: 'N2', why: 'PHASE 6: the removed cash-waiting alert comes back', mutate: (d) => { d.attention['rosa-starter'].splice(1, 0, { ...d.attention['rosa-starter'][0], id: 'cash-sitting', severity: 'heads-up' }); } },
+  { rule: 'N2', why: 'PHASE 6: the beneficiary alert is missing although no beneficiary is named', mutate: (d) => { d.attention['rosa-starter'].shift(); } },
+  { rule: 'N3', why: 'flag copy states a dollar figure that is not in the data', mutate: (d) => { d.attention['rosa-starter'].find((a) => a.id === 'beneficiary-missing').title = 'Name a beneficiary for your $987.65'; } },
   { rule: 'C1', why: 'REVIEW FINDING (Sept. 23): "Nothing needs you" points at the normal account', mutate: (d) => { d.scenarios.find((s) => s.id === 'all-clear').accountId = 'rosa-starter'; } },
   { rule: 'C2', why: 'brand-new account has money in it', mutate: (d) => { d['account-new'].balance = 50; } },
   { rule: 'T1', why: "Nia's final value is not what the formula gives", mutate: (d) => { d['story-p302'].savers[0].final.value = 300000; } },
@@ -116,20 +118,28 @@ const CASES = [
   { rule: 'R2', why: 'the dip window moves to June 1 (a hand-picked window)', mutate: (d) => { d['story-p302'].rosaStory['rosa-starter'].facts.dip.window.from = '2026-06-01'; } },
   { rule: 'R2', why: 'the chapter says the dip was in July, but the low was in another month', mutate: (d) => { for (const k of ['rosa-starter', 'rosa-all-clear']) d['story-p302'].rosaStory[k].facts.dip.month = d['story-p302'].rosaStory[k].facts.dip.month === 'July' ? 'June' : 'July'; } },
   { rule: 'R2', why: 'her balance at the low is misstated', mutate: (d) => { d['story-p302'].rosaStory['rosa-starter'].facts.atLow.below = 40; } },
-  { rule: 'R3', why: 'the pause is not the trading day after the low, but the story says "the next trading day"', mutate: (d) => { const f = d['story-p302'].rosaStory['rosa-starter'].facts; f.pause.date = '2026-06-10'; d.account.autoInvest.pausedOn = '2026-06-10'; } },
-  { rule: 'R3', why: '"back above what you put in" is dated too early', mutate: (d) => { const f = d['story-p302'].rosaStory['rosa-starter'].facts; f.after.backAboveDate = f.pause.date; } },
-  { rule: 'R3', why: 'the calm account (auto-invest never paused) tells the paused story', mutate: (d) => { const r = d['story-p302'].rosaStory['rosa-all-clear']; r.claims = r.claims.filter((c) => c.id !== 'kept-buying'); r.claims.push({ id: 'pause', chapter: 3, text: 'You paused auto-invest the next trading day, May 27.' }); } },
+  { rule: 'R3', why: 'PHASE 6: the story tells a pause (auto-invest never paused)', mutate: (d) => { d['story-p302'].rosaStory['rosa-starter'].facts.pause = { date: '2026-06-08' }; } },
+  { rule: 'R3', why: '"back above what you put in" is dated too early', mutate: (d) => { const f = d['story-p302'].rosaStory['rosa-starter'].facts; f.after.backAboveDate = f.dip.lowDate; } },
+  { rule: 'R3', why: 'PHASE 6: the story drops "auto-invest kept buying" and says deposits stayed as cash', mutate: (d) => { const r = d['story-p302'].rosaStory['rosa-all-clear']; r.claims = r.claims.filter((c) => c.id !== 'kept-buying'); r.claims.push({ id: 'cash-after', chapter: 3, text: 'After that, your deposits stayed as cash.' }); } },
   { rule: 'R4', why: 'the calm account has no story of its own', mutate: (d) => { d['story-p302'].rosaStory['rosa-all-clear'] = null; } },
   { rule: 'R4', why: 'a story sentence states a dollar figure that is not one of the checked facts', mutate: (d) => { const c = d['story-p302'].rosaStory['rosa-starter'].claims.find((c) => c.id === 'dip'); c.text = c.text.replace(/\$[\d,.]+/, '$40.00'); } },
   { rule: 'R4', why: 'the brand-new account (no history) is given a story', mutate: (d) => { d['story-p302'].rosaStory['rosa-new'] = d['story-p302'].rosaStory['rosa-starter']; } },
   { rule: 'X1', why: "P302 uses a different age than Rosa's", mutate: (d) => { d['story-p302'].yourTurn.startAge = 30; } },
   { rule: 'X2', why: 'an activity is dated in the future', mutate: (d) => { d.activity['rosa-starter'].at(-1).date = '2026-12-01'; } },
+  { rule: 'G5', why: 'PHASE 6: a beneficiary is not marked fictional', mutate: (d) => { d['account-all-clear'].beneficiary.fictional = false; } },
+  { rule: 'G6', why: 'PHASE 6: an alert says money is "waiting in cash"', mutate: (d) => { d.attention['rosa-starter'][0].title = '$2.48 is waiting in cash'; } },
+  { rule: 'G6', why: 'PHASE 6: a term mentions a deposit that was "sent back"', mutate: (d) => { d.glossary.find((g) => g.id === 'brokerage-account').example = 'If your bank sent back a deposit, it shows here.'; } },
+  { rule: 'L5', why: 'PHASE 6: a copy sentence says "chapter"', copy: (c) => { c['src/features/story/copy.json'].newClaim = 'Once your first deposit arrives, this chapter will show your money.'; } },
+  { rule: 'L1', why: 'PHASE 6: a Finance Terms entry cites a source outside the six allowed sites', mutate: (d) => { d.glossary.find((g) => g.id === 'volatility').source.url = 'https://en.wikipedia.org/wiki/Volatility_(finance)'; } },
+  { rule: 'L1', why: 'PHASE 6: a Finance Terms entry has no source', mutate: (d) => { d.glossary.find((g) => g.id === 'beneficiary').source = null; } },
+  { rule: 'L6', why: 'PHASE 6: a term button points to "balance", which is not a finance term', termUses: (u) => [...u, ['src/features/home/BalancePanel.vue', 'balance']] },
+  { rule: 'L6', why: 'PHASE 6: a Finance Terms entry is not used on any screen', mutate: (d) => { d.glossary.push({ ...d.glossary[0], id: 'ticker-symbol', term: 'Ticker symbol', related: [] }); } },
   { rule: 'L1', why: 'a glossary entry links to a term that does not exist', mutate: (d) => { d.glossary[0].related.push('ghost-term'); } },
   { rule: 'L1', why: 'the word of the day is not in the glossary', mutate: (d) => { d.meta.wordOfTheDay = 'ghost-term'; } },
   { rule: 'L2', why: 'an explanation written at college level', mutate: (d) => { d.glossary[0].detail = 'The aggregate valuation encompasses contemporaneous market-determined assessments of constituent positions plus unallocated monetary reserves, recalculated continuously throughout regular exchange sessions.'; } },
   { rule: 'L2', why: 'REAL DEFECT (Sept. 23): the P302 point of view read at grade 9.5', mutate: (d) => { d['story-p302'].pointOfView = 'Starting early does more for you than putting in more money later, because early money has more years to grow on its own growth.'; } },
   { rule: 'L2', why: "REVIEW FINDING (Sept. 23): a company description read at grade 10.7 and was not being checked", mutate: (d) => { d.funds.find((f) => f.ticker === 'NVDA').about = 'Accelerated computing infrastructure underpins contemporary artificial intelligence applications worldwide.'; } },
-  { rule: 'L3', why: 'an explanation uses jargon', mutate: (d) => { d.glossary.find((g) => g.id === 'cash').detail = 'Cash has no volatility and full liquidity.'; } },
+  { rule: 'L3', why: 'an explanation uses jargon', mutate: (d) => { d.glossary.find((g) => g.id === 'invested').detail = 'It has full liquidity.'; } },
   { rule: 'L4', why: 'an explanation first line is far too long', mutate: (d) => { d.glossary[1].short = 'Money that you choose to move out of your regular bank account and into this investing account so that you can use it later.'; } },
   // L5 reads the copy files (src/**/copy.json). `copy` breaks a copy file; `mutate` breaks the data.
   { rule: 'L5', why: 'a copy sentence is above grade 8', copy: (c) => { c['src/features/home/copy.json'].welcome.lede = 'Consequently, organizational considerations necessitate comprehensive evaluation of individual circumstances.'; } },
@@ -153,6 +163,7 @@ const { data: real, missing: realMissing } = loadData();
 const realBrief = loadBriefExamples();
 const realCopy = loadCopy();
 const realSources = loadSources();
+const realTermUses = loadTermUses();
 let bad = 0;
 
 console.log('1) Each rule must FAIL on its broken data\n');
@@ -165,7 +176,8 @@ for (const c of CASES) {
   let copy = clone(realCopy);
   if (c.copy) copy = c.copy(copy) ?? copy;
   const sources = clone(realSources); if (c.sources) c.sources(sources);
-  const res = validate(d, { missing, briefExamples: c.briefExamples || realBrief, copy, sources });
+  const termUses = c.termUses ? c.termUses(clone(realTermUses)) : clone(realTermUses);
+  const res = validate(d, { missing, briefExamples: c.briefExamples || realBrief, copy, sources, termUses });
   const r = res.find((x) => x.id === c.rule);
   const failed = r && !r.ok;
   if (!failed) bad++;
@@ -173,7 +185,7 @@ for (const c of CASES) {
 }
 
 const covered = new Set(CASES.map((c) => c.rule));
-const all = validate(clone(real), { missing: realMissing, briefExamples: realBrief, copy: clone(realCopy), sources: clone(realSources) });
+const all = validate(clone(real), { missing: realMissing, briefExamples: realBrief, copy: clone(realCopy), sources: clone(realSources), termUses: clone(realTermUses) });
 const uncovered = all.map((r) => r.id).filter((id) => !covered.has(id));
 if (uncovered.length) { bad++; console.log(`\nMISS  rules with no broken case: ${uncovered.join(', ')}`); }
 

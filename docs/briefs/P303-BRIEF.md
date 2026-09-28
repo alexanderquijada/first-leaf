@@ -43,17 +43,19 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 {
   "account.weeklyChange.from": "2026-09-11",
   "account.weeklyChange.to": "2026-09-18",
-  "account.weeklyChange.startBalance": 1360.17,
+  "account.weeklyChange.startBalance": 1538.12,
   "account.weeklyChange.deposits": 0,
   "account.weeklyChange.dividends": 0,
-  "account.weeklyChange.marketChange": -1.67,
-  "account.weeklyChange.totalChange": -1.67,
-  "account.weeklyChange.endBalance": 1358.5,
-  "attention.rosa-starter.0.title": "Your $150 deposit from Sept. 1 was sent back",
-  "meta.wordOfTheDay": "ups-and-downs",
-  "activity.rosa-starter.42.type": "dividend",
-  "activity.rosa-starter.41.status": "returned",
-  "activity.rosa-starter.40.type": "dividend"
+  "account.weeklyChange.marketChange": -1.44,
+  "account.weeklyChange.totalChange": -1.44,
+  "account.weeklyChange.endBalance": 1536.68,
+  "attention.rosa-starter.0.title": "Name a beneficiary for your account",
+  "attention.rosa-starter.0.terms": ["beneficiary", "brokerage-account"],
+  "meta.wordOfTheDay": "invested",
+  "activity.rosa-starter.63.type": "dividend",
+  "activity.rosa-starter.63.ticker": "MSFT",
+  "activity.rosa-starter.62.type": "buy",
+  "activity.rosa-starter.61.type": "buy"
 }
 ```
 

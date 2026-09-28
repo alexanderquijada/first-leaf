@@ -9,7 +9,6 @@
   "balance": 0,
   "investedValue": 0,
   "cash": 0,
-  "cashSince": null,
   "moneyIn": 0,
   "gainLoss": 0,
   "gainLossPercent": 0,
@@ -17,9 +16,9 @@
   "recurringDeposit": null,
   "autoInvest": {
     "on": false,
-    "startedOn": null,
-    "pausedOn": null
+    "startedOn": null
   },
+  "beneficiary": null,
   "targetMix": null,
   "holdings": [],
   "goal": null,

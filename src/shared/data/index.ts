@@ -38,7 +38,6 @@ export interface Meta {
   asOf: ISODate
   lastClose: ISODate
   lastReview: ISODate
-  cashWaitingThreshold: number
   /** A holding moving this much (0.07 = 7%) in a week gets a heads-up. */
   bigMoveThreshold: number
   wordOfTheDay: string
@@ -136,13 +135,15 @@ export interface Account {
   balance: number
   investedValue: number
   cash: number
-  cashSince: ISODate | null
   moneyIn: number
   gainLoss: number
   gainLossPercent: number
   dividendsTotal: number
   recurringDeposit: { amount: number; dayOfMonth: number; startedOn: ISODate } | null
-  autoInvest: { on: boolean; startedOn: ISODate | null; pausedOn: ISODate | null }
+  /** Auto-invest buys the mix with each deposit; it never paused (Phase 6). */
+  autoInvest: { on: boolean; startedOn: ISODate | null }
+  /** Who gets the account if Rosa dies. Null until she names one (Phase 6). */
+  beneficiary: { name: string; relationship: string; fictional: true } | null
   targetMix: Partial<Record<Ticker, number>> | null
   holdings: Holding[]
   goal: Goal | null
@@ -156,14 +157,12 @@ interface ActivityBase {
   date: ISODate
   settledDate: ISODate
   amount: number
-  status: 'completed' | 'returned'
+  status: 'completed'
 }
 
 export interface DepositActivity extends ActivityBase {
   type: 'deposit'
   kind: 'first' | 'recurring'
-  returnedDate?: ISODate
-  returnReason?: string
 }
 
 export interface BuyActivity extends ActivityBase {
@@ -186,7 +185,7 @@ export type ActivityItem = DepositActivity | BuyActivity | DividendActivity
 
 // ── attention.json (keyed by account id, most urgent first) ──────────────────
 export interface FlagAction {
-  kind: 'retry-deposit' | 'one-time-deposit' | 'auto-invest' | 'open-fund'
+  kind: 'beneficiary' | 'open-fund'
   label: string
   amount?: number
 }
@@ -202,10 +201,9 @@ export interface AttentionFlag {
   action: FlagAction | null
   amount: number
   terms: string[]
-  route: 'activity' | 'overview' | 'fund' | 'glossary'
+  route: 'activity' | 'overview' | 'fund' | 'glossary' | 'settings'
   newSinceLastReview: boolean
   activityId?: string
-  goalId?: string
   ticker?: Ticker
   /** Big-move alerts: the week's price move, e.g. 0.08 means up 8%. */
   movePercent?: number
@@ -277,7 +275,6 @@ export interface RosaStory {
       month: string
     }
     atLow: { date: ISODate; balance: number; moneyIn: number; below: number }
-    pause: { date: ISODate } | null
     after: {
       backAboveDate: ISODate
       backAboveBalance: number
@@ -338,8 +335,8 @@ export interface GlossaryEntry {
   example: string
   /** Ids of related glossary entries. */
   related: string[]
-  /** Outside source. Null for First Leaf's own app terms, which have none. */
-  source: { label: string; url: string } | null
+  /** Where the term is defined: investor.gov, sec.gov, finra.org, sipc.org, irs.gov or consumerfinance.gov (rule L1). */
+  source: { label: string; url: string }
 }
 
 // ── Loaders ──────────────────────────────────────────────────────────────────

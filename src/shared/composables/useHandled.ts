@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import type { AttentionFlag } from '../data'
 import { useScenario } from './useScenario'
+import { useSession } from './useSession'
 
 // Module scope: handled alerts survive navigation and reset on reload.
 // Keyed by account, so each scenario keeps its own list.
@@ -10,6 +11,7 @@ const key = (accountId: string, alertId: string) => `${accountId}:${alertId}`
 /** "Mark as handled" with Undo, for the current account's alerts. */
 export function useHandled() {
   const { account, attention } = useScenario()
+  const { clearBeneficiary } = useSession()
 
   const isHandled = (id: string) => handled.value.includes(key(account.value.id, id))
   const open = computed(() => attention.value.filter((a) => !isHandled(a.id)))
@@ -22,6 +24,9 @@ export function useHandled() {
   function undo(alert: AttentionFlag) {
     const k = key(account.value.id, alert.id)
     handled.value = handled.value.filter((x) => x !== k)
+    // Undo on the beneficiary alert undoes the save too, so the alert never says "not named"
+    // beside a name (Phase 6 review finding).
+    if (alert.action?.kind === 'beneficiary') clearBeneficiary()
   }
 
   return { isHandled, open, done, markHandled, undo }

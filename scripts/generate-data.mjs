@@ -78,15 +78,15 @@ const LAST_REVIEW = '2026-09-13';      // the Sunday before
 const STOCK_START = '2025-09-19';      // the first stock anchor: 12 months of history
 const ACCOUNT_OPENED = '2026-03-02';
 const WEEK_START_CLOSE = '2026-09-11'; // "this week" = close Sept. 11 -> close Sept. 18
-const WORD_OF_THE_DAY = 'ups-and-downs';
-const CASH_WAITING = 25;               // dollars of cash before we call it "waiting"
+// Term of the Day (Phase 6): a Finance Terms entry that Home uses (the dark card's Invested row).
+const WORD_OF_THE_DAY = 'invested';
 const BIG_MOVE = 0.07;                 // a holding moving this much in a week gets a heads-up
 // The dip (ruling B, Phase 2.5): the largest 10-trading-day fall in Rosa's portfolio value
 // between April 15 and Aug. 15, 2026, measured as the market change in her balance (deposits
-// and dividends taken out). She pauses auto-invest on the next trading day after the low.
+// and dividends taken out). Auto-invest keeps buying with every deposit through it (Phase 6).
 const DIP_WINDOW = { from: '2026-04-15', to: '2026-08-15', tradingDays: 10 };
-// Ruling (Sept. 25): the first seed after 1 where the dip is an 8% to 15% fall. Seed 1's
-// 4.2% dip was too shallow to carry chapter 3.
+// Ruling (Sept. 25): the first seed after 1 where the dip is an 8% to 15% fall: seed 10. Seed 1's
+// 4.2% dip was too shallow to carry the story. Alex's ruling (Sept. 28): keep seed 10.
 const DIP_MIN = 0.08, DIP_MAX = 0.15;
 
 const meta = {
@@ -95,12 +95,11 @@ const meta = {
   asOf: AS_OF,
   lastClose: LAST_CLOSE,
   lastReview: LAST_REVIEW,
-  cashWaitingThreshold: CASH_WAITING,
   bigMoveThreshold: BIG_MOVE,
   wordOfTheDay: WORD_OF_THE_DAY,
   currency: 'USD',
   fictional: true,
-  dataVersion: 3,
+  dataVersion: 4,
 };
 
 const persona = {
@@ -111,7 +110,7 @@ const persona = {
   job: 'Dental hygienist',
   fictional: true,
   story:
-    'Rosa opened her first investing account in March 2026. She had never bought a stock before. She puts in $150 each month. This summer, a dip in prices made her nervous, so she paused auto-invest. She wants to understand what her money is doing without feeling lost.',
+    'Rosa opened her first investing account in March 2026. She had never bought a stock before. She puts in $150 each month, and auto-invest buys her mix with each deposit. This summer, prices dipped for two weeks, and auto-invest kept buying. She wants to understand what her money is doing without feeling lost.',
   worries: [
     'Losing money without knowing why',
     'Words like "volatility" that nobody explains',
@@ -229,7 +228,7 @@ function findDip(history, activity) {
   };
 }
 
-function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposits = {} }) {
+function simulate({ id, mix, priceOn, beneficiary = null }) {
   const shares = Object.fromEntries(Object.keys(mix).map((t) => [t, 0]));
   const costBasis = Object.fromEntries(Object.keys(mix).map((t) => [t, 0]));
   let cash = 0, moneyIn = 0, n = 1;
@@ -243,14 +242,10 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
   for (const d of accountDays) {
     for (const e of byDate[d] || []) {
       if (e.type === 'deposit') {
-        const returned = returnedDeposits[e.dep.date];
-        activity.push({ id: nextId(), date: e.dep.date, settledDate: d, type: 'deposit', kind: e.dep.kind, amount: e.dep.amount,
-          status: returned ? 'returned' : 'completed',
-          ...(returned ? { returnedDate: returned, returnReason: 'Your bank sent this money back. Banks do this for a few reasons, such as the account being low that day.' } : {}) });
-        if (returned) continue;
+        // Every deposit arrives, and auto-invest buys the mix with it the same day (Phase 6).
+        activity.push({ id: nextId(), date: e.dep.date, settledDate: d, type: 'deposit', kind: e.dep.kind, amount: e.dep.amount, status: 'completed' });
         cash = r2(cash + e.dep.amount); moneyIn = r2(moneyIn + e.dep.amount);
-        const autoOn = !autoInvestPausedOn || d < autoInvestPausedOn;
-        if (autoOn) for (const [t, w] of Object.entries(mix)) {
+        for (const [t, w] of Object.entries(mix)) {
           const dec = DECIMALS[kindOf(t)];
           const amt = r2(e.dep.amount * w), px = priceOn(t, d), sh = floorN(amt / px, dec);
           shares[t] = roundN(shares[t] + sh, dec); costBasis[t] = r2(costBasis[t] + amt); cash = r2(cash - amt);
@@ -278,9 +273,6 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
   const balance = r2(investedValue + cash);
   const gainLoss = r2(balance - moneyIn);
   const dividendsTotal = r2(activity.filter((a) => a.type === 'dividend').reduce((s, a) => s + a.amount, 0));
-  // Cash counts as "waiting" once it reaches CASH_WAITING (small leftovers from rounding and dividends don't).
-  let cashSince = null;
-  if (cash >= CASH_WAITING) for (let i = history.length - 1; i >= 0; i--) if (history[i].cash < CASH_WAITING) { cashSince = history[i + 1].date; break; }
 
   const start = history.find((r) => r.date === WEEK_START_CLOSE), end = history.at(-1);
   const wk = activity.filter((a) => a.date > WEEK_START_CLOSE && a.date <= LAST_CLOSE && a.status === 'completed');
@@ -304,35 +296,22 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
 
   const account = {
     id, ownerId: 'rosa', name: 'Starter account', fictional: true, openedOn: ACCOUNT_OPENED, asOf: AS_OF, lastClose: LAST_CLOSE,
-    balance, investedValue, cash, cashSince, moneyIn, gainLoss, gainLossPercent: r4(gainLoss / moneyIn), dividendsTotal,
+    balance, investedValue, cash, moneyIn, gainLoss, gainLossPercent: r4(gainLoss / moneyIn), dividendsTotal,
     recurringDeposit: RECURRING,
-    autoInvest: { on: !autoInvestPausedOn, startedOn: ACCOUNT_OPENED, pausedOn: autoInvestPausedOn },
+    autoInvest: { on: true, startedOn: ACCOUNT_OPENED },
+    beneficiary,
     targetMix: mix, holdings, goal, weeklyChange, history,
   };
 
   // ----- alerts: generated from rules, so they are true for THIS account -----
   const flags = [];
-  const ret = activity.filter((a) => a.status === 'returned' && daysBetween(a.returnedDate, AS_OF) <= 30).at(-1);
-  if (ret) flags.push({ id: 'deposit-returned', severity: 'needs-you', date: ret.returnedDate, raisedOn: ret.returnedDate,
-    title: `Your ${fmt(ret.amount)} deposit from ${apDate(ret.date)} was sent back`,
-    body: `Your bank sent it back on ${apDate(ret.returnedDate)}, so the money never reached First Leaf. Your investments were not touched.`,
-    nextStep: 'Check your bank account first. Then you can try the deposit again.',
-    action: { kind: 'retry-deposit', label: 'Try the deposit again' },
-    amount: ret.amount, activityId: ret.id, terms: ['returned-deposit', 'recurring-deposit'], route: 'activity' });
-  if (goal.behindBy > 0) flags.push({ id: 'goal-behind', severity: 'heads-up', date: AS_OF, raisedOn: ret ? ret.returnedDate : AS_OF,
-    title: `Your goal is ${fmt(goal.behindBy)} behind your plan`,
-    body: `You planned to put in ${fmt(goal.plannedMoneyInToDate)} by now. So far ${fmt(goal.actualMoneyInToDate)} went through. This only counts deposits, not the market.`,
-    nextStep: `You can add a one-time deposit to catch up, or keep going as planned. Either is fine.`,
-    action: { kind: 'one-time-deposit', label: 'Add a one-time deposit', amount: goal.behindBy },
-    amount: goal.behindBy, goalId: goal.id, terms: ['goal-pace', 'money-in'], route: 'overview' });
-  if (cash >= CASH_WAITING && cashSince) flags.push({ id: 'cash-sitting', severity: 'heads-up', date: cashSince, raisedOn: cashSince,
-    title: `${fmt(cash)} is waiting in cash`,
-    body: autoInvestPausedOn
-      ? `Auto-invest has been paused since ${apDate(autoInvestPausedOn)}, so deposits since then stay as cash. Cash does not go up or down with the market.`
-      : `This money has been in cash since ${apDate(cashSince)}. Cash does not go up or down with the market.`,
-    nextStep: 'It is your choice. You can turn auto-invest back on, or leave it paused.',
-    action: { kind: 'auto-invest', label: 'See auto-invest settings' },
-    amount: cash, terms: ['cash', 'auto-invest'], route: 'overview' });
+  // A funded account with no beneficiary (Phase 6): the one thing that needs Rosa.
+  if (!beneficiary && moneyIn > 0) flags.push({ id: 'beneficiary-missing', severity: 'needs-you', date: ACCOUNT_OPENED, raisedOn: ACCOUNT_OPENED,
+    title: 'Name a beneficiary for your account',
+    body: 'A beneficiary is the person who gets the money in your account if you die. You have not named one yet. Brokerages ask so your money can go to the person you choose, with fewer steps for your family.',
+    nextStep: 'You can add one now, or be reminded later. It takes about a minute.',
+    action: { kind: 'beneficiary', label: 'Add a beneficiary' },
+    amount: 0, terms: ['beneficiary', 'brokerage-account'], route: 'settings' });
   for (const h of holdings) {
     const p0 = priceOn(h.ticker, WEEK_START_CLOSE), p1 = h.price, move = p1 / p0 - 1;
     if (Math.abs(move) < BIG_MOVE || h.shares <= 0) continue;
@@ -342,7 +321,7 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
       body: `Its price went from ${fmtCents(p0)} on ${apDate(WEEK_START_CLOSE)} to ${fmtCents(p1)} on ${apDate(LAST_CLOSE)}. What you own in it went ${change >= 0 ? 'up' : 'down'} ${fmtCents(Math.abs(change))}.`,
       nextStep: 'Prices go up and down. Nothing changes in your account unless you choose to.',
       action: { kind: 'open-fund', label: `Open ${h.ticker}` },
-      ticker: h.ticker, movePercent: r4(move), amount: Math.abs(change), terms: ['ups-and-downs', 'price'], route: 'fund' });
+      ticker: h.ticker, movePercent: r4(move), amount: Math.abs(change), terms: ['volatility'], route: 'fund' });
   }
   const div = activity.filter((a) => a.type === 'dividend' && daysBetween(a.date, AS_OF) <= 7).at(-1);
   const cryptoHeld = holdings.filter((h) => h.kind === 'crypto' && h.shares > 0);
@@ -354,56 +333,53 @@ function simulate({ id, mix, priceOn, autoInvestPausedOn = null, returnedDeposit
       title: "SIPC protection doesn't cover crypto",
       body: "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price.",
       nextStep: 'Nothing to do. This is just so you know.',
-      action: null, amount: 0, terms: ['sipc-protection', 'crypto'], route: 'glossary' });
+      action: null, amount: 0, terms: ['sipc-protection', 'cryptocurrency'], route: 'glossary' });
   }
   if (div) flags.push({ id: 'dividend-paid', severity: 'fyi', date: div.date, raisedOn: div.date,
     title: `${div.ticker} paid you ${fmt(div.amount)}`,
     body: 'Some companies make small payments to the people who own their stock. It went into your cash.',
     nextStep: 'Nothing to do. This is just so you know.',
     action: null,
-    ticker: div.ticker, amount: div.amount, activityId: div.id, terms: ['dividend', 'cash'], route: 'activity' });
+    ticker: div.ticker, amount: div.amount, activityId: div.id, terms: ['dividend'], route: 'activity' });
   for (const fl of flags) fl.newSinceLastReview = fl.raisedOn > LAST_REVIEW;
   return { account, activity, flags };
 }
 
-// ---------- choose the seed ----------
-// Every anchor is hit by construction. The seed is the first one after 1 where Rosa is up overall,
-// the dip is an 8% to 15% fall, the dip found in her own (paused) history is the
-// same one that made her pause, and the calm account has nothing that needs her.
+// ---------- the seed ----------
+// Every anchor is hit by construction. Seed 10 (Alex's rulings, Sept. 25 and 28): its dip is an
+// 8% to 15% fall, both accounts end up overall, and the calm account has nothing that needs her.
+// The two accounts invest every deposit alike; only the beneficiary differs (Phase 6).
+const CALM_BENEFICIARY = { name: 'Luis Ortega', relationship: 'Brother', fictional: true };
 let SEED, assets, priceOn, main, calm, dip;
-for (let seed = Number(process.env.FL_SEED || 2); ; seed++) {
-  if (seed > 5000) throw new Error('no seed meets the data rules');
-  ({ assets, priceOn } = buildAssets(seed));
-  calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn });
-  const d0 = findDip(calm.account.history, calm.activity);
-  if (-d0.drop < DIP_MIN || -d0.drop > DIP_MAX) continue;
-  main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, autoInvestPausedOn: nextTradingDay(addDays(d0.lowDate, 1)), returnedDeposits: { '2026-09-01': '2026-09-03' } });
-  const d1 = findDip(main.account.history, main.activity);
-  if (d1.highDate !== d0.highDate || d1.lowDate !== d0.lowDate) continue;
-  if (!(main.account.gainLoss > 0 && calm.account.gainLoss > 0)) continue;
-  if (calm.flags.some((f) => f.severity !== 'fyi')) continue;
-  SEED = seed; dip = d1; break;
+{
+  SEED = Number(process.env.FL_SEED || 10);
+  ({ assets, priceOn } = buildAssets(SEED));
+  calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn, beneficiary: CALM_BENEFICIARY });
+  main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, beneficiary: null });
+  dip = findDip(main.account.history, main.activity);
+  if (-dip.drop < DIP_MIN || -dip.drop > DIP_MAX) throw new Error(`seed ${SEED}: the dip is ${pct1(-dip.drop)}%, outside 8% to 15%`);
+  if (!(main.account.gainLoss > 0 && calm.account.gainLoss > 0)) throw new Error(`seed ${SEED}: an account is down overall`);
+  if (calm.flags.some((f) => f.severity !== 'fyi')) throw new Error(`seed ${SEED}: the calm account has something that needs her`);
 }
 if (FIXTURE) {
   // Lower NVIDIA's Sept. 11 close so it rises 9% this week, then re-run both accounts on it.
   const nv = assets.find((a) => a.ticker === 'NVDA'), p0 = r2(nv.latestPrice / 1.09), base = priceOn;
   for (const k of ['daily', 'weekly']) for (const x of nv.history[k]) if (x.date === WEEK_START_CLOSE) x.close = p0;
   priceOn = (t, d) => (t === 'NVDA' && d === WEEK_START_CLOSE ? p0 : base(t, d));
-  main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, autoInvestPausedOn: main.account.autoInvest.pausedOn, returnedDeposits: { '2026-09-01': '2026-09-03' } });
-  calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn });
+  main = simulate({ id: 'rosa-starter', mix: MIX, priceOn, beneficiary: null });
+  calm = simulate({ id: 'rosa-all-clear', mix: MIX, priceOn, beneficiary: CALM_BENEFICIARY });
   meta.fixture = 'TEST-ONLY: a big-move week for the Playwright test. Never shipped.';
 }
 const funds = assets;
-const PAUSED_ON = main.account.autoInvest.pausedOn;
 const emptyAccount = {
   id: 'rosa-new', ownerId: 'rosa', name: 'Starter account', fictional: true, openedOn: LAST_CLOSE, asOf: AS_OF, lastClose: LAST_CLOSE,
-  balance: 0, investedValue: 0, cash: 0, cashSince: null, moneyIn: 0, gainLoss: 0, gainLossPercent: 0, dividendsTotal: 0,
-  recurringDeposit: null, autoInvest: { on: false, startedOn: null, pausedOn: null }, targetMix: null, holdings: [], goal: null, weeklyChange: null, history: [],
+  balance: 0, investedValue: 0, cash: 0, moneyIn: 0, gainLoss: 0, gainLossPercent: 0, dividendsTotal: 0,
+  recurringDeposit: null, autoInvest: { on: false, startedOn: null }, beneficiary: null, targetMix: null, holdings: [], goal: null, weeklyChange: null, history: [],
 };
 
 const scenarios = [
-  { id: 'normal', label: 'Rosa, six months in', description: 'Six months in. Her account has a few things worth a look.', accountId: 'rosa-starter' },
-  { id: 'all-clear', label: 'Nothing needs you', description: 'A calmer version of Rosa. Every deposit went through and auto-invest stayed on.', accountId: 'rosa-all-clear' },
+  { id: 'normal', label: 'Rosa, six months in', description: 'Six months in. She has not named a beneficiary yet.', accountId: 'rosa-starter' },
+  { id: 'all-clear', label: 'Nothing needs you', description: 'The same six months, with a beneficiary named, so nothing needs her.', accountId: 'rosa-all-clear' },
   { id: 'brand-new', label: 'Brand-new account', description: 'Rosa just opened her account and has not added money yet.', accountId: 'rosa-new' },
 ];
 
@@ -502,18 +478,16 @@ function rosaStoryFor({ account, activity }) {
   const at = h.find((r) => r.date === dp.lowDate);
   const atLow = { date: dp.lowDate, balance: at.balance, moneyIn: at.moneyIn, below: r2(at.moneyIn - at.balance) };
   const share = r4(a.moneyIn / a.balance);
-  const paused = a.autoInvest.pausedOn;
-  const since = paused || dp.lowDate;
-  const backAbove = h.find((r) => r.date > since && r.balance > r.moneyIn);
-  const depositsAfter = activity.filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > since)
+  const backAbove = h.find((r) => r.date > dp.lowDate && r.balance > r.moneyIn);
+  // Every deposit from the start of the fall on: auto-invest bought the mix with each one.
+  const depositsFrom = activity.filter((x) => x.type === 'deposit' && x.status === 'completed' && x.settledDate > dp.highDate)
     .map((x) => ({ date: x.settledDate, amount: x.amount }));
   const first = activity.find((x) => x.type === 'deposit' && x.kind === 'first');
   const facts = {
     openedOn: a.openedOn, firstDeposit: first.amount, moneyIn: a.moneyIn, balance: a.balance, earned: a.gainLoss,
     depositsShare: share, lastClose: LAST_CLOSE, dip: dp, atLow,
-    pause: paused ? { date: paused } : null,
     after: { backAboveDate: backAbove.date, backAboveBalance: backAbove.balance, backAboveMoneyIn: backAbove.moneyIn,
-      deposits: depositsAfter, depositsInvested: !paused, upNow: a.gainLoss },
+      deposits: depositsFrom, depositsInvested: true, upNow: a.gainLoss },
   };
   const list = (xs) => (xs.length <= 1 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1)}`);
   const claims = [
@@ -523,12 +497,8 @@ function rosaStoryFor({ account, activity }) {
       : `Your balance is ${fmtCents(-a.gainLoss)} below the ${fmt(a.moneyIn)} you put in.` },
     { id: 'dip', chapter: 3, text: `From ${apDate(dp.highDate)} to ${apDate(dp.lowDate)}, falling prices took ${fmtCents(dp.fall)} off your balance. That is a drop of ${pct1(-dp.drop)}%.` },
     ...(atLow.below > 0 ? [{ id: 'at-low', chapter: 3, text: `On ${apDate(atLow.date)}, your balance was ${fmtCents(atLow.balance)}. That was ${fmtCents(atLow.below)} below the ${fmt(atLow.moneyIn)} you had put in.` }] : []),
-    ...(paused
-      ? [{ id: 'pause', chapter: 3, text: `You paused auto-invest the next trading day, ${apDate(paused)}.` },
-         { id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
-         ...(depositsAfter.length ? [{ id: 'cash-after', chapter: 3, text: `After that, your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} stayed as cash.` }] : [])]
-      : [{ id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
-         { id: 'kept-buying', chapter: 3, text: `Auto-invest stayed on. Your ${list(depositsAfter.map((d) => apDate(d.date)))} deposit${depositsAfter.length > 1 ? 's' : ''} bought your mix the day ${depositsAfter.length > 1 ? 'they' : 'it'} arrived.` }]),
+    { id: 'back-above', chapter: 3, text: `By ${apDate(backAbove.date)}, your balance was back above what you had put in.` },
+    { id: 'kept-buying', chapter: 3, text: `Auto-invest kept buying through the dip. Your ${list(depositsFrom.map((d) => apDate(d.date)))} deposits each bought your mix the day they arrived.` },
     { id: 'up-now', chapter: 3, text: a.gainLoss >= 0 ? `On ${apDate(LAST_CLOSE)}, you were up ${fmtCents(a.gainLoss)}.` : `On ${apDate(LAST_CLOSE)}, you were down ${fmtCents(-a.gainLoss)}.` },
   ];
   const pointOfView = share >= 0.9 ? `${POV_NOW} ${POV_REST}` : POV_GENERAL;
@@ -551,7 +521,7 @@ write('practice.json', practice);
 write('story-p302.json', story);
 if (FIXTURE) writeFileSync(join(OUT, 'glossary.json'), readFileSync(join(ROOT, 'src', 'shared', 'data', 'glossary.json')));
 console.log(`Wrote data to ${OUT} (seed ${SEED})`);
-console.log('dip', dip, 'paused', PAUSED_ON);
+console.log('dip', dip);
 for (const { account: a, flags } of [main, calm]) console.log(a.id, { balance: a.balance, cash: a.cash, moneyIn: a.moneyIn, gainLoss: a.gainLoss, week: a.weeklyChange.totalChange, goal: [a.goal.behindBy, a.goal.progress], flags: flags.map((f) => `${f.id}${f.newSinceLastReview ? '*' : ''}`) });
 console.log(funds.map((f) => `${f.ticker} ${f.latestPrice} vol ${f.volatility} ups ${f.upsAndDowns}`).join(' | '));
 console.log({ niaFinal: nia.final, theoFinal: theo.final, monthlyNeeded, bumpySeed, bumpy: [bNia.at(-1).value, bTheo.at(-1).value], minYear: Math.min(...yearlyReturns) });

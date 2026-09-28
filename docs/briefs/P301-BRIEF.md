@@ -46,18 +46,24 @@ Reads only from `src/shared/data/` through `useScenario` (see BRIEF.md §4). Key
 
 ```json brief-example
 {
-  "attention.rosa-starter.0.id": "deposit-returned",
+  "attention.rosa-starter.0.id": "beneficiary-missing",
   "attention.rosa-starter.0.severity": "needs-you",
-  "attention.rosa-starter.3.id": "sipc-crypto",
+  "attention.rosa-starter.0.title": "Name a beneficiary for your account",
+  "attention.rosa-starter.0.action.label": "Add a beneficiary",
+  "attention.rosa-starter.1.id": "sipc-crypto",
+  "attention.rosa-starter.1.severity": "fyi",
+  "attention.rosa-all-clear.0.id": "sipc-crypto",
+  "account.beneficiary": null,
   "account.goal.target": 2000,
-  "account.goal.behindBy": 150,
+  "account.goal.behindBy": 0,
   "account.goal.plannedMoneyInToDate": 1400,
-  "account.goal.actualMoneyInToDate": 1250,
-  "account.autoInvest.pausedOn": "2026-06-08",
-  "account.investedValue": 1056.23,
-  "account.dividendsTotal": 2.27,
+  "account.goal.actualMoneyInToDate": 1400,
+  "account.autoInvest.on": true,
+  "account.investedValue": 1534.2,
+  "account.cash": 2.48,
+  "account.dividendsTotal": 2.48,
   "account.holdings.3.ticker": "COST",
-  "account.holdings.3.gainLoss": -15.01
+  "account.holdings.3.gainLoss": -22.61
 }
 ```
 
@@ -124,7 +130,7 @@ For Rosa this is **one needs-you item and one FYI**: "1 thing needs you." The ca
 
 | # | Flow | Steps | Done when |
 |---|---|---|---|
-| F1 | **Act on an alert** | Home → click "Name a beneficiary for your account" → its detail shows *what happened*, *what it means* (with the Beneficiary and Brokerage account terms) and *what you can do* → **Add a beneficiary** → fill in Name and Relationship → **Save** (or **Remind me later**) | Every alert opens at its own address. Saving marks the alert handled; it moves to a collapsed "Handled" group with Undo, and "1 thing needs you" becomes "Nothing needs you right now." Handled and session state survive navigation and reset on reload. |
+| F1 | **Act on an alert** | Home → click "Name a beneficiary for your account" → its detail shows *what happened*, *what it means* (with the Beneficiary and Brokerage account terms) and *what you can do* → **Add a beneficiary** → fill in Name and Relationship → **Save** (or **Remind me later**) | Every alert opens at its own address. Saving marks the alert handled; it moves to a collapsed "Handled" group with Undo, and "1 thing needs you" becomes "You have handled everything for this week." (the "All alerts handled" row below). Undo also undoes the save. Handled and session state survive navigation and reset on reload. |
 | F2 | **Understand any finance term** | Click or tab to any dotted-underlined term → the explanation opens, with its cited source → follow a related term → **Back to** the first term | Works by mouse, keyboard and screen reader on every page. Only real finance terms (Finance Terms entries) have a term button |
 | F3 | **Read the balance chart** | Switch 1 month / 3 months / Since March → move across the chart → **Show as table** | Values are read out in words; the table matches the chart |
 | F4 | **Look at an investment** | Investments → AAPL, then BTC → ticker badge, price chart (Since you bought / 6 months / 1 year) with its data note (the stock data note, or "Powered by CoinGecko API"), "Volatility: X of 5" (with the Volatility term), dividends (for stocks that pay them), the SIPC notice on crypto pages, what you paid vs. its value | Every investment page works, including AMZN, TSLA and SOL, which Rosa doesn't own |
@@ -138,7 +144,7 @@ For Rosa this is **one needs-you item and one FYI**: "1 thing needs you." The ca
 | **Nothing needs you** (calm account: a beneficiary named) | "Nothing needs you right now." A calm illustration. Any FYI (the SIPC notice, a dividend) still shows under "Good to know", without a badge. The list keeps its space, so the layout doesn't jump. |
 | **Brand-new account** ($0) | A welcome state with a mid-century illustration explaining what will appear once she adds money. Charts show a labeled empty frame with one sentence, not a broken axis. |
 | **Down, not up** | A holding that is down reads "down $X" in sentences, in terracotta; in tables "−$6.37" with "down" in the accessible label; plus a note that prices going up and down is normal (on the investment's page and in This week). |
-| **All alerts handled** | "You've handled everything for this week." Undo stays available. |
+| **All alerts handled** | "You have handled everything for this week." Undo stays available. |
 | **An alert address that doesn't exist** (`/alerts/nope`) | A friendly "We couldn't find that alert" with a link back to Alerts |
 | **An action already taken** | Once a beneficiary is saved, the alert shows that result under "What you can do", in place of the next step and its actions, and moves to Handled (with Undo). So it is never offered twice, and "needs you" no longer counts it. |
 | **No alerts at all** (brand-new) | The Alerts page shows only the calm list; there is no "Choose an alert" pane for alerts that don't exist. |

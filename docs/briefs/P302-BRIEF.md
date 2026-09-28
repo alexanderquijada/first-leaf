@@ -36,18 +36,22 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 ```json brief-example
 {
   "account.openedOn": "2026-03-02",
-  "account.balance": 1358.5,
-  "account.moneyIn": 1250,
-  "account.gainLoss": 108.5,
-  "account.autoInvest.pausedOn": "2026-06-08",
-  "account.cashSince": "2026-07-01",
+  "account.balance": 1536.68,
+  "account.moneyIn": 1400,
+  "account.gainLoss": 136.68,
+  "account.autoInvest.on": true,
   "account.history.57.date": "2026-05-21",
   "account.history.57.balance": 846.01,
   "account.history.67.date": "2026-06-05",
   "account.history.67.balance": 915.77,
   "account.history.67.moneyIn": 950,
+  "account.history.73.date": "2026-06-15",
+  "story-p302.rosaStory.rosa-starter.facts.depositsShare": 0.9111,
   "story-p302.rosaStory.rosa-starter.facts.dip.fall": 80.24,
-  "story-p302.rosaStory.rosa-starter.facts.dip.month": "June"
+  "story-p302.rosaStory.rosa-starter.facts.dip.month": "June",
+  "story-p302.rosaStory.rosa-starter.facts.after.depositsInvested": true,
+  "story-p302.rosaStory.rosa-starter.claims.1.text": "About 91% of your balance is money you put in. The other $136.68 is what it earned.",
+  "story-p302.rosaStory.rosa-starter.claims.5.text": "Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived."
 }
 ```
 
@@ -76,10 +80,10 @@ The story says what happened and stops there. It describes the dip and what auto
   "story-p302.savers.1.final.putIn": 59400,
   "story-p302.savers.1.final.value": 186212.95,
   "story-p302.catchUp.monthlyNeeded": 196,
-  "story-p302.bumpy.nia.43.value": 216910.23,
-  "story-p302.bumpy.theo.33.value": 181229.75,
-  "story-p302.yourTurn.startAge": 26,
-  "story-p302.yourTurn.monthly": 150
+  "story-p302.catchUp.slider.min": 150,
+  "story-p302.catchUp.slider.max": 300,
+  "story-p302.startAgeSlider.min": 18,
+  "story-p302.startAgeSlider.max": 45
 }
 ```
 
