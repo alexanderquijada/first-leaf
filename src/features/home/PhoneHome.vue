@@ -1,10 +1,9 @@
 <script setup lang="ts">
-// Home under 600px (P303's 60-second check-in): balance and this week, a small
-// balance chart, what needs you, why it moved (opens in place), the latest three
-// transactions and the word of the day. Everything else is one tap away.
+// Home under 600px (P303's 60-second check-in): the dark balance card first (the same card
+// as the laptop, Balance inside it), then what needs you, why it moved (opens in place), a
+// small balance chart, the latest three transactions and the Term of the Day (Phase 6).
 import { computed, ref } from 'vue'
 import { describeActivity, type Row } from '@/shared/activityText'
-import Money from '@/shared/components/Money.vue'
 import SeverityBadge from '@/shared/components/SeverityBadge.vue'
 import TermTip from '@/shared/components/TermTip.vue'
 import WordChips from '@/shared/components/WordChips.vue'
@@ -14,16 +13,16 @@ import { useScenario } from '@/shared/composables/useScenario'
 import { useSession } from '@/shared/composables/useSession'
 import { meta } from '@/shared/data'
 import { formatChange, formatDate, formatMoney, formatSigned } from '@/shared/format'
-import CopyText from '@/shared/components/CopyText.vue'
 import { fill } from '@/shared/copy'
 import BalanceOverTime from './BalanceOverTime.vue'
+import BalancePanel from './BalancePanel.vue'
 import copy from './copy.json'
 import WelcomeCard from './WelcomeCard.vue'
 import Starburst from '@/shared/illustrations/Starburst.vue'
 
 const { account, activity } = useScenario()
 const { open } = useHandled()
-const { pendingDeposits, isSeen } = useSession()
+const { isSeen } = useSession()
 const { glossary } = useGlossary()
 const P = copy.phone
 
@@ -48,22 +47,18 @@ const whyShort = computed(() => {
   ].filter(Boolean).join(' ')
 })
 const anyDown = computed(() => w.value?.byFund.some((f) => f.change < 0) ?? false)
-// "Words on this screen" lists only the words the open breakdown shows (a $0.00 piece is left out).
+// "Finance terms on this screen" lists only real finance terms the open breakdown shows
+// (a $0.00 piece is left out; "ups and downs are normal" is about volatility).
 const whyWords = computed(() => {
   const x = w.value
   if (!x) return []
-  return [
-    ...(x.marketChange !== 0 ? ['the-market'] : []),
-    ...(x.dividends !== 0 ? ['dividend'] : []),
-    ...(x.deposits !== 0 ? ['deposit'] : []),
-    ...(anyDown.value ? ['ups-and-downs'] : []),
-  ]
+  return [...(x.dividends !== 0 ? /* term ids */ ['dividend'] : []), ...(anyDown.value ? /* term ids */ ['volatility'] : [])]
 })
 
-// Latest three: this session's pending deposits first, then the newest activity.
-const latest = computed<Row[]>(() => [...[...pendingDeposits.value].reverse(), ...[...activity.value].reverse()].slice(0, 3))
+// Latest three: the newest activity.
+const latest = computed<Row[]>(() => [...activity.value].reverse().slice(0, 3))
 
-// Word of the day, then Next word in glossary order.
+// Term of the Day (Phase 6), then Next term in Finance Terms order.
 const wordIndex = ref(Math.max(0, glossary.findIndex((g) => g.id === meta.wordOfTheDay)))
 const word = computed(() => glossary[wordIndex.value]!)
 function nextWord() {
@@ -76,17 +71,13 @@ function nextWord() {
     <h1 class="fl-visually-hidden">{{ copy.title }}</h1>
 
     <template v-if="account.history.length">
-      <section class="phome__balance" :aria-label="copy.balance.label">
-        <p class="phome__label"><TermTip id="balance">{{ copy.balance.label }}</TermTip></p>
-        <p class="phome__big fl-tabular"><Money :amount="account.balance" /></p>
-        <p v-if="w" class="phome__week"><CopyText :text="P.weekChange"><template #change><Money :amount="w.totalChange" change capitalize /></template></CopyText></p>
-      </section>
+      <BalancePanel />
 
-      <section class="fl-panel phome__needs" aria-labelledby="phome-needs">
+      <section class="phome__card phome__needs" aria-labelledby="phome-needs">
         <h2 id="phome-needs" class="phome__needs-title">
           <template v-if="needsYou.length">{{ needsYou.length === 1 ? P.needsOne : fill(P.needsMany, { count: needsYou.length }) }}</template>
           <template v-else-if="headsUps.length">{{ headsUps.length === 1 ? P.headsUpOne : fill(P.headsUpMany, { count: headsUps.length }) }}</template>
-          <template v-else><Starburst :size="26" color="var(--color-lime)" class="phome__sun" />{{ P.nothing }}</template>
+          <template v-else><Starburst :size="26" color="var(--color-forest)" class="phome__sun" />{{ P.nothing }}</template>
         </h2>
         <RouterLink v-if="top" :to="`/alerts/${top.id}`" class="phome__top">
           <span class="phome__tags"><SeverityBadge :severity="top.severity" /><span v-if="isSeen(top.id)" class="phome__seen">{{ P.seen }}</span></span>
@@ -176,7 +167,7 @@ function nextWord() {
         <ul class="phome__latest">
           <li v-for="r in latest" :key="r.id">
             <span class="phome__latest-date">{{ formatDate(r.date) }}</span>
-            <span class="phome__latest-what">{{ describeActivity(r).what }}<span v-if="describeActivity(r).status !== 'Completed'" class="phome__status">{{ fill(P.latestStatus, { status: describeActivity(r).label }) }}</span></span>
+            <span class="phome__latest-what">{{ describeActivity(r).what }}</span>
             <span class="fl-tabular">{{ formatMoney(r.amount) }}</span>
           </li>
         </ul>
@@ -204,33 +195,8 @@ function nextWord() {
   gap: 16px;
 }
 
-.phome__label {
-  margin: 0;
-  color: var(--color-ink-muted);
-  font-weight: 600;
-}
-
-.phome__big {
-  margin: 0;
-  font-family: var(--font-display);
-  /* Grows with large text, but never wider than the phone (15vw is 58px at 390). */
-  font-size: min(2.75rem, 15vw);
-  line-height: 1.1;
-}
-
-.phome__week {
-  margin: 4px 0 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-.phome__needs {
-  padding: 16px;
-  border-radius: 16px;
-  background: var(--color-panel);
-  color: var(--color-cream);
-  --fl-term-underline: var(--color-lime);
-}
+/* The needs-you card sits under the dark balance card, on paper like the laptop's
+   attention card (Phase 6). */
 
 .phome__sun {
   margin-right: 8px;
@@ -250,14 +216,14 @@ function nextWord() {
   min-height: 56px;
   margin-top: 8px;
   padding: 8px 0;
-  color: var(--color-cream);
+  color: var(--color-ink);
   text-decoration: none;
-  border-top: 1px solid rgb(185 199 190 / 0.35);
+  border-top: 1px solid var(--color-mint);
 }
 
 .phome__more {
   justify-content: space-between;
-  color: var(--color-lime);
+  color: var(--color-forest);
   font-weight: 600;
 }
 
@@ -268,16 +234,16 @@ function nextWord() {
 
 .phome__seen {
   padding: 2px 8px;
-  border: 1px solid var(--color-on-panel);
+  border: 1px solid var(--color-ink-muted);
   border-radius: 999px;
   font-size: var(--type-small); /* never under 14px */
-  color: var(--color-on-panel);
+  color: var(--color-ink-muted);
 }
 
 .phome__fyi-title {
   margin-top: 8px;
   font-size: 1rem;
-  color: var(--color-on-panel);
+  color: var(--color-ink-muted);
 }
 
 .phome__card {

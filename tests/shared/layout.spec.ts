@@ -13,7 +13,7 @@ test.describe('desktop, 1280px', () => {
     await expect(page.locator('.fl-tabs')).toBeHidden()
     await expect(page.locator('.fl-bottombar')).toBeHidden()
     const links = nav(page).getByRole('link')
-    await expect(links).toHaveText(['Home', 'Activity', 'Investments', 'Your money story', 'Practice', 'Words'])
+    await expect(links).toHaveText(['Home', 'Activity', 'Investments', 'Your Journey', 'Practice', 'Finance Terms'])
     await expect(nav(page).getByRole('link', { name: 'Activity' })).toHaveAttribute('aria-current', 'page')
     await expect(page.getByText('Good morning, Rosa.')).toBeVisible()
     await expect(page.getByText('Prices as of Fri., Sept. 18')).toBeVisible()
@@ -28,7 +28,8 @@ test.describe('tablet, 768px', () => {
     await expect(page.locator('.fl-tabs')).toBeVisible()
     await expect(page.locator('.fl-rail')).toBeHidden()
     await expect(page.locator('.fl-bottombar')).toBeHidden()
-    await expect(nav(page).getByRole('link', { name: 'Your money story' })).toHaveAttribute('aria-current', 'page')
+    await expect(nav(page).getByRole('link')).toHaveText(['Home', 'Activity', 'Investments', 'Your Journey', 'Practice', 'Finance Terms'])
+    await expect(nav(page).getByRole('link', { name: 'Your Journey' })).toHaveAttribute('aria-current', 'page')
   })
 })
 
@@ -42,7 +43,7 @@ test.describe('phone, 390px', () => {
     await expect(page.locator('.fl-rail')).toBeHidden()
     await expect(page.locator('.fl-tabs')).toBeHidden()
     const tabs = bar.getByRole('link')
-    await expect(tabs).toHaveText(['Home', 'Activity', 'Story', 'Practice', 'Words'])
+    await expect(tabs).toHaveText(['Home', 'Activity', 'Journey', 'Practice', 'Terms'])
     for (const box of await tabs.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()))) {
       expect(box.width).toBeGreaterThanOrEqual(48)
       expect(box.height).toBeGreaterThanOrEqual(48)
@@ -54,9 +55,10 @@ test.describe('phone, 390px', () => {
   })
 
   test('the end of the page is not hidden behind the bottom tab bar', async ({ page }) => {
-    await page.goto('/story')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your money story')
-    const last = page.locator('main #chapter-6 .k6__go')
+    await page.goto('/story#section-4')
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your Journey')
+    const last = page.locator('main #section-4 .section__go')
+    await expect(last).toHaveText('Go to Practice')
     const bar = page.locator('.fl-bottombar')
     await expect
       .poll(async () => {
@@ -117,7 +119,7 @@ test('the story states its point of view, and only the part that is true', async
   await page.goto('/story')
   await expect(page.getByText('Right now, almost all of your balance is money you put in.')).toBeVisible()
   await page.goto('/story?scenario=brand-new')
-  await expect(page.locator('.story__pov', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
+  await expect(page.locator('.section__claim', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
   await expect(page.getByText('Right now, almost all')).toHaveCount(0)
 })
 

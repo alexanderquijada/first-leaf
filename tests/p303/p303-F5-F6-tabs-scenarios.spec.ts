@@ -5,9 +5,9 @@ import { load, money } from '../data'
 const TABS = [
   ['Home', '/', 'Good morning'],
   ['Activity', '/activity', 'Activity'],
-  ['Story', '/story', 'Your money story'],
+  ['Journey', '/story', 'Your Journey'],
   ['Practice', '/practice', 'Practice'],
-  ['Words', '/learn', 'Words'],
+  ['Terms', '/learn', 'Finance Terms'],
 ] as const
 
 test.describe('F5 at 390px', () => {
@@ -16,9 +16,11 @@ test.describe('F5 at 390px', () => {
   test('every tab is 48px or more, shows where you are, and the bar stays put while the page scrolls', async ({ page }) => {
     await page.goto('/story')
     const bar = page.locator('.fl-bottombar')
-    for (const [name, path] of TABS) {
+    await expect(bar.getByRole('link')).toHaveText(TABS.map(([name]) => name))
+    for (const [name, path, title] of TABS) {
       await bar.getByRole('link', { name, exact: true }).tap()
       await expect(page).toHaveURL(new RegExp(`${path === '/' ? '/$' : path + '$'}`))
+      if (path !== '/') await expect(page.getByRole('heading', { level: 1 })).toHaveText(title)
       // Exactly one tab is current, and it is this one (a bar, bold and color, not color alone).
       await expect(bar.locator('[aria-current="page"]')).toHaveCount(1)
       await expect(bar.getByRole('link', { name, exact: true })).toHaveAttribute('aria-current', 'page')
@@ -28,7 +30,7 @@ test.describe('F5 at 390px', () => {
       }
     }
     // The bar keeps its place at the bottom, opaque, while the content scrolls under it.
-    await bar.getByRole('link', { name: 'Story', exact: true }).tap()
+    await bar.getByRole('link', { name: 'Journey', exact: true }).tap()
     const before = (await bar.boundingBox())!
     await page.evaluate(() => window.scrollTo(0, 1500))
     const after = (await bar.boundingBox())!
@@ -47,7 +49,7 @@ test.describe('F6 in phone view at 1280px', () => {
       await page.goto(`/p303?scenario=${scenario}`)
       const phone = page.frameLocator('iframe[title="First Leaf on a phone"]')
       await expect(phone.locator('.fl-bottombar')).toBeVisible()
-      if (a.history.length) await expect(phone.locator('.phome__big')).toHaveText(money(a.balance))
+      if (a.history.length) await expect(phone.locator('.balance .balance__big')).toHaveText(money(a.balance))
       else await expect(phone.getByRole('heading', { name: 'Welcome, Rosa.' })).toBeVisible()
       // The scenario stays with the phone as it moves.
       await phone.locator('.fl-bottombar').getByRole('link', { name: 'Activity' }).click()
@@ -59,18 +61,51 @@ test.describe('F6 in phone view at 1280px', () => {
 test.describe('Why it moved on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 } })
 
-  test('"Words on this screen" lists only the words the breakdown shows', async ({ page }) => {
+  test('"Finance terms on this screen" lists only the finance terms the breakdown shows', async ({ page }) => {
     const w = load('account').weeklyChange
     await page.goto('/')
     await page.getByRole('button', { name: /Why it moved/ }).click()
     const why = page.locator('.phome__why')
+    await expect(why.getByRole('heading', { name: 'Finance terms on this screen' })).toBeVisible()
     const chips = why.locator('.chips li .fl-termtip__button')
     const expected = [
-      ...(w.marketChange !== 0 ? ['The market'] : []),
       ...(w.dividends !== 0 ? ['Dividend'] : []),
-      ...(w.deposits !== 0 ? ['Deposit'] : []),
-      ...(w.byFund.some((f: { change: number }) => f.change < 0) ? ['Ups and downs'] : []),
+      ...(w.byFund.some((f: { change: number }) => f.change < 0) ? ['Volatility'] : []),
     ]
     await expect(chips).toHaveText(expected)
+  })
+})
+
+// Phase 6: the tabs say Home, Activity, Journey, Practice, Terms. Each label fits on one line in
+// a 64px tab at 320px. "Finance Terms" would not, which is why the tab says "Terms" (the page
+// title and the rail still say "Finance Terms").
+test.describe('tab labels at 320px', () => {
+  test.use({ viewport: { width: 320, height: 640 } })
+
+  const lines = (page: import('@playwright/test').Page) =>
+    page.locator('.fl-bottombar__label').evaluateAll((els) =>
+      els.map((e) => {
+        const r = e.getBoundingClientRect(), tab = e.closest('a')!.getBoundingClientRect()
+        const lh = parseFloat(getComputedStyle(e).lineHeight)
+        return { text: e.textContent!.trim(), lines: Math.round(r.height / lh), width: r.width, tabWidth: tab.width, tabHeight: tab.height }
+      }),
+    )
+
+  test('every tab label fits on one line, and "Finance Terms" would not', async ({ page }, info) => {
+    await page.goto('/')
+    const measured = await lines(page)
+    expect(measured.map((m) => m.text)).toEqual(TABS.map(([name]) => name))
+    for (const m of measured) {
+      info.annotations.push({ type: 'measured', description: `"${m.text}": ${m.lines} line(s), ${m.width.toFixed(1)}px wide in a ${m.tabWidth.toFixed(1)}×${m.tabHeight.toFixed(1)}px tab` })
+      expect(m.lines, `"${m.text}" is on one line`).toBe(1)
+      expect(m.width, `"${m.text}" fits inside its tab`).toBeLessThanOrEqual(m.tabWidth)
+      expect(m.tabWidth).toBeGreaterThanOrEqual(48)
+      expect(m.tabHeight).toBeGreaterThanOrEqual(48)
+    }
+    // Render "Finance Terms" in the Terms tab and measure it.
+    await page.locator('.fl-bottombar__label').last().evaluate((e) => (e.textContent = 'Finance Terms'))
+    const long = (await lines(page)).at(-1)!
+    info.annotations.push({ type: 'measured', description: `"Finance Terms" in the same tab: ${long.lines} lines, ${long.width.toFixed(1)}px wide in a ${long.tabWidth.toFixed(1)}px tab` })
+    expect(long.lines, '"Finance Terms" wraps in a 320px tab').toBeGreaterThan(1)
   })
 })

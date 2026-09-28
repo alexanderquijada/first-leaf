@@ -91,7 +91,7 @@ test.describe('at 1280px', () => {
     await expect(phone.getByRole('heading', { level: 1 })).toContainText('AAPL')
     expect(await page.locator(FRAME).getAttribute('src')).toContain('scenario=all-clear')
     // Moving around inside the phone doesn't change where Back goes.
-    await phone.locator('.fl-bottombar').getByRole('link', { name: 'Story' }).click()
+    await phone.locator('.fl-bottombar').getByRole('link', { name: 'Journey' }).click()
     await expect(page).toHaveURL(/\/p303\/story\?scenario=all-clear$/)
     await page.getByRole('button', { name: 'Back to full view' }).click()
     await expect(page).toHaveURL(/\/funds\/AAPL\?scenario=all-clear$/)
@@ -101,7 +101,7 @@ test.describe('at 1280px', () => {
 
   test('arriving at /p303 directly, Back to full view goes to laptop Home', async ({ page }) => {
     await page.goto('/p303/story?scenario=brand-new')
-    await expect(page.frameLocator(FRAME).locator('.story__pov', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
+    await expect(page.frameLocator(FRAME).locator('.section__claim', { hasText: 'Growth needs years. Starting early' })).toBeVisible()
     await page.getByRole('button', { name: 'Back to full view' }).click()
     await expect(page).toHaveURL(/\/\?scenario=brand-new$/)
     await expect(page.locator('.fl-rail')).toBeVisible()

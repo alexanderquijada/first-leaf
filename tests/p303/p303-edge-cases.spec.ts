@@ -24,8 +24,8 @@ for (const s of SCENARIOS) {
     }
     const a = load(s.file)
     if (a.history.length) {
-      await expect(page.locator('.phome__big')).toHaveText(money(a.balance))
-      await expect(page.locator('.phome__big')).toBeInViewport()
+      await expect(page.locator('.balance .balance__big')).toHaveText(money(a.balance))
+      await expect(page.locator('.balance .balance__big')).toBeInViewport()
       // Cards grow taller, never wider.
       const cards = await page.locator('.phome > *').evaluateAll((els) => els.map((e) => e.getBoundingClientRect().right))
       for (const r of cards) expect(r).toBeLessThanOrEqual(320 - 16 + 0.5)
@@ -60,7 +60,7 @@ test('a down week says "down" in words, and says ups and downs are normal', asyn
   const w = account.weeklyChange
   expect(w.totalChange).toBeLessThan(0)
   await page.goto('/')
-  await expect(page.locator('.phome__week')).toHaveText(`Down ${money(w.totalChange)} this week`)
+  await expect(page.locator('.balance')).toContainText(`This week: down ${money(w.totalChange)}.`)
   await page.getByRole('button', { name: /Why it moved/ }).click()
   const why = page.locator('.phome__why')
   await expect(why).toContainText(`The market: down ${money(w.marketChange)}.`)
@@ -81,15 +81,15 @@ test('at 320px, every Practice error shows above the keypad, and a half-entered 
     const e = (await err.boundingBox())!, banner = (await page.locator('.practice__banner').boundingBox())!
     return e.y - (banner.y + banner.height)
   }).toBeGreaterThanOrEqual(0)
-  // Interrupted: leave for Words and come back; the amount is still there.
-  await page.locator('.fl-bottombar').getByRole('link', { name: 'Words' }).click()
+  // Interrupted: leave for Finance Terms and come back; the amount is still there.
+  await page.locator('.fl-bottombar').getByRole('link', { name: 'Terms' }).click()
   await page.locator('.fl-bottombar').getByRole('link', { name: 'Practice' }).click()
   await expect(err).toHaveText('You have $1,000.00 in practice money. Enter that much or less.')
 })
 
 test('phone body text has a line height of at least 1.6', async ({ page }) => {
   const low: string[] = []
-  for (const path of ['/', '/alerts/deposit-returned', '/activity/rosa-starter-035', '/funds/AAPL', '/story', '/learn/sipc-protection']) {
+  for (const path of ['/', '/alerts/beneficiary-missing', '/activity/rosa-starter-035', '/funds/AAPL', '/story#section-1', '/story#section-2', '/story#section-3', '/story#section-4', '/learn/sipc-protection']) {
     await page.goto(path)
     await page.locator('main').waitFor()
     low.push(
@@ -109,7 +109,7 @@ test('phone body text has a line height of at least 1.6', async ({ page }) => {
 })
 
 // Phase 5 (second review): no text on any phone page is under 14px, including the "Seen"
-// pill and chapter 5's slider labels, anywhere on the page, not only on the first screen.
+// pill and the Start early slider labels, anywhere on the page, not only on the first screen.
 test('no phone text is under 14px on any page', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const small: string[] = []
@@ -128,21 +128,18 @@ test('no phone text is under 14px on any page', async ({ page }) => {
       }, where)),
     )
   }
-  for (const path of ['/', '/alerts', '/alerts/deposit-returned', '/activity', '/activity/rosa-starter-035', '/funds', '/funds/BTC', '/practice', '/learn', '/learn/crypto', '/?scenario=all-clear', '/?scenario=brand-new']) {
+  for (const path of ['/', '/alerts', '/alerts/beneficiary-missing', '/activity', '/activity/rosa-starter-035', '/funds', '/funds/BTC', '/practice', '/learn', '/learn/cryptocurrency', '/story#section-1', '/story#section-2', '/story#section-3', '/story#section-4', '/?scenario=all-clear', '/?scenario=brand-new']) {
     await page.goto(path)
     await page.locator('main').waitFor()
     await scan(path)
   }
-  // After an alert is seen, and with chapter 5 open.
+  // After an alert is seen.
   await page.goto('/')
   await page.locator('.phome__needs .phome__top').first().click()
   await expect(page.locator('.adetail')).toBeVisible() // the alert page marks it seen when it opens
   await page.locator('.fl-bottombar').getByRole('link', { name: 'Home' }).click()
   await expect(page.locator('.phome__seen')).toBeVisible()
   await scan('/ (seen)')
-  await page.goto('/story#chapter-5')
-  await page.getByRole('button', { name: 'Show the answer' }).click()
-  await scan('/story (chapter 5 open)')
   expect([...new Set(small)]).toEqual([])
 })
 
@@ -159,12 +156,13 @@ test('with "Seen", the needs-you row keeps its chevron on the right, on one row'
   expect(go.y).toBeLessThan(r.y + r.height / 2 + 12)
 })
 
-test('chapter 4 lists its words as 48px chips on a phone, not as small inline buttons', async ({ page }) => {
+// Phase 6: old story links (#chapter-1 … #chapter-6) open the matching Journey section on a phone.
+test('old #chapter links open the matching Journey section', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/story#chapter-4')
-  const ch4 = page.locator('#chapter-4')
-  const chips = ch4.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')
-  await expect(chips).toHaveText(['Stock', 'Crypto', 'Cash in your account'])
-  for (const b of await chips.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()))) expect(b.height).toBeGreaterThanOrEqual(48)
-  await expect(ch4.getByText('Words: stocks, crypto, cash.')).toHaveCount(0)
+  for (const [chapter, section, name] of [[1, 1, 'Six months in'], [2, 1, 'Six months in'], [3, 2, /^The dip/], [4, 1, 'Six months in'], [5, 3, 'Start early'], [6, 4, 'Try it']] as const) {
+    await page.goto(`/story#chapter-${chapter}`)
+    await expect(page).toHaveURL(new RegExp(`/story#section-${section}$`))
+    await expect(page.getByRole('tabpanel').getByRole('heading', { level: 2 })).toHaveText(name)
+    await expect(page.getByRole('tab', { selected: true })).toContainText(`Section ${section}`)
+  }
 })

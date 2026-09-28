@@ -40,9 +40,10 @@ test('why it moved opens in place and adds up to the cent', async ({ page }) => 
   await expect(body).toContainText(`${down.ticker} moved down ${money(down.change)} this week.`)
   await expect(body).toContainText(`Price changes across everything you own added up to a ${money(w.marketChange)} ${w.marketChange < 0 ? 'drop' : 'rise'}.`)
   await expect(body).toContainText('Ups and downs are normal.')
-  // Its words, as 48px chips: only the words the breakdown shows (a $0.00 piece is left out).
-  const chips = body.getByRole('region', { name: 'Words on this screen' }).locator('.fl-termtip__button')
-  await expect(chips).toHaveCount([w.marketChange, w.dividends, w.deposits].filter((v) => v !== 0).length + 1)
+  // Its finance terms, as 48px chips: only the real finance terms the breakdown shows (Phase 6):
+  // Dividend when a dividend piece shows, and Volatility when an investment went down.
+  const chips = body.getByRole('region', { name: 'Finance terms on this screen' }).locator('.fl-termtip__button')
+  await expect(chips).toHaveText([...(w.dividends !== 0 ? ['Dividend'] : []), ...(w.byFund.some((f: { change: number }) => f.change < 0) ? ['Volatility'] : [])])
   for (const b of await chips.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()))) {
     expect(b.height).toBeGreaterThanOrEqual(48)
     expect(b.width).toBeGreaterThanOrEqual(48)

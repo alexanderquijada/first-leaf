@@ -3,7 +3,7 @@ import { test, expect } from '../fixtures'
 
 // Phase 4: every page at every screen size (BRIEF.md §10), at 200% zoom, and by keyboard.
 // 200% zoom on a 1280 × 800 laptop is a 640 × 400 CSS window; on a 768 tablet it is 384 × 512.
-const PAGES = ['/', '/alerts', '/alerts/deposit-returned', '/alerts/sipc-crypto', '/activity', '/activity/rosa-starter-035', '/funds', '/funds/AAPL', '/funds/BTC', '/story', '/practice', '/learn', '/learn/sipc-protection', '/nope']
+const PAGES = ['/', '/alerts', '/alerts/beneficiary-missing', '/alerts/sipc-crypto', '/activity', '/activity/rosa-starter-035', '/funds', '/funds/AAPL', '/funds/BTC', '/story', '/story#section-2', '/story#section-3', '/story#section-4', '/practice', '/learn', '/learn/sipc-protection', '/nope']
 const SCENARIO_PAGES = ['/', '/alerts', '/activity', '/funds', '/story', '/practice'].flatMap((p) => [`${p}?scenario=all-clear`, `${p}?scenario=brand-new`])
 const ALL = [...PAGES, ...SCENARIO_PAGES]
 
@@ -45,6 +45,7 @@ for (const size of SIZES) {
     test.use({ viewport: { width: size.width, height: size.height } })
 
     test('no page scrolls sideways (tables scroll inside their own box)', async ({ page }) => {
+      test.setTimeout(90_000)
       const wide: string[] = []
       for (const path of ALL) {
         await page.goto(path)
@@ -56,6 +57,7 @@ for (const size of SIZES) {
     })
 
     test(`every control is at least ${size.width < 600 ? 48 : 24}px`, async ({ page }) => {
+      test.setTimeout(90_000)
       const small: string[] = []
       for (const path of ALL) {
         await page.goto(path)
@@ -96,21 +98,35 @@ for (const size of [SIZES[1]!, SIZES[6]!]) {
 
 // Large text: the phone's text size set to 200% (the root font doubled), not only a zoomed
 // window. Cards grow taller, never wider, and nothing is cut off (P303 edge cases).
+async function wideAt200(page: Page, width: number, paths: string[]) {
+  const wide: string[] = []
+  for (const path of paths) {
+    await page.goto(path)
+    await page.locator('main').waitFor()
+    await page.evaluate(() => (document.documentElement.style.fontSize = '200%'))
+    await page.waitForTimeout(1000) // let charts and fonts settle at the new size
+    const w = await page.evaluate(() => document.documentElement.scrollWidth)
+    if (w > width) wide.push(`${path}: ${w}px`)
+  }
+  return wide
+}
+
+// Phase 6 app bug (see below): at 200% text on a 320px phone, Home's dark balance card is 5px too wide.
+const HOME_320 = ['/', '/?scenario=all-clear']
+
 for (const width of [390, 320]) {
   test.describe(`at 200% text size on a ${width}px phone`, () => {
     test.use({ viewport: { width, height: 844 } })
 
     test('no page scrolls sideways', async ({ page }) => {
-      const wide: string[] = []
-      for (const path of ALL) {
-        await page.goto(path)
-        await page.locator('main').waitFor()
-        await page.evaluate(() => (document.documentElement.style.fontSize = '200%'))
-        await page.waitForTimeout(1000) // let charts and fonts settle at the new size
-        const w = await page.evaluate(() => document.documentElement.scrollWidth)
-        if (w > width) wide.push(`${path}: ${w}px`)
-      }
-      expect(wide).toEqual([])
+      test.setTimeout(120_000)
+      expect(await wideAt200(page, width, width === 320 ? ALL.filter((p) => !HOME_320.includes(p)) : ALL)).toEqual([])
     })
   })
 }
+
+// Failed before the fix (Phase 6): the dark card's "Invested" row didn't wrap, so Home was 325px wide.
+test('at 200% text size on a 320px phone, Home does not scroll sideways', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 844 })
+  expect(await wideAt200(page, 320, HOME_320)).toEqual([])
+})
