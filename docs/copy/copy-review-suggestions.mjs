@@ -4,7 +4,7 @@
 // approvals: apply the wording, run `npm run copy:review -- --approve`, and trim this file.
 
 export const INTRO = (total) => `
-# Copy review · Phase 6
+# Copy review · Phase 6.1
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (\`docs/copy/approved.json\`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
@@ -22,6 +22,15 @@ export const INTRO = (total) => `
 // Phase 6 (Alex's review round, Sept. 28): new and changed rows are DRAFT until Alex approves.
 // Every row whose text changed shows as DRAFT automatically; these notes say why.
 export const CHANGED = {
+  'story:names.3': 'Changed in Phase 6.1: section 3 is Rosa\'s own "Your head start".',
+  'story:headStart.intro': 'New in Phase 6.1: section 3 in the second person, about her own money (29 words).',
+  'story:headStart.introNew': 'New in Phase 6.1: the brand-new account\'s version (she hasn\'t started yet).',
+  'story:headStart.result': 'New in Phase 6.1: the live result sentence.',
+  'story:headStart.catchesMark': 'New in Phase 6.1: the catch-up marker on "Then add".',
+  'story:headStart.noCatch': 'New in Phase 6.1: shown when no amount up to $300 catches up (15 years).',
+  'practice:sum.total': 'Changed in Phase 6.1: every Practice amount is labeled "Practice money" (the banner is gone).',
+  'practice:mixSummary': 'New in Phase 6.1 (review fix): Practice\'s mix said "Your balance by kind", Home\'s word for the real account.',
+  'practice:order.usesPractice': 'New in Phase 6.1: every buy or sell review says it uses practice money.',
   'shared:beneficiaryFlow.title': 'New in Phase 6: the beneficiary alert replaces the removed deposit stories; this is its sheet.',
   'shared:beneficiaryFlow.intro': 'New in Phase 6: the beneficiary sheet explains what it sets.',
   'shared:beneficiaryFlow.saved': 'New in Phase 6: the confirmation after saving a beneficiary.',

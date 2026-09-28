@@ -2,11 +2,11 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 28, 2026 (Phase 6.1 · headings, Practice banner and "Your head start"; in progress)
+**Last updated:** Sept. 28, 2026 (Phase 6.1 · headings, Practice banner and "Your head start"; built, reviewed and live)
 
 ## NEXT STEP
 
-**Phase 6.1 is being built: see the Sept. 28 (Phase 6.1) decision-log entry.**
+**Phase 6.1 is built, independently reviewed and live. Ready to submit.** Alex's open items are optional: approving the DRAFT rows in `docs/copy/COPY-REVIEW.md` (156 rows, all new or changed in Phase 6 and 6.1, all grade 8 or below), and one ruling on how Practice labels its amounts (see the Phase 6.1 entry).
 
 ## Live links
 
@@ -61,7 +61,7 @@
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
-| 6.1 · Headings, Practice banner, "Your head start" (Sept. 28; in progress) | ⬜ | ⬜ | ⬜ | ⬜ |
+| 6.1 · Headings, Practice banner, "Your head start" (Sept. 28) | ✅ One h1 token and a test at 390/768/1280, head-start data and rules T1–T3 (140 cases), G6 bans "Nia" and "Theo", mix bar names its whole, 328 tests | ✅ Practice checked on a laptop (no banner, labels) | ✅ Section 3 "Your head start", Practice without a banner, two review rounds (pass) | ✅ Practice checked on a phone: review sheet line, 320px width fix |
 | 6 · Alex's review round (Sept. 28) | ✅ Removed stories, beneficiary alert and sheet, 15 cited Finance Terms (rule L6; 51 rules, 135 cases), Term of the Day, logo and favicons, renamed navigation, business-day deposits, reduced-motion fix, 313 tests | ✅ Balance card first with Balance inside, beneficiary flow, Volatility rating, type filter only, independent review (approve) and fixes | ✅ Your Journey in four sections with WAI-ARIA tabs, deep links, brand-new names, Finance Terms, market order term, independent review (approve) and fixes | ✅ Dark card first on a phone, Term of the Day, "Finance terms on this screen" chips, Journey and Terms tabs, independent review (approve) and fixes |
 
 ## Environment
@@ -91,6 +91,17 @@ Alex asked for three more changes. The briefs, BRIEF.md, CLAUDE.md §5 and the R
 - **Your Journey's title used its own size** (up to 4rem, against 3rem everywhere else), so the page looked like a different product.
 - **The Practice banner broke the page layout:** it sat above Practice's title, so the title started lower than on every other page.
 - **Section 3 was about strangers, not Rosa.** Nia and Theo made the point, but a story about two invented people is weaker for Rosa than one about her own money, and it was the one part of Your Journey that wasn't hers.
+
+**What was built** (commits a64a96a, 18421a4, 973d805, f9ce13f, b6b3c9e, 96608f3, then the review fixes e24072d, c1fd589, c8954c9)
+- **Titles:** every page's h1 is now 36px at 390, 38.4px at 768 and 48px at 1280 (Newsreader 500, line height 1.15). Your Journey was 40/46/64px; activity details, the 404, and a phone's alert and missing-alert pages set their own sizes.
+- **Practice:** no banner; the totals read "Practice money", "Practice money left to use" and "Practice money invested"; both reviews say "This uses practice money."; the mix reads "Your practice money by kind". Practice's title now sits where every page's does.
+- **Your head start:** the section (59 words) is built from `story-p302.json` `headStart`; the chart reads by arrow key and tap, and Show as table has Age, Keep going and Start again later. A brand-new account starts from $0, with "Start now" and "Start later". Nia and Theo are gone from the data, the copy, the tests, the README and the briefs; the old `startEarly` copy and `SectionStartEarly.vue` are deleted.
+- **Deviations:** Alex's suggested intro ended "so you'd need to add more to catch up"; it ships as "so catching up costs more" to keep the section at 59 of 60 words. Practice commits use `[P302]` (CLAUDE.md puts Practice in P302) where the prompt suggested `[P301]`.
+
+**Independent review.** A fresh P302 reviewer and a Practice check through the P301 and P303 lenses, at 96608f3, then a fresh re-review at c8954c9.
+- **Round 1 found:** the "Catches up" label ran off its slider near the ends (cut off at 1–2 years; the page scrolled sideways at 9–10); at 320px, once she owned something, the time machine held Practice at 358px; the mix bar said "Your balance by kind" in Practice; a #section link landed with the tabs under the top bar; three tabs pointed at panels not in the page; uneven phone tab rows; the slider focus ring touched its label; the brief quoted Alex's suggested intro rather than the shipped one. All fixed, each with a test that failed first.
+- **Round 2:** P302 passes every Definition of Done row, rubric item and "Try these" step; the catch-up amounts were recomputed independently and match to the dollar.
+- **Decision for Alex (a guardrail wording, CLAUDE.md §5.4):** the three Practice totals are labeled "Practice money"; the holdings table, the practice mix and the time machine sit under "What you own in Practice" and "Your practice mix" rather than repeating "Practice money" on every figure. Recommendation: keep it; the headings make every figure's source clear without crowding the table.
 
 ### Sept. 28, 2026: Alex's review round (Phase 6)
 
@@ -821,16 +832,17 @@ A separate reviewer agent, with no knowledge of how the plan was made, read ever
 
 ## Known issues / open items
 
-Current as of Sept. 28, 2026 (Phase 6). Resolved items are in the decision log.
+Current as of Sept. 28, 2026 (Phase 6.1). Resolved items are in the decision log.
 
-- **Copy:** `docs/copy/COPY-REVIEW.md` has 538 rows: 389 APPROVED against `docs/copy/approved.json` and **149 DRAFT**, all new or changed in Phase 6 (the beneficiary alert and sheet, Your Journey, Finance Terms, the renamed navigation). None is above grade 8. They ship as DRAFT until Alex approves them.
+- **Copy:** `docs/copy/COPY-REVIEW.md` has 541 rows: 385 APPROVED against `docs/copy/approved.json` and **156 DRAFT**, all new or changed in Phase 6 and 6.1 (the beneficiary alert and dialog, Your Journey and "Your head start", Finance Terms, the renamed navigation, Practice's labels). None is above grade 8. They ship as DRAFT until Alex approves them.
+- **At 200% text on a 320px phone,** section 3's catch-up label wraps and overlaps the slider's end labels (no sideways scroll), and the bottom tab labels run together.
+- **Changing the section hash while on Your Journey** (typing `#section-3` into the address of an open `/story`) scrolls the tabs partly under the top bar at 768 and 1280; a fresh load, a link from another page, the tabs, Next and the Sections sheet all stay at the top. `#section-9` keeps the current section.
 - **"Invested" cites Investor.gov's closing-price page.** Alex asked for "Invested" on the dark card; no investor.gov page defines "invested" by name, so the entry cites the closest definition and explains value as shares times the closing price. Two reviewers called it the weakest citation.
 - **The dip is small on section 2's chart.** The June 1 deposit landed inside the fall, so the balance line barely drops. The sentences, the event markers and the table carry the dip ($80.24, 9.5%, rule R2). At 320px the first three event diamonds overlap (the brief promises they sit apart at 390px).
-- **Unused story data:** `story-p302.json` still holds the removed chapters' data (smooth and bumpy returns, "your turn", the catch-up claims) and four checked claims no section shows. The validator still checks them; nothing reads them on screen.
+- **Unused story data:** `story-p302.json` still holds four checked claims about Rosa that no section shows (the validator still checks them). The invented savers, bumpy years and "your turn" numbers were removed in Phase 6.1.
 - **"All handled" after Remind me later:** Home says "You have handled everything for this week." even though she only deferred it (the brief's approved wording).
 - **At 320×640 and in a 668px Phone view,** the needs-you card's title shows but its item sits under the tab bar (the brief promises both at 390×844).
-- **Sections 1 and 3 are at 58 of 60 words,** so any copy change there needs a trim. Section 3's result sentence also appears as its chart's summary (every chart has one), so a screen reader hears it twice.
-- **At 200% text on a 320px phone,** section 3's "Passes Nia: $196" label overlaps the slider's end labels and the section tab names run past their boxes; nothing scrolls sideways.
+- **Sections 1 and 3 are at 58 and 59 of 60 words,** so any copy change there needs a trim. Section 3's result sentence also appears as its chart's summary (every chart has one), so a screen reader hears it twice.
 - **Phone view in a window shorter than 719px:** the phone shrinks to a 667px screen first, then scales (never below 0.875). Body text stays at 14px or more, but 14px labels render at about 12.3px. From 719px up, the phone is at full size.
 - **"New" badges never show.** Every shipped alert was raised before the last review (Sept. 13). Rule N1 checks each flag's "New" against its date.
 - **Small rounding effects in Practice:** a buy is floored to 4 decimals of a share (8 for coins), so right after a $25 buy a holding can read "down $0.01", and buying $200 then selling $50 at one price leaves $149.98. The practice mix percentages can add to 101%.
@@ -847,6 +859,18 @@ Current as of Sept. 28, 2026 (Phase 6). Resolved items are in the decision log.
 - **Pelipper Post** (`~/Projects/pelipper-post`) was read for patterns only and never changed.
 - **The big-move alert never shows in the shipped data** (no holding moved 7% in the last week). A TEST-ONLY fixture proves it on screen, and `check:fixtures` proves the fixture never ships.
 - **Small layout notes from the reviews:** the Mix card's rows end in empty track after the longest bar, and it has no key for its two bars (the "26% now · 25% set" text says which is which). On Investments the "Up or down" cell is blank for investments she doesn't own (and every row on brand-new). Section 4 of Your Journey is short, so at 1280 its right side is empty. On `/alerts/*` the navigation highlights Home.
+
+## Measured values, Phase 6.1 (rendered in Chromium, Sept. 28, 2026)
+
+| What | Measured |
+|---|---|
+| Page title (h1) at 390 · 768 · 1280, every page | 36/41.4px · 38.4/44.16px · 48/55.2px, Newsreader 500 (Your Journey was 40 · 46.08 · 64px) |
+| h1 top at 390 · 768 · 1280 on Activity, Investments, Your Journey, Practice, Finance Terms | 89 · 146 · 98px on all five (Practice was lower, under its banner) |
+| Section 3 words · grade | 59 (29 + 11 + 19) · intro 2.4, brand-new intro 2.0, result 3.7, "no amount" line 2.3 |
+| Catch-up amounts (1 · 5 · 10 · 15 years) | $161 · $211 · $300 · none up to $300 (one dollar less falls short at 1, 5 and 10) |
+| Keep going at 65 · start again later (5 years, $150) at 65 | $295,461 · $215,383 (brand-new: $279,627 · $199,549) |
+| Practice at 320px with a holding | 320px wide (was 358px) |
+| Playwright | 324 passed, 4 skipped (width-specific checks) |
 
 ## Measured values, Phase 6 (rendered in Chromium, Sept. 28, 2026)
 

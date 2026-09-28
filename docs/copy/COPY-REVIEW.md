@@ -1,8 +1,8 @@
-# Copy review · Phase 6
+# Copy review · Phase 6.1
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (`docs/copy/approved.json`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
-**What this covers:** all 538 pieces of text a person can read or hear in First Leaf: every string in the copy files and the text that comes from the data (alerts, the ten investments, the story's sentences, the glossary). Built by `npm run copy:review` from the live pages.
+**What this covers:** all 541 pieces of text a person can read or hear in First Leaf: every string in the copy files and the text that comes from the data (alerts, the ten investments, the story's sentences, the glossary). Built by `npm run copy:review` from the live pages.
 
 **How to read a row**
 
@@ -101,17 +101,17 @@ At most ten, most important first. Each one links to its row below.
 | H32<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:goal.title`</sub> | Goal: Put in my first $2,000 | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H33<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:goal.progress`</sub> | $1,400 of $2,000 put in, with a target of Feb. 1, 2027. | 5.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H34<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:goal.barLabel`</sub> | Money put in toward your goal | 2.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| H35<br>APPROVED | Home (laptop, phone); Activity (laptop, phone); Investments (laptop, phone); and 13 more screens<br><sub>`home:goal.barValue`</sub> | Term of the Day *(and 78 more like it)* | -2.2 | Nothing needs you: same<br>Brand-new: “Term of the Day” | — |  |
+| H35<br>APPROVED | Home (laptop, phone); Activity (laptop, phone); Investments (laptop, phone); and 13 more screens<br><sub>`home:goal.barValue`</sub> | Term of the Day *(and 77 more like it)* | -2.2 | Nothing needs you: same<br>Brand-new: “Term of the Day” | — |  |
 | H36<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:goal.onPace`</sub> | You are on pace with your plan. | -1.1 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H37<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:goal.note`</sub> | This counts deposits only, not the market. | 5.7 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H38<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:week.title`</sub> | This week | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H39<br>APPROVED | Home (laptop); Term explanation<br><sub>`home:week.line`</sub> | Your balance went down $1.44 this week. | 2.3 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H40<br>APPROVED | Home (laptop, phone); Term explanation<br><sub>`home:week.caption`</sub> | How your balance moved this week | 0.5 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| H41<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Sections sheet; and 2 more screens<br><sub>`home:week.startBalance`</sub> | Sept. 11 balance *(and 9 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| H41<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Sections sheet; Term explanation<br><sub>`home:week.startBalance`</sub> | Sept. 11 balance *(and 9 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | H42<br>APPROVED | Home (laptop, phone); Term explanation<br><sub>`home:week.market`</sub> | The market | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | H43<br>APPROVED | Investments (laptop, phone); Activity (laptop)<br><sub>`home:week.dividends`</sub> | Dividends | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | H44<br>APPROVED | Activity (laptop)<br><sub>`home:week.deposits`</sub> | Deposits | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| H45<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Sections sheet; and 2 more screens<br><sub>`home:week.endBalance`</sub> | Sept. 11 balance *(and 9 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| H45<br>APPROVED | Home (laptop, phone); Your Journey (laptop, phone); Sections sheet; Term explanation<br><sub>`home:week.endBalance`</sub> | Sept. 11 balance *(and 9 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | H46<br>APPROVED | Home (phone)<br><sub>`home:welcome.title`</sub> | Welcome, Rosa. *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: “Welcome, Rosa.” | — |  |
 | H47<br>APPROVED | Home (phone)<br><sub>`home:welcome.lede`</sub> | Your account is open. Here is what happens next. *(only in the brand-new account)* | 1.9 | Nothing needs you: not shown<br>Brand-new: same | — |  |
 | H48<br>APPROVED | Home (phone)<br><sub>`home:welcome.step1`</sub> | Add money from your bank. It should arrive in 1 to 3 business days. *(only in the brand-new account)* | 4.0 | Nothing needs you: not shown<br>Brand-new: same | — |  |
@@ -301,7 +301,7 @@ At most ten, most important first. Each one links to its row below.
 | F31<br>APPROVED | Investments (laptop, phone); Your Journey (laptop, phone); Home (laptop); and 2 more screens<br><sub>`funds:chart.range`</sub> | Time range | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F32<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:chart.since`</sub> | Since you bought | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | F33<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:chart.6m`</sub> | 6 months | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| F34<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:chart.1y`</sub> | 1 year | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| F34<br>APPROVED | Investments (laptop, phone); Your Journey (laptop, phone)<br><sub>`funds:chart.1y`</sub> | 1 year | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F35<br>APPROVED | Investments (laptop, phone)<br><sub>`funds:about.heading`</sub> | What it is | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F36<br>DRAFT | Investments (laptop, phone)<br><sub>`funds:ups.heading`</sub> | Volatility: 2 of 5 *(and 4 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | F37<br>DRAFT | Investments (laptop, phone); Finance Terms (laptop, phone)<br><sub>`funds:ups.termWord`</sub> | Volatility | label | Nothing needs you: same<br>Brand-new: same | — |  |
@@ -350,7 +350,7 @@ At most ten, most important first. Each one links to its row below.
 | S3<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:sectionNum`</sub> | Section 1 *(and 7 more like it)* | label | Nothing needs you: same<br>Brand-new: “Section 1” | — |  |
 | S4<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.1`</sub> | Six months in | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | S5<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.2`</sub> | The dip in June *(and 1 more like it)* | -2.2 | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S6<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.3`</sub> | Start early | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S6<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.3`</sub> | Your head start | label | Nothing needs you: same<br>Brand-new: same | — | Changed in Phase 6.1: section 3 is Rosa's own "Your head start". |
 | S7<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`story:names.4`</sub> | Try it | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | S8<br>DRAFT | Your Journey (phone)<br><sub>`story:names.1new`</sub> | Your start *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — | New in Phase 6 (review fix): a brand-new account has not had six months, so section 1 is "Your start". |
 | S9<br>DRAFT | Your Journey (phone)<br><sub>`story:names.2new`</sub> | When prices dip *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — | New in Phase 6 (review fix): a brand-new account has had no dip yet, so section 2 is "When prices dip". |
@@ -386,34 +386,36 @@ At most ten, most important first. Each one links to its row below.
 | S39<br>DRAFT | Your Journey<br><sub>`story:dip.eventsOff`</sub> | The chart shows your balance without the events. *(not on a captured screen; example values)* | 3.8 | Same words wherever it shows | — |  |
 | S40<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.dcaLine`</sub> | Buying the same amount every month is called dollar-cost averaging. | 5.0 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | S41<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:dip.dcaWord`</sub> | dollar-cost averaging | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
-| S42<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.meet`</sub> | Nia starts at 22 with $100 a month. Theo starts at 32 with $150. | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S43<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.why`</sub> | Nia puts in less, but her money has 10 more years of compounding. | 3.1 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S44<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.compoundingWord`</sub> | compounding | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S45<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoAge`</sub> | Theo's start age *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| S46<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoMonthly`</sub> | Theo each month *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| S47<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.startAt`</sub> | Start at 18 *(and 2 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S48<br>DRAFT | Your Journey (laptop, phone); Finance Terms (laptop, phone)<br><sub>`story:startEarly.perMonth`</sub> | $150 a month *(and 3 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S49<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.passesMark`</sub> | Passes Nia: $196 | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S50<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.result`</sub> | At 65, Theo has $186,213. Nia has $242,251. | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S51<br>DRAFT | Your Journey<br><sub>`story:startEarly.passes`</sub> |  Theo passes Nia. *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| S52<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.behind`</sub> | Theo is still behind. | 0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S53<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.chartTitle`</sub> | Nia and Theo from 18 to 65 *(and 1 more like it)* | 2.3 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S54<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.nia`</sub> | Nia | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S55<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.theo`</sub> | Theo | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S56<br>DRAFT | Your Journey<br><sub>`story:startEarly.day`</sub> | Age 30: Nia has $242,251. $186,213 *(not on a captured screen; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| S57<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.theoHas`</sub> | Theo has $186,213. | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S58<br>DRAFT | Your Journey<br><sub>`story:startEarly.theoNotYet`</sub> | Theo has not started yet. *(not on a captured screen; example values)* | -1.8 | Same words wherever it shows | — |  |
-| S59<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.notStarted`</sub> | Not started | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S60<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:startEarly.colAge`</sub> | Age | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S61<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.claim`</sub> | Practice lets you try a mix with practice money. Nothing you do there touches your account. | 3.0 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S62<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.timeMachine`</sub> | Its time machine shows how a mix could have moved over the last year. | 3.4 | Nothing needs you: same<br>Brand-new: same | — |  |
-| S63<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.go`</sub> | Go to Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| S64<br>APPROVED | Your Journey<br><sub>`story:slider.label`</sub> | Start age: Start at 30 *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| S65<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.pointOfView`</sub> | Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment. | 6.3 | Nothing needs you: same<br>Brand-new: “Growth needs years. Starting early and staying steady matter more than picking the perfect moment.” | — |  |
-| S66<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.deposits-share`</sub> | About 91% of your balance is money you put in. The other $136.68 is what it earned. | 3.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
-| S67<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:rosaStory.dip`</sub> | From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%. | 3.6 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
-| S68<br>DRAFT | Your Journey (laptop, phone)<br><sub>`data:rosaStory.kept-buying`</sub> | Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived. | 6.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
-| S69<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:story.assumptions.note`</sub> | An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S42<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.claim`</sub> | Practice lets you try a mix with practice money. Nothing you do there touches your account. | 3.0 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S43<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.timeMachine`</sub> | Its time machine shows how a mix could have moved over the last year. | 3.4 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S44<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:tryIt.go`</sub> | Go to Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S45<br>APPROVED | Your Journey<br><sub>`story:slider.label`</sub> | Start again in: 5 years *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
+| S46<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.intro`</sub> | You started at 26. If you keep adding $150 a month, here's where it could be at 65. Waiting means less time for compounding, so catching up costs more. | 2.4 | Nothing needs you: same<br>Brand-new: not shown | — | New in Phase 6.1: section 3 in the second person, about her own money (29 words). |
+| S47<br>DRAFT | Your Journey (phone)<br><sub>`story:headStart.introNew`</sub> | You're 26. If you add $150 a month from now, here's where it could be at 65. Waiting means less time for compounding, so catching up costs more. *(only in the brand-new account)* | 2.0 | Nothing needs you: not shown<br>Brand-new: “You're 26. If you add $150 a month from now, here's where it could be at 65. Waiting means less time for compounding, so catching up costs more.” | — | New in Phase 6.1: the brand-new account's version (she hasn't started yet). |
+| S48<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.compoundingWord`</sub> | compounding | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S49<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.keepLabel`</sub> | Keep going | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S50<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.laterLabel`</sub> | Start again later | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| S51<br>DRAFT | Your Journey (phone)<br><sub>`story:headStart.keepLabelNew`</sub> | Start now *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — |  |
+| S52<br>DRAFT | Your Journey (phone)<br><sub>`story:headStart.laterLabelNew`</sub> | Start later *(only in the brand-new account)* | label | Nothing needs you: not shown<br>Brand-new: same | — |  |
+| S53<br>DRAFT | Your Journey<br><sub>`story:headStart.delayLabel`</sub> | Start again in *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| S54<br>DRAFT | Your Journey<br><sub>`story:headStart.delayLabelNew`</sub> | Start in *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| S55<br>DRAFT | Your Journey<br><sub>`story:headStart.addLabel`</sub> | Then add *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| S56<br>DRAFT | Investments (laptop, phone); Your Journey (laptop, phone)<br><sub>`story:headStart.yearsOne`</sub> | 1 year | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S57<br>DRAFT | Your Journey (laptop, phone); Finance Terms (laptop, phone)<br><sub>`story:headStart.yearsMany`</sub> | Start again in: 5 years *(and 3 more like it)* | label | Nothing needs you: same<br>Brand-new: “Start in: 5 years” | — |  |
+| S58<br>DRAFT | Your Journey (laptop, phone); Finance Terms (laptop, phone)<br><sub>`story:headStart.perMonth`</sub> | $150 a month *(and 3 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S59<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.catchesMark`</sub> | Catches up at $211 a month | 0.5 | Nothing needs you: same<br>Brand-new: same | — | New in Phase 6.1: the catch-up marker on "Then add". |
+| S60<br>DRAFT | Your Journey<br><sub>`story:headStart.noCatch`</sub> | No amount up to $150 a month catches up. *(not on a captured screen; example values)* | 2.3 | Not on a captured screen; the values change with the account | — | New in Phase 6.1: shown when no amount up to $300 catches up (15 years). |
+| S61<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.result`</sub> | At 65: $295,461 if you keep going, $215,383 if you wait. | 2.3 | Nothing needs you: same<br>Brand-new: not shown | — | New in Phase 6.1: the live result sentence. |
+| S62<br>DRAFT | Your Journey (phone)<br><sub>`story:headStart.resultNew`</sub> | At 65: $279,627 if you start now, $199,549 if you wait. *(only in the brand-new account)* | 2.3 | Nothing needs you: not shown<br>Brand-new: “At 65: $279,627 if you start now, $199,549 if you wait.” | — |  |
+| S63<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.chartTitle`</sub> | Your money from 26 to 65 *(and 1 more like it)* | 4.5 | Nothing needs you: same<br>Brand-new: same | — |  |
+| S64<br>DRAFT | Your Journey<br><sub>`story:headStart.day`</sub> | Age 40: $295,461 if you keep going, $215,383 if you wait. *(not on a captured screen; example values)* | 2.3 | Not on a captured screen; the values change with the account | — |  |
+| S65<br>DRAFT | Your Journey<br><sub>`story:headStart.dayNew`</sub> | Age 40: $295,461 if you start now, $215,383 if you wait. *(not on a captured screen; example values)* | 2.3 | Not on a captured screen; the values change with the account | — |  |
+| S66<br>DRAFT | Your Journey (laptop, phone)<br><sub>`story:headStart.colAge`</sub> | Age | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| S67<br>APPROVED | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.pointOfView`</sub> | Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment. | 6.3 | Nothing needs you: same<br>Brand-new: “Growth needs years. Starting early and staying steady matter more than picking the perfect moment.” | — |  |
+| S68<br>DRAFT | Your Journey (laptop, phone); Sections sheet<br><sub>`data:rosaStory.deposits-share`</sub> | About 91% of your balance is money you put in. The other $136.68 is what it earned. | 3.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
+| S69<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:rosaStory.dip`</sub> | From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%. | 3.6 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
+| S70<br>DRAFT | Your Journey (laptop, phone)<br><sub>`data:rosaStory.kept-buying`</sub> | Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived. | 6.7 | Nothing needs you: same<br>Brand-new: not shown (short story) | — |  |
+| S71<br>APPROVED | Your Journey (laptop, phone)<br><sub>`data:story.assumptions.note`</sub> | An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Practice
 
@@ -426,18 +428,18 @@ At most ten, most important first. Each one links to its row below.
 | P5<br>APPROVED | Practice<br><sub>`shared:practiceErrors.noneOwned`</sub> | You do not own any AAPL in Practice, so there is nothing to sell. Pick one you own. *(not on a captured screen; example values)* | 1.0 | Not on a captured screen; the values change with the account | — |  |
 | P6<br>APPROVED | Practice<br><sub>`shared:practiceErrors.tooMuch`</sub> | You own $246.92 of AAPL in Practice. Enter that much or less. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
 | P7<br>APPROVED | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 13 more screens<br><sub>`practice:title`</sub> | Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P8<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:banner`</sub> | Practice money. Nothing here touches your account. | 4.3 | Nothing needs you: same<br>Brand-new: same | — |  |
-| P9<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.left`</sub> | Practice money left | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P10<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.inFunds`</sub> | In practice investments | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P11<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.total`</sub> | Total in Practice | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P12<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:ownHeading`</sub> | What you own in Practice | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
-| P13<br>APPROVED | Practice (laptop, phone); Practice (error)<br><sub>`practice:ownEmpty`</sub> | Nothing yet. Buy a stock or crypto to start. | -0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
-| P14<br>APPROVED | Activity (laptop, phone); Home (laptop); Investments (laptop)<br><sub>`practice:col.fund`</sub> | Investment | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P15<br>APPROVED | Practice (after buying)<br><sub>`practice:col.shares`</sub> | Owned | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| P16<br>APPROVED | Practice (laptop, phone); Practice (after buying)<br><sub>`practice:col.value`</sub> | Value | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P17<br>APPROVED | Practice (after buying)<br><sub>`practice:col.paid`</sub> | Paid | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| P18<br>APPROVED | Your Journey (laptop, phone); Investments (laptop); Practice (after buying)<br><sub>`practice:col.change`</sub> | Up or down | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P19<br>APPROVED | Practice (after buying)<br><sub>`practice:mixHeading`</sub> | Your practice mix | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| P8<br>DRAFT | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.total`</sub> | Practice money | label | Nothing needs you: same<br>Brand-new: same | — | Changed in Phase 6.1: every Practice amount is labeled "Practice money" (the banner is gone). |
+| P9<br>DRAFT | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.left`</sub> | Practice money left to use | 2.9 | Nothing needs you: same<br>Brand-new: same | — |  |
+| P10<br>DRAFT | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:sum.inFunds`</sub> | Practice money invested | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P11<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:ownHeading`</sub> | What you own in Practice | 0.5 | Nothing needs you: same<br>Brand-new: same | — |  |
+| P12<br>APPROVED | Practice (laptop, phone); Practice (error)<br><sub>`practice:ownEmpty`</sub> | Nothing yet. Buy a stock or crypto to start. | -0.7 | Nothing needs you: same<br>Brand-new: same | — |  |
+| P13<br>APPROVED | Activity (laptop, phone); Home (laptop); Investments (laptop)<br><sub>`practice:col.fund`</sub> | Investment | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P14<br>APPROVED | Practice (after buying)<br><sub>`practice:col.shares`</sub> | Owned | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| P15<br>APPROVED | Practice (laptop, phone); Practice (after buying)<br><sub>`practice:col.value`</sub> | Value | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P16<br>APPROVED | Practice (after buying)<br><sub>`practice:col.paid`</sub> | Paid | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| P17<br>APPROVED | Your Journey (laptop, phone); Investments (laptop); Practice (after buying)<br><sub>`practice:col.change`</sub> | Up or down | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P18<br>APPROVED | Practice (after buying)<br><sub>`practice:mixHeading`</sub> | Your practice mix | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| P19<br>DRAFT | Practice (after buying)<br><sub>`practice:mixSummary`</sub> | Your practice money by kind: Stocks 10%, Cash 90%. | 5.0 | Nothing needs you: not shown<br>Brand-new: not shown | — | New in Phase 6.1 (review fix): Practice's mix said "Your balance by kind", Home's word for the real account. |
 | P20<br>APPROVED | Practice<br><sub>`practice:percent`</sub> | 52% *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
 | P21<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`practice:timeMachine.title`</sub> | Time machine | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | P22<br>APPROVED | Practice (after buying)<br><sub>`practice:timeMachine.summary`</sub> | If you had held this mix since Sept. 26, 2025, it would be worth $100.00 on Sept. 18, 2026. On Sept. 26, 2025 it would have been worth $78.51. | 5.1 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
@@ -468,16 +470,17 @@ At most ten, most important first. Each one links to its row below.
 | P47<br>APPROVED | Practice<br><sub>`practice:order.reviewSell`</sub> | Sell $150 of AAPL at $336.13 a share. That is about {quantity} shares. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
 | P48<br>APPROVED | Practice<br><sub>`practice:order.noFee`</sub> |  There is no fee. *(not on a captured screen; example values)* | -2.2 | Same words wherever it shows | — |  |
 | P49<br>DRAFT | Practice<br><sub>`practice:order.marketLine`</sub> | It is a market order, filled at the latest price. *(not on a captured screen; example values)* | 1.0 | Same words wherever it shows | — |  |
-| P50<br>DRAFT | Practice<br><sub>`practice:order.orderWord`</sub> | market order *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| P51<br>APPROVED | Practice<br><sub>`practice:order.back`</sub> | Back *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| P52<br>APPROVED | Practice<br><sub>`practice:order.confirm`</sub> | Confirm *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
-| P53<br>APPROVED | Practice (after buying)<br><sub>`practice:order.bought`</sub> | You bought $100.00 of AAPL with practice money. | 3.8 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| P54<br>APPROVED | Practice<br><sub>`practice:order.sold`</sub> | You sold $150 of AAPL. That money is back in your practice money. *(not on a captured screen; example values)* | 2.4 | Not on a captured screen; the values change with the account | — |  |
-| P55<br>APPROVED | Practice (after buying)<br><sub>`practice:order.newOrder`</sub> | New order | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
-| P56<br>APPROVED | Practice<br><sub>`practice:order.reviewBuyCrypto`</sub> | Buy $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
-| P57<br>APPROVED | Practice<br><sub>`practice:order.reviewSellCrypto`</sub> | Sell $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
-| P58<br>APPROVED | Finance Terms (laptop, phone); Term explanation; Practice (after buying)<br><sub>`practice:ownedShares`</sub> | 0.2975 shares *(and 10 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
-| P59<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`data:practice.timeMachine.note`</sub> | This uses past prices to show how a mix could have moved. The past does not tell you what will happen next. | 1.0 | Nothing needs you: same<br>Brand-new: same | — |  |
+| P50<br>DRAFT | Practice<br><sub>`practice:order.usesPractice`</sub> | This uses practice money. *(not on a captured screen; example values)* | 3.7 | Same words wherever it shows | — | New in Phase 6.1: every buy or sell review says it uses practice money. |
+| P51<br>DRAFT | Practice<br><sub>`practice:order.orderWord`</sub> | market order *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| P52<br>APPROVED | Practice<br><sub>`practice:order.back`</sub> | Back *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| P53<br>APPROVED | Practice<br><sub>`practice:order.confirm`</sub> | Confirm *(not on a captured screen; example values)* | label | Same words wherever it shows | — |  |
+| P54<br>APPROVED | Practice (after buying)<br><sub>`practice:order.bought`</sub> | You bought $100.00 of AAPL with practice money. | 3.8 | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| P55<br>APPROVED | Practice<br><sub>`practice:order.sold`</sub> | You sold $150 of AAPL. That money is back in your practice money. *(not on a captured screen; example values)* | 2.4 | Not on a captured screen; the values change with the account | — |  |
+| P56<br>APPROVED | Practice (after buying)<br><sub>`practice:order.newOrder`</sub> | New order | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
+| P57<br>APPROVED | Practice<br><sub>`practice:order.reviewBuyCrypto`</sub> | Buy $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
+| P58<br>APPROVED | Practice<br><sub>`practice:order.reviewSellCrypto`</sub> | Sell $150 of AAPL at $336.13 for one AAPL. That is about {quantity}. *(not on a captured screen; example values)* | 1.5 | Not on a captured screen; the values change with the account | — |  |
+| P59<br>APPROVED | Finance Terms (laptop, phone); Term explanation; Practice (after buying)<br><sub>`practice:ownedShares`</sub> | 0.2975 shares *(and 10 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| P60<br>APPROVED | Practice (laptop, phone); Practice (error); Practice (after buying)<br><sub>`data:practice.timeMachine.note`</sub> | This uses past prices to show how a mix could have moved. The past does not tell you what will happen next. | 1.0 | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Finance Terms
 
@@ -611,14 +614,14 @@ At most ten, most important first. Each one links to its row below.
 | E17<br>APPROVED | Investments (laptop, phone); Home (laptop); Term explanation<br><sub>`shared:mixGroups.crypto`</sub> | Crypto | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | E18<br>APPROVED | Home (laptop, phone); Term explanation; Practice (after buying)<br><sub>`shared:mixGroups.cash`</sub> | Cash | label | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | E19<br>APPROVED | Term explanations and sheets (every screen)<br><sub>`shared:mixGroups.part`</sub> | Rosa 52% *(a bare value; example values)* | label | Not on a captured screen; the values change with the account | — |  |
-| E20<br>APPROVED | Home (laptop); Term explanation; Practice (after buying)<br><sub>`shared:mixGroups.summary`</sub> | Your balance by kind: Stocks 78%, Crypto 22%, Cash 0.2%. *(and 1 more like it)* | 4.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
+| E20<br>APPROVED | Home (laptop); Term explanation<br><sub>`shared:mixGroups.summary`</sub> | Your balance by kind: Stocks 78%, Crypto 22%, Cash 0.2%. | 4.8 | Nothing needs you: same<br>Brand-new: not shown | — |  |
 | E21<br>DRAFT | Home (laptop, phone); Alerts (laptop, phone); Activity (laptop, phone); and 13 more screens<br><sub>`shared:brand.name`</sub> | First Leaf | label | Nothing needs you: same<br>Brand-new: same | — |  |
 
 ### Numbers and dates (every screen)
 
 | # | Where it appears | Text as shown (normal scenario) | Grade | Other scenario versions | Suggested rewrite | Why |
 |---|---|---|---|---|---|---|
-| N1<br>APPROVED | Home (phone); Investments (laptop, phone); Your Journey (laptop, phone); and 2 more screens<br><sub>`shared:change.up`</sub> | up $1.03 *(and 17 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
+| N1<br>APPROVED | Home (phone); Investments (laptop, phone); Your Journey (laptop, phone); and 2 more screens<br><sub>`shared:change.up`</sub> | up $1.03 *(and 18 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | N2<br>APPROVED | Home (laptop, phone); Investments (laptop, phone); Finance Terms (laptop, phone); Term explanation<br><sub>`shared:change.down`</sub> | down $1.44 *(and 14 more like it)* | label | Nothing needs you: same<br>Brand-new: same | — |  |
 | N3<br>APPROVED | Practice (after buying)<br><sub>`shared:change.none`</sub> | no change | label | Nothing needs you: not shown<br>Brand-new: not shown | — |  |
 | N4<br>APPROVED | Every date<br><sub>`shared:dates.months`</sub> | Jan., Feb., March, April, May, June, July, Aug., Sept., Oct., Nov., Dec. *(not on a captured screen; example values)* | 2.9 | Same words wherever it shows | — |  |
