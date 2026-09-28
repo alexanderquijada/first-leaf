@@ -18,16 +18,16 @@
       "short": "Investments"
     },
     "story": {
-      "label": "Your money story",
-      "short": "Story"
+      "label": "Your Journey",
+      "short": "Journey"
     },
     "practice": {
       "label": "Practice",
       "short": "Practice"
     },
     "learn": {
-      "label": "Words",
-      "short": "Words"
+      "label": "Finance Terms",
+      "short": "Terms"
     }
   },
   "phoneView": {
@@ -40,9 +40,9 @@
     "alerts": "Alerts",
     "activity": "Activity",
     "funds": "Your investments",
-    "story": "Your money story",
+    "story": "Your Journey",
     "practice": "Practice",
-    "learn": "Words to know",
+    "learn": "Finance Terms",
     "notFound": "Page not found"
   },
   "documentTitle": "{page} · First Leaf"

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>First Leaf logo options</title>
+<link rel="stylesheet" href="../../node_modules/@fontsource-variable/newsreader/index.css" />
+<link rel="stylesheet" href="../../node_modules/@fontsource-variable/hanken-grotesk/index.css" />
+<style>
+  :root { --forest: #1F5C3B; --lime: #C6F36B; --ink: #15130F; --cream: #F5F0E6; --paper: #FFFDF8; }
+  body { margin: 0; padding: 32px; background: var(--cream); color: var(--ink); font-family: 'Hanken Grotesk Variable', system-ui, sans-serif; }
+  h1 { font-family: 'Newsreader Variable', Georgia, serif; font-weight: 500; margin: 0 0 8px; }
+  p { max-width: 60rem; line-height: 1.5; }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+  .opt { padding: 24px; border: 1px solid #4F4A40; border-radius: 16px; background: var(--paper); }
+  .opt.is-pick { outline: 4px solid var(--forest); outline-offset: 2px; }
+  .opt h2 { margin: 0 0 4px; font-family: 'Newsreader Variable', Georgia, serif; font-weight: 500; }
+  .lockup { display: flex; align-items: center; gap: 10px; margin: 20px 0; }
+  .word { font-family: 'Newsreader Variable', Georgia, serif; font-size: 28px; font-weight: 500; letter-spacing: -0.01em; }
+  .sizes { display: flex; align-items: flex-end; gap: 16px; }
+  .sizes span { font-size: 13px; color: #4F4A40; display: block; text-align: center; }
+  .on-cream { background: var(--cream); padding: 12px; border-radius: 12px; margin-top: 16px; }
+  ul { margin: 8px 0 0; padding-left: 1.2em; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <h1>First Leaf: three logo options</h1>
+  <p>Each is a seedling with its first two leaves, drawn in simple mid-century shapes, beside the "First Leaf" wordmark in Newsreader. Colors come from the palette: forest, lime and ink. Shown as the lockup, then the mark alone at 64, 32 and 16px. <strong>A ships</strong> (outlined).</p>
+
+  <div class="grid">
+    <!-- A: Sprout tile -->
+    <section class="opt is-pick" id="option-a">
+      <h2>A · Sprout tile (ships)</h2>
+      <div class="lockup">
+        <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+          <rect x="2" y="2" width="60" height="60" rx="16" fill="#1F5C3B" />
+          <path d="M13 50 Q32 43 51 50" stroke="#F5F0E6" stroke-width="3.5" stroke-linecap="round" fill="none" />
+          <path d="M32 46 V30" stroke="#C6F36B" stroke-width="4.5" stroke-linecap="round" />
+          <path d="M32 34 C23 34 16 29 15 20 C24 19 31 25 32 34 Z" fill="#C6F36B" />
+          <path d="M32 30 C33 21 40 15 49 15 C48 24 41 30 32 30 Z" fill="#C6F36B" />
+          <path d="M18 7 L19.7 11.3 L24 13 L19.7 14.7 L18 19 L16.3 14.7 L12 13 L16.3 11.3 Z" fill="#F5F0E6" />
+        </svg>
+        <span class="word">First Leaf</span>
+      </div>
+      <div class="sizes">
+        <div><svg viewBox="0 0 64 64" width="64" height="64"><use href="#a-mark" /></svg><span>64</span></div>
+      </div>
+      <ul>
+        <li>A forest tile holds the sprout, so it reads on any background (tile on cream 7.8:1, lime on forest 5.9:1).</li>
+        <li>Two rounded first leaves (a seedling), a cream ground line and a small starburst.</li>
+        <li>Unlike Mint (one leaf in a circle), Acorns (an acorn) or Robinhood (a feather).</li>
+      </ul>
+    </section>
+
+    <!-- B: Open seedling -->
+    <section class="opt" id="option-b">
+      <h2>B · Open seedling</h2>
+      <div class="lockup">
+        <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+          <path d="M10 52 H54" stroke="#15130F" stroke-width="3" stroke-linecap="round" />
+          <path d="M32 51 V30" stroke="#1F5C3B" stroke-width="4" stroke-linecap="round" />
+          <path d="M32 35 C22 35 14 29 13 19 C23 18 31 25 32 35 Z" fill="#C6F36B" stroke="#1F5C3B" stroke-width="2.5" />
+          <path d="M32 31 C33 21 41 14 51 14 C50 24 42 31 32 31 Z" fill="#C6F36B" stroke="#1F5C3B" stroke-width="2.5" />
+          <circle cx="18" cy="8" r="2.4" fill="#15130F" /><circle cx="26" cy="5" r="2.4" fill="#15130F" /><circle cx="34" cy="4.5" r="2.4" fill="#15130F" />
+        </svg>
+        <span class="word">First Leaf</span>
+      </div>
+      <ul>
+        <li>No container: lighter and more hand-drawn.</li>
+        <li>The lime needs its forest outline to reach 3:1 on cream, and at 16px the outline and dots blur together.</li>
+      </ul>
+    </section>
+
+    <!-- C: Starburst sprout -->
+    <section class="opt" id="option-c">
+      <h2>C · Starburst sprout</h2>
+      <div class="lockup">
+        <svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true">
+          <path d="M32 2 L37 16 L50 8 L45 22 L60 24 L47 32 L60 40 L45 42 L50 56 L37 48 L32 62 L27 48 L14 56 L19 42 L4 40 L17 32 L4 24 L19 22 L14 8 L27 16 Z" fill="#C6F36B" stroke="#15130F" stroke-width="2" stroke-linejoin="round" />
+          <path d="M32 46 V32" stroke="#1F5C3B" stroke-width="4" stroke-linecap="round" />
+          <path d="M32 35 C26 35 21 31 21 25 C27 25 31 29 32 35 Z" fill="#1F5C3B" />
+          <path d="M32 32 C33 26 37 22 43 22 C43 28 38 32 32 32 Z" fill="#1F5C3B" />
+        </svg>
+        <span class="word">First Leaf</span>
+      </div>
+      <ul>
+        <li>The most "mid-century" of the three.</li>
+        <li>Busy at small sizes: the starburst points and the sprout compete at 16px.</li>
+      </ul>
+    </section>
+  </div>
+
+  <h2 style="font-family:'Newsreader Variable',Georgia,serif;font-weight:500;margin-top:32px">At favicon sizes (32 and 16px)</h2>
+  <div class="sizes on-cream" id="small-sizes">
+    <div><svg viewBox="0 0 64 64" width="32" height="32"><use href="#a-mark" /></svg><span>A 32</span></div>
+    <div><svg viewBox="0 0 64 64" width="16" height="16"><use href="#a-mark" /></svg><span>A 16</span></div>
+    <div><svg viewBox="0 0 64 64" width="32" height="32"><use href="#b-mark" /></svg><span>B 32</span></div>
+    <div><svg viewBox="0 0 64 64" width="16" height="16"><use href="#b-mark" /></svg><span>B 16</span></div>
+    <div><svg viewBox="0 0 64 64" width="32" height="32"><use href="#c-mark" /></svg><span>C 32</span></div>
+    <div><svg viewBox="0 0 64 64" width="16" height="16"><use href="#c-mark" /></svg><span>C 16</span></div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="a-mark">
+        <rect x="2" y="2" width="60" height="60" rx="16" fill="#1F5C3B" />
+        <path d="M13 50 Q32 43 51 50" stroke="#F5F0E6" stroke-width="3.5" stroke-linecap="round" fill="none" />
+        <path d="M32 46 V30" stroke="#C6F36B" stroke-width="4.5" stroke-linecap="round" />
+        <path d="M32 34 C23 34 16 29 15 20 C24 19 31 25 32 34 Z" fill="#C6F36B" />
+        <path d="M32 30 C33 21 40 15 49 15 C48 24 41 30 32 30 Z" fill="#C6F36B" />
+        <path d="M18 7 L19.7 11.3 L24 13 L19.7 14.7 L18 19 L16.3 14.7 L12 13 L16.3 11.3 Z" fill="#F5F0E6" />
+      </g>
+      <g id="b-mark">
+        <path d="M10 52 H54" stroke="#15130F" stroke-width="3" stroke-linecap="round" />
+        <path d="M32 51 V30" stroke="#1F5C3B" stroke-width="4" stroke-linecap="round" />
+        <path d="M32 35 C22 35 14 29 13 19 C23 18 31 25 32 35 Z" fill="#C6F36B" stroke="#1F5C3B" stroke-width="2.5" />
+        <path d="M32 31 C33 21 41 14 51 14 C50 24 42 31 32 31 Z" fill="#C6F36B" stroke="#1F5C3B" stroke-width="2.5" />
+        <circle cx="18" cy="8" r="2.4" fill="#15130F" /><circle cx="26" cy="5" r="2.4" fill="#15130F" /><circle cx="34" cy="4.5" r="2.4" fill="#15130F" />
+      </g>
+      <g id="c-mark">
+        <path d="M32 2 L37 16 L50 8 L45 22 L60 24 L47 32 L60 40 L45 42 L50 56 L37 48 L32 62 L27 48 L14 56 L19 42 L4 40 L17 32 L4 24 L19 22 L14 8 L27 16 Z" fill="#C6F36B" stroke="#15130F" stroke-width="2" stroke-linejoin="round" />
+        <path d="M32 46 V32" stroke="#1F5C3B" stroke-width="4" stroke-linecap="round" />
+        <path d="M32 35 C26 35 21 31 21 25 C27 25 31 29 32 35 Z" fill="#1F5C3B" />
+        <path d="M32 32 C33 26 37 22 43 22 C43 28 38 32 32 32 Z" fill="#1F5C3B" />
+      </g>
+    </defs>
+  </svg>
+</body>
+</html>

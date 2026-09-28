@@ -1,6 +1,6 @@
 # First Leaf
 
-![First Leaf](docs/brand/first-leaf-lockup.svg)
+![First Leaf](docs/brand/first-leaf-lockup.png)
 
 An invented investing app for people who have never invested before. It is **one app**, reviewed as **three Protogen case studies**, each a lens on it: an operational dashboard (P301), an interactive data story (P302) and a mobile experience (P303).
 

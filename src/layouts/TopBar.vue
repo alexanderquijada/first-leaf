@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // The top bar at every size. Phone: the wordmark. Tablet: the wordmark and
 // "Prices as of …". Desktop: the greeting and "Prices as of …" (the wordmark sits in the rail).
+import Logo from '@/shared/components/Logo.vue'
 import { meta, persona } from '@/shared/data'
 import { fill } from '@/shared/copy'
 import { formatDayDate } from '@/shared/format'
@@ -9,7 +10,7 @@ import copy from './copy.json'
 
 <template>
   <header class="fl-topbar">
-    <RouterLink to="/" class="fl-topbar__wordmark">{{ copy.wordmark }}</RouterLink>
+    <RouterLink to="/" class="fl-topbar__wordmark"><Logo :size="30" /></RouterLink>
     <div class="fl-topbar__hello">
       <p class="fl-topbar__greeting">{{ fill(copy.greeting, { name: persona.firstName }) }}</p>
       <p class="fl-topbar__asof">{{ fill(copy.pricesAsOf, { date: formatDayDate(meta.lastClose) }) }}</p>
