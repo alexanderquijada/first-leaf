@@ -2,11 +2,11 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 28, 2026 (Phase 6.1 · headings, Practice banner and "Your head start"; built, reviewed and live)
+**Last updated:** Sept. 28, 2026 (Phase 6.2 · range buttons under the card title; built and live)
 
 ## NEXT STEP
 
-**Phase 6.1 is built, independently reviewed and live. Ready to submit.** Alex's open items are optional: approving the DRAFT rows in `docs/copy/COPY-REVIEW.md` (156 rows, all new or changed in Phase 6 and 6.1, all grade 8 or below), and one ruling on how Practice labels its amounts (see the Phase 6.1 entry).
+**Phase 6.2 is built and live (range buttons under the card title), on top of Phase 6.1. Ready to submit.** Alex's open items are optional: approving the DRAFT rows in `docs/copy/COPY-REVIEW.md` (156 rows, all new or changed in Phase 6 and 6.1, all grade 8 or below), and one ruling on how Practice labels its amounts (see the Phase 6.1 entry).
 
 ## Live links
 
@@ -61,6 +61,7 @@
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
+| 6.2 · Range buttons under the card title (Sept. 28) | ✅ Card head stacks the title and the range buttons; one weight for every button state; one clean selected edge; range-button test at 390/768/1280 (329 tests) | ✅ Home's balance chart and investment pages | ✅ Section 1's chart | ✅ Your Journey and investment pages on a phone |
 | 6.1 · Headings, Practice banner, "Your head start" (Sept. 28) | ✅ One h1 token and a test at 390/768/1280, head-start data and rules T1–T3 (140 cases), G6 bans "Nia" and "Theo", mix bar names its whole, 328 tests | ✅ Practice checked on a laptop (no banner, labels) | ✅ Section 3 "Your head start", Practice without a banner, two review rounds (pass) | ✅ Practice checked on a phone: review sheet line, 320px width fix |
 | 6 · Alex's review round (Sept. 28) | ✅ Removed stories, beneficiary alert and sheet, 15 cited Finance Terms (rule L6; 51 rules, 135 cases), Term of the Day, logo and favicons, renamed navigation, business-day deposits, reduced-motion fix, 313 tests | ✅ Balance card first with Balance inside, beneficiary flow, Volatility rating, type filter only, independent review (approve) and fixes | ✅ Your Journey in four sections with WAI-ARIA tabs, deep links, brand-new names, Finance Terms, market order term, independent review (approve) and fixes | ✅ Dark card first on a phone, Term of the Day, "Finance terms on this screen" chips, Journey and Terms tabs, independent review (approve) and fixes |
 
@@ -83,6 +84,8 @@ Newest first. Include what we got wrong and why.
 Alex saw the "1 month / 3 months / Since March" buttons jump: they sat beside the card title when it was short ("Your balance since March") and wrapped under it when it was long ("Your balance in the last month"). From now on they always sit on their own line directly under the card title, left-aligned, at every width and every range, on every card that has them (Home's balance chart, Your Journey's section 1, the investment pages, and the phone). A Playwright test clicks each range at 390, 768 and 1280 and fails if the buttons move. The selected button also had a doubled line on its left edge in "Since March"; it gets one clean edge.
 
 **What we got wrong:** the card's head put the title and the buttons in one wrapping row, so the buttons' place depended on the title's length, which changes with the range.
+
+**Built (9f32cfc):** the card head is now a column (title, then the buttons, left-aligned). Two more causes of movement turned up while testing: the selected button turned bold, which widened it and nudged its neighbors 1px (every state now uses one weight, on the range buttons and the investment page's toggles), and at 200% text the button row could not shrink (its words now wrap). The divider beside the selected button takes its forest color, so "Since March" has one clean edge. The new test failed first on all three cards.
 
 ### Sept. 28, 2026: Phase 6.1 · headings, Practice banner and "Your head start"
 
