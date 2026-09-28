@@ -36,6 +36,8 @@ const value = defineModel<T>({ required: true })
   background: var(--color-paper);
   color: var(--color-ink);
   font: inherit;
+  /* One weight for every state, so choosing an option never changes a button's width (Phase 6.2). */
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -43,6 +45,5 @@ const value = defineModel<T>({ required: true })
   background: var(--color-forest);
   border-color: var(--color-forest);
   color: var(--color-paper);
-  font-weight: 700;
 }
 </style>

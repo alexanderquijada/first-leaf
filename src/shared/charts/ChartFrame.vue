@@ -29,9 +29,11 @@ const showTable = ref(false)
 
 <template>
   <section class="fl-chart" :aria-labelledby="titleId">
+    <!-- The title, then any range buttons on their own line under it, left-aligned (Phase 6.2):
+         the title's length changes with the range, so side by side the buttons jumped. -->
     <div class="fl-chart__head">
       <component :is="`h${level}`" :id="titleId" class="fl-chart__title">{{ title }}</component>
-      <slot name="controls" />
+      <div v-if="$slots.controls" class="fl-chart__controls"><slot name="controls" /></div>
     </div>
     <p class="fl-chart__summary">{{ summary }}</p>
     <slot />
@@ -72,10 +74,13 @@ const showTable = ref(false)
 <style scoped>
 .fl-chart__head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fl-chart__controls {
+  max-width: 100%;
 }
 
 .fl-chart__title {

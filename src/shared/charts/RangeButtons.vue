@@ -23,12 +23,14 @@ const range = defineModel<RangeId>({ required: true })
 <style scoped>
 .ranges {
   display: inline-flex;
+  max-width: 100%; /* at 200% text a button's words wrap instead of widening the page */
   border: 1px solid var(--color-ink-muted);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .ranges__btn {
+  flex: 0 1 auto;
   min-height: 48px;
   min-width: 56px;
   padding: 0 14px;
@@ -36,7 +38,8 @@ const range = defineModel<RangeId>({ required: true })
   background: var(--color-paper);
   color: var(--color-ink);
   font: inherit;
-  font-weight: 500;
+  /* One weight for every state, so choosing a range never changes a button's width (Phase 6.2). */
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -47,6 +50,12 @@ const range = defineModel<RangeId>({ required: true })
 .ranges__btn[aria-pressed='true'] {
   background: var(--color-forest);
   color: var(--color-paper);
-  font-weight: 700;
+}
+
+/* One clean edge: the divider beside the selected button takes its color, so the forest pill
+   never shows a second, grey line on its left (Phase 6.2). */
+.ranges__btn[aria-pressed='true'],
+.ranges__btn[aria-pressed='true'] + .ranges__btn {
+  border-left-color: var(--color-forest);
 }
 </style>
