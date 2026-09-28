@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// A general line chart: one or more series over the same labels (prices, the
-// friends' savings, the time machine). Read out in words on hover, tap or with the
+// A general line chart: one or more series over the same labels (prices, Rosa's
+// head start, the time machine). Read out in words on hover, tap or with the
 // arrow keys; the parent's table shows the same series.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { ActiveDataPoint, ChartDataset } from 'chart.js'
@@ -27,10 +27,10 @@ const props = withDefaults(
     series: Series[]
     /** Plain name of the chart, for screen readers. */
     label: string
-    /** One sentence for point i, e.g. "Age 40: Nia $62,000. Theo $31,000." */
+    /** One sentence for point i, e.g. "Age 40: $62,000 if you keep going, $31,000 if you wait." */
     describe: (i: number) => string
     height?: number
-    /** Label indexes to mark with a point (for example where Theo passes Nia). */
+    /** Label indexes to mark with a point. */
     marks?: { index: number; series: number; label: string }[]
   }>(),
   { height: 260, marks: () => [] },

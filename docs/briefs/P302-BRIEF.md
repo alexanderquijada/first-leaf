@@ -71,6 +71,23 @@ The story says what happened and stops there. It describes the dip and what auto
 - **Sliders:** "Start again in" (1 to 15 years, step 1, default 5) and "Then add" ($150 to $300 a month, step $1, default $150). A marker on "Then add" reads "Catches up at $X a month": the smallest whole amount that makes the later line reach the keep-going line at 65. When no amount up to $300 does, the slider says so instead.
 - **Brand-new account:** she has nothing invested yet, so both lines start at $0, and the lines are "Start now" and "Start later" ("Start in" on the slider).
 
+```json brief-example
+{
+  "story-p302.headStart.startAge": 26,
+  "story-p302.headStart.endAge": 65,
+  "story-p302.headStart.monthly": 150,
+  "story-p302.headStart.delay.default": 5,
+  "story-p302.headStart.add.max": 300,
+  "story-p302.headStart.accounts.rosa-starter.start": 1534.2,
+  "story-p302.headStart.accounts.rosa-starter.keepGoing.39.value": 295460.82,
+  "story-p302.headStart.accounts.rosa-starter.laterDefault.39.value": 215382.8,
+  "story-p302.headStart.catchUp.0.monthly": 161,
+  "story-p302.headStart.catchUp.4.monthly": 211,
+  "story-p302.headStart.catchUp.9.monthly": 300,
+  "story-p302.headStart.catchUp.14.monthly": null
+}
+```
+
 | Claim on screen | Checked as |
 |---|---|
 | Both lines start from what she has invested today | Each account's starting amount equals its invested value (T1) |

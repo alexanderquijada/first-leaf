@@ -395,78 +395,52 @@ const practice = {
     note: 'This uses past prices to show how a mix could have moved. The past does not tell you what will happen next.' },
 };
 
-// ---------- P302 story: start early beats start big ----------
+// ---------- P302 story: Your Journey ----------
 const RATE = 0.06, END_AGE = 65;
 // Your money story's point of view (P302 brief). The "right now" half is only used when rule R1 holds.
 const POV_NOW = 'Right now, almost all of your balance is money you put in.'; // second person (ruling, Sept. 24)
 const POV_REST = 'Growth needs years, so starting early and staying steady matter more than picking the perfect moment.';
 // Standing alone (no history yet), the second sentence is split: as one sentence it reads at grade 8.4.
 const POV_GENERAL = 'Growth needs years. Starting early and staying steady matter more than picking the perfect moment.';
-function project(startAge, monthly, rate = RATE) {
-  const i = rate / 12; let v = 0, putIn = 0; const yearly = [{ age: startAge, putIn: 0, value: 0 }];
+// Your head start (section 3, Phase 6.1): two lines, both Rosa, from her age now to 65. "Keep
+// going" starts from what the account has invested today and adds her recurring deposit every
+// month; "Start again later" starts from the same amount, adds nothing for the delay, then adds
+// the chosen amount. Money goes in at the end of each month, and the rate compounds monthly.
+function headStartLine(start, monthly, delayYears, startAge, rate = RATE) {
+  const i = rate / 12; let v = start; const yearly = [{ age: startAge, value: r2(v) }];
   for (let age = startAge; age < END_AGE; age++) {
-    for (let m = 0; m < 12; m++) { v = v * (1 + i) + monthly; putIn += monthly; }
-    yearly.push({ age: age + 1, putIn: r2(putIn), value: r2(v) });
-  }
-  return { yearly, final: { putIn: r2(putIn), value: r2(v), earned: r2(v - putIn) } };
-}
-const savers = [
-  { id: 'nia', name: 'Nia', startAge: 22, monthly: 100, fictional: true },
-  { id: 'theo', name: 'Theo', startAge: 32, monthly: 150, fictional: true },
-].map((s) => ({ ...s, ...project(s.startAge, s.monthly) }));
-const nia = savers[0], theo = savers[1];
-const months = (END_AGE - theo.startAge) * 12, im = RATE / 12;
-const monthlyNeeded = Math.ceil(nia.final.value / ((Math.pow(1 + im, months) - 1) / im));
-
-// Bumpy version: invented yearly returns with the same OVERALL growth (6% a year, compounded).
-// Chosen so it teaches "ups and downs" without staging a late crash that reads like a forecast:
-// no single year worse than -20%, Nia's balance never falls more than 25% from its peak,
-// and both endings land within 15% of the smooth endings.
-const gm = (arr) => Math.pow(arr.reduce((p, r) => p * (1 + r), 1), 1 / arr.length) - 1;
-function bumpyPath(returns, startAge, monthly) {
-  let v = 0; const yearly = [{ age: startAge, value: 0 }];
-  for (let age = startAge; age < END_AGE; age++) {
-    const m = Math.pow(1 + returns[age - nia.startAge], 1 / 12) - 1;
-    for (let k = 0; k < 12; k++) v = Math.max(0, v * (1 + m) + monthly);
+    for (let m = 0; m < 12; m++) v = v * (1 + i) + ((age - startAge) * 12 + m >= delayYears * 12 ? monthly : 0);
     yearly.push({ age: age + 1, value: r2(v) });
   }
   return yearly;
 }
-const maxDrawdown = (ys) => { let peak = 0, dd = 0; for (const y of ys) { peak = Math.max(peak, y.value); if (peak > 0) dd = Math.max(dd, 1 - y.value / peak); } return dd; };
-let bumpySeed = 302, yearlyReturns, bNia, bTheo;
-for (;; bumpySeed++) {
-  const br = mulberry32(bumpySeed);
-  let rs = Array.from({ length: END_AGE - nia.startAge }, () => 0.06 + 0.13 * gauss(br));
-  for (let k = 0; k < 60; k++) { const g = gm(rs); rs = rs.map((r) => (1 + r) * (1.06 / (1 + g)) - 1); }
-  rs = rs.map((r) => r4(r));
-  const n = bumpyPath(rs, nia.startAge, nia.monthly), t = bumpyPath(rs, theo.startAge, theo.monthly);
-  const close = (a, b) => Math.abs(a / b - 1) <= 0.15; // bumpy ending within 15% of the smooth ending, so bumpiness never looks like a bonus or a disaster
-  if (Math.min(...rs) >= -0.2 && rs.some((r) => r < 0) && maxDrawdown(n.slice(5)) <= 0.25 && n.at(-1).value > t.at(-1).value
-      && close(n.at(-1).value, nia.final.value) && close(t.at(-1).value, theo.final.value)) { yearlyReturns = rs; bNia = n; bTheo = t; break; }
-  if (bumpySeed > 5000) throw new Error('no bumpy seed found');
-}
+const DELAY = { min: 1, max: 15, step: 1, default: 5 }, ADD = { min: 150, max: 300, step: 1, default: 150 };
+// The smallest whole monthly amount that makes the later line reach the keep-going line at 65, or
+// null when no amount on the slider does. (It doesn't depend on the starting amount: that part
+// grows the same way on both lines.)
+const catchUpFor = (years, start) => {
+  const keep = headStartLine(start, RECURRING.amount, 0, persona.age).at(-1).value;
+  for (let m = ADD.min; m <= ADD.max; m += ADD.step) if (headStartLine(start, m, years, persona.age).at(-1).value >= keep) return m;
+  return null;
+};
+const headStartFor = (account) => {
+  const start = account.investedValue;
+  return { start, keepGoing: headStartLine(start, RECURRING.amount, 0, persona.age),
+    laterDefault: headStartLine(start, ADD.default, DELAY.default, persona.age) };
+};
 
 const story = {
-  id: 'your-money-story', title: 'Your money story', fictional: true,
+  id: 'your-journey', title: 'Your Journey', fictional: true,
   // Shown when an account has no story of its own yet (the brand-new account). Accounts with
   // history carry their own point of view in rosaStory, checked by rule R1.
   pointOfView: POV_GENERAL,
   assumptions: { annualRate: RATE, compounding: 'monthly', contributionTiming: 'end of each month', endAge: END_AGE,
     note: 'An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate.' },
-  savers: savers.map(({ id, name, startAge, monthly, fictional, yearly, final }) => ({ id, name, startAge, monthly, fictional, yearly, final })),
-  catchUp: { saverId: 'theo', mustMatch: 'nia', monthlyNeeded, slider: { min: 150, max: 300, step: 1 } },
-  startAgeSlider: { min: 18, max: 45, step: 1, monthly: 100 },
-  bumpy: { seed: bumpySeed, yearlyReturns, overallGrowth: RATE, nia: bNia, theo: bTheo,
-    note: 'Same overall growth as the smooth line: 6% a year. The order of good and bad years changes the ending.' },
-  // Ruling (Sept. 25): no "not a plan or advice" note (disclaimer language, ruling B).
-  yourTurn: { personaId: 'rosa', startAge: persona.age, monthly: RECURRING.amount },
-  claims: [
-    { id: 'early-ends-ahead', text: 'Nia ends with more money than Theo.' },
-    { id: 'early-puts-in-less', text: 'Nia puts in less money than Theo.' },
-    { id: 'early-earned-share', text: "Most of Nia's money at 65 came from growth, not from what she put in." },
-    { id: 'catch-up-costs-more', text: `To catch up, Theo would need about $${monthlyNeeded} a month.` },
-    { id: 'early-ahead-when-bumpy', text: 'Even when the years go up and down, Nia still ends ahead.' },
-  ],
+  headStart: {
+    personaId: persona.id, startAge: persona.age, endAge: END_AGE, monthly: RECURRING.amount, delay: DELAY, add: ADD,
+    catchUp: Array.from({ length: DELAY.max - DELAY.min + 1 }, (_, k) => DELAY.min + k).map((years) => ({ years, monthly: catchUpFor(years, main.account.investedValue) })),
+    accounts: { 'rosa-starter': headStartFor(main.account), 'rosa-all-clear': headStartFor(calm.account), 'rosa-new': headStartFor(emptyAccount) },
+  },
   sources: [
     { label: 'Investor.gov compound interest calculator (U.S. SEC)', url: 'https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator' },
   ],
@@ -526,4 +500,4 @@ console.log(`Wrote data to ${OUT} (seed ${SEED})`);
 console.log('dip', dip);
 for (const { account: a, flags } of [main, calm]) console.log(a.id, { balance: a.balance, cash: a.cash, moneyIn: a.moneyIn, gainLoss: a.gainLoss, week: a.weeklyChange.totalChange, goal: [a.goal.behindBy, a.goal.progress], flags: flags.map((f) => `${f.id}${f.newSinceLastReview ? '*' : ''}`) });
 console.log(funds.map((f) => `${f.ticker} ${f.latestPrice} vol ${f.volatility} ups ${f.upsAndDowns}`).join(' | '));
-console.log({ niaFinal: nia.final, theoFinal: theo.final, monthlyNeeded, bumpySeed, bumpy: [bNia.at(-1).value, bTheo.at(-1).value], minYear: Math.min(...yearlyReturns) });
+console.log('head start', story.headStart.catchUp.map((c) => `${c.years}y:${c.monthly ?? '-'}`).join(' '), Object.fromEntries(Object.entries(story.headStart.accounts).map(([k, v]) => [k, [v.start, v.keepGoing.at(-1).value]])));

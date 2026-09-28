@@ -99,7 +99,9 @@ export const PROJECT_LANGUAGE = [/made[- ]up/i, /\bdemo\b/i, /case stud(y|ies)/i
   /\bmember sipc\b/i, /\bsipc member\b/i, /\bprotected by sipc\b/i, /\bsipc[- ]protected\b/i, /\bfdic\b/i,
   // Alex's review round (Sept. 28): the cash-waiting and sent-back stories are gone for good, and
   // Your Journey has sections, not chapters.
-  /waiting in cash/i, /\bsent back\b/i, /\breturned deposits?\b/i, /\bchapters?\b/i];
+  /waiting in cash/i, /\bsent back\b/i, /\breturned deposits?\b/i, /\bchapters?\b/i,
+  // Phase 6.1: section 3 is Rosa's own head start; the two invented savers are gone from the screen.
+  /\bNia\b/, /\bTheo\b/];
 // Finance Terms (Phase 6): an entry is a real finance term defined on one of these sites.
 export const TERM_SOURCE_DOMAINS = ['investor.gov', 'sec.gov', 'finra.org', 'sipc.org', 'irs.gov', 'consumerfinance.gov'];
 export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we recommend/i, /\bbest (fund|investment|stock)s?\b/i, /guarantee/i,
@@ -113,11 +115,11 @@ export const ADVICE_PATTERNS = [/you should (buy|sell|invest|move|switch)/i, /we
 // not listed here fails L5: give a new placeholder a meaning before you use it.
 export const PLACEHOLDERS = {
   money: ['amount', 'balance', 'cash', 'moneyIn', 'price', 'start', 'end', 'first', 'last', 'paid', 'target', 'actual', 'planned', 'behind',
-    'dividends', 'deposits', 'earned', 'value', 'nia', 'theo', 'monthly', 'niaMonthly', 'theoMonthly', 'putIn'],
+    'dividends', 'deposits', 'earned', 'value', 'monthly', 'putIn', 'keep', 'later'],
   change: ['change', 'market'],       // "up $15.57", "down $5.88", "no change" (the market's part of this week's move is a change too)
   date: ['date', 'from', 'to'],       // "Sept. 18"
   count: ['count', 'shown', 'total', 'n', 'decimals'],
-  number: ['age', 'endAge', 'startAge', 'niaAge', 'theoAge', 'rating', 'now', 'set', 'pct', 'points', 'fee', 'oldFee', 'newFee', 'shares', 'dollars', 'quantity'],
+  number: ['age', 'endAge', 'startAge', 'years', 'rating', 'now', 'set', 'pct', 'points', 'fee', 'oldFee', 'newFee', 'shares', 'dollars', 'quantity'],
   ticker: ['ticker'],
   // Words, not values: names, labels, terms and whole sentences from the data.
   text: ['name', 'title', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'short', 'example', 'link', 'page', 'query', 'region',
@@ -277,8 +279,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   const otherTexts = [
     ...rosaTexts,
     ['story:pointOfView', story.pointOfView], ['story:note', story.assumptions.note],
-    ['story:bumpy.note', story.bumpy.note], ['practice:timeMachine.note', practice.timeMachine.note],
-    ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
+    ['practice:timeMachine.note', practice.timeMachine.note],
     ...funds.map((f) => [`funds:${f.ticker}.about`, f.about]),
     ...scenarios.map((s) => [`scenarios:${s.id}.description`, s.description]), // README-only: exempt from G6, still plain
     ...allAccounts.flatMap((acc) => (activity[acc.id] || []).filter((a) => a.returnReason).map((a) => [`activity:${a.id}.returnReason`, a.returnReason])),
@@ -290,7 +291,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       meta: ['product', 'asOf', 'lastClose', 'lastReview', 'wordOfTheDay', 'bigMoveThreshold'],
       persona: ['id', 'firstName', 'age', 'fictional', 'moments'],
       practice: ['startingCash', 'funds', 'priceDate', 'fictional', 'timeMachine'],
-      'story-p302': ['assumptions', 'savers', 'catchUp', 'bumpy', 'yourTurn', 'claims', 'startAgeSlider'],
+      'story-p302': ['assumptions', 'headStart'],
     };
     for (const [file, keys] of Object.entries(req)) for (const k of keys) if (data[file]?.[k] === undefined) fail(`${file}.${k} missing`);
     for (const a of funded) for (const k of ['id', 'ownerId', 'balance', 'investedValue', 'cash', 'moneyIn', 'gainLoss', 'holdings', 'goal', 'weeklyChange', 'history', 'recurringDeposit', 'targetMix', 'autoInvest', 'beneficiary']) if (a[k] === undefined) fail(`${a.id}.${k} missing`);
@@ -334,7 +335,6 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   });
   rule('G5', 'Every person and account in the data is marked fictional', (fail) => {
     if (persona.fictional !== true) fail('persona not fictional');
-    for (const s of story.savers) if (s.fictional !== true) fail(`saver ${s.id} not fictional`);
     for (const a of allAccounts) if (a.fictional !== true) fail(`${a.id} not fictional`);
     for (const a of allAccounts) if (a.beneficiary && a.beneficiary.fictional !== true) fail(`${a.id} beneficiary not fictional`);
   });
@@ -344,7 +344,7 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       ...glossary.flatMap((g) => [[`glossary:${g.id}.term`, g.term], [`glossary:${g.id}.alsoCalled`, (g.alsoCalled || []).join(', ')], [`glossary:${g.id}.short`, g.short], [`glossary:${g.id}.detail`, g.detail], [`glossary:${g.id}.example`, g.example]]),
       ...allAccounts.flatMap((acc) => flagsOf(acc).flatMap((a) => [[`attention:${acc.id}:${a.id}`, `${a.title}. ${a.body} ${a.nextStep} ${a.action?.label ?? ''}`]])),
       ...funds.flatMap((f) => [[`funds:${f.ticker}.name`, f.name], [`funds:${f.ticker}.about`, f.about]]),
-      ['story:title', story.title], ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
+      ['story:title', story.title],
       ...otherTexts.filter(([where]) => !where.startsWith('scenarios:')),
     ];
     for (const [where, text] of screen) for (const re of PROJECT_LANGUAGE) if (re.test(text)) fail(`${where} uses project language ${re}: "${text.slice(0, 80)}"`);
@@ -629,48 +629,52 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     if (accountNew.ownerId !== persona.id) fail('account-new ownerId != persona');
   });
 
-  // ----- T: P302 story -----
-  const proj = (startAge, monthly, rate, endAge) => { const i = rate / 12; let v = 0; for (let m = 0; m < (endAge - startAge) * 12; m++) v = v * (1 + i) + monthly; return v; };
-  const sv = Object.fromEntries(story.savers.map((s) => [s.id, s]));
-  rule('T1', "Each saver's numbers match the growth formula", (fail) => {
-    const { annualRate, endAge } = story.assumptions;
-    for (const s of story.savers) {
-      const v = r2(proj(s.startAge, s.monthly, annualRate, endAge)), putIn = s.monthly * 12 * (endAge - s.startAge);
-      if (!eq(s.final.value, v, 0.02)) fail(`${s.id} final value ${s.final.value} != ${v}`);
-      if (!eq(s.final.putIn, putIn)) fail(`${s.id} putIn ${s.final.putIn} != ${putIn}`);
-      if (!eq(s.final.earned, r2(s.final.value - s.final.putIn), 0.02)) fail(`${s.id} earned wrong`);
-      if (s.yearly.length !== endAge - s.startAge + 1) fail(`${s.id} yearly has ${s.yearly.length} rows`);
-      if (!eq(s.yearly.at(-1).value, s.final.value, 0.02)) fail(`${s.id} last yearly != final`);
+  // ----- T: P302 story, section 3 "Your head start" (Phase 6.1) -----
+  // Two lines, both Rosa: "keep going" (her invested amount plus her recurring deposit every month)
+  // and "start again later" (the same start, nothing added for the delay, then the chosen amount).
+  const hs = story.headStart || {};
+  const hsLine = (start, monthly, delayYears) => {
+    const i = story.assumptions.annualRate / 12; let v = start; const yearly = [{ age: hs.startAge, value: r2(v) }];
+    for (let age = hs.startAge; age < hs.endAge; age++) {
+      for (let m = 0; m < 12; m++) v = v * (1 + i) + ((age - hs.startAge) * 12 + m >= delayYears * 12 ? monthly : 0);
+      yearly.push({ age: age + 1, value: r2(v) });
+    }
+    return yearly;
+  };
+  const sameLine = (a, b) => Array.isArray(a) && a.length === b.length && a.every((y, k) => y.age === b[k].age && eq(y.value, b[k].value, 0.02));
+  rule('T1', 'Both head-start lines start from the account\'s invested amount and match the growth formula', (fail) => {
+    if (hs.endAge !== story.assumptions.endAge) fail(`headStart ends at ${hs.endAge}, the assumptions at ${story.assumptions.endAge}`);
+    for (const acc of allAccounts) {
+      const h = hs.accounts?.[acc.id];
+      if (!h) { fail(`headStart has no lines for ${acc.id}`); continue; }
+      if (!eq(h.start, acc.investedValue)) fail(`${acc.id}: head start begins at ${h.start}, but the account has ${acc.investedValue} invested`);
+      if (!sameLine(h.keepGoing, hsLine(h.start, hs.monthly, 0))) fail(`${acc.id}: the keep-going line doesn't match the growth formula`);
+      if (!sameLine(h.laterDefault, hsLine(h.start, hs.add.default, hs.delay.default))) fail(`${acc.id}: the start-again-later line doesn't match the growth formula`);
+      if (!(h.keepGoing?.[0] && h.laterDefault?.[0] && eq(h.keepGoing[0].value, h.laterDefault[0].value) && eq(h.keepGoing[0].value, h.start))) fail(`${acc.id}: the two lines don't start from the same amount`);
     }
   });
-  rule('T2', 'Every claim the story makes is true in the data, and the sliders can reach them', (fail) => {
-    const n = sv.nia, t = sv.theo, ids = story.claims.map((c) => c.id);
-    for (const need of ['early-ends-ahead', 'early-puts-in-less', 'early-earned-share', 'catch-up-costs-more', 'early-ahead-when-bumpy']) if (!ids.includes(need)) fail(`claim ${need} missing`);
-    if (!(n.final.value > t.final.value)) fail('early-ends-ahead is false');
-    if (!(n.final.putIn < t.final.putIn)) fail('early-puts-in-less is false');
-    if (!(n.final.earned / n.final.value > 0.5)) fail('early-earned-share is false');
-    if (!(n.startAge < t.startAge && n.monthly < t.monthly)) fail('"start early vs start big" setup is broken');
-    if (!(story.bumpy.nia.at(-1).value > story.bumpy.theo.at(-1).value)) fail('early-ahead-when-bumpy is false');
-    const { annualRate, endAge } = story.assumptions, need = story.catchUp.monthlyNeeded, sl = story.catchUp.slider;
-    if (!(proj(t.startAge, need, annualRate, endAge) >= n.final.value)) fail(`catch-up $${need} is not enough`);
-    if (proj(t.startAge, need - 1, annualRate, endAge) >= n.final.value) fail(`catch-up $${need} is not the smallest amount`);
-    if (!(need >= sl.min && need <= sl.max && (need - sl.min) % sl.step === 0)) fail(`Theo's slider (${sl.min}-${sl.max}, step ${sl.step}) cannot land on $${need}`);
-    if (!(story.claims.find((c) => c.id === 'catch-up-costs-more')?.text || '').includes(`$${need}`)) fail('catch-up claim text does not show the computed amount');
-    const as = story.startAgeSlider; if (!(as.min <= n.startAge && as.max >= t.startAge)) fail('start-age slider does not cover both savers');
-  });
-  rule('T3', 'The bumpy version has the same overall growth and no staged crash', (fail) => {
-    const r = story.bumpy.yearlyReturns;
-    const gm = Math.pow(r.reduce((p, x) => p * (1 + x), 1), 1 / r.length) - 1;
-    if (Math.abs(gm - story.assumptions.annualRate) > 0.0005) fail(`bumpy overall growth ${gm.toFixed(4)} != ${story.assumptions.annualRate}`);
-    if (r.length !== story.assumptions.endAge - sv.nia.startAge) fail('bumpy has the wrong number of years');
-    if (!r.some((x) => x < 0)) fail('bumpy has no down years, so it does not show ups and downs');
-    if (Math.min(...r) < -0.2) fail(`bumpy has a year of ${(Math.min(...r) * 100).toFixed(1)}%, worse than -20% (reads like a crash forecast)`);
-    for (const [who, path, smooth] of [['nia', story.bumpy.nia, sv.nia.final.value], ['theo', story.bumpy.theo, sv.theo.final.value]]) {
-      if (Math.abs(path.at(-1).value / smooth - 1) > 0.15) fail(`${who}'s bumpy ending is more than 15% away from the smooth ending`);
+  rule('T2', 'Each catch-up amount is the smallest whole dollar that meets the keep-going line at 65, and the sliders can reach it', (fail) => {
+    const d = hs.delay || {}, a = hs.add || {};
+    if (!(d.min === 1 && d.max === 15 && d.step === 1 && d.default >= d.min && d.default <= d.max)) fail('"Start again in" must run 1 to 15 years, with its default inside');
+    if (!(a.min === hs.monthly && a.max === 300 && a.step === 1 && a.default >= a.min && a.default <= a.max)) fail('"Then add" must run from her monthly amount to $300, in $1 steps');
+    const years = (hs.catchUp || []).map((c) => c.years);
+    for (let y = d.min; y <= d.max; y += d.step) if (!years.includes(y)) fail(`no catch-up amount for ${y} years`);
+    for (const c of hs.catchUp || []) for (const acc of allAccounts) {
+      const h = hs.accounts?.[acc.id]; if (!h) continue;
+      const keep = hsLine(h.start, hs.monthly, 0).at(-1).value, at65 = (m) => hsLine(h.start, m, c.years).at(-1).value;
+      if (c.monthly === null) { if (at65(a.max) >= keep) fail(`${c.years} years: $${a.max} a month does catch up, but the data says nothing does`); continue; }
+      if (!(c.monthly >= a.min && c.monthly <= a.max && (c.monthly - a.min) % a.step === 0)) fail(`${c.years} years: the slider can't land on $${c.monthly}`);
+      if (!(at65(c.monthly) >= keep)) fail(`${c.years} years: $${c.monthly} a month doesn't reach the keep-going line at 65 (${acc.id})`);
+      if (c.monthly > a.min && at65(c.monthly - 1) >= keep) fail(`${c.years} years: $${c.monthly - 1} a month already catches up, so $${c.monthly} isn't the smallest (${acc.id})`);
     }
-    let peak = 0, dd = 0; for (const y of story.bumpy.nia.slice(5)) { peak = Math.max(peak, y.value); if (peak) dd = Math.max(dd, 1 - y.value / peak); }
-    if (dd > 0.25) fail(`Nia's bumpy balance falls ${(dd * 100).toFixed(0)}% from a peak (limit 25%)`);
-    if (!/overall growth/i.test(story.bumpy.note)) fail('bumpy note must say "overall growth" (the simple average of the years is higher)');
+  });
+  rule('T3', 'The head start is Rosa\'s own: her age, her monthly deposit, and no one else named', (fail) => {
+    if (hs.personaId !== persona.id) fail(`headStart is for ${hs.personaId}, not ${persona.id}`);
+    if (hs.startAge !== persona.age) fail(`headStart starts at ${hs.startAge}, but Rosa is ${persona.age}`);
+    if (hs.monthly !== data.account.recurringDeposit.amount) fail(`headStart adds $${hs.monthly}, but her recurring deposit is $${data.account.recurringDeposit.amount}`);
+    for (const k of ['savers', 'catchUp', 'startAgeSlider', 'bumpy', 'yourTurn', 'claims']) if (k in story) fail(`story-p302 still has "${k}" (the invented savers are gone, Phase 6.1)`);
+    const names = JSON.stringify(story).match(/\b(Nia|Theo)\b/g);
+    if (names) fail(`story-p302 still names ${[...new Set(names)].join(' and ')}`);
   });
   rule('T4', 'The story says its rate is an example that nobody can promise', (fail) => {
     const a = story.assumptions;
@@ -766,9 +770,8 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
   // ----- X: cross-case-study consistency -----
   rule('X1', 'The same learner means the same thing in every lens (P301, P302, P303)', (fail) => {
     for (const a of allAccounts) if (a.ownerId !== persona.id) fail(`${a.id} owner != persona`);
-    if (story.yourTurn.personaId !== persona.id) fail('P302 yourTurn persona != persona');
-    if (story.yourTurn.startAge !== persona.age) fail(`P302 yourTurn age ${story.yourTurn.startAge} != persona age ${persona.age}`);
-    if (story.yourTurn.monthly !== data.account.recurringDeposit.amount) fail(`P302 yourTurn monthly ${story.yourTurn.monthly} != recurring deposit ${data.account.recurringDeposit.amount}`);
+    if (story.headStart?.personaId !== persona.id) fail('P302 head start persona != persona');
+    if (story.headStart?.startAge !== persona.age) fail(`P302 head start age ${story.headStart?.startAge} != persona age ${persona.age}`);
     for (const k of ['P301', 'P302', 'P303']) if (!persona.moments?.[k]) fail(`persona has no moment for ${k}`);
   });
   rule('X2', 'Dates agree across every file', (fail) => {
@@ -831,12 +834,12 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
       v.market = fmtChange(w?.marketChange ?? 0);
       for (const n of PLACEHOLDERS.date) v[n] = fmtDate(acc.asOf);
       for (const n of PLACEHOLDERS.count) v[n] = n === 'decimals' ? String(practice.maxDecimals) : '3';
-      Object.assign(v, { age: '22', endAge: '65', startAge: '22', niaAge: '22', theoAge: '32', rating: String(funds[0].upsAndDowns), now: '40', set: '35',
+      Object.assign(v, { age: '26', endAge: '65', startAge: '26', years: '5', rating: String(funds[0].upsAndDowns), now: '40', set: '35',
         pct: '95', points: '0.10', fee: '0.45', oldFee: '0.45', newFee: '0.55', shares: '0.5190', dollars: '196' });
       v.ticker = acc.holdings[0]?.ticker ?? funds[0].ticker;
       Object.assign(v, { name: persona.firstName, title: flag.title, label: 'Your balance since March', series: 'Balance', kind: 'Stocks', status: 'Pending',
         type: 'Deposits', page: 'Activity', query: 'fee', region: funds[0].region ?? 'United States',
-        claim: story.claims[0].text, note: story.bumpy.note, reply: 'Here is how it turns out.', setting: 'Start at 30',
+        claim: story.rosaStory?.['rosa-starter']?.claims[0]?.text ?? story.pointOfView, note: story.assumptions.note, reply: 'Here is how it turns out.', setting: 'Start at 30',
         month: story.rosaStory?.[acc.id]?.facts.dip.month ?? 'May', direction: 'up', list: 'Stocks 70%, Crypto 18%, Cash 12%', relationship: 'Brother' });
       const flags = flagsOf(acc).length ? flagsOf(acc) : [flag];
       return [...glossaryVariants.map((g) => ({ ...v, ...g })), ...flags.map((f) => ({ ...v, ...glossaryVariants[0], title: f.title }))];
@@ -880,9 +883,8 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     // The generated story sentences, per scenario, as they appear on screen.
     const storySentences = [
       ...Object.values(story.rosaStory || {}).filter(Boolean).flatMap((r) => [[`story:rosaStory:${r.accountId}.pointOfView`, r.pointOfView], ...r.claims.map((c) => [`story:rosaStory:${r.accountId}:${c.id}`, c.text])]),
-      ['story:pointOfView', story.pointOfView], ['story:assumptions.note', story.assumptions.note], ['story:bumpy.note', story.bumpy.note],
+      ['story:pointOfView', story.pointOfView], ['story:assumptions.note', story.assumptions.note],
       ['practice:timeMachine.note', practice.timeMachine.note],
-      ...story.claims.map((c) => [`story:claim:${c.id}`, c.text]),
     ];
     for (const [where, text] of storySentences) lint(where, text, text);
   });

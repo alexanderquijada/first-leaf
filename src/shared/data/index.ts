@@ -231,14 +231,10 @@ export interface PracticeRules {
 }
 
 // ── story-p302.json ──────────────────────────────────────────────────────────
-export interface Saver {
-  id: string
-  name: string
-  startAge: number
-  monthly: number
-  fictional: boolean
-  yearly: { age: number; putIn: number; value: number }[]
-  final: { putIn: number; value: number; earned: number }
+/** One point on a head-start line: her age and what the money could be worth then. */
+export interface HeadStartPoint {
+  age: number
+  value: number
 }
 
 export interface StoryClaim {
@@ -299,24 +295,19 @@ export interface Story {
     endAge: number
     note: string
   }
-  savers: Saver[]
-  catchUp: {
-    saverId: string
-    mustMatch: string
-    monthlyNeeded: number
-    slider: { min: number; max: number; step: number }
+  /** Section 3, "Your head start" (Phase 6.1): two lines, both Rosa, from her age now to 65. Rules T1–T3. */
+  headStart: {
+    personaId: string
+    startAge: number
+    endAge: number
+    /** Her recurring deposit: what "keep going" adds each month. */
+    monthly: number
+    delay: { min: number; max: number; step: number; default: number }
+    add: { min: number; max: number; step: number; default: number }
+    /** For each delay, the smallest whole monthly amount that catches up at 65, or null if none on the slider does. */
+    catchUp: { years: number; monthly: number | null }[]
+    accounts: Record<AccountId, { start: number; keepGoing: HeadStartPoint[]; laterDefault: HeadStartPoint[] }>
   }
-  startAgeSlider: { min: number; max: number; step: number; monthly: number }
-  bumpy: {
-    seed: number
-    yearlyReturns: number[]
-    overallGrowth: number
-    nia: { age: number; value: number }[]
-    theo: { age: number; value: number }[]
-    note: string
-  }
-  yourTurn: { personaId: string; startAge: number; monthly: number }
-  claims: { id: string; text: string }[]
   sources: { label: string; url: string }[]
   /** Per account; null for an account with no history yet. */
   rosaStory: Record<AccountId, RosaStory | null>

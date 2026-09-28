@@ -67,10 +67,13 @@ for (const size of WIDTHS) {
         for (let i = 0; i < 4; i++) await pad.getByRole('button', { name: '9', exact: true }).click()
       } else await page.getByLabel('Amount in dollars').fill('99999')
       await expect(page.getByRole('alert').first()).toContainText('practice money')
+      // The keypad clicks scroll the page, which can leave the fund picker under the sticky top
+      // bar (Phase 6.1: no banner above it any more); measure from the top, as above.
+      await page.evaluate(() => window.scrollTo(0, 0))
       expect(await seriousViolations(page)).toEqual([])
     })
 
-    test('Finance Terms with no results, and Start early with a slider moved', async ({ page }) => {
+    test('Finance Terms with no results, and Your head start with a slider moved', async ({ page }) => {
       await page.goto('/learn')
       await page.getByLabel('Search finance terms').fill('zebra')
       expect(await seriousViolations(page)).toEqual([])

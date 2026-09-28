@@ -6,8 +6,8 @@ import { PROJECT_LANGUAGE } from '../../scripts/validate-data.mjs'
 // project, an exercise or a disclaimer. This crawls every page in every scenario, at phone
 // and laptop widths, with the usual things opened, and searches the rendered text.
 // Phase 6 adds the removed stories ("waiting in cash", "sent back", "returned deposit") and the
-// word "chapter" (Your Journey has sections).
-const OWN = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d|\bsimulated\b|\bconcept\b|\bnot real\b|(investment|financial) advice|\bnot\b[^.]{0,30}\badvice\b|member sipc|sipc member|protected by sipc|sipc[- ]protected|\bfdic\b|waiting in cash|\bsent back\b|\breturned deposits?\b|\bchapters?\b/i
+// word "chapter" (Your Journey has sections). Phase 6.1 adds "Nia" and "Theo": section 3 is Rosa's own.
+const OWN = /made[- ]up|\bdemo\b|case stud(y|ies)|\bproject\b|reviewer|fictional|phase \d|\bsimulated\b|\bconcept\b|\bnot real\b|(investment|financial) advice|\bnot\b[^.]{0,30}\badvice\b|member sipc|sipc member|protected by sipc|sipc[- ]protected|\bfdic\b|waiting in cash|\bsent back\b|\breturned deposits?\b|\bchapters?\b|\bNia\b|\bTheo\b/i
 const LISTS = [OWN, ...(PROJECT_LANGUAGE as RegExp[])]
 const BANNED = { test: (t: string) => LISTS.some((re) => re.test(t)) }
 const match = (t: string) => LISTS.map((re) => t.match(re)).find((m) => m) ?? null
@@ -50,26 +50,23 @@ for (const width of [390, 1280]) {
 
 // The crawl must let the two allowed notes through, and must still catch the banned words.
 const ALLOWED = [
-  'Practice money. Nothing here touches your account.',
   'Stock prices on Sept. 19, 2025, March 2, 2026 and Sept. 18, 2026 are real. Prices on the days between are modeled.',
   'Powered by CoinGecko API',
 ]
-test('the banned words are caught, and the Practice banner and data notes are not', () => {
+test('the banned words are caught, and the data notes are not', () => {
   for (const t of ALLOWED) expect(BANNED.test(t), t).toBe(false)
   for (const t of ['Prices here are simulated.', 'First Leaf is a concept app.', 'This money is not real.', 'Nothing here is investment advice.', 'This is not financial advice.', 'This is an example, not a plan or advice.', 'Member SIPC', 'First Leaf is a SIPC member.', 'Your stocks are protected by SIPC.', 'SIPC-protected account', 'FDIC insured',
-    '$150 is waiting in cash.', 'Your deposit was sent back.', 'Returned deposit', 'Chapter 5: Keep going', 'Pick a chapter.'])
+    '$150 is waiting in cash.', 'Your deposit was sent back.', 'Returned deposit', 'Chapter 5: Keep going', 'Pick a chapter.', 'Nia starts at 22.', 'At 65, Theo has $186,213.'])
     expect(BANNED.test(t), t).toBe(true)
   // Every word the validator bans (rule G6) is banned here too, and the new ones are on its list.
-  for (const t of ['waiting in cash', 'sent back', 'returned deposit', 'chapter']) expect((PROJECT_LANGUAGE as RegExp[]).some((re) => re.test(t)), t).toBe(true)
+  for (const t of ['waiting in cash', 'sent back', 'returned deposit', 'chapter', 'Nia', 'Theo']) expect((PROJECT_LANGUAGE as RegExp[]).some((re) => re.test(t)), t).toBe(true)
   // Words that only look close stay allowed.
-  for (const t of ['Your balance went back above what you put in.', 'Sections', 'Rate of return']) expect(BANNED.test(t), t).toBe(false)
+  for (const t of ['Your balance went back above what you put in.', 'Sections', 'Rate of return', 'Practice money', 'Theory', 'Niagara']) expect(BANNED.test(t), t).toBe(false)
 })
 
-test('the notes that are allowed are on screen: the Practice banner and the stock data note', async ({ page }) => {
-  await page.goto('/practice')
-  await expect(page.getByText(ALLOWED[0]!)).toBeVisible()
+test('the note that is allowed is on screen: the stock data note', async ({ page }) => {
   await page.goto('/funds/AAPL')
-  await expect(page.getByText(ALLOWED[1]!)).toBeVisible()
+  await expect(page.getByText(ALLOWED[0]!)).toBeVisible()
   const text = await page.evaluate(() => document.body.innerText)
   expect(BANNED.test(text)).toBe(false)
   // And the crawl's check fails on screen when a banned word appears.

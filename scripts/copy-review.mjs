@@ -173,7 +173,7 @@ function addRow(section, id, t, fallbackWhere, example) {
 const files = ['src/shared/copy.json', 'src/layouts/copy.json', ...readdirSync(join(ROOT, 'src', 'features')).sort().map((f) => `src/features/${f}/copy.json`)];
 const EX = { amount: '$150', balance: '$1,336.80', cash: '$452.11', date: 'Sept. 18', count: '2', ticker: 'AAPL', value: '$246.92', pct: '52', fee: '0.45', dollars: '150',
   term: 'Volatility', title: 'Name a beneficiary for your account', change: 'down $10.99', name: 'Rosa', price: '$336.13', shares: '0.7346', earned: '$5.00', moneyIn: '$1,250.00',
-  status: 'Completed', kind: 'Stock', age: '30', endAge: '65', nia: '$242,251', theo: '$186,213', monthly: '$150', label: 'Start age', setting: 'Start at 30', market: 'down $10.99',
+  status: 'Completed', kind: 'Stock', age: '40', endAge: '65', startAge: '26', years: '5', keep: '$295,461', later: '$215,383', monthly: '$150', label: 'Start again in', setting: '5 years', market: 'down $10.99',
   short: "How much an investment's price tends to jump around.", page: 'Activity', series: 'Balance', month: 'May', direction: 'up',
   example: 'Costco is a 1. Solana is a 5.', terms: 'volatility', link: 'Investor.gov glossary (U.S. SEC)', rating: '3', set: '35', now: '40', decimals: '2', putIn: '$9,600' };
 const example = (t, parent = {}, key = '') => t.replace(/\{(\w+)\}/g, (m, n) =>
