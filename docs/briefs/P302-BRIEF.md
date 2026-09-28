@@ -125,7 +125,7 @@ The data no longer holds the two invented savers, the bumpy years or the "your t
 
 - **Section tabs** are WAI-ARIA tabs: arrow keys move, Enter or Space selects, and the selection is announced. The **Next** button at the end of each section selects the next tab.
 - **Sliders** are real range inputs. The arrow keys move them, and values are shown and announced in words. Every result comes from the same formula the validator checks.
-- **Toggles** are real buttons with a pressed state, and each has a sentence that says what the chart now shows. A chart's title follows its time range ("Your balance in the last month").
+- **Toggles** are real buttons with a pressed state, and each has a sentence that says what the chart now shows. A chart's title follows its time range ("Your balance in the last month"), and the range buttons sit on their own line under it, so they never move when a range is chosen.
 - **Show as table** sits under every chart.
 - **Motion respects reduced motion:** with `prefers-reduced-motion`, charts appear in their final state and nothing required is animated.
 

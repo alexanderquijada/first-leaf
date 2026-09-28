@@ -280,6 +280,7 @@ Fonts are self-hosted from npm (`@fontsource-variable/*`), so the site loads not
 - **Grain and gradient fill** show "money it earned," layered on a flat fill for "money you put in." The texture difference *is* the encoding.
 - **Mix charts use the three tested groups** (stocks sky, crypto coral, cash cream; §6 above), each with its own halftone or stripe pattern, so color is never the only signal. Per-holding detail stays in tables. Every chart color is measured against the background it is actually drawn on (3:1 for marks): mix charts sit on the dark panel, or cream marks get an outline that passes.
 - Every chart has a plain-sentence summary above it and a "Show as table" option. Values are read out in words on hover, focus or tap.
+- **Range buttons sit on their own line directly under the card title, left-aligned,** at every width and every range (Sept. 28, Phase 6.2). A chart's title follows its range, so its length changes; the buttons never move when a different range is chosen. The selected button has one clean edge.
 - Motion respects `prefers-reduced-motion`. Without motion, everything still reads.
 
 **Layout rules** (learned on the last project): at most two levels of cards, with separator lines at level three. No row ends in a big empty gap. At least a **24px gutter** between columns of numbers, measured text edge to text edge. When a card count doesn't divide into 12 columns (five funds, say), use a **CSS grid**, not the 12-column grid. Opaque bars over scrolling content.

@@ -78,6 +78,12 @@
 
 Newest first. Include what we got wrong and why.
 
+### Sept. 28, 2026: Phase 6.2 · range buttons under the card title
+
+Alex saw the "1 month / 3 months / Since March" buttons jump: they sat beside the card title when it was short ("Your balance since March") and wrapped under it when it was long ("Your balance in the last month"). From now on they always sit on their own line directly under the card title, left-aligned, at every width and every range, on every card that has them (Home's balance chart, Your Journey's section 1, the investment pages, and the phone). A Playwright test clicks each range at 390, 768 and 1280 and fails if the buttons move. The selected button also had a doubled line on its left edge in "Since March"; it gets one clean edge.
+
+**What we got wrong:** the card's head put the title and the buttons in one wrapping row, so the buttons' place depended on the title's length, which changes with the range.
+
 ### Sept. 28, 2026: Phase 6.1 · headings, Practice banner and "Your head start"
 
 Alex asked for three more changes. The briefs, BRIEF.md, CLAUDE.md §5 and the README were updated first (brief first).
