@@ -83,7 +83,6 @@ const alert = computed(() => attention.value.find((a) => a.id === id.value))
   color: var(--color-ink-muted);
 }
 
-.alerts__missing h1,
 .alerts__missing h2 {
   font-size: 1.75rem;
 }

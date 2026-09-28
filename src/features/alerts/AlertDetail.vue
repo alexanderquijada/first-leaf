@@ -158,6 +158,11 @@ function unhandle() {
 
 .adetail__title {
   margin-top: 8px;
+}
+
+/* Beside the list it is a section heading; as its own page (a phone) it is the page title and
+   uses the shared h1 size, like every page (Phase 6.1). */
+h2.adetail__title {
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
 

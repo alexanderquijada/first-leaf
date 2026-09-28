@@ -141,10 +141,6 @@ const rows = computed(() =>
   }
 }
 
-.funds h1 {
-  font-size: clamp(2.25rem, 5vw, 3rem);
-}
-
 .funds__wrap {
   position: relative; /* keeps screen-reader-only text inside the scrolling box */
   margin-top: 16px;

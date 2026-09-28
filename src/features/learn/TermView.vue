@@ -50,10 +50,6 @@ const related = computed(() => (term.value?.related ?? []).map((r) => getTerm(r)
   max-width: 680px;
 }
 
-.term h1 {
-  font-size: clamp(2.25rem, 5vw, 3rem);
-}
-
 .term p {
   margin: 12px 0 0;
   font-family: var(--font-text);

@@ -39,10 +39,6 @@ const results = computed(() => {
   max-width: 760px;
 }
 
-.learn h1 {
-  font-size: clamp(2.25rem, 5vw, 3rem);
-}
-
 .learn__label {
   display: block;
   margin-top: 16px;

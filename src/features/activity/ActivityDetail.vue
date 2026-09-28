@@ -92,10 +92,6 @@ const terms = computed(() => termIds.value.map((t) => getTerm(t)).filter((t) => 
   max-width: 640px;
 }
 
-.adet h1 {
-  font-size: clamp(2rem, 5vw, 2.75rem);
-}
-
 .adet p {
   margin: 12px 0 0;
   line-height: 1.6;

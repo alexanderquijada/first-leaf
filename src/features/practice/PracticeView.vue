@@ -162,10 +162,6 @@ function startOver() {
   max-width: 1100px;
 }
 
-.practice h1 {
-  font-size: clamp(2.25rem, 5vw, 3rem);
-}
-
 /* The banner stays under the top bar (and the tabs on a tablet) while scrolling. */
 .practice__banner {
   position: sticky;

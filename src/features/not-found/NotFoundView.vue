@@ -14,10 +14,6 @@ import copy from './copy.json'
 </template>
 
 <style scoped>
-.nf h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
-}
-
 .nf p {
   margin: 12px 0 0;
   font-size: 1.125rem;

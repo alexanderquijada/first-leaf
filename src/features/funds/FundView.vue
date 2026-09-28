@@ -155,10 +155,6 @@ const words = computed(() => [
   max-width: 900px;
 }
 
-.fund h1 {
-  font-size: clamp(2.25rem, 5vw, 3rem);
-}
-
 .fund__back {
   display: inline-flex;
   align-items: center;

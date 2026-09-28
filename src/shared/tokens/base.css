@@ -5,8 +5,8 @@
 /* Type scale (BRIEF.md §6): Newsreader for big numbers and headlines, Hanken Grotesk for
    the interface. Components pick a step; nothing sets a one-off size for a headline. */
 :root {
-  --type-hero: clamp(2.5rem, 6vw, 3.5rem);   /* page titles and the balance */
-  --type-h1: clamp(2.25rem, 5vw, 3rem);
+  --type-hero: clamp(2.5rem, 6vw, 3.5rem);   /* the balance and other big numbers */
+  --type-h1: clamp(2.25rem, 5vw, 3rem);      /* every page title (h1), on every page: no page sets its own */
   --type-h2: clamp(1.5rem, 3vw, 1.875rem);
   --type-h3: 1.25rem;
   --type-body: 1rem;

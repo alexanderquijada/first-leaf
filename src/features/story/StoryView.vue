@@ -146,10 +146,6 @@ async function pick(n: number) {
   max-width: 1180px;
 }
 
-.story h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-}
-
 /* The section tabs: one row of four under the title from 600px (P302 DoD 5), each as wide as its
    longest name needs, left-aligned; a 2×2 grid on a phone. */
 .story__tabs {

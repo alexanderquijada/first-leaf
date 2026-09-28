@@ -91,10 +91,6 @@ const filterSummary = computed(
   max-width: 900px;
 }
 
-.activity h1 {
-  font-size: clamp(2.25rem, 5vw, 3rem);
-}
-
 .activity__empty {
   margin: 12px 0 0;
 }
