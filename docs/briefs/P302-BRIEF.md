@@ -1,6 +1,6 @@
 # P302 · Interactive data story: Your Journey
 
-> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a stand-alone Nia and Theo story; reshaped Sept. 28 for Alex's review round, Phase 6, from "Your money story" in six chapters to "Your Journey" in four sections). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Rosa, Nia and Theo are invented; the stock and crypto names and crypto prices are real, and stock prices are modeled between real closes (ruling B, Phase 2.5). Nothing here is a prediction.
+> **Lens brief, re-planned Sept. 24, 2026** (first written Sept. 23 as a stand-alone story about two invented savers; reshaped Sept. 28 for Alex's review round, Phase 6, from "Your money story" in six chapters to "Your Journey" in four sections). First Leaf is one app; this case study is one lens on it. Shared foundation: [BRIEF.md](../../BRIEF.md) §1–3 (product, person, how the lenses fit together) and §6 (style). Rosa is invented; the stock and crypto names and crypto prices are real, and stock prices are modeled between real closes (ruling B, Phase 2.5). Nothing here is a prediction.
 >
 > **Live:** `/story` (any screen size; one section at a time, chosen with visual tabs), plus `/practice` and `/learn` (Finance Terms) · **Code:** `src/features/story/`, `src/features/practice/`, `src/features/learn/` · **Commits:** prefixed `[P302]`
 
@@ -12,14 +12,14 @@
 
 (Second person, like the sections that follow: the story speaks to Rosa. Ruling, Sept. 24.)
 
-It earns that point of view in **four short sections**, shown one at a time. **Six months in** reads her own balance since March and shows that almost all of it is money she put in. **The dip in June** shows the two weeks when prices fell, and that auto-invest kept buying through them. **Start early** shows why years matter, with two friends, Nia and Theo (invented for the lesson): Nia starts at 22 with $100 a month, Theo waits until 32 and puts in $150, and Nia still ends with more. **Try it** invites her to try a mix with practice money in Practice.
+It earns that point of view in **four short sections**, shown one at a time. **Six months in** reads her own balance since March and shows that almost all of it is money she put in. **The dip in June** shows the two weeks when prices fell, and that auto-invest kept buying through them. **Your head start** shows why years matter with her own money: two lines, both Rosa, from 26 to 65. One keeps adding $150 a month; the other stops now and starts again later, and needs a bigger monthly amount to catch up. **Try it** invites her to try a mix with practice money in Practice.
 
-**Why this story.** A dip is the moment a beginner is most likely to feel like stopping. Rosa's own chart shows what happened when she didn't: auto-invest kept buying, and within ten days of the low her balance was back above what she had put in. It also shows that six months is far too short for growth to show up (most of her balance is still her own deposits; rule R1 checks the exact share), and the Nia and Theo lesson shows what the years do. A story about *her* money is more persuasive to her than a story about strangers, and it keeps First Leaf one product instead of an app with an essay attached.
+**Why this story.** A dip is the moment a beginner is most likely to feel like stopping. Rosa's own chart shows what happened when she didn't: auto-invest kept buying, and within ten days of the low her balance was back above what she had put in. It also shows that six months is far too short for growth to show up (most of her balance is still her own deposits; rule R1 checks the exact share), and her head start shows what the years do. A story about *her* money is more persuasive to her than a story about strangers, and it keeps First Leaf one product instead of an app with an essay attached.
 
 **Practice and the learning moments count toward P302.** Practice (investing with practice money), the term explanations and the Finance Terms pages are how the story turns into something Rosa can try and understand, so they are part of this lens.
 
 *Replaced Sept. 28 (Alex's review round):* the six-chapter scroll story with a pinned chart, whose chapter 5 alone had seven steps (a guess, the answer, why, every year counts, catch-up, smooth vs. bumpy, and "your turn"), plus a closing. *What we got wrong:* it ran too long, and a reader on the couch lost the point before the end. The guess, the smooth and bumpy switch, the "your turn" step, the closing, the mix chapter and the pause are removed; "chapters" are now "sections", and the word "chapter" never appears on the site (G6).
-*Rejected:* the stand-alone "Start early beats start big" story about two strangers. It was sound, but it sat outside the app and never touched Rosa's own money. It lives on as section 3.
+*Rejected:* the stand-alone "Start early beats start big" story about two strangers. It was sound, but it sat outside the app and never touched Rosa's own money. It lived on as section 3 until Sept. 28 (Phase 6.1), when section 3 became Rosa's own "Your head start": a story about strangers is weaker than one about her.
 *Rejected:* "Fees quietly eat your growth." Strong, but it leans on percentages beginners struggle to feel, and stocks and crypto carry no yearly fund fee.
 *Rejected:* "Staying invested beats jumping out" told with market forecasts. Nobody can forecast prices honestly. We show what happened to Rosa's own account and stop there.
 
@@ -29,7 +29,7 @@ Rosa, 26, and people like her: in their 20s, a few months into investing or abou
 
 ## Data
 
-All numbers come from `src/shared/data/` and are re-computed by the validator. **Every claim the story makes is a checked rule**: rules T1–T4 for Nia and Theo, and rules R1–R4 for Rosa's own data (defined in BRIEF.md §4).
+All numbers come from `src/shared/data/` and are re-computed by the validator. **Every claim the story makes is a checked rule**: rules T1–T4 for her head start, and rules R1–R4 for Rosa's own data (defined in BRIEF.md §4).
 
 **Rosa's own data** (the main demo account):
 
@@ -65,35 +65,20 @@ All numbers come from `src/shared/data/` and are re-computed by the validator. *
 
 The story says what happened and stops there. It describes the dip and what auto-invest did; it never suggests what anyone should do about a dip (BRIEF.md §8).
 
-**Nia and Theo** (section 3). All numbers come from `story-p302.json`, computed by the generator and re-computed by the validator (rules T1–T4). **Assumption (shown on screen):** an example rate of **6% a year**, added monthly, with money put in at the end of each month, until age 65. The note always says: *"An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate."* On screen Nia and Theo are "two friends"; the data still marks them fictional.
-
-```json brief-example
-{
-  "story-p302.savers.0.name": "Nia",
-  "story-p302.savers.0.startAge": 22,
-  "story-p302.savers.0.monthly": 100,
-  "story-p302.savers.0.final.putIn": 51600,
-  "story-p302.savers.0.final.value": 242251.43,
-  "story-p302.savers.1.name": "Theo",
-  "story-p302.savers.1.startAge": 32,
-  "story-p302.savers.1.monthly": 150,
-  "story-p302.savers.1.final.putIn": 59400,
-  "story-p302.savers.1.final.value": 186212.95,
-  "story-p302.catchUp.monthlyNeeded": 196,
-  "story-p302.catchUp.slider.min": 150,
-  "story-p302.catchUp.slider.max": 300,
-  "story-p302.startAgeSlider.min": 18,
-  "story-p302.startAgeSlider.max": 45
-}
-```
+**Your head start** (section 3; rebuilt Sept. 28, Phase 6.1). Two lines, **both Rosa**, from her age now (26, from the persona) to 65. All numbers come from `story-p302.json` (`headStart`), computed by the generator and re-computed by the validator (rules T1–T4). **Assumption (shown on screen):** an example rate of **6% a year**, added monthly, with money put in at the end of each month. The note always says: *"An example rate of 6% a year. Real markets go up and down, and nobody can promise a rate."*
+- **Keep going** (solid line): the account's invested amount today ($1,534.20), plus $150 a month (her recurring deposit) until 65.
+- **Start again later** (dashed line): the same starting amount, but she stops adding money now and starts again after the delay, adding the "Then add" amount each month until 65.
+- **Sliders:** "Start again in" (1 to 15 years, step 1, default 5) and "Then add" ($150 to $300 a month, step $1, default $150). A marker on "Then add" reads "Catches up at $X a month": the smallest whole amount that makes the later line reach the keep-going line at 65. When no amount up to $300 does, the slider says so instead.
+- **Brand-new account:** she has nothing invested yet, so both lines start at $0, and the lines are "Start now" and "Start later" ("Start in" on the slider).
 
 | Claim on screen | Checked as |
 |---|---|
-| Nia ends with more money than Theo | $242,251 > $186,213 (T2) |
-| Nia puts in less money than Theo | $51,600 < $59,400 (T2) |
-| Theo passes Nia at $196 a month when he starts at 32 | $196 is the smallest whole amount that matches Nia ($195 is not enough), and Theo's slider can land on it (T2) |
+| Both lines start from what she has invested today | Each account's starting amount equals its invested value (T1) |
+| Keeping going could reach $295,461 at 65 | The keep-going line matches the growth formula, year by year (T1) |
+| Catch-up amounts: 1 year $161, 5 years $211, 10 years $300, 15 years none up to $300 | For every delay, the amount is the smallest whole dollar that reaches the keep-going line at 65, one dollar less falls short, and the slider can land on it (T2) |
+| Only Rosa is in the lesson | The head start uses her age and her $150 recurring deposit, and no other person is named anywhere on screen (T3, G6) |
 
-The data still holds the bumpy years and the "your turn" numbers, and rules T2 and T3 still check them, but they no longer appear on screen (simplified Sept. 28).
+The data no longer holds the two invented savers, the bumpy years or the "your turn" numbers (removed Sept. 28, Phase 6.1).
 
 **Every scenario gets a true story (R4).** The story reads the current scenario's account through `useScenario`. Rosa's facts and the sentences that state them are generated per account into `story-p302.json` (`rosaStory`), and R1–R4 recompute every number from the price and balance history, so the screen only ever shows checked sentences.
 - *Nothing needs you:* the same six months as the default account (only the beneficiary differs), so sections 1 and 2 read the same, with that account's own checked numbers.
@@ -112,10 +97,10 @@ The data still holds the bumpy years and the "your turn" numbers, and rules T2 a
 |---|---|---|---|
 | 1 | Six months in | The point of view ("Right now, almost all of your balance is money you put in. Growth needs years, so starting early and staying steady matter more than picking the perfect moment."), then "About 91% of your balance is money you put in. The other $136.68 is what it earned." and "Shown as a percent, what it earned is called your rate of return." (with the Rate of return term) | **Balance over time** since March 2, with the "put in" and grainy "earned" layers (**toggle: what you put in vs. what it earned**) and a **time range: 1 month / 3 months / Since March** |
 | 2 | The dip in June | "From May 21 to June 5, falling prices took $80.24 off your balance. That is a drop of 9.5%." then "Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived." and "Buying the same amount every month is called dollar-cost averaging." (with the Dollar-cost averaging term). It describes only; it never suggests what anyone should do | **The dip chart:** the balance line with the dip marked, and a **toggle to show or hide the events** (the start of the fall, the low, the day her balance was back above what she put in, and the deposits auto-invest bought with) |
-| 3 | Start early | Nia (22, $100 a month) and Theo (32, $150 a month); "Nia puts in less, but her money has 10 more years of compounding." (with the Compounding term); the result sentence ("At 65, Theo has … Nia has ….", then "Theo passes Nia." or "Theo is still behind."); the rate note | **One chart of both** savers from their start to 65, with **sliders for Theo's start age (18–45, step 1) and monthly amount ($150–$300, step $1)**; a marker, "Passes Nia: $196", shows where Theo passes Nia when he starts at 32, and screen readers hear it with the monthly slider |
+| 3 | Your head start | "You started at 26. If you keep adding $150 a month, here's where it could be at 65. Waiting means less time for compounding, so you'd need to add more to catch up." (with the Compounding term); the live result sentence ("At 65: $295,461 if you keep going, $215,383 if you wait."); the rate note. Second person; no other people; it describes and never tells her what to do (G3) | **One chart of both lines** from 26 to 65 (Keep going solid, Start again later dashed, each named in the legend and the table), with **sliders "Start again in" (1–15 years) and "Then add" ($150–$300 a month)**; a marker, "Catches up at $211 a month" (for 5 years), which screen readers hear with the slider |
 | 4 | Try it | "Practice lets you try a mix with practice money. Nothing you do there touches your account." and "Its time machine shows how a mix could have moved over the last year." | **"Go to Practice"** |
 
-**Practice** (`/practice`): pick one of the 10 investments → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over the last 12 months → **Start over**. A persistent banner, "Practice money. Nothing here touches your account."; the real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**. Crypto holdings show **"Amount"** with the coin's unit ("0.00247299 BTC"), never "Shares".
+**Practice** (`/practice`): pick one of the 10 investments → amount → review → confirm → see what you own in Practice and your practice mix → **sell** part of it → **Time machine**: how this mix would have moved over the last 12 months → **Start over**. There is no banner (removed Sept. 28, Phase 6.1: it pushed Practice's title out of line with every other page). Practice stays separate from the real account in two ways: every Practice amount is labeled "Practice money" ("Practice money: $1,000.00"), and every buy or sell review says "This uses practice money." The real account never changes. Inside Practice only, the buttons may say **Buy** and **Sell**. Crypto holdings show **"Amount"** with the coin's unit ("0.00247299 BTC"), never "Shares".
 
 **Finance Terms** (`/learn`, `/learn/:termId`; was "Words"): the 15 real finance terms, each with its cited source. Search every entry, open one as its own page, follow related terms.
 
@@ -134,10 +119,10 @@ The data still holds the bumpy years and the "your turn" numbers, and rules T2 a
 | F1 | Move through sections 1–4 with the tabs (by mouse, and by arrow keys plus Enter or Space) and with the **Next** buttons | One section shows at a time; the current tab is lime with ink text; the selection is announced; the last section ends with "Go to Practice" |
 | F2 | Section 1: turn the put-in vs. earned layers off and on, and switch the time range to **1 month** | The chart and its sentence change together; the numbers match the account |
 | F3 | Section 2: show and hide the dip's events | The start of the fall, the low and the deposits appear and disappear; the table matches |
-| F4 | Section 3: move Theo's start-age and monthly sliders by keyboard | Values are announced in words; the marker appears where Theo passes Nia ($196 a month when he starts at 32) |
+| F4 | Section 3: move "Start again in" and "Then add" by keyboard | Values are announced in words; the result sentence and the dashed line change; the marker shows the catch-up amount for the delay ($211 a month at 5 years), or the slider says no amount up to $300 catches up |
 | F5 | Open a section by link (`#section-3`), and an old link (`#chapter-5`) | Each opens the right section, and each section stands alone |
 | F6 | On a phone: use the 2×2 tab grid, then the **Sections** button's sheet | No sideways scroll at 320px; every tab is at least 48px tall |
-| F7 | Practice: buy, **New order**, sell, time machine, start over | The banner is always visible; errors are inline; the real account never changes |
+| F7 | Practice: buy, **New order**, sell, time machine, start over | Every amount is labeled "Practice money"; every review says "This uses practice money."; errors are inline; the real account never changes |
 | F8 | Finance Terms: search "crypto", open **Cryptocurrency**, follow a related term | A search with no results shows a helpful empty state |
 
 ## Edge cases (go-further)
@@ -145,7 +130,7 @@ The data still holds the bumpy years and the "your turn" numbers, and rules T2 a
 | Case | Handling |
 |---|---|
 | *Nothing needs you* and *Brand-new account* scenarios | Every section's copy is true for that account (R4); brand-new gets the short version of sections 1 and 2 |
-| Slider at extremes (Theo starts at 45; Theo at $300) | The result sentence stays true at every position |
+| Slider at extremes (start again in 1 or 15 years; add $150 or $300) | The result sentence and the marker stay true at every position |
 | Reader opens a section directly | Each section's text stands alone; no section depends on an earlier interaction |
 | Chart axes | Every chart's axis ends on its last label (65 for section 3), and stacked "put in" / "earned" areas start at $0, so the layers aren't exaggerated |
 | Practice errors: not enough practice money, selling more than you own, nothing to sell, $0 or blank, letters, more than 2 decimals | An inline message in plain words; Confirm stays disabled until the order is valid |

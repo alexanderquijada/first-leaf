@@ -45,7 +45,7 @@ First Leaf opens straight into Rosa's app. Each case study is a lens on that one
   1. Use the **section tabs 1–4** under the title (click them, or use the arrow keys and Enter), and the **Next** button at the end of each section.
   2. In section 1, turn **the layers** (what you put in and what it earned) off and on, then change the time range to **1 month**.
   3. In section 2, **show and hide the dip's events** on the chart.
-  4. In section 3, move **Theo's sliders** (his start age and his monthly amount) with your arrow keys until he passes Nia.
+  4. In section 3, **Your head start**, move **Start again in** with your arrow keys, then move **Then add** until the dashed line catches up with the solid one at 65.
   5. In section 4, choose **Go to Practice**. Buy $200 of any investment with practice money, choose **New order** and sell part of it, try the **Time machine**, then **Start over**.
   6. Go to **Finance Terms**, search for "crypto" and open **Cryptocurrency**.
   7. Check every scenario: https://first-leaf.vercel.app/story?scenario=normal · https://first-leaf.vercel.app/story?scenario=all-clear · https://first-leaf.vercel.app/story?scenario=brand-new

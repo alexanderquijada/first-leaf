@@ -2,11 +2,11 @@
 
 > **Any Claude reading this: read this whole file first.** Then summarize where we left off in 3–5 plain sentences, and **wait for Alex's go-ahead** before changing anything. Update this file at the end of every phase: the phase table, NEXT STEP, the decision log, and known issues.
 
-**Last updated:** Sept. 28, 2026 (Phase 6 · Alex's review round; built, reviewed and live)
+**Last updated:** Sept. 28, 2026 (Phase 6.1 · headings, Practice banner and "Your head start"; in progress)
 
 ## NEXT STEP
 
-**Phase 6 is built, independently reviewed and live. Ready to submit.** Alex's one open item is optional: approving the DRAFT rows in `docs/copy/COPY-REVIEW.md` (149 rows, all new or changed in Phase 6, all grade 8 or below). See the Sept. 28 decision-log entry.
+**Phase 6.1 is being built: see the Sept. 28 (Phase 6.1) decision-log entry.**
 
 ## Live links
 
@@ -61,6 +61,7 @@
 | 3 · Visual design + Phase 2.5 rulings (Sept. 25; ruled) | ✅ Seed 10 (9.5% dip), SIPC and advice checks, test-only big-move proof, theme, type scale, pills, chart glow/grain/group patterns, illustrations, axe at 3 widths | ✅ Group bar, illustrations, crypto amounts, zero pieces, must-act count | ✅ Chapter marks, group bars, dashed Theo, Practice amounts | ✅ Calm sun, zero pieces |
 | 4 · Edge cases + sizes (Sept. 25; ruled) | ✅ "Good to know", 24px term buttons, 1.6 phone leading, rule F5 (50 rules, 124 cases), all-sizes test (320–1280, 200% zoom, keyboard) | ✅ All handled, calm, losses, 320px and 200% zoom fixes | ✅ Slider extremes, deep links 1–8, reduced motion, landscape | ✅ Phone-only view at `/p303`, 320px Home and Practice fixes |
 | 5 · Verification and final fixes (Sept. 25) | ✅ Phase 4 rulings, favicon, 200% text, README final, 264 tests | ✅ Independent review, 2 fix rounds: calm state, actions not offered twice, loss note, stacked Investments, 768 rows | ✅ Independent review, 2 fix rounds: pinned charts, chapter 5 charts and guess, closing, chart honesty | ✅ Independent review, 2 fix rounds: 48px labels, 14px text, Seen row, F5/F6 tests |
+| 6.1 · Headings, Practice banner, "Your head start" (Sept. 28; in progress) | ⬜ | ⬜ | ⬜ | ⬜ |
 | 6 · Alex's review round (Sept. 28) | ✅ Removed stories, beneficiary alert and sheet, 15 cited Finance Terms (rule L6; 51 rules, 135 cases), Term of the Day, logo and favicons, renamed navigation, business-day deposits, reduced-motion fix, 313 tests | ✅ Balance card first with Balance inside, beneficiary flow, Volatility rating, type filter only, independent review (approve) and fixes | ✅ Your Journey in four sections with WAI-ARIA tabs, deep links, brand-new names, Finance Terms, market order term, independent review (approve) and fixes | ✅ Dark card first on a phone, Term of the Day, "Finance terms on this screen" chips, Journey and Terms tabs, independent review (approve) and fixes |
 
 ## Environment
@@ -76,6 +77,20 @@
 ## Decision log
 
 Newest first. Include what we got wrong and why.
+
+### Sept. 28, 2026: Phase 6.1 · headings, Practice banner and "Your head start"
+
+Alex asked for three more changes. The briefs, BRIEF.md, CLAUDE.md §5 and the README were updated first (brief first).
+
+**Alex's three changes**
+1. **One page-title size.** Every page's main title (h1) uses one shared token, `--type-h1`: the same font, size, weight and line height on every page at each width. A Playwright test measures every page's h1 at 390, 768 and 1280.
+2. **No Practice banner.** The "Practice money. Nothing here touches your account." banner goes, so Practice's title sits where every other page's does. Practice stays separate from the real account in two ways: every Practice amount is labeled "Practice money" ("Practice money: $1,000.00"), and every buy or sell review says "This uses practice money." Buy and Sell still appear only in Practice. CLAUDE.md §5.4 now states these two cues.
+3. **Section 3 becomes Rosa's own "Your head start".** Two lines, both Rosa, from 26 to 65 at an example 6% a year: "Keep going" (her invested amount plus $150 a month, solid) and "Start again later" (the same start, but she stops adding now and starts again after the delay, dashed). Sliders "Start again in" (1–15 years, default 5) and "Then add" ($150–$300 a month), with a marker "Catches up at $X a month" (1 year $161, 5 years $211, 10 years $300, 15 years none up to $300). At most 60 words, second person, no one else named; it describes and never tells her what to do. Nia and Theo leave the data, the copy, the tests, the README and the briefs; rules T1–T3 check the new numbers, and G6 bans "Nia" and "Theo" on screen.
+
+**What we got wrong**
+- **Your Journey's title used its own size** (up to 4rem, against 3rem everywhere else), so the page looked like a different product.
+- **The Practice banner broke the page layout:** it sat above Practice's title, so the title started lower than on every other page.
+- **Section 3 was about strangers, not Rosa.** Nia and Theo made the point, but a story about two invented people is weaker for Rosa than one about her own money, and it was the one part of Your Journey that wasn't hers.
 
 ### Sept. 28, 2026: Alex's review round (Phase 6)
 
