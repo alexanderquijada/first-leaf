@@ -9,7 +9,11 @@ import { formatMoney } from '../format'
 import { chartColors, colors } from '../tokens/tokens'
 
 export type Group = 'stocks' | 'crypto' | 'cash'
-const props = defineProps<{ parts: { group: Group; value: number }[] }>()
+const props = defineProps<{
+  parts: { group: Group; value: number }[]
+  /** The sentence that names the whole, with {list} (Practice says "practice money", not "balance"). */
+  summary?: string
+}>()
 const G = copy.mixGroups
 const id = `fl-gm-${useId()}`
 const total = computed(() => props.parts.reduce((s, p) => s + p.value, 0))
@@ -35,7 +39,7 @@ function pctOf(share: number) {
   const p = share * 100
   return p > 0 && p < 1 ? Math.round(p * 10) / 10 : Math.round(p)
 }
-const summary = computed(() => fill(G.summary, { list: shown.value.map((p) => fill(G.part, { name: G[p.group], pct: p.pct })).join(', ') }))
+const summary = computed(() => fill(props.summary ?? G.summary, { list: shown.value.map((p) => fill(G.part, { name: G[p.group], pct: p.pct })).join(', ') }))
 const fillOf = (g: Group) => `url(#${id}-${g})`
 </script>
 
