@@ -69,7 +69,7 @@ Reads only from `src/shared/data/` through `useScenario`. This week's change (th
 
 | Alert | What the phone detail shows |
 |---|---|
-| Name a beneficiary for your account | What a beneficiary is and why brokerages ask, then **Add a beneficiary** (a short settings sheet: Name and Relationship; saving marks it handled, with Undo) and **Remind me later** (moves it to Handled for this visit, with Undo). Chips: Beneficiary, Brokerage account |
+| Name a beneficiary for your account | What a beneficiary is and why brokerages ask, then **Add a beneficiary** (a short settings dialog: Name and Relationship; saving marks it handled, with Undo) and **Remind me later** (moves it to Handled for this visit, with Undo). Chips: Beneficiary, Brokerage account |
 | A big move (only if the data has one) | The investment, last Friday's and this Friday's price, the percent move, and what it did to Rosa's holding in dollars |
 | SIPC protection and crypto | The general fact only: "SIPC protection covers stocks and cash at a member brokerage if the brokerage fails. It doesn't cover crypto, such as Bitcoin or Ethereum. It never covers a drop in price." Never implies First Leaf is a member (BRIEF.md §8). Chips: SIPC protection, Cryptocurrency |
 | Dividend paid (only if one was paid in the last 7 days) | Amount, company and date |

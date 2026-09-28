@@ -28,7 +28,7 @@ The rest of this file is the foundation all three share: product, person, data, 
 
 | Lens | What it is in the app |
 |---|---|
-| **P301 · Operational dashboard** | Home on a laptop (the dark balance card first, with "Needs your attention" beside it, then balance over time, mix, goal, this week), plus Alerts, Activity and Investments. Every alert that asks something of Rosa has its action (a settings sheet with a realistic confirmation), Mark as handled, and "New" badges. |
+| **P301 · Operational dashboard** | Home on a laptop (the dark balance card first, with "Needs your attention" beside it, then balance over time, mix, goal, this week), plus Alerts, Activity and Investments. Every alert that asks something of Rosa has its action (a settings dialog with a realistic confirmation), Mark as handled, and "New" badges. |
 | **P302 · Interactive data story** | Your Journey (`/story`): Rosa's own six months, told in four short sections that argue one point of view, including the Nia and Theo lesson. Practice (investing with practice money) and the learning moments (term explanations, Finance Terms) count toward P302 too. |
 | **P303 · Mobile experience** | The same app under 600px wide, designed for a 60-second glance, not a shrunk desktop. Home becomes a check-in. Everything else is one tap away. |
 
