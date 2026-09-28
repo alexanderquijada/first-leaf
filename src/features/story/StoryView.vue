@@ -286,6 +286,7 @@ async function pick(n: number) {
   color: var(--color-ink);
   font: inherit;
   font-weight: 600;
+  text-align: left; /* a wrapped label stays beside its checkbox, not centered */
   cursor: pointer;
 }
 

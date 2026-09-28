@@ -133,3 +133,11 @@ test('each section tab keeps "Section N" on one line at every width', async ({ p
     expect(lines, `lines of "Section N" at ${width}`).toEqual([1, 1, 1, 1])
   }
 })
+
+// Phase 6 re-review: at 1024 the wrapped layers label sat centered, apart from its checkbox.
+test('a wrapped toggle label stays left-aligned beside its checkbox', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 900 })
+  await page.goto('/story#section-1')
+  const toggle = page.locator('.section__toggle').first()
+  expect(await toggle.evaluate((e) => getComputedStyle(e).textAlign)).toBe('left')
+})
