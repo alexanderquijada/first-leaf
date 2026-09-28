@@ -48,6 +48,8 @@
     "reviewBuy": "Buy {amount} of {ticker} at {price} a share. That is about {quantity} shares.",
     "reviewSell": "Sell {amount} of {ticker} at {price} a share. That is about {quantity} shares.",
     "noFee": " There is no fee.",
+    "marketLine": "It is a {order}, filled at the latest price.",
+    "orderWord": "market order",
     "back": "Back",
     "confirm": "Confirm",
     "bought": "You bought {amount} of {ticker} with practice money.",

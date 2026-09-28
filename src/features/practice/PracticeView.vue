@@ -47,7 +47,7 @@ function startOver() {
     <p class="practice__banner" role="note">
       <span class="mdi mdi-flask-outline" aria-hidden="true" /> {{ copy.banner }}
     </p>
-    <h1><TermTip id="practice-mode">{{ copy.title }}</TermTip></h1>
+    <h1>{{ copy.title }}</h1>
     <dl class="practice__sum">
       <div><dt>{{ copy.sum.left }}</dt><dd class="fl-tabular">{{ formatMoney(p.cash.value) }}</dd></div>
       <div><dt>{{ copy.sum.inFunds }}</dt><dd class="fl-tabular">{{ formatMoney(p.invested.value) }}</dd></div>

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import ChapterMark from './ChapterMark.vue'
-// Chapter 1: Six months in. Her balance since March, drawn in (shown whole
-// under reduced motion), with a toggle for "What you put in / What it earned".
+// Section 1, "Six months in": what she put in against what it's worth now (one chart, with the
+// put-in / earned layers and a time range). Body text: the point of view, her deposits share,
+// and the rate-of-return line (at most 60 words, Phase 6).
 import { computed, ref } from 'vue'
 import BalanceChart from '@/shared/charts/BalanceChart.vue'
 import ChartFrame from '@/shared/charts/ChartFrame.vue'
 import RangeButtons from '@/shared/charts/RangeButtons.vue'
 import { inRange, type RangeId } from '@/shared/charts/ranges'
+import CopyText from '@/shared/components/CopyText.vue'
+import TermTip from '@/shared/components/TermTip.vue'
 import type { Account, RosaStory } from '@/shared/data'
 import { fill } from '@/shared/copy'
 import { formatDate, formatMoney, formatSigned } from '@/shared/format'
@@ -18,7 +20,7 @@ const props = defineProps<{ story: RosaStory; account: Account }>()
 const range = ref<RangeId>('all')
 const layers = ref(true)
 const points = computed(() => inRange(props.account.history, range.value))
-const claim = computed(() => props.story.claims.find((c) => c.id === 'since-march')?.text ?? '')
+const share = computed(() => props.story.claims.find((c) => c.id === 'deposits-share')?.text ?? '')
 // The title follows the time range, and the summary says what the toggle now shows.
 const title = computed(() => (range.value === '1m' ? S.chartTitle1m : range.value === '3m' ? S.chartTitle3m : S.chartTitle))
 const summary = computed(() => {
@@ -38,22 +40,19 @@ const rows = computed(() =>
 </script>
 
 <template>
-  <section id="chapter-1" class="chapter story-pin" aria-labelledby="chapter-1-title">
-    <ChapterMark :n="1" />
-    <h2 id="chapter-1-title">{{ copy.titles['1'] }}</h2>
-    <p class="chapter__claim">{{ claim }}</p>
-    <ChartFrame :title="title" :level="3" :summary="summary" :columns="columns" :rows="rows">
-      <template #controls><RangeButtons v-model="range" /></template>
-      <button
-        type="button"
-        class="chapter__toggle"
-        :aria-pressed="layers ? 'true' : 'false'"
-        @click="layers = !layers"
-      >
-        <span class="mdi" :class="layers ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'" aria-hidden="true" />
-        {{ S.layers }}
-      </button>
-      <BalanceChart :points="points" :label="title" :layers="layers" />
-    </ChartFrame>
-  </section>
+  <div class="section-body">
+    <p class="section__claim">{{ story.pointOfView }}</p>
+    <p class="section__claim">{{ share }}</p>
+    <p class="section__claim">
+      <CopyText :text="copy.one.rateLine"><template #rate><TermTip id="rate-of-return">{{ copy.one.rateWord }}</TermTip></template></CopyText>
+    </p>
+  </div>
+  <ChartFrame :title="title" :level="3" :summary="summary" :columns="columns" :rows="rows">
+    <template #controls><RangeButtons v-model="range" /></template>
+    <button type="button" class="section__toggle" :aria-pressed="layers ? 'true' : 'false'" @click="layers = !layers">
+      <span class="mdi" :class="layers ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'" aria-hidden="true" />
+      {{ S.layers }}
+    </button>
+    <BalanceChart :points="points" :label="title" :layers="layers" />
+  </ChartFrame>
 </template>

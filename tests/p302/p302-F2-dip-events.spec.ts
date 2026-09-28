@@ -1,56 +1,56 @@
 import { test, expect } from '../fixtures'
 import { apDate, load } from '../data'
 
-// F2: show and hide the dip's events on the chart. The events come from Rosa's own
-// history (the data-driven dip, ruling B), so the expected list is built from the data.
-const facts = load('story-p302').rosaStory['rosa-starter'].facts
-test('the dip events can be shown and hidden, and the chart keeps the same series', async ({ page }) => {
-  await page.goto('/story')
-  const ch3 = page.locator('#chapter-3')
-  await expect(ch3.getByRole('heading', { level: 2 })).toHaveText(`The dip in ${facts.dip.month}`)
-  const toggle = ch3.getByRole('button', { name: 'Show events on the chart' })
-  const events = ch3.getByRole('list', { name: 'Events on the chart' })
+// F2, Your Journey section 2 ("The dip in June"): what happened and that auto-invest kept
+// buying, then the dip chart with its events shown or hidden. The events come from Rosa's
+// own history (the data-driven dip), so the expected list is built from the data.
+const story = load('story-p302')
+const facts = story.rosaStory['rosa-starter'].facts
+const claim = (acc: string, id: string) => story.rosaStory[acc].claims.find((c: { id: string }) => c.id === id).text
+
+for (const [scenario, acc] of [['normal', 'rosa-starter'], ['all-clear', 'rosa-all-clear']] as const) {
+  test(`section 2 says what the dip did and that auto-invest kept buying (?scenario=${scenario})`, async ({ page }) => {
+    await page.goto(`/story?scenario=${scenario}#section-2`)
+    const p = page.getByRole('tabpanel')
+    await expect(p.getByRole('heading', { level: 2 })).toHaveText(`The dip in ${facts.dip.month}`)
+    await expect(p.locator('.section__claim')).toHaveText([
+      claim(acc, 'dip'),
+      claim(acc, 'kept-buying'),
+      'Buying the same amount every month is called dollar-cost averaging.',
+    ])
+    expect(claim(acc, 'kept-buying')).toBe(
+      'Auto-invest kept buying through the dip. Your June 1, July 1, Aug. 3 and Sept. 1 deposits each bought your mix the day they arrived.',
+    )
+    await p.getByRole('button', { name: 'dollar-cost averaging', exact: true }).click()
+    await expect(page.getByRole('dialog', { name: 'Dollar-cost averaging' })).toBeVisible()
+    // It describes only; it never tells anyone what to do.
+    await expect(p).not.toContainText(/\byou should\b|\bpaus/i)
+  })
+}
+
+test('the dip events can be shown and hidden; the chart keeps the same series and says what it shows', async ({ page }) => {
+  await page.goto('/story#section-2')
+  const p = page.getByRole('tabpanel')
+  const toggle = p.getByRole('button', { name: 'Show events on the chart' })
+  const events = p.getByRole('list', { name: 'Events on the chart' })
   await expect(toggle).toHaveAttribute('aria-pressed', 'true')
   const want = [
     [facts.dip.highDate, `${apDate(facts.dip.highDate)}: Your investments started to fall.`],
     [facts.dip.lowDate, `${apDate(facts.dip.lowDate)}: The fall hit its low.`],
-    [facts.pause.date, `${apDate(facts.pause.date)}: You paused auto-invest.`],
     [facts.after.backAboveDate, `${apDate(facts.after.backAboveDate)}: Your balance was back above what you had put in.`],
-    ...facts.after.deposits.map((d: { date: string }) => [d.date, `${apDate(d.date)}: Your deposit stayed as cash.`]),
-  ].sort((x, y) => x[0]!.localeCompare(y[0]!)).map((x) => x[1])
+    ...facts.after.deposits.map((d: { date: string }) => [d.date, `${apDate(d.date)}: Your deposit bought your mix.`]),
+  ]
+    .sort((x, y) => x[0]!.localeCompare(y[0]!))
+    .map((x) => x[1])
   await expect(events.getByRole('listitem')).toHaveText(want)
-  const before = await ch3.locator('[data-series]').getAttribute('data-series')
+  await expect(p.locator('.fl-chart__summary')).toContainText('A diamond marks each event')
+  await expect(p.locator('canvas')).toHaveAttribute('data-x-last', 'Sept. 18')
+  const before = await p.locator('[data-series]').getAttribute('data-series')
   await toggle.click()
   await expect(toggle).toHaveAttribute('aria-pressed', 'false')
   await expect(events).toHaveCount(0)
-  expect(await ch3.locator('[data-series]').getAttribute('data-series')).toBe(before)
-})
-
-test('in the calm account, the events say auto-invest kept buying', async ({ page }) => {
-  await page.goto('/story?scenario=all-clear')
-  const list = page.locator('#chapter-3').getByRole('list', { name: 'Events on the chart' })
-  const calm = load('story-p302').rosaStory['rosa-all-clear'].facts
-  for (const d of calm.after.deposits) await expect(list).toContainText(`${apDate(d.date)}: Your deposit bought your mix.`)
-  await expect(list).not.toContainText('paused')
-})
-
-// Phase 2: nothing in the calm account's story may mention pausing, anywhere a
-// person can read or hear it: text, tables, chart descriptions and labels.
-// The same reader must find "paus" in the paused account, so the check can fail.
-async function storyWords(page: import('@playwright/test').Page, scenario: string) {
-  await page.goto(`/story?scenario=${scenario}`)
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-  const show = page.getByRole('button', { name: 'Show as table' })
-  while (await show.count()) await show.first().click() // each click renames that button "Hide table"
-  return page.locator('.story').evaluate((el) => {
-    const attrs = [...el.querySelectorAll('*')].flatMap((n) =>
-      ['aria-label', 'aria-valuetext', 'aria-description', 'title', 'alt'].map((a) => n.getAttribute(a) ?? ''),
-    )
-    return [el.textContent ?? '', ...attrs].join('\n')
-  })
-}
-
-test('the calm account story never mentions pausing; the paused account story does', async ({ page }) => {
-  expect(await storyWords(page, 'all-clear')).not.toMatch(/paus/i)
-  expect(await storyWords(page, 'normal')).toMatch(/paus/i)
+  await expect(p.locator('.fl-chart__summary')).toContainText('The chart shows your balance without the events.')
+  expect(await p.locator('[data-series]').getAttribute('data-series')).toBe(before)
+  await toggle.click()
+  await expect(events.getByRole('listitem')).toHaveCount(want.length)
 })

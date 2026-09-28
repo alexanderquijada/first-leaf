@@ -7,6 +7,9 @@ import { fill } from '@/shared/copy'
 
 const PT = layoutCopy.pageTitles
 
+// Your Journey (Sept. 28) merged six chapters into four sections: 1, 2 and 4 → 1; 3 → 2; 5 → 3; 6 → 4.
+const CHAPTER_TO_SECTION: Record<number, number> = { 1: 1, 2: 1, 3: 2, 4: 1, 5: 3, 6: 4 }
+
 // One app (BRIEF.md §3, §7). The router wires the layout to each feature's pages.
 // The layout and Home load with the first screen; every other page is lazy.
 const app: RouteRecordRaw = {
@@ -69,12 +72,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   // A #chapter link lands below the sticky top bar (and the tablet's tabs), not under it.
-  scrollBehavior: (to, _from, saved) => saved ?? (to.hash ? { el: to.hash, top: 128 } : { top: 0 }),
+  // Your Journey's #section-N picks a section (its tabs sit near the top), so it opens at the top.
+  scrollBehavior: (to, _from, saved) => saved ?? (to.hash && to.path !== '/story' ? { el: to.hash, top: 128 } : { top: 0 }),
 })
 
 // Scenarios are reached by URL only, so ?scenario= rides along on every in-app link.
 router.beforeEach((to, from) => {
   // Phase 1–3 links to the phone preview (?view=phone) open phone view.
+  // Old story links (#chapter-1 to #chapter-6) open the matching Journey section (Sept. 28).
+  const oldChapter = to.path === '/story' ? /^#chapter-([1-6])$/.exec(to.hash) : null
+  if (oldChapter) return { path: to.path, query: to.query, hash: `#section-${CHAPTER_TO_SECTION[Number(oldChapter[1])]}` }
   if (to.query.view === 'phone') {
     const query = { ...to.query }
     delete query.view

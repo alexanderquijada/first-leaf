@@ -7,6 +7,8 @@ import ToggleGroup from '@/shared/components/ToggleGroup.vue'
 import { funds, getFund } from '@/shared/data'
 import { formatMoney, formatQuantity } from '@/shared/format'
 import { fill } from '@/shared/copy'
+import CopyText from '@/shared/components/CopyText.vue'
+import TermTip from '@/shared/components/TermTip.vue'
 import copy from './copy.json'
 import { useOrder } from './useOrder'
 
@@ -57,6 +59,7 @@ const reviewText = computed(() => {
         {{ fill(reviewText, { amount: formatMoney(amountNumber), ticker, price: formatMoney(practice.priceOf(ticker)), quantity: getFund(ticker)?.kind === 'crypto' ? formatQuantity(estShares, 'crypto', ticker) : formatQuantity(estShares, 'stock', ticker) })
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
+      <p><CopyText :text="O.marketLine"><template #order><TermTip id="market-order">{{ O.orderWord }}</TermTip></template></CopyText></p>
       <p class="order__error" role="alert">{{ error }}</p>
       <div class="order__row">
         <button type="button" class="order__btn" @click="step = 'enter'">{{ O.back }}</button>

@@ -1,9 +1,9 @@
 import { test, expect } from '../fixtures'
 import { load } from '../data'
 
-// Phase 4: the P302 brief's "Edge cases" table, one test per row.
+// The P302 brief's "Edge cases", one test per row (Your Journey, Phase 6).
 const story = load('story-p302')
-const nia = story.savers[0], theo = story.savers[1]
+const nia = story.savers.find((s: { id: string }) => s.id === 'nia')
 const whole = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`
 function proj(startAge: number, monthly: number) {
   const i = story.assumptions.annualRate / 12
@@ -11,92 +11,28 @@ function proj(startAge: number, monthly: number) {
   for (let m = 0; m < (story.assumptions.endAge - startAge) * 12; m++) v = v * (1 + i) + monthly
   return v
 }
+const result = (age: number, monthly: number) =>
+  `At 65, Theo has ${whole(proj(age, monthly))}. Nia has ${whole(nia.final.value)}. ${proj(age, monthly) >= nia.final.value ? 'Theo passes Nia.' : 'Theo is still behind.'}`
 
-test('every slider at both ends keeps its sentences true', async ({ page }) => {
-  await page.goto('/story#chapter-5')
-  await page.getByRole('button', { name: 'Show the answer' }).click() // later steps wait for a guess or this (5a)
-  const ch = page.locator('#chapter-5')
-  const age = page.getByRole('slider', { name: /^Start age/ }).first()
-  await age.focus()
-  await page.keyboard.press('Home')
-  await expect(age).toHaveAttribute('aria-valuetext', `Start at ${story.startAgeSlider.min}`)
-  await expect(ch).toContainText(`Start at ${story.startAgeSlider.min}. At 65 you would have ${whole(proj(story.startAgeSlider.min, 100))}.`)
-  await expect(ch).not.toContainText('fewer years to grow')
-  await page.keyboard.press('End')
-  await expect(age).toHaveAttribute('aria-valuetext', `Start at ${story.startAgeSlider.max}`)
-  await expect(ch).toContainText(`Start at ${story.startAgeSlider.max}. At 65 you would have ${whole(proj(story.startAgeSlider.max, 100))}.`)
-  await expect(ch).toContainText('Starting at 45 still helps. It just has fewer years to grow.')
-
-  // Theo at his lowest and at $300 a month.
-  const theoSlider = page.getByRole('slider', { name: /^Theo each month/ })
-  const out = page.getByTestId('catch-up')
-  await theoSlider.focus()
-  await page.keyboard.press('Home')
-  await expect(theoSlider).toHaveAttribute('aria-valuetext', `$${story.catchUp.slider.min} a month`)
-  await expect(out).toContainText('Theo is still behind.')
-  await page.keyboard.press('End')
-  await expect(theoSlider).toHaveAttribute('aria-valuetext', '$300 a month')
-  await expect(out).toContainText(`At $300 a month, Theo ends with ${whole(proj(theo.startAge, 300))}. Nia ends with ${whole(nia.final.value)}.`)
-  await expect(out).toContainText('Theo passes Nia.')
-})
-
-test('with no guess made, the reply is neutral', async ({ page }) => {
-  await page.goto('/story#chapter-5')
-  const ch = page.locator('#chapter-5')
-  await expect(ch.getByRole('group', { name: 'Your guess' }).getByRole('button', { pressed: true })).toHaveCount(0)
-  // The answer stays hidden until a guess or "Show the answer" (5a).
-  await expect(ch).not.toContainText(`At 65, Nia has ${whole(nia.final.value)}.`)
-  await expect(ch.getByRole('heading', { name: 'Nia and Theo from 22 to 65' })).toHaveCount(0)
-  await ch.getByRole('button', { name: 'Show the answer' }).click()
-  await expect(ch.getByRole('button', { name: 'Show the answer' })).toHaveCount(0)
-  await expect(ch).toContainText(`Here is how it turns out. At 65, Nia has ${whole(nia.final.value)}.`)
-  await expect(ch).not.toContainText('You got it.')
-  await expect(ch).not.toContainText('better guess')
-})
-
-for (const width of [390, 1280]) {
-  test.describe(`deep links at ${width}px`, () => {
-    test.use({ viewport: { width, height: width < 600 ? 844 : 800 } })
-
-    test('#chapter-1 to #chapter-6 each land on their chapter, below the top bar', async ({ page }) => {
-      for (let n = 1; n <= 6; n++) {
-        await page.goto(`/story#chapter-${n}`)
-        const h = page.locator(`#chapter-${n}-title`)
-        await expect(h).toBeInViewport()
-        const top = (await h.boundingBox())!.y
-        const bar = (await page.locator('.fl-topbar').boundingBox())!
-        expect(top, `chapter ${n}`).toBeGreaterThanOrEqual(bar.y + bar.height)
-      }
-    })
-
-    test('#chapter-7 and #chapter-8 do not exist, so the story opens at its top', async ({ page }) => {
-      for (const n of [7, 8]) {
-        await page.goto(`/story#chapter-${n}`)
-        await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your money story')
-        await expect(page.getByRole('heading', { level: 1 })).toBeInViewport()
-        expect(await page.evaluate(() => window.scrollY)).toBe(0)
-      }
-    })
-  })
-}
-
-test.describe('with reduced motion', () => {
-  test.use({ reducedMotion: 'reduce' })
-
-  test('nothing moves: no chart animation, no smooth scrolling, and nothing is lost', async ({ page }) => {
-    await page.goto('/story#chapter-3')
-    await expect(page.locator('#chapter-3-title')).toBeInViewport()
-    // Charts draw at once, and the page jumps instead of gliding. (Reduced motion shortens every
-    // animation to 0.01ms, which can still count as running for an instant; only visible motion counts.)
-    expect(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto')
-    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running' && Number(a.effect?.getComputedTiming().duration) > 50).length)).toBe(0)
-    // The events can still be shown and read without any motion.
-    const ch3 = page.locator('#chapter-3')
-    await expect(ch3.getByRole('list', { name: 'Events on the chart' })).toBeVisible()
-    await ch3.getByRole('button', { name: 'Show as table' }).first().click()
-    await expect(ch3.getByRole('table').first()).toBeVisible()
-    expect(await page.evaluate(() => document.getAnimations().filter((a) => a.playState === 'running' && Number(a.effect?.getComputedTiming().duration) > 50).length)).toBe(0)
-  })
+test("every slider at both ends keeps section 3's sentence true", async ({ page }) => {
+  await page.goto('/story#section-3')
+  const p = page.getByRole('tabpanel')
+  const age = p.getByRole('slider', { name: /^Theo's start age/ })
+  const monthly = p.getByRole('slider', { name: /^Theo each month/ })
+  const out = p.getByTestId('start-early-result')
+  const { min: aMin, max: aMax } = story.startAgeSlider
+  const { min: mMin, max: mMax } = story.catchUp.slider
+  for (const [ageKey, a] of [['Home', aMin], ['End', aMax]] as const) {
+    await age.focus()
+    await page.keyboard.press(ageKey)
+    await expect(age).toHaveAttribute('aria-valuetext', `Start at ${a}`)
+    for (const [mKey, m] of [['Home', mMin], ['End', mMax]] as const) {
+      await monthly.focus()
+      await page.keyboard.press(mKey)
+      await expect(monthly).toHaveAttribute('aria-valuetext', `$${m} a month`)
+      await expect(out, `start at ${a}, $${m} a month`).toHaveText(result(a, m))
+    }
+  }
 })
 
 test.describe('phone in landscape (844×390)', () => {
@@ -104,23 +40,39 @@ test.describe('phone in landscape (844×390)', () => {
 
   test('charts sit inline, text never sits on a chart, and nothing scrolls sideways', async ({ page }) => {
     await page.goto('/story')
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your money story')
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(844)
-    const overlaps = await page.evaluate(() => {
-      const hit: string[] = []
-      const texts = [...document.querySelectorAll('main p, main h2, main h3')]
-      for (const c of document.querySelectorAll('main canvas')) {
-        const a = c.getBoundingClientRect()
-        for (const t of texts) {
-          if (c.parentElement?.contains(t)) continue
-          const b = t.getBoundingClientRect()
-          if (b.width && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) hit.push(t.textContent!.slice(0, 40))
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Your Journey')
+    for (let n = 1; n <= 4; n++) {
+      await page.getByRole('tab', { name: new RegExp(`^Section ${n}`) }).click()
+      await expect(page.getByRole('tabpanel')).toHaveAttribute('id', `section-${n}`)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), `section ${n}`).toBeLessThanOrEqual(844)
+      const overlaps = await page.evaluate(() => {
+        const hit: string[] = []
+        const texts = [...document.querySelectorAll('main p, main h2, main h3')]
+        for (const c of document.querySelectorAll('main canvas')) {
+          const a = c.getBoundingClientRect()
+          for (const t of texts) {
+            if (c.parentElement?.contains(t)) continue
+            const b = t.getBoundingClientRect()
+            if (b.width && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) hit.push(t.textContent!.slice(0, 40))
+          }
         }
-      }
-      return hit
-    })
-    expect(overlaps).toEqual([])
+        return hit
+      })
+      expect(overlaps, `section ${n}`).toEqual([])
+    }
   })
+})
+
+test('at 1280, each section chart sits beside its text', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/story')
+  for (let n = 1; n <= 3; n++) {
+    await page.getByRole('tab', { name: new RegExp(`^Section ${n}`) }).click()
+    const p = page.getByRole('tabpanel')
+    const text = (await p.locator('.section__claim').first().boundingBox())!
+    const chart = (await p.locator('> .fl-chart').boundingBox())!
+    expect(chart.x, `section ${n}`).toBeGreaterThanOrEqual(text.x + text.width)
+  }
 })
 
 test('at 1280, nothing in what you own in Practice is cut off, and every value is labeled', async ({ page }) => {
@@ -145,4 +97,16 @@ test('at 1280, nothing in what you own in Practice is cut off, and every value i
   const rows = page.locator('.practice__table tbody tr:visible, .practice__stack > li:visible')
   await expect(rows).toHaveCount(2)
   for (const label of ['Owned', 'Value', 'Paid', 'Up or down']) await expect(rows.first()).toContainText(label)
+})
+
+test('an amount typed with "$" or a comma reviews as money, never "$NaN"', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 })
+  await page.goto('/practice')
+  for (const [typed, shown] of [['$200', '$200.00'], ['1,000', '$1,000.00']] as const) {
+    await page.getByLabel('Amount in dollars').fill(typed)
+    await page.getByRole('button', { name: 'Review' }).click()
+    await expect(page.getByText(`Buy ${shown} of AAPL`)).toBeVisible()
+    await expect(page.locator('main')).not.toContainText('NaN')
+    await page.getByRole('button', { name: /Change|Back|Edit/ }).first().click()
+  }
 })

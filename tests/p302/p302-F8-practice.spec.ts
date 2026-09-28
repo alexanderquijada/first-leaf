@@ -80,6 +80,17 @@ test('buy, see it, sell part, sell too much, time machine, start over', async ({
   await expect(page.locator('.practice__sum')).toContainText('$1,000.00')
 })
 
+test('the review says it is a market order, and "market order" opens its Finance Terms entry', async ({ page }) => {
+  await page.goto('/practice')
+  await order(page, 'Buy', 'AAPL', '50')
+  await page.getByRole('button', { name: 'Review' }).click()
+  await expect(page.getByText('It is a market order, filled at the latest price.')).toBeVisible()
+  await page.getByRole('button', { name: 'market order', exact: true }).click()
+  const tip = page.getByRole('dialog', { name: 'Market order' })
+  await expect(tip).toBeVisible()
+  await expect(tip).toContainText(load('glossary').find((g: { id: string }) => g.id === 'market-order').short)
+})
+
 test('crypto in Practice is reviewed and owned as an amount of coins, not shares', async ({ page }) => {
   await page.goto('/practice')
   await order(page, 'Buy', 'BTC', '100')
