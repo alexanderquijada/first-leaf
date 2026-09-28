@@ -66,13 +66,11 @@ test.describe('Why it moved on a phone', () => {
     await page.goto('/')
     await page.getByRole('button', { name: /Why it moved/ }).click()
     const why = page.locator('.phome__why')
-    await expect(why.getByRole('heading', { name: 'Finance terms on this screen' })).toBeVisible()
     const chips = why.locator('.chips li .fl-termtip__button')
-    const expected = [
-      ...(w.dividends !== 0 ? ['Dividend'] : []),
-      ...(w.byFund.some((f: { change: number }) => f.change < 0) ? ['Volatility'] : []),
-    ]
+    // Only terms the breakdown names: Dividend when a dividend piece shows (Phase 6 review: not Volatility).
+    const expected = w.dividends !== 0 ? ['Dividend'] : []
     await expect(chips).toHaveText(expected)
+    await expect(why.getByRole('heading', { name: 'Finance terms on this screen' })).toHaveCount(expected.length ? 1 : 0)
   })
 })
 

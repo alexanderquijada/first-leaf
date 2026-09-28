@@ -41,9 +41,10 @@ test('why it moved opens in place and adds up to the cent', async ({ page }) => 
   await expect(body).toContainText(`Price changes across everything you own added up to a ${money(w.marketChange)} ${w.marketChange < 0 ? 'drop' : 'rise'}.`)
   await expect(body).toContainText('Ups and downs are normal.')
   // Its finance terms, as 48px chips: only the real finance terms the breakdown shows (Phase 6):
-  // Dividend when a dividend piece shows, and Volatility when an investment went down.
+  // Dividend when a dividend piece shows. Phase 6 review: never Volatility, which the panel doesn't name.
   const chips = body.getByRole('region', { name: 'Finance terms on this screen' }).locator('.fl-termtip__button')
-  await expect(chips).toHaveText([...(w.dividends !== 0 ? ['Dividend'] : []), ...(w.byFund.some((f: { change: number }) => f.change < 0) ? ['Volatility'] : [])])
+  await expect(chips).toHaveText(w.dividends !== 0 ? ['Dividend'] : [])
+  await expect(body.getByRole('button', { name: 'Volatility' })).toHaveCount(0)
   for (const b of await chips.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().toJSON()))) {
     expect(b.height).toBeGreaterThanOrEqual(48)
     expect(b.width).toBeGreaterThanOrEqual(48)

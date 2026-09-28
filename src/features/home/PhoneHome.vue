@@ -47,13 +47,10 @@ const whyShort = computed(() => {
   ].filter(Boolean).join(' ')
 })
 const anyDown = computed(() => w.value?.byFund.some((f) => f.change < 0) ?? false)
-// "Finance terms on this screen" lists only real finance terms the open breakdown shows
-// (a $0.00 piece is left out; "ups and downs are normal" is about volatility).
-const whyWords = computed(() => {
-  const x = w.value
-  if (!x) return []
-  return [...(x.dividends !== 0 ? /* term ids */ ['dividend'] : []), ...(anyDown.value ? /* term ids */ ['volatility'] : [])]
-})
+// "Finance terms on this screen" lists only finance terms the open breakdown names (a $0.00
+// piece is left out). "Ups and downs are normal." doesn't name volatility, so no chip for it
+// (Phase 6 review).
+const whyWords = computed(() => (w.value && w.value.dividends !== 0 ? /* term ids */ ['dividend'] : []))
 
 // Latest three: the newest activity.
 const latest = computed<Row[]>(() => [...activity.value].reverse().slice(0, 3))
