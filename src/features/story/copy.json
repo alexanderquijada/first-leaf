@@ -7,7 +7,7 @@
     "2": "The dip in {month}",
     "1new": "Your start",
     "2new": "When prices dip",
-    "3": "Start early",
+    "3": "Your head start",
     "4": "Try it"
   },
   "next": "Next: {name}",
@@ -48,27 +48,6 @@
     "dcaLine": "Buying the same amount every month is called {dca}.",
     "dcaWord": "dollar-cost averaging"
   },
-  "startEarly": {
-    "meet": "{nia} starts at {niaAge} with {niaMonthly} a month. {theo} starts at {theoAge} with {theoMonthly}.",
-    "why": "{nia} puts in less, but her money has {count} more years of {compounding}.",
-    "compoundingWord": "compounding",
-    "theoAge": "Theo's start age",
-    "theoMonthly": "Theo each month",
-    "startAt": "Start at {age}",
-    "perMonth": "${dollars} a month",
-    "passesMark": "Passes Nia: ${dollars}",
-    "result": "At {age}, Theo has {theo}. Nia has {nia}.",
-    "passes": " Theo passes Nia.",
-    "behind": " Theo is still behind.",
-    "chartTitle": "Nia and Theo from {startAge} to {endAge}",
-    "nia": "Nia",
-    "theo": "Theo",
-    "day": "Age {age}: Nia has {nia}. {theo}",
-    "theoHas": "Theo has {amount}.",
-    "theoNotYet": "Theo has not started yet.",
-    "notStarted": "Not started",
-    "colAge": "Age"
-  },
   "tryIt": {
     "claim": "Practice lets you try a mix with practice money. Nothing you do there touches your account.",
     "timeMachine": "Its time machine shows how a mix could have moved over the last year.",
@@ -76,5 +55,28 @@
   },
   "slider": {
     "label": "{label}: {setting}"
+  },
+  "headStart": {
+    "intro": "You started at {startAge}. If you keep adding {monthly} a month, here's where it could be at {endAge}. Waiting means less time for {compounding}, so catching up costs more.",
+    "introNew": "You're {startAge}. If you add {monthly} a month from now, here's where it could be at {endAge}. Waiting means less time for {compounding}, so catching up costs more.",
+    "compoundingWord": "compounding",
+    "keepLabel": "Keep going",
+    "laterLabel": "Start again later",
+    "keepLabelNew": "Start now",
+    "laterLabelNew": "Start later",
+    "delayLabel": "Start again in",
+    "delayLabelNew": "Start in",
+    "addLabel": "Then add",
+    "yearsOne": "1 year",
+    "yearsMany": "{years} years",
+    "perMonth": "${dollars} a month",
+    "catchesMark": "Catches up at ${dollars} a month",
+    "noCatch": "No amount up to ${dollars} a month catches up.",
+    "result": "At {endAge}: {keep} if you keep going, {later} if you wait.",
+    "resultNew": "At {endAge}: {keep} if you start now, {later} if you wait.",
+    "chartTitle": "Your money from {startAge} to {endAge}",
+    "day": "Age {age}: {keep} if you keep going, {later} if you wait.",
+    "dayNew": "Age {age}: {keep} if you start now, {later} if you wait.",
+    "colAge": "Age"
   }
 }

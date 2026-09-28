@@ -14,7 +14,7 @@ import { fill } from '@/shared/copy'
 import SectionDip from './SectionDip.vue'
 import SectionDrawing from './SectionDrawing.vue'
 import SectionSixMonths from './SectionSixMonths.vue'
-import SectionStartEarly from './SectionStartEarly.vue'
+import SectionHeadStart from './SectionHeadStart.vue'
 import SectionTryIt from './SectionTryIt.vue'
 import copy from './copy.json'
 
@@ -118,7 +118,7 @@ async function pick(n: number) {
         <SectionDip v-if="rosa" :story="rosa" :account="account" />
         <p v-else class="section__claim">{{ copy.newDipClaim }}</p>
       </template>
-      <SectionStartEarly v-else-if="current.n === 3" />
+      <SectionHeadStart v-else-if="current.n === 3" :account="account" />
       <SectionTryIt v-else />
 
       <div class="section__nav">

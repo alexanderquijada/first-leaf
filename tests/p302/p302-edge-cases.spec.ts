@@ -3,34 +3,36 @@ import { load } from '../data'
 
 // The P302 brief's "Edge cases", one test per row (Your Journey, Phase 6).
 const story = load('story-p302')
-const nia = story.savers.find((s: { id: string }) => s.id === 'nia')
-const whole = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`
-function proj(startAge: number, monthly: number) {
+const hs = story.headStart
+const account = load('account')
+const whole = (n: number) => `$${Math.round(Math.round(n * 100) / 100).toLocaleString('en-US')}`
+function line(start: number, monthly: number, delayYears: number) {
   const i = story.assumptions.annualRate / 12
-  let v = 0
-  for (let m = 0; m < (story.assumptions.endAge - startAge) * 12; m++) v = v * (1 + i) + monthly
+  let v = start
+  for (let m = 0; m < (hs.endAge - hs.startAge) * 12; m++) v = v * (1 + i) + (m >= delayYears * 12 ? monthly : 0)
   return v
 }
-const result = (age: number, monthly: number) =>
-  `At 65, Theo has ${whole(proj(age, monthly))}. Nia has ${whole(nia.final.value)}. ${proj(age, monthly) >= nia.final.value ? 'Theo passes Nia.' : 'Theo is still behind.'}`
+const result = (years: number, add: number) =>
+  `At 65: ${whole(line(account.investedValue, hs.monthly, 0))} if you keep going, ${whole(line(account.investedValue, add, years))} if you wait.`
 
-test("every slider at both ends keeps section 3's sentence true", async ({ page }) => {
+test("every slider at both ends keeps section 3's sentence and marker true", async ({ page }) => {
   await page.goto('/story#section-3')
   const p = page.getByRole('tabpanel')
-  const age = p.getByRole('slider', { name: /^Theo's start age/ })
-  const monthly = p.getByRole('slider', { name: /^Theo each month/ })
-  const out = p.getByTestId('start-early-result')
-  const { min: aMin, max: aMax } = story.startAgeSlider
-  const { min: mMin, max: mMax } = story.catchUp.slider
-  for (const [ageKey, a] of [['Home', aMin], ['End', aMax]] as const) {
-    await age.focus()
-    await page.keyboard.press(ageKey)
-    await expect(age).toHaveAttribute('aria-valuetext', `Start at ${a}`)
-    for (const [mKey, m] of [['Home', mMin], ['End', mMax]] as const) {
-      await monthly.focus()
-      await page.keyboard.press(mKey)
-      await expect(monthly).toHaveAttribute('aria-valuetext', `$${m} a month`)
-      await expect(out, `start at ${a}, $${m} a month`).toHaveText(result(a, m))
+  const delay = p.getByRole('slider', { name: /^Start again in/ })
+  const add = p.getByRole('slider', { name: /^Then add/ })
+  const out = p.getByTestId('head-start-result')
+  for (const [dKey, d] of [['Home', hs.delay.min], ['End', hs.delay.max]] as const) {
+    await delay.focus()
+    await page.keyboard.press(dKey)
+    await expect(delay).toHaveAttribute('aria-valuetext', d === 1 ? '1 year' : `${d} years`)
+    const c = hs.catchUp.find((x: { years: number }) => x.years === d).monthly
+    if (c === null) await expect(p.getByText('No amount up to $300 a month catches up.')).toBeVisible()
+    else await expect(p.locator('.slider__mark-label')).toHaveText(`Catches up at $${c} a month`)
+    for (const [aKey, a] of [['Home', hs.add.min], ['End', hs.add.max]] as const) {
+      await add.focus()
+      await page.keyboard.press(aKey)
+      await expect(add).toHaveAttribute('aria-valuetext', `$${a} a month`)
+      await expect(out, `${d} years, $${a} a month`).toHaveText(result(d, a))
     }
   }
 })

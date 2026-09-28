@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // A real range input: the arrow keys move it, and its value is announced in words.
 // At least 48px tall, so it's easy to grab with a thumb. An optional mark shows a
-// point on the track (for example where Theo passes Nia); screen readers hear it as the
-// slider's description.
+// point on the track (for example the amount that catches up); screen readers hear it as the
+// slider's description. A hint takes its place when there is no point to mark.
 import { computed, useId } from 'vue'
 import CopyText from '@/shared/components/CopyText.vue'
 import copy from './copy.json'
@@ -15,6 +15,8 @@ const props = defineProps<{
   /** How the value reads aloud, e.g. "Start at 30" or "$196 a month". */
   valueText: (v: number) => string
   mark?: { value: number; label: string }
+  /** A line under the slider when there is no mark to show (for example, no amount catches up). */
+  hint?: string
 }>()
 const value = defineModel<number>({ required: true })
 const id = `fl-slider-${useId()}`
@@ -33,13 +35,14 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
         :max="max"
         :step="step"
         :aria-valuetext="valueText(value)"
-        :aria-describedby="mark ? `${id}-mark` : undefined"
+        :aria-describedby="mark ? `${id}-mark` : hint ? `${id}-hint` : undefined"
       />
       <span v-if="mark" class="slider__mark" :style="{ left: `${markPct}%` }" aria-hidden="true">
         <span class="slider__mark-line" />
         <span :id="`${id}-mark`" class="slider__mark-label">{{ mark.label }}</span>
       </span>
     </div>
+    <p v-if="hint" :id="`${id}-hint`" class="slider__hint">{{ hint }}</p>
     <p class="slider__ends" aria-hidden="true"><span>{{ valueText(min) }}</span><span>{{ valueText(max) }}</span></p>
   </div>
 </template>
@@ -91,6 +94,13 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
   font-weight: 600;
   color: var(--color-mustard);
   white-space: nowrap;
+}
+
+.slider__hint {
+  margin: 0 0 4px;
+  font-size: var(--type-small);
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 .slider__ends {

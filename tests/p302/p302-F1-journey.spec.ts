@@ -7,8 +7,8 @@ import { load, SCENARIOS } from '../data'
 const story = load('story-p302')
 const rosa = story.rosaStory['rosa-starter']
 const claim = (id: string) => rosa.claims.find((c: { id: string }) => c.id === id).text
-const TABS = ['Section 1 Six months in', `Section 2 The dip in ${rosa.facts.dip.month}`, 'Section 3 Start early', 'Section 4 Try it']
-const NAMES = ['Six months in', `The dip in ${rosa.facts.dip.month}`, 'Start early', 'Try it']
+const TABS = ['Section 1 Six months in', `Section 2 The dip in ${rosa.facts.dip.month}`, 'Section 3 Your head start', 'Section 4 Try it']
+const NAMES = ['Six months in', `The dip in ${rosa.facts.dip.month}`, 'Your head start', 'Try it']
 const NEW_CLAIM = 'Once your first deposit arrives, this page will show how your money has moved.'
 const NEW_DIP_CLAIM = 'Prices sometimes fall for a while. Once your money is invested, this section will show how it moved through a dip.'
 
@@ -215,7 +215,8 @@ for (const s of SCENARIOS) {
     const words = await journeyWords(page, s.id)
     // The reader can fail: it does find the page's own words.
     expect(words).toMatch(/Your Journey/)
-    expect(words).toMatch(/Nia/)
+    expect(words).toMatch(/Your head start/)
+    expect(words).not.toMatch(/\bNia\b|\bTheo\b/)
     expect(words).not.toMatch(/chapter/i)
     expect(words).not.toMatch(/paus/i)
   })
@@ -224,7 +225,7 @@ for (const s of SCENARIOS) {
 // Phase 6 review: a brand-new account has not had six months or a dip, so the names say so.
 test('the brand-new account shows the short text in sections 1 and 2, with no charts', async ({ page }) => {
   await page.goto('/story?scenario=brand-new')
-  await expect(tablist(page).getByRole('tab')).toHaveText([/Section 1\s*Your start/, /Section 2\s*When prices dip$/, /Section 3\s*Start early/, /Section 4\s*Try it/])
+  await expect(tablist(page).getByRole('tab')).toHaveText([/Section 1\s*Your start/, /Section 2\s*When prices dip$/, /Section 3\s*Your head start/, /Section 4\s*Try it/])
   await expect(panel(page).locator('.section__claim')).toHaveText(`${story.pointOfView} ${NEW_CLAIM}`)
   await expect(panel(page).locator('canvas')).toHaveCount(0)
   await panel(page).getByRole('button', { name: 'Next: When prices dip' }).click()
@@ -232,7 +233,7 @@ test('the brand-new account shows the short text in sections 1 and 2, with no ch
   // Its own sentence, not section 1's again.
   await expect(panel(page).locator('.section__claim')).toHaveText(NEW_DIP_CLAIM)
   await expect(panel(page).locator('canvas')).toHaveCount(0)
-  // Section 3 is about Nia and Theo, so it is the same for everyone.
-  await panel(page).getByRole('button', { name: 'Next: Start early' }).click()
+  // Section 3 is her own head start: it works from $0 for a brand-new account.
+  await panel(page).getByRole('button', { name: 'Next: Your head start' }).click()
   await expect(panel(page).locator('canvas')).toHaveCount(1)
 })
