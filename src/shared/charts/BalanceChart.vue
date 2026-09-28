@@ -124,9 +124,11 @@ function setActive(i: number | null) {
   chart.update('none')
 }
 
-function showTick(i: number) {
+// About one date label per 75px of axis (2 to 6 labels), so they never collide on a 320px phone.
+function showTick(i: number, axisWidth: number) {
   const last = props.points.length - 1
-  const step = Math.max(1, Math.ceil(last / 5))
+  const gaps = Math.max(1, Math.min(5, Math.floor(axisWidth / 75) - 1))
+  const step = Math.max(1, Math.ceil(last / gaps))
   return i === last || (i % step === 0 && last - i >= step / 2)
 }
 
@@ -149,8 +151,8 @@ function build() {
         },
       },
       scales: {
-        // About 6 labels, always ending on the last date, so the axis ends where the data does.
-        x: { display: !props.compact, grid: { display: false }, ticks: { autoSkip: false, maxRotation: 0, callback: (_v, i) => (showTick(i) ? formatDate(props.points[i]!.date) : '') } },
+        // Up to 6 labels, always ending on the last date, so the axis ends where the data does.
+        x: { display: !props.compact, grid: { display: false }, ticks: { autoSkip: false, maxRotation: 0, callback(_v, i) { return showTick(i, this.width) ? formatDate(props.points[i]!.date) : '' } } },
         y: {
           display: !props.compact,
           // Stacked areas ("put in" under "earned") start at zero, or the layers mislead;

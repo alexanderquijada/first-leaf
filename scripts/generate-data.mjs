@@ -234,7 +234,9 @@ function simulate({ id, mix, priceOn, beneficiary = null }) {
   let cash = 0, moneyIn = 0, n = 1;
   const activity = []; const history = []; const sharesAtClose = {};
   const nextId = () => `${id}-${String(n++).padStart(3, '0')}`;
-  const deposits = planDeposits(AS_OF);
+  // A monthly deposit is scheduled on a business day: one due on a weekend (Aug. 1, 2026 is a
+  // Saturday) is made the next trading day, so it arrives and buys the same day (Phase 6 review).
+  const deposits = planDeposits(AS_OF).map((dep) => ({ ...dep, date: nextTradingDay(dep.date) }));
   const byDate = {};
   for (const dep of deposits) (byDate[nextTradingDay(dep.date)] ||= []).push({ type: 'deposit', dep });
   for (const dv of DIVIDENDS) if (mix[dv.ticker] !== undefined && dv.payDate <= LAST_CLOSE && dv.exDate > ACCOUNT_OPENED) (byDate[nextTradingDay(dv.payDate)] ||= []).push({ type: 'dividend', dv });

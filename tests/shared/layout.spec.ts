@@ -143,3 +143,15 @@ test('no page is wider than a 390px phone, including Practice with a holding', a
   if (w > 390) wide.push(`/practice with a holding: ${w}px`)
   expect(wide).toEqual([])
 })
+
+// Phase 6 review: at 600px the tablet tabs scrolled sideways and cut "Finance Terms" off.
+test('the tablet tabs fit without scrolling from 600px', async ({ page }) => {
+  for (const width of [600, 700, 768, 1023]) {
+    await page.setViewportSize({ width, height: 800 })
+    await page.goto('/')
+    const nav = page.locator('.fl-tabs')
+    const [scroll, client] = await nav.evaluate((e) => [e.scrollWidth, e.clientWidth])
+    expect(scroll, `tabs overflow at ${width}`).toBeLessThanOrEqual(client)
+    await expect(nav.getByRole('link', { name: 'Finance Terms' })).toBeInViewport({ ratio: 1 })
+  }
+})

@@ -87,6 +87,7 @@ const CASES = [
   { rule: 'A12', why: 'a dividend uses a per-share amount the company never paid', mutate: (d) => { const x = d.activity['rosa-starter'].find((a) => a.type === 'dividend'); x.perShare = 0.5; } },
   { rule: 'A12', why: 'a dividend is paid on shares bought on the ex-date', mutate: (d) => { const x = d.activity['rosa-starter'].find((a) => a.type === 'dividend'); x.sharesOnExDate = r4(x.sharesOnExDate + 0.1); x.amount = r2(x.sharesOnExDate * x.perShare); } },
   { rule: 'A13', why: 'PHASE 6: a deposit did not go through (the removed sent-back story)', mutate: (d) => { d.activity['rosa-starter'].find((a) => a.type === 'deposit' && a.date === '2026-09-01').status = 'returned'; } },
+  { rule: 'A13', why: 'PHASE 6 REVIEW: a weekend deposit is dated before the day it arrived (Aug. 1 vs Aug. 3)', mutate: (d) => { d.activity['rosa-starter'].find((a) => a.type === 'deposit' && a.date === '2026-08-03').date = '2026-08-01'; } },
   { rule: 'A13', why: 'PHASE 6: a month has no deposit', mutate: (d) => { d.activity['rosa-starter'] = d.activity['rosa-starter'].filter((a) => !(a.type === 'deposit' && a.date.startsWith('2026-07'))); } },
   { rule: 'A14', why: 'PHASE 6: auto-invest skipped a month (the removed pause story)', mutate: (d) => { d.activity['rosa-starter'] = d.activity['rosa-starter'].filter((a) => !(a.type === 'buy' && a.date.startsWith('2026-08'))); } },
   { rule: 'A14', why: 'PHASE 6: auto-invest has a pause date', mutate: (d) => { d.account.autoInvest.pausedOn = '2026-06-08'; } },

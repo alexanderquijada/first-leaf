@@ -532,9 +532,11 @@ export function validate(data, { missing = [], briefExamples = [], copy = null, 
     }
     const ids = list.map((a) => a.id); if (new Set(ids).size !== ids.length) fail(`${p}activity ids not unique`);
   }));
-  rule('A13', 'Every planned deposit arrived: the first one, then one each month, all completed (Phase 6)', (fail) => forEachFunded((acc, list, p) => {
+  rule('A13', 'Every planned deposit arrived: the first one, then one each month, all completed, each dated the day it arrived (Phase 6)', (fail) => forEachFunded((acc, list, p) => {
     const deps = list.filter((a) => a.type === 'deposit');
     if (deps.some((d) => d.status !== 'completed')) fail(`${p}a deposit did not go through`);
+    // It is dated the day it arrives, so its buys share its date (Phase 6 review: Aug. 1 fell on a Saturday).
+    for (const d of deps) if (d.date !== d.settledDate) fail(`${p}deposit ${d.id} is dated ${d.date} but arrives ${d.settledDate}`);
     if (!eq(r2(deps.reduce((s, d) => s + d.amount, 0)), acc.goal.plannedMoneyInToDate)) fail(`${p}the deposits don't add up to the plan (${acc.goal.plannedMoneyInToDate})`);
     const months = new Set(deps.map((d) => d.date.slice(0, 7)));
     for (let m = acc.openedOn.slice(0, 7); m <= meta.lastClose.slice(0, 7); m = nextMonth(m)) if (!months.has(m)) fail(`${p}no deposit in ${m}`);

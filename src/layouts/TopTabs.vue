@@ -71,4 +71,16 @@ const route = useRoute()
     display: block;
   }
 }
+
+/* From 600 to 767px, tighter links so all six fit without scrolling ("Finance Terms" was cut off). */
+@media (max-width: 767px) {
+  .fl-tabs ul {
+    gap: 0;
+    padding: 0 8px;
+  }
+
+  .fl-tabs__link {
+    padding: 0 9px;
+  }
+}
 </style>

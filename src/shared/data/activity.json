@@ -527,7 +527,7 @@
     },
     {
       "id": "rosa-starter-046",
-      "date": "2026-08-01",
+      "date": "2026-08-03",
       "settledDate": "2026-08-03",
       "type": "deposit",
       "kind": "recurring",
@@ -1276,7 +1276,7 @@
     },
     {
       "id": "rosa-all-clear-046",
-      "date": "2026-08-01",
+      "date": "2026-08-03",
       "settledDate": "2026-08-03",
       "type": "deposit",
       "kind": "recurring",
