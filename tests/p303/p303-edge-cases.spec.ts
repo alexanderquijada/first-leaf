@@ -76,10 +76,10 @@ test('at 320px, every Practice error shows above the keypad, and a half-entered 
   const eb = (await err.boundingBox())!, kb = (await page.getByRole('group', { name: 'Number keypad' }).boundingBox())!
   expect(eb.y).toBeLessThan(kb.y)
   expect(eb.x + eb.width).toBeLessThanOrEqual(320)
-  // The sticky "Practice money" banner never covers the error.
+  // The sticky top bar never covers the error (Phase 6.1: there is no banner any more).
   await expect.poll(async () => {
-    const e = (await err.boundingBox())!, banner = (await page.locator('.practice__banner').boundingBox())!
-    return e.y - (banner.y + banner.height)
+    const e = (await err.boundingBox())!, bar = (await page.locator('.fl-topbar, header').first().boundingBox())!
+    return e.y - (bar.y + bar.height)
   }).toBeGreaterThanOrEqual(0)
   // Interrupted: leave for Finance Terms and come back; the amount is still there.
   await page.locator('.fl-bottombar').getByRole('link', { name: 'Terms' }).click()
@@ -109,7 +109,7 @@ test('phone body text has a line height of at least 1.6', async ({ page }) => {
 })
 
 // Phase 5 (second review): no text on any phone page is under 14px, including the "Seen"
-// pill and the Start early slider labels, anywhere on the page, not only on the first screen.
+// pill and the head-start slider labels, anywhere on the page, not only on the first screen.
 test('no phone text is under 14px on any page', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const small: string[] = []
@@ -159,7 +159,7 @@ test('with "Seen", the needs-you row keeps its chevron on the right, on one row'
 // Phase 6: old story links (#chapter-1 … #chapter-6) open the matching Journey section on a phone.
 test('old #chapter links open the matching Journey section', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
-  for (const [chapter, section, name] of [[1, 1, 'Six months in'], [2, 1, 'Six months in'], [3, 2, /^The dip/], [4, 1, 'Six months in'], [5, 3, 'Start early'], [6, 4, 'Try it']] as const) {
+  for (const [chapter, section, name] of [[1, 1, 'Six months in'], [2, 1, 'Six months in'], [3, 2, /^The dip/], [4, 1, 'Six months in'], [5, 3, 'Your head start'], [6, 4, 'Try it']] as const) {
     await page.goto(`/story#chapter-${chapter}`)
     await expect(page).toHaveURL(new RegExp(`/story#section-${section}$`))
     await expect(page.getByRole('tabpanel').getByRole('heading', { level: 2 })).toHaveText(name)

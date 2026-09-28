@@ -22,7 +22,7 @@ const reviewText = computed(() => {
   return side.value === 'buy' ? (c ? O.reviewBuyCrypto : O.reviewBuy) : c ? O.reviewSellCrypto : O.reviewSell
 })
 const sheetOpen = ref(false)
-// When an error appears, scroll just enough to show it below the sticky banner. Only then:
+// When an error appears, scroll just enough to show it below the sticky top bar. Only then:
 // scrolling on every key press would move the keys under a finger.
 const errorEl = ref<HTMLElement | null>(null)
 watch(shownError, async (now, before) => {
@@ -96,6 +96,7 @@ function onSheet(open: boolean) {
         }}<template v-if="side === 'buy'">{{ O.noFee }}</template>
       </p>
       <p class="porder__sheet-text"><CopyText :text="O.marketLine"><template #order><TermTip id="market-order">{{ O.orderWord }}</TermTip></template></CopyText></p>
+      <p class="porder__sheet-text porder__practice">{{ O.usesPractice }}</p>
       <p class="porder__error" role="alert">{{ error }}</p>
       <button type="button" class="porder__review" :disabled="!!error" @click="doConfirm">{{ O.confirm }}</button>
     </BottomSheet>
@@ -151,7 +152,7 @@ function onSheet(open: boolean) {
   color: var(--color-terracotta);
   font-weight: 600;
   line-height: var(--fl-body-leading);
-  /* Room for the sticky banner under the top bar (the page already keeps 128px). */
+  /* Room for the sticky top bar (the page already keeps 128px). */
   scroll-margin-top: 64px;
 }
 

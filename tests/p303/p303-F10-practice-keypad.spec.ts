@@ -38,19 +38,21 @@ test('the keypad types the amount; each error shows above it and Review stays di
   await expect(review).toBeDisabled()
 })
 
-test('review in a bottom sheet, confirm, and the banner is always visible', async ({ page }) => {
+// Phase 6.1: no banner; every amount is labeled "Practice money" and the review says so.
+test('review in a bottom sheet that says it uses practice money, confirm, and every amount is labeled', async ({ page }) => {
   await page.goto('/practice')
-  await expect(page.getByRole('note').filter({ hasText: 'Practice money. Nothing here touches your account.' })).toBeInViewport()
+  await expect(page.locator('.practice__banner')).toHaveCount(0)
+  await expect(page.locator('.practice__sum dt')).toHaveText(['Practice money', 'Practice money left to use', 'Practice money invested'])
+  await expect(page.locator('.practice__sum')).toContainText('$1,000.00')
   await page.getByRole('radio', { name: /COST/ }).check()
   await keys(page, '200')
   await expect(page.locator('.porder__amount')).toHaveText('$200')
   await page.getByRole('button', { name: 'Review' }).click()
   const sheet = page.getByRole('dialog', { name: 'Check your order' })
   await expect(sheet).toContainText('Buy $200.00 of COST')
+  await expect(sheet).toContainText('This uses practice money.')
   await sheet.getByRole('button', { name: 'Confirm' }).click()
   await expect(page.getByText('You bought $200.00 of COST with practice money.')).toBeVisible()
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-  await expect(page.getByRole('note').filter({ hasText: 'Practice money. Nothing here touches your account.' })).toBeInViewport()
   await expect(page.locator('.practice__table tbody tr:visible, .practice__stack > li:visible')).toHaveCount(1)
 })
 

@@ -25,7 +25,7 @@ for (const width of [390, 320]) {
     // Tapping a tab shows its section.
     await tabs.nth(2).click()
     await expect(tabs.nth(2)).toHaveAttribute('aria-selected', 'true')
-    await expect(page.getByRole('tabpanel').getByRole('heading', { level: 2 })).toHaveText('Start early')
+    await expect(page.getByRole('tabpanel').getByRole('heading', { level: 2 })).toHaveText('Your head start')
     await expect(page).toHaveURL(/#section-3$/)
   })
 }
@@ -39,17 +39,17 @@ test('the Sections button opens a bottom sheet that takes you to the section', a
   const links = sheet.getByRole('link')
   await expect(links).toHaveCount(4)
   for (const h of await links.evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height))) expect(h).toBeGreaterThanOrEqual(48)
-  await links.filter({ hasText: 'Start early' }).click()
+  await links.filter({ hasText: 'Your head start' }).click()
   await expect(sheet).toBeHidden()
-  const tab = page.getByRole('tab', { name: /Start early/ })
+  const tab = page.getByRole('tab', { name: /Your head start/ })
   await expect(tab).toHaveAttribute('aria-selected', 'true')
   await expect(tab).toBeFocused()
   await expect(tab).toBeInViewport()
-  await expect(page.getByRole('tabpanel').getByRole('heading', { level: 2 })).toHaveText('Start early')
+  await expect(page.getByRole('tabpanel').getByRole('heading', { level: 2 })).toHaveText('Your head start')
   await expect(page).toHaveURL(/#section-3$/)
 })
 
-test('Start early: sliders are at least 48px tall and the chart sits inline', async ({ page }) => {
+test('Your head start: sliders are at least 48px tall and the chart sits inline', async ({ page }) => {
   await page.goto('/story#section-3')
   const sliders = page.getByRole('slider')
   await expect(sliders).toHaveCount(2)
