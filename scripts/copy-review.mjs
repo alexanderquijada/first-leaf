@@ -38,28 +38,30 @@ execSync('npx vite build --logLevel error', { cwd: ROOT, stdio: 'inherit' });
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: ROOT, stdio: 'ignore' });
 for (let i = 0; i < 60; i++) { try { if ((await fetch(B)).ok) break; } catch { /* not up yet */ } await new Promise((r) => setTimeout(r, 250)); }
 const acts = read('src/shared/data/activity.json')['rosa-starter'];
-const returned = acts.find((a) => a.status === 'returned')?.id, buy = acts.find((a) => a.type === 'buy')?.id, div = acts.find((a) => a.type === 'dividend')?.id;
+const deposit = acts.find((a) => a.type === 'deposit')?.id, buy = acts.find((a) => a.type === 'buy')?.id, div = acts.find((a) => a.type === 'dividend')?.id;
 const alertIds = [...new Set(Object.values(read('src/shared/data/attention.json')).flat().map((f) => f.id))];
-const PAGES = ['/', '/alerts', ...alertIds.map((id) => `/alerts/${id}`), '/alerts/nope', '/activity', `/activity/${returned}`, `/activity/${buy}`, `/activity/${div}`,
-  '/funds', ...read('src/shared/data/funds.json').map((f) => `/funds/${f.ticker}`), '/story', '/practice', '/learn', '/learn/ups-and-downs', '/nope'];
+const PAGES = ['/', '/alerts', ...alertIds.map((id) => `/alerts/${id}`), '/alerts/nope', '/activity', `/activity/${deposit}`, `/activity/${buy}`, `/activity/${div}`,
+  '/funds', ...read('src/shared/data/funds.json').map((f) => `/funds/${f.ticker}`), '/story', '/story#section-2', '/story#section-3', '/story#section-4', '/practice', '/learn', ...read('src/shared/data/glossary.json').map((g) => `/learn/${g.id}`), '/nope'];
 const SNAP = {};
 const browser = await chromium.launch();
 try {
   for (const w of [390, 1280]) for (const sc of ['normal', 'all-clear', 'brand-new']) for (const p of PAGES) {
     const page = await browser.newPage({ viewport: { width: w, height: 900 } });
-    await page.goto(`${B}${p}?scenario=${sc}`); await page.locator('main').waitFor(); await page.waitForTimeout(250);
+    const [path, hash = ''] = p.split('#'); await page.goto(`${B}${path}?scenario=${sc}${hash ? `#${hash}` : ''}`); await page.locator('main').waitFor(); await page.waitForTimeout(250);
     const show = page.getByRole('button', { name: 'Show as table' }); while (await show.count()) await show.first().click();
     const why = page.getByRole('button', { name: 'Why it moved this week' }); if (await why.count()) await why.click();
     SNAP[`${w} ${sc} ${p}`] = { text: await page.evaluate(() => document.body.innerText), aria: await page.locator('body').ariaSnapshot() };
     await page.close();
   }
   const states = {
-    'dialog retry': async (pg) => { await pg.goto(B + '/alerts/deposit-returned'); await pg.getByRole('button', { name: 'Try the deposit again' }).click(); await pg.waitForTimeout(400); },
-    'dialog auto': async (pg) => { await pg.goto(B + '/alerts/cash-sitting'); await pg.getByRole('button', { name: 'See auto-invest settings' }).click(); await pg.waitForTimeout(400); },
+    'beneficiary sheet': async (pg) => { await pg.goto(B + '/alerts/beneficiary-missing'); await pg.getByRole('button', { name: 'Add a beneficiary' }).click(); await pg.getByRole('button', { name: 'Save' }).click(); await pg.waitForTimeout(400); },
+    'beneficiary saved': async (pg) => { await pg.goto(B + '/alerts/beneficiary-missing'); await pg.getByRole('button', { name: 'Add a beneficiary' }).click(); await pg.getByRole('textbox', { name: 'Name' }).fill('Ana Ruiz'); await pg.getByRole('textbox', { name: 'Relationship' }).fill('Sister'); await pg.getByRole('button', { name: 'Save' }).click(); await pg.waitForTimeout(400); },
+    'reminded': async (pg) => { await pg.goto(B + '/alerts/beneficiary-missing'); await pg.getByRole('button', { name: 'Remind me later' }).click(); await pg.waitForTimeout(300); },
+    'story sections': async (pg) => { await pg.setViewportSize({ width: 390, height: 900 }); await pg.goto(B + '/story'); await pg.getByRole('button', { name: 'Sections', exact: true }).click(); await pg.waitForTimeout(400); },
     'termtip': async (pg) => { await pg.goto(B + '/'); await pg.locator('main .fl-termtip__button').first().click(); },
     'practice error': async (pg) => { await pg.goto(B + '/practice'); await pg.getByLabel('Amount in dollars').fill('1.234'); },
     'practice bought': async (pg) => { await pg.goto(B + '/practice'); await pg.getByLabel('Amount in dollars').fill('100'); await pg.getByRole('button', { name: 'Review' }).click(); await pg.getByRole('button', { name: 'Confirm' }).click(); },
-    'learn none': async (pg) => { await pg.goto(B + '/learn'); await pg.getByLabel('Search words').fill('zebra'); },
+    'learn none': async (pg) => { await pg.goto(B + '/learn'); await pg.getByLabel('Search finance terms').fill('zebra'); },
     'phone view': async (pg) => { await pg.goto(B + '/p303'); await pg.waitForTimeout(600); },
   };
   for (const [k, fn] of Object.entries(states)) { const page = await browser.newPage({ viewport: { width: 1280, height: 900 } }); await fn(page); SNAP['state ' + k] = { text: await page.evaluate(() => document.body.innerText), aria: await page.locator('body').ariaSnapshot() }; await page.close(); }
@@ -79,9 +81,9 @@ const corpus = Object.entries(SNAP).map(([k, v]) => {
   const [w, sc, path] = k.startsWith('state ') ? ['1280', 'normal', k] : k.split(' ');
   return { w, sc, path, lines: linesOf(v) };
 });
-const SCREEN = (p) => p.startsWith('state ') ? { 'state dialog retry': 'Try-again dialog', 'state dialog auto': 'Auto-invest dialog', 'state termtip': 'Word explanation', 'state practice error': 'Practice (error)', 'state practice bought': 'Practice (after buying)', 'state learn none': 'Words (no match)', 'state phone view': 'Phone view' }[p]
-  : p === '/' ? 'Home' : p.startsWith('/alerts') ? 'Alerts' : p.startsWith('/activity') ? 'Activity' : p.startsWith('/funds') ? 'Investments' : p === '/story' ? 'Your money story'
-  : p === '/practice' ? 'Practice' : p.startsWith('/learn') ? 'Words' : 'Page not found';
+const SCREEN = (p) => p.startsWith('state ') ? { 'state beneficiary sheet': 'Add a beneficiary sheet', 'state beneficiary saved': 'Add a beneficiary sheet (saved)', 'state reminded': 'Beneficiary alert (reminded)', 'state story sections': 'Sections sheet', 'state termtip': 'Term explanation', 'state practice error': 'Practice (error)', 'state practice bought': 'Practice (after buying)', 'state learn none': 'Finance Terms (no match)', 'state phone view': 'Phone view' }[p]
+  : p === '/' ? 'Home' : p.startsWith('/alerts') ? 'Alerts' : p.startsWith('/activity') ? 'Activity' : p.startsWith('/funds') ? 'Investments' : p.startsWith('/story') ? 'Your Journey'
+  : p === '/practice' ? 'Practice' : p.startsWith('/learn') ? 'Finance Terms' : 'Page not found';
 
 const lastGroups = new Map();
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -115,8 +117,11 @@ const uniq = (a) => [...new Set(a)];
 // ---------- grade as L5 scores it ----------
 const words = (t) => t.split(/\s+/).filter((x) => /[A-Za-z]/.test(x)).length;
 const QUOTED = ['name', 'label', 'series', 'kind', 'status', 'type', 'term', 'terms', 'link', 'page', 'query', 'region', 'ticker'];
+// A Finance Terms word reads as one short word, as rule L5 grades it (its button explains it).
+const TERM_WORDS = read('src/shared/data/glossary.json').flatMap((g) => [g.term, ...(g.alsoCalled || [])]).sort((a, b) => b.length - a.length);
+const TERM_RE = new RegExp(`\\b(${TERM_WORDS.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'gi');
 function grade(t) {
-  let g = t ?? ''; const lead = g.match(/^([^.:!?]+):\s+/); if (lead && words(lead[1]) <= 3) g = g.slice(lead[0].length);
+  let g = (t ?? '').replace(TERM_RE, 'term'); const lead = g.match(/^([^.:!?]+):\s+/); if (lead && words(lead[1]) <= 3) g = g.slice(lead[0].length);
   if (!g.split(/[.!?]+/).some((x) => words(x) > 3)) return 'label';
   return fkGrade(g).toFixed(1);
 }
@@ -129,15 +134,15 @@ function gradeTemplate(t, shown, match) {
 }
 
 // ---------- the rows ----------
-const SECTIONS = ['App frame (every screen)', 'Home', 'Alerts', 'Money actions (deposit and auto-invest)', 'Activity', 'Investments', 'Your money story', 'Practice', 'Words', 'Charts (every chart)', 'Word explanations and sheets (every screen)', 'Numbers and dates (every screen)', 'Page not found'];
-const LETTER = { 'App frame (every screen)': 'A', Home: 'H', Alerts: 'L', 'Money actions (deposit and auto-invest)': 'M', Activity: 'V', Investments: 'F', 'Your money story': 'S', Practice: 'P', Words: 'W', 'Charts (every chart)': 'C', 'Word explanations and sheets (every screen)': 'E', 'Numbers and dates (every screen)': 'N', 'Page not found': 'X' };
+const SECTIONS = ['App frame (every screen)', 'Home', 'Alerts', 'Add a beneficiary', 'Activity', 'Investments', 'Your Journey', 'Practice', 'Finance Terms', 'Charts (every chart)', 'Term explanations and sheets (every screen)', 'Numbers and dates (every screen)', 'Page not found'];
+const LETTER = { 'App frame (every screen)': 'A', Home: 'H', Alerts: 'L', 'Add a beneficiary': 'M', Activity: 'V', Investments: 'F', 'Your Journey': 'S', Practice: 'P', 'Finance Terms': 'W', 'Charts (every chart)': 'C', 'Term explanations and sheets (every screen)': 'E', 'Numbers and dates (every screen)': 'N', 'Page not found': 'X' };
 const sectionOf = (file, key) => {
   if (file.includes('/layouts/')) return 'App frame (every screen)';
   const f = file.match(/features\/([\w-]+)\//)?.[1];
-  if (f) return { home: 'Home', alerts: 'Alerts', activity: 'Activity', funds: 'Investments', story: 'Your money story', practice: 'Practice', learn: 'Words', 'not-found': 'Page not found' }[f];
+  if (f) return { home: 'Home', alerts: 'Alerts', activity: 'Activity', funds: 'Investments', story: 'Your Journey', practice: 'Practice', learn: 'Finance Terms', 'not-found': 'Page not found' }[f];
   const p = key.split('.')[0];
-  return { deposit: 'Money actions (deposit and auto-invest)', moneyFlow: 'Money actions (deposit and auto-invest)', activity: 'Activity', practiceErrors: 'Practice', severity: 'Alerts', alerts: 'Alerts',
-    chart: 'Charts (every chart)', ranges: 'Charts (every chart)', change: 'Numbers and dates (every screen)', dates: 'Numbers and dates (every screen)' }[p] ?? 'Word explanations and sheets (every screen)';
+  return { beneficiaryFlow: 'Add a beneficiary', activity: 'Activity', practiceErrors: 'Practice', severity: 'Alerts', alerts: 'Alerts',
+    chart: 'Charts (every chart)', ranges: 'Charts (every chart)', change: 'Numbers and dates (every screen)', dates: 'Numbers and dates (every screen)' }[p] ?? 'Term explanations and sheets (every screen)';
 };
 const rows = Object.fromEntries(SECTIONS.map((s) => [s, []]));
 const short = (file) => file.replace('src/features/', '').replace('src/', '').replace('/copy.json', '');
@@ -167,8 +172,8 @@ function addRow(section, id, t, fallbackWhere, example) {
 // copy files
 const files = ['src/shared/copy.json', 'src/layouts/copy.json', ...readdirSync(join(ROOT, 'src', 'features')).sort().map((f) => `src/features/${f}/copy.json`)];
 const EX = { amount: '$150', balance: '$1,336.80', cash: '$452.11', date: 'Sept. 18', count: '2', ticker: 'AAPL', value: '$246.92', pct: '52', fee: '0.45', dollars: '150',
-  term: 'Ups and downs', title: 'Your $150 deposit from Sept. 1 was sent back', change: 'down $10.99', name: 'Rosa', price: '$336.13', shares: '0.7346', earned: '$5.00', moneyIn: '$1,250.00',
-  status: 'Pending', kind: 'Stock', age: '30', endAge: '65', nia: '$242,251', theo: '$186,213', monthly: '$150', label: 'Start age', setting: 'Start at 30', market: 'down $10.99',
+  term: 'Volatility', title: 'Name a beneficiary for your account', change: 'down $10.99', name: 'Rosa', price: '$336.13', shares: '0.7346', earned: '$5.00', moneyIn: '$1,250.00',
+  status: 'Completed', kind: 'Stock', age: '30', endAge: '65', nia: '$242,251', theo: '$186,213', monthly: '$150', label: 'Start age', setting: 'Start at 30', market: 'down $10.99',
   short: "How much an investment's price tends to jump around.", page: 'Activity', series: 'Balance', month: 'May', direction: 'up',
   example: 'Costco is a 1. Solana is a 5.', terms: 'volatility', link: 'Investor.gov glossary (U.S. SEC)', rating: '3', set: '35', now: '40', decimals: '2', putIn: '$9,600' };
 const example = (t, parent = {}, key = '') => t.replace(/\{(\w+)\}/g, (m, n) =>
@@ -194,24 +199,25 @@ for (const id of uniq([...Object.keys(fN), ...Object.keys(fA), ...Object.keys(fB
 }
 for (const f of funds) for (const field of ['name', 'about']) addRow('Investments', `data:funds.${f.ticker}.${field}`, f[field], 'Investments');
 const rosaN = story.rosaStory['rosa-starter'], rosaA = story.rosaStory['rosa-all-clear'];
-addRow('Your money story', 'data:rosaStory.pointOfView', rosaN.pointOfView, 'Your money story');
-rows['Your money story'].at(-1).other = `Nothing needs you: ${rosaA.pointOfView === rosaN.pointOfView ? 'same' : `“${rosaA.pointOfView}”`}<br>Brand-new: “${story.pointOfView}”`;
-for (const c of rosaN.claims) {
-  addRow('Your money story', `data:rosaStory.${c.id}`, c.text, 'Your money story');
+addRow('Your Journey', 'data:rosaStory.pointOfView', rosaN.pointOfView, 'Your Journey');
+rows['Your Journey'].at(-1).other = `Nothing needs you: ${rosaA.pointOfView === rosaN.pointOfView ? 'same' : `“${rosaA.pointOfView}”`}<br>Brand-new: “${story.pointOfView}”`;
+// Only the sentences Your Journey shows (sections 1 and 2); the other checked claims stay in the data.
+const SHOWN = ['deposits-share', 'dip', 'kept-buying'];
+for (const c of rosaN.claims.filter((c) => SHOWN.includes(c.id))) {
+  addRow('Your Journey', `data:rosaStory.${c.id}`, c.text, 'Your Journey');
   const a = rosaA.claims.find((x) => x.id === c.id);
-  rows['Your money story'].at(-1).other = `Nothing needs you: ${!a ? 'not shown' : a.text === c.text ? 'same' : `“${a.text}”`}<br>Brand-new: not shown (short story)`;
+  rows['Your Journey'].at(-1).other = `Nothing needs you: ${!a ? 'not shown' : a.text === c.text ? 'same' : `“${a.text}”`}<br>Brand-new: not shown (short story)`;
 }
-for (const c of rosaA.claims.filter((c) => !rosaN.claims.some((x) => x.id === c.id))) {
-  addRow('Your money story', `data:rosaStory.${c.id}`, c.text, 'Your money story');
-  const r = rows['Your money story'].at(-1); r.shown = `${c.text} *(the “Nothing needs you” account only)*`; r.other = 'Normal: not shown<br>Brand-new: not shown';
+for (const c of rosaA.claims.filter((c) => SHOWN.includes(c.id) && !rosaN.claims.some((x) => x.id === c.id))) {
+  addRow('Your Journey', `data:rosaStory.${c.id}`, c.text, 'Your Journey');
+  const r = rows['Your Journey'].at(-1); r.shown = `${c.text} *(the “Nothing needs you” account only)*`; r.other = 'Normal: not shown<br>Brand-new: not shown';
 }
-for (const c of story.claims) addRow('Your money story', `data:story.claims.${c.id}`, c.text, 'Your money story, chapter 5');
-for (const [k, t] of [['assumptions.note', story.assumptions.note], ['bumpy.note', story.bumpy.note]]) addRow('Your money story', `data:story.${k}`, t, 'Your money story, chapter 5');
+addRow('Your Journey', 'data:story.assumptions.note', story.assumptions.note, 'Your Journey, section 3');
 addRow('Practice', 'data:practice.timeMachine.note', practice.timeMachine.note, 'Practice');
 for (const g of glossary) for (const field of ['term', 'alsoCalled', 'short', 'detail', 'example']) {
   const t = field === 'alsoCalled' ? g.alsoCalled.join(', ') : g[field]; if (!t) continue;
-  addRow('Words', `data:glossary.${g.id}.${field}`, t, 'Words, and every explanation of this word');
-  rows.Words.at(-1).other = 'Same in every scenario';
+  addRow('Finance Terms', `data:glossary.${g.id}.${field}`, t, 'Finance Terms, and every explanation of this term');
+  rows['Finance Terms'].at(-1).other = 'Same in every scenario';
 }
 
 // ---------- write ----------

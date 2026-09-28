@@ -4,7 +4,7 @@
 // approvals: apply the wording, run `npm run copy:review -- --approve`, and trim this file.
 
 export const INTRO = (total) => `
-# Copy review · Phase 5
+# Copy review · Phase 6
 
 **Status:** Phase 2's copy sign-off is closed (Alex, Sept. 25). A row is **APPROVED** while its text still matches what Alex signed off (\`docs/copy/approved.json\`) and **DRAFT** when it is new or changed since, so DRAFT rows are exactly what needs a look. Nothing in the "Suggested rewrite" column has been applied.
 
@@ -19,39 +19,22 @@ export const INTRO = (total) => `
 - **Suggested rewrite / Why:** a suggestion to approve, or a note on why the row changed.
 `;
 
-// Rows new in Phase 5: each fixes something an independent reviewer found. DRAFT until Alex approves.
-const REV = (lens, what) => `New in Phase 5: the ${lens} reviewer found ${what}.`
+// Phase 6 (Alex's review round, Sept. 28): new and changed rows are DRAFT until Alex approves.
+// Every row whose text changed shows as DRAFT automatically; these notes say why.
 export const CHANGED = {
-  'alerts:facts.triedAgain': REV('P301', 'that a returned deposit could be retried again and again; the alert now shows the retry as a fact'),
-  'alerts:facts.pendingSince': REV('P301', 'that a returned deposit could be retried again and again; this is the retry fact\'s value'),
-  'funds:lossNote': REV('P301', 'no "ups and downs are normal" note for a loss on a laptop, which the brief promises'),
-  'story:sinceMarch.chartTitle1m': REV('P302', 'that chapter 1\'s title said "since March" with 1 month selected'),
-  'story:sinceMarch.chartTitle3m': REV('P302', 'that chapter 1\'s title said "since March" with 3 months selected'),
-  'story:sinceMarch.layersOn': REV('P302', 'that the layers toggle changed no sentence (the brief: each toggle says what the chart now shows)'),
-  'story:sinceMarch.layersOff': REV('P302', 'that the layers toggle changed no sentence'),
-  'story:dip.eventsOn': REV('P302', 'that the events toggle changed no sentence'),
-  'story:dip.eventsOff': REV('P302', 'that the events toggle changed no sentence'),
-  'story:keepGoing.showAnswer': REV('P302', 'that the answer showed before any guess; the guess stays optional through this button'),
-  'story:keepGoing.splitTitle': REV('P302', 'that 5c had no chart splitting Nia\'s money into put in and growth'),
-  'story:keepGoing.niaMoney': REV('P302', 'the missing 5c chart; this is its line'),
-  'story:keepGoing.niaPutIn': REV('P302', 'the missing 5c chart; this is its line'),
-  'story:keepGoing.daySplit': REV('P302', 'the missing 5c chart; this is its read-out'),
-  'story:keepGoing.colMoney': REV('P302', 'the missing 5c, 5d and 5g charts; this is a table column'),
-  'story:keepGoing.colPutIn': REV('P302', 'the missing 5c chart; this is a table column'),
-  'story:keepGoing.oneTitle': REV('P302', 'that 5d had no chart'),
-  'story:keepGoing.saver': REV('P302', 'that 5d had no chart; this is its line'),
-  'story:keepGoing.dayOne': REV('P302', 'that 5d and 5g had no charts; this is their read-out'),
-  'story:keepGoing.yourTitle': REV('P302', 'that 5g had no chart'),
-  'story:keepGoing.you': REV('P302', 'that 5g had no chart; this is its line'),
-  'story:keepGoing.catchTitle': REV('P302', 'that 5e had no chart (and two charts would share one title)'),
-  'story:closing.title': REV('P302', 'that the story had no closing takeaway'),
-  'story:closing.sources': REV('P302', 'that the closing had no sources'),
-  'alerts:pausedUntilToday': REV('P301', 'that "What happened" still said auto-invest "has been paused" after it was turned on'),
-  'funds:dividends.exDateWord': REV('P301', 'that "ex-dividend date" had no explanation; the word is now a term button (same words)'),
-  'data:glossary.ex-dividend-date.term': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
-  'data:glossary.ex-dividend-date.short': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
-  'data:glossary.ex-dividend-date.detail': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
-  'data:glossary.ex-dividend-date.example': REV('P301', 'that "ex-dividend date" had no explanation; this is its new glossary word'),
+  'shared:beneficiaryFlow.title': 'New in Phase 6: the beneficiary alert replaces the removed deposit stories; this is its sheet.',
+  'shared:beneficiaryFlow.intro': 'New in Phase 6: the beneficiary sheet explains what it sets.',
+  'shared:beneficiaryFlow.saved': 'New in Phase 6: the confirmation after saving a beneficiary.',
+  'alerts:remindLater': 'New in Phase 6: the second choice on the beneficiary alert.',
+  'alerts:remindedStatus': 'New in Phase 6: what "Remind me later" confirms.',
+  'data:attention.beneficiary-missing.title': 'New in Phase 6: the one thing that needs Rosa in the default account.',
+  'data:attention.beneficiary-missing.body': 'New in Phase 6: explains what a beneficiary is and why brokerages ask.',
+  'data:attention.beneficiary-missing.nextStep': 'New in Phase 6: offers the choice, never pushes it.',
+  'story:title': 'Renamed in Phase 6: "Your money story" is now "Your Journey".',
+  'story:next': 'New in Phase 6: every section ends with a button to the next one.',
+  'learn:title': 'Renamed in Phase 6: "Words" is now "Finance Terms".',
+  'home:balance.vsPutIn': 'Changed in Phase 6: the sentence moved inside the dark balance card on every size.',
+  'data:glossary.invested.short': 'New in Phase 6: "Invested" is the term on the dark card, from Investor.gov.',
 }
 
 export const SUGGEST = {
@@ -61,12 +44,14 @@ export const SUGGEST = {
 };
 
 export const TOP = [
-  'Approve the new Phase 5 rows (all DRAFT, all grade 8 or below). Each fixes a reviewer finding; the "Why" column says which.',
+  'Approve the Phase 6 rows (all DRAFT): the beneficiary alert and its sheet, the Your Journey sections, the Finance Terms entries and their sources, and the renamed navigation.',
   'Optional, carried from Phase 2: the below-what-you-put-in chart sentence ([[home:chart.nowDown]]) and "you set" on the mix card ([[home:mix.set]]).',
 ];
 
 export const CONSISTENCY = `
 **One name for one idea.** FYIs are "Good to know" as a badge and as a section, on the laptop and the phone. Everything else checked in Phases 2 and 3 still passes.
 
-**SIPC.** Only the general fact appears, in three places: the account notice, the glossary word and the crypto investment pages. G6 and the site crawl block membership and protection claims, "FDIC" and any "not … advice" wording.
+**Finance Terms.** Only real finance terms are term buttons, each with a source on Investor.gov, SEC.gov, FINRA.org, SIPC.org, IRS.gov or ConsumerFinance.gov (rules L1 and L6). The page and the navigation say \"Finance Terms\"; the word \"chapter\" is gone (Your Journey has sections).
+
+**SIPC.** Only the general fact appears, in three places: the account notice, the Finance Terms entry and the crypto investment pages. G6 and the site crawl block membership and protection claims, "FDIC" and any "not … advice" wording.
 `;
