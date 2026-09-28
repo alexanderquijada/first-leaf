@@ -35,5 +35,10 @@ export function useOrder() {
     touched.value = false
     step.value = 'enter'
   }
-  return { side, ticker, amount, amountNumber, touched, step, last, error, shownError, estShares, review, confirm, next, practice: p }
+  /** Start over: a fresh form, so the last order's confirmation doesn't outlive the reset. */
+  function reset() {
+    next()
+    last.value = null
+  }
+  return { side, ticker, amount, amountNumber, touched, step, last, error, shownError, estShares, review, confirm, next, reset, practice: p }
 }

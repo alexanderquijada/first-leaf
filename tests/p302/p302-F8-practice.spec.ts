@@ -78,6 +78,8 @@ test('buy, see it, sell part, sell too much, time machine, start over', async ({
   await dlg.getByRole('button', { name: 'Start over' }).click()
   await expect(page.getByText('Nothing yet. Buy a stock or crypto to start.')).toBeVisible()
   await expect(page.locator('.practice__sum')).toContainText('$1,000.00')
+  // Phase 6 review: the last order's confirmation no longer outlives Start over.
+  await expect(page.getByText('You sold $50.00 of AAPL.')).toHaveCount(0)
 })
 
 test('the review says it is a market order, and "market order" opens its Finance Terms entry', async ({ page }) => {

@@ -17,6 +17,7 @@ import { formatDate, formatMoney, formatMoneyShort, formatQuantity } from '@/sha
 import { colors } from '@/shared/tokens/tokens'
 import OrderForm from './OrderForm.vue'
 import PhoneOrder from './PhoneOrder.vue'
+import { useOrder } from './useOrder'
 import { fill } from '@/shared/copy'
 import copy from './copy.json'
 
@@ -36,8 +37,10 @@ const tmSummary = computed(() => {
 
 const confirmOpen = ref(false)
 useInertBackground(confirmOpen)
+const order = useOrder()
 function startOver() {
   p.startOver()
+  order.reset()
   confirmOpen.value = false
 }
 </script>

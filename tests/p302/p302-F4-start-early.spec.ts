@@ -40,6 +40,8 @@ test("Theo's monthly slider moves by keyboard: $195 is not enough, $196 passes N
   const slider = p.getByRole('slider', { name: /^Theo each month/ })
   const out = p.getByTestId('start-early-result')
   await expect(p.locator('.slider__mark-label')).toHaveText('Passes Nia: $196')
+  // Phase 6 review: screen readers hear the mark too, as the slider's description.
+  await expect(slider).toHaveAccessibleDescription('Passes Nia: $196')
   const theoLast = async () => JSON.parse((await p.locator('[data-series]').getAttribute('data-series'))!)[1].at(-1) as number
   const before = await theoLast()
   await slider.focus()
@@ -70,4 +72,15 @@ test("Theo's start-age slider moves by keyboard and uses the formula", async ({ 
   await page.keyboard.press('ArrowRight')
   await page.keyboard.press('ArrowRight')
   await expect(p.locator('.slider__mark-label')).toHaveText('Passes Nia: $196')
+})
+
+// Phase 6 screenshot finding: the start-age slider (no mark) kept the mark's 32px band, so its
+// "Start at 18 … Start at 45" labels floated far below the track.
+test('a slider without a mark has its end labels right under the track', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 })
+  await page.goto('/story#section-3')
+  const age = page.locator('.slider').first()
+  const input = await age.locator('input[type=range]').boundingBox()
+  const ends = await age.locator('.slider__ends').boundingBox()
+  expect(ends!.y - (input!.y + input!.height), 'gap between the track and its end labels').toBeLessThanOrEqual(8)
 })

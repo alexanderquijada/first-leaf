@@ -110,3 +110,26 @@ test('an amount typed with "$" or a comma reviews as money, never "$NaN"', async
     await page.getByRole('button', { name: /Change|Back|Edit/ }).first().click()
   }
 })
+
+// Phase 6 review: from 600 to 899px (and at 1024) Section 4 wrapped onto a second row (DoD 5).
+test('from 600px the four section tabs sit in one row, with no sideways scroll', async ({ page }) => {
+  for (const width of [600, 700, 768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/story')
+    const tops = await page.getByRole('tab').evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().top)))
+    expect(tops, `tab tops at ${width}`).toHaveLength(4)
+    expect(new Set(tops).size, `tabs in one row at ${width}: ${tops.join(', ')}`).toBe(1)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth), `no sideways scroll at ${width}`).toBeLessThanOrEqual(width)
+  }
+})
+
+// Phase 6 review: in one row at 600px, "Section 1" broke across two lines.
+test('each section tab keeps "Section N" on one line at every width', async ({ page }) => {
+  for (const width of [320, 390, 600, 700, 768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/story')
+    const lines = await page.locator('.story__tab-num').evaluateAll((els) =>
+      els.map((e) => Math.round(e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).lineHeight))))
+    expect(lines, `lines of "Section N" at ${width}`).toEqual([1, 1, 1, 1])
+  }
+})

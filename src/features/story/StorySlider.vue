@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // A real range input: the arrow keys move it, and its value is announced in words.
 // At least 48px tall, so it's easy to grab with a thumb. An optional mark shows a
-// point on the track (for example where Theo passes Nia).
+// point on the track (for example where Theo passes Nia); screen readers hear it as the
+// slider's description.
 import { computed, useId } from 'vue'
 import CopyText from '@/shared/components/CopyText.vue'
 import copy from './copy.json'
@@ -23,7 +24,7 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 <template>
   <div class="slider">
     <label :for="id" class="slider__label"><CopyText :text="copy.slider.label" :values="{ label }"><template #setting><strong>{{ valueText(value) }}</strong></template></CopyText></label>
-    <div class="slider__track">
+    <div class="slider__track" :class="{ 'slider__track--marked': mark }">
       <input
         :id="id"
         v-model.number="value"
@@ -32,10 +33,11 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
         :max="max"
         :step="step"
         :aria-valuetext="valueText(value)"
+        :aria-describedby="mark ? `${id}-mark` : undefined"
       />
       <span v-if="mark" class="slider__mark" :style="{ left: `${markPct}%` }" aria-hidden="true">
         <span class="slider__mark-line" />
-        <span class="slider__mark-label">{{ mark.label }}</span>
+        <span :id="`${id}-mark`" class="slider__mark-label">{{ mark.label }}</span>
       </span>
     </div>
     <p class="slider__ends" aria-hidden="true"><span>{{ valueText(min) }}</span><span>{{ valueText(max) }}</span></p>
@@ -54,6 +56,10 @@ const markPct = computed(() => (props.mark ? ((props.mark.value - props.min) / (
 
 .slider__track {
   position: relative;
+}
+
+/* Room for the mark's label, only on a slider that has one (no empty band otherwise). */
+.slider__track--marked {
   padding-bottom: 32px;
 }
 

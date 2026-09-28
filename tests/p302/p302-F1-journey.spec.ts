@@ -10,6 +10,7 @@ const claim = (id: string) => rosa.claims.find((c: { id: string }) => c.id === i
 const TABS = ['Section 1 Six months in', `Section 2 The dip in ${rosa.facts.dip.month}`, 'Section 3 Start early', 'Section 4 Try it']
 const NAMES = ['Six months in', `The dip in ${rosa.facts.dip.month}`, 'Start early', 'Try it']
 const NEW_CLAIM = 'Once your first deposit arrives, this page will show how your money has moved.'
+const NEW_DIP_CLAIM = 'Prices sometimes fall for a while. Once your money is invested, this section will show how it moved through a dip.'
 
 const tablist = (page: Page) => page.getByRole('tablist', { name: 'Sections' })
 const tab = (page: Page, n: number) => tablist(page).getByRole('tab', { name: TABS[n - 1], exact: true })
@@ -220,14 +221,16 @@ for (const s of SCENARIOS) {
   })
 }
 
+// Phase 6 review: a brand-new account has not had six months or a dip, so the names say so.
 test('the brand-new account shows the short text in sections 1 and 2, with no charts', async ({ page }) => {
   await page.goto('/story?scenario=brand-new')
-  await expect(tablist(page).getByRole('tab')).toHaveText([/Section 1\s*Six months in/, /Section 2\s*The dip$/, /Section 3\s*Start early/, /Section 4\s*Try it/])
+  await expect(tablist(page).getByRole('tab')).toHaveText([/Section 1\s*Your start/, /Section 2\s*When prices dip$/, /Section 3\s*Start early/, /Section 4\s*Try it/])
   await expect(panel(page).locator('.section__claim')).toHaveText(`${story.pointOfView} ${NEW_CLAIM}`)
   await expect(panel(page).locator('canvas')).toHaveCount(0)
-  await panel(page).getByRole('button', { name: 'Next: The dip' }).click()
-  await expect(panel(page).getByRole('heading', { level: 2 })).toHaveText('The dip')
-  await expect(panel(page).locator('.section__claim')).toHaveText(NEW_CLAIM)
+  await panel(page).getByRole('button', { name: 'Next: When prices dip' }).click()
+  await expect(panel(page).getByRole('heading', { level: 2 })).toHaveText('When prices dip')
+  // Its own sentence, not section 1's again.
+  await expect(panel(page).locator('.section__claim')).toHaveText(NEW_DIP_CLAIM)
   await expect(panel(page).locator('canvas')).toHaveCount(0)
   // Section 3 is about Nia and Theo, so it is the same for everyone.
   await panel(page).getByRole('button', { name: 'Next: Start early' }).click()

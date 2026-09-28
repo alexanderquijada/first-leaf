@@ -25,7 +25,7 @@ const { isPhone } = useViewport()
 
 const rosa = computed(() => story.rosaStory[account.value.id] ?? null)
 const sections = computed(() => [
-  { n: 1, name: N['1'] },
+  { n: 1, name: rosa.value ? N['1'] : N['1new'] },
   { n: 2, name: rosa.value ? fill(N['2'], { month: rosa.value.facts.dip.month }) : N['2new'] },
   { n: 3, name: N['3'] },
   { n: 4, name: N['4'] },
@@ -116,7 +116,7 @@ async function pick(n: number) {
       </template>
       <template v-else-if="current.n === 2">
         <SectionDip v-if="rosa" :story="rosa" :account="account" />
-        <p v-else class="section__claim">{{ copy.newClaim }}</p>
+        <p v-else class="section__claim">{{ copy.newDipClaim }}</p>
       </template>
       <SectionStartEarly v-else-if="current.n === 3" />
       <SectionTryIt v-else />
@@ -150,10 +150,11 @@ async function pick(n: number) {
   font-size: clamp(2.5rem, 6vw, 4rem);
 }
 
-/* The section tabs: laid across the page under the title, left-aligned; a 2×2 grid on a phone. */
+/* The section tabs: one row of four under the title from 600px (P302 DoD 5), each as wide as its
+   longest name needs, left-aligned; a 2×2 grid on a phone. */
 .story__tabs {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, max-content));
   gap: 12px;
   margin: 20px 0 8px;
 }
@@ -200,6 +201,25 @@ async function pick(n: number) {
 .story__tab-name {
   font-family: var(--font-display);
   font-size: 1.1875rem;
+}
+
+/* From 600 to 899px the row is narrow, so each drawing sits above its words. */
+@media (min-width: 600px) and (max-width: 899px) {
+  .story__tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .story__tab {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 12px;
+  }
+
+  /* "Section 1" never breaks in the narrow row (only here: at 200% text on a phone it must wrap). */
+  .story__tab-num {
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 599px) {

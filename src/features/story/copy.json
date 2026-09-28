@@ -5,12 +5,14 @@
   "names": {
     "1": "Six months in",
     "2": "The dip in {month}",
-    "2new": "The dip",
+    "1new": "Your start",
+    "2new": "When prices dip",
     "3": "Start early",
     "4": "Try it"
   },
   "next": "Next: {name}",
   "newClaim": "Once your first deposit arrives, this page will show how your money has moved.",
+  "newDipClaim": "Prices sometimes fall for a while. Once your money is invested, this section will show how it moved through a dip.",
   "one": {
     "rateLine": "Shown as a percent, what it earned is called your {rate}.",
     "rateWord": "rate of return"
