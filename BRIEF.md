@@ -46,7 +46,7 @@ Why: a real product is one app that a person uses in different moments, not thre
 | | |
 |---|---|
 | **Who** | Rosa, 26, a dental hygienist in Tucson, Arizona |
-| **Where she is** | Opened her first investing account in March 2026 with $500. Adds $150 on the 1st of each month, and auto-invest buys her mix with every deposit the day it arrives. Had never bought a stock or crypto before this account. She has not named a beneficiary yet. |
+| **Where she is** | Opened her first investing account in March 2026 with $500. Adds $150 on the first business day of each month, and auto-invest buys her mix with every deposit the day it arrives. Had never bought a stock or crypto before this account. She has not named a beneficiary yet. |
 | **What she worries about** | Losing money without knowing why. Words nobody explains ("volatility"). Doing something she can't undo. |
 | **Devices** | iPhone, one-handed, between patients. Laptop on Sunday mornings. |
 
