@@ -99,6 +99,9 @@ test('Remind me later moves the beneficiary alert to Handled, and Undo brings it
   await expect(list).not.toContainText('1 thing needs you.')
   await expect(detail.getByText('Handled', { exact: true })).toBeVisible()
   await expect(detail.getByRole('button', { name: 'Remind me later' })).toHaveCount(0)
+  // Phase 6 review: "What you can do" says what she chose, not the choice again.
+  await expect(detail).toContainText('We will remind you the next time you open First Leaf.')
+  await expect(detail).not.toContainText('You can add one now, or be reminded later.')
   // Reminding is not naming: the fact row still says no one is named.
   await expect(detail.locator('.adetail__facts')).toHaveText(/Beneficiary\s*Not named yet/)
   await list.getByRole('button', { name: 'Handled (1)' }).click()

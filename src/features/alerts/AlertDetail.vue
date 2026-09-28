@@ -27,9 +27,12 @@ const { markSeen, sessionBeneficiary } = useSession()
 // The beneficiary alert (Phase 6): once she names one this visit, the alert shows who, in place
 // of "What you can do" and its buttons, and it moves to Handled (Undo stays).
 const isBeneficiary = computed(() => props.alert.action?.kind === 'beneficiary')
-const doneLine = computed(() =>
-  isBeneficiary.value && sessionBeneficiary.value ? fill(shared.beneficiaryFlow.saved, { name: sessionBeneficiary.value.name }) : '',
-)
+// After "Remind me later", the line says what she chose instead of offering the choice again.
+const doneLine = computed(() => {
+  if (!isBeneficiary.value) return ''
+  if (sessionBeneficiary.value) return fill(shared.beneficiaryFlow.saved, { name: sessionBeneficiary.value.name })
+  return isHandled(props.alert.id) ? copy.remindedStatus : ''
+})
 function onSaved() {
   if (!isHandled(props.alert.id)) markHandled(props.alert)
 }
